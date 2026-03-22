@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ business_name }}{% endblock %}</title>
+    <meta name="description" content="Holtsnider Tech provides practical technical consulting, troubleshooting, process improvement, automation, and website/system support.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="{{ url_for('main.home') }}">{{ business_name }}</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <a href="{{ url_for('services.services') }}">Services</a>
+                <a href="#">Approach</a>
+                <a href="#">About</a>
+                <a href="{{ url_for('contact.contact') }}">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 {{ business_name }}. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

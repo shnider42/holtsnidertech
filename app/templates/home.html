@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ business_name }} | Practical Technical Consulting{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <p class="eyebrow">Practical technical consulting</p>
+            <h1>Clear thinking for messy technical problems.</h1>
+            <p class="lead">
+                {{ business_name }} helps small businesses and independent operators troubleshoot systems,
+                improve workflows, clean up technical messes, and make better decisions about the tools they rely on.
+            </p>
+            <div class="button-row">
+                <a class="btn btn-primary" href="#contact">Start a conversation</a>
+                <a class="btn btn-secondary" href="#services">See services</a>
+            </div>
+        </div>
+        <aside class="panel">
+            <h2>What this starter site is built for</h2>
+            <p>
+                A simple but extensible foundation: Flask, templates, static assets, an app factory,
+                and a structure you can grow without throwing away the basics later.
+            </p>
+        </aside>
+    </div>
+</section>
+
+<section id="services">
+    <div class="container">
+        <h2>Services</h2>
+        <p class="section-intro">
+            This first version is intentionally clean and light. It gives you a real homepage you can test locally now,
+            while leaving room for future pages, forms, case studies, blog content, and integrations.
+        </p>
+        <div class="card-grid">
+            {% for service in services %}
+            <article class="card">
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.body }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="approach">
+    <div class="container split-grid">
+        <article class="card">
+            <h2>Approach</h2>
+            <ul>
+                <li>Start with the real problem, not just the software involved.</li>
+                <li>Prefer clarity, maintainability, and practical value over buzzwords.</li>
+                <li>Keep the repo modular so future changes stay manageable.</li>
+                <li>Build locally first, then deploy cleanly to Render.</li>
+            </ul>
+        </article>
+        <article class="card">
+            <h2>Who it is for</h2>
+            <ul>
+                <li>Small businesses that need technical help without a full internal team.</li>
+                <li>Operators dealing with aging workflows, confusing tools, or messy data.</li>
+                <li>Clients who need both troubleshooting and plain-English explanation.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+<section id="about">
+    <div class="container narrow">
+        <h2>About {{ business_name }}</h2>
+        <p>
+            {{ business_name }} is built around a simple idea: many businesses do not need more complexity.
+            They need someone who can assess a system, identify the friction, and help make it workable.
+        </p>
+        <p>
+            This starter site is based on the direction you already outlined for your business messaging and service offering,
+            including the earlier static draft you created for the brand. fileciteturn0file0
+        </p>
+    </div>
+</section>
+
+<section id="contact" class="contact-band">
+    <div class="container narrow">
+        <h2>Contact</h2>
+        <p>Replace the placeholder details below once your business contact info is finalized.</p>
+        <p><strong>Email:</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+        <p><strong>Phone:</strong> <a href="tel:{{ contact_phone|replace('-', '') }}">{{ contact_phone }}</a></p>
+    </div>
+</section>
+{% endblock %}
