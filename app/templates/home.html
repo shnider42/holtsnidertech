@@ -5,7 +5,7 @@
 {% block content %}
 <header class="site-header">
     <div class="container">
-        <div class="header-bar">
+        <div class="header-bar reveal reveal-on-load">
             <a href="#top" class="brand" aria-label="Go to top">
                 <span class="brand-name">{{ business_name }}</span>
                 <span class="brand-meta">Practical Technical Consulting</span>
@@ -24,61 +24,84 @@
 </header>
 
 <main id="top">
-    <section class="hero">
-    <div class="container hero-stage">
-        <div class="hero-column">
-            <p class="eyebrow">Practical technical consulting</p>
-
-            <h1 class="hero-title">
-                Clear technical judgment
-                <span>for businesses dealing with messy systems, unclear tools, and real-world constraints.</span>
-            </h1>
-
-            <p class="hero-summary">
-                Holtsnider Tech helps businesses troubleshoot problems, improve workflows,
-                and make better technical decisions without adding unnecessary complexity.
-            </p>
-
-            <div class="hero-actions">
-                <a class="button button-primary" href="#contact">Start a conversation</a>
-                <a class="button button-secondary" href="#services">See services</a>
+    <section class="hero hero-scrub" id="hero">
+        <div class="container hero-stage">
+            <div class="hero-orbit" aria-hidden="true">
+                <span class="hero-orbit-ring hero-orbit-ring-1"></span>
+                <span class="hero-orbit-ring hero-orbit-ring-2"></span>
+                <span class="hero-orbit-dot hero-orbit-dot-1"></span>
+                <span class="hero-orbit-dot hero-orbit-dot-2"></span>
             </div>
-        </div>
 
-        <div class="hero-rail">
-            <div class="hero-quote">
-                <p class="hero-quote-mark">Holtsnider Tech</p>
-                <p class="hero-quote-text">
-                    Built for businesses that need clarity, momentum, and practical next steps
-                    more than jargon, noise, or technical theater.
+            <div class="hero-column reveal reveal-up reveal-delay-1">
+                <p class="eyebrow">Practical technical consulting</p>
+
+                <h1 class="hero-title">
+                    Clear technical judgment
+                    <span>for businesses dealing with messy systems, unclear tools, and real-world constraints.</span>
+                </h1>
+
+                <p class="hero-summary">
+                    Holtsnider Tech helps businesses troubleshoot problems, improve workflows,
+                    and make better technical decisions without adding unnecessary complexity.
                 </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#contact">Start a conversation</a>
+                    <a class="button button-secondary" href="#services">See services</a>
+                </div>
             </div>
 
-            <div class="hero-stat-block">
-                <div class="hero-stat">
-                    <span class="hero-stat-label">Focus</span>
-                    <span class="hero-stat-value">Troubleshooting</span>
+            <aside class="hero-aside reveal reveal-up reveal-delay-2" aria-label="Holtsnider Tech highlights">
+                <div class="hero-panel hero-scrub-panel">
+                    <p class="hero-panel-kicker">Holtsnider Tech</p>
+
+                    <div class="hero-scrub-copy" aria-hidden="true">
+                        <p class="hero-scrub-base">Turning complexity into clarity</p>
+                        <p class="hero-scrub-active">Turning complexity into clarity</p>
+                        <span class="hero-scrub-beam"></span>
+                        <span class="hero-scrub-glow"></span>
+                    </div>
+
+                    <p class="hero-panel-text">
+                        Built for organizations that need clarity, momentum, and practical next steps
+                        more than jargon, noise, or technical theater.
+                    </p>
+
+                    <div class="hero-panel-divider"></div>
+
+                    <div class="hero-metrics">
+                        <div class="hero-metric">
+                            <span class="hero-metric-label">Focus</span>
+                            <span class="hero-metric-value">Troubleshooting</span>
+                        </div>
+
+                        <div class="hero-metric">
+                            <span class="hero-metric-label">Strength</span>
+                            <span class="hero-metric-value">Systems clarity</span>
+                        </div>
+
+                        <div class="hero-metric">
+                            <span class="hero-metric-label">Approach</span>
+                            <span class="hero-metric-value">Practical over performative</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-label">Strength</span>
-                    <span class="hero-stat-value">Systems clarity</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-label">Approach</span>
-                    <span class="hero-stat-value">Practical over performative</span>
-                </div>
-            </div>
+
+                <p class="hero-note">
+                    Scroll through the opening section and the hero responds in real time.
+                </p>
+            </aside>
         </div>
-    </div>
-</section>
+    </section>
 
     <section class="section intro-band">
         <div class="container intro-layout">
-            <div>
+            <div class="reveal reveal-up">
                 <p class="section-label">How Holtsnider Tech works</p>
                 <h2 class="section-title">A clear head in the middle of technical noise.</h2>
             </div>
-            <div>
+            <div class="reveal reveal-up reveal-delay-1">
                 <p class="section-text">
                     Many businesses do not need a giant digital transformation plan. They need someone
                     who can look at a problem clearly, understand the moving parts, and help them make
@@ -90,7 +113,7 @@
 
     <section class="section" id="services">
         <div class="container section-shell">
-            <div class="section-heading">
+            <div class="section-heading reveal reveal-up">
                 <p class="section-label">Services</p>
                 <h2 class="section-title">Practical support where systems, process, and people intersect.</h2>
                 <p class="section-text">
@@ -100,8 +123,8 @@
                 </p>
             </div>
 
-            <div class="service-grid">
-                <article class="service-card">
+            <div class="service-grid stagger-group">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">01</p>
                     <h3>Troubleshooting & Technical Problem Solving</h3>
                     <p>
@@ -110,7 +133,7 @@
                     </p>
                 </article>
 
-                <article class="service-card">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">02</p>
                     <h3>Process Improvement & Automation</h3>
                     <p>
@@ -119,7 +142,7 @@
                     </p>
                 </article>
 
-                <article class="service-card">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">03</p>
                     <h3>Web, Platform & Systems Support</h3>
                     <p>
@@ -128,7 +151,7 @@
                     </p>
                 </article>
 
-                <article class="service-card">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">04</p>
                     <h3>Inventory & Data Organization</h3>
                     <p>
@@ -137,7 +160,7 @@
                     </p>
                 </article>
 
-                <article class="service-card">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">05</p>
                     <h3>Technical Translation</h3>
                     <p>
@@ -146,7 +169,7 @@
                     </p>
                 </article>
 
-                <article class="service-card">
+                <article class="service-card reveal reveal-up stagger-item">
                     <p class="card-number">06</p>
                     <h3>Planning Around Real Constraints</h3>
                     <p>
@@ -160,13 +183,13 @@
 
     <section class="section section-dark" id="approach">
         <div class="container section-shell">
-            <div class="section-heading narrow">
+            <div class="section-heading narrow reveal reveal-up">
                 <p class="section-label">Approach</p>
                 <h2 class="section-title">Grounded, direct, and built around the actual problem.</h2>
             </div>
 
-            <div class="approach-grid">
-                <div class="approach-block">
+            <div class="approach-grid stagger-group">
+                <div class="approach-block reveal reveal-up stagger-item">
                     <h3>How the work is approached</h3>
                     <ul class="clean-list">
                         <li>Start with the real issue, not just the software name attached to it.</li>
@@ -177,7 +200,7 @@
                     </ul>
                 </div>
 
-                <div class="approach-block">
+                <div class="approach-block reveal reveal-up stagger-item">
                     <h3>Who this is for</h3>
                     <ul class="clean-list">
                         <li>Small businesses that need strong technical judgment without a full internal team.</li>
@@ -192,12 +215,12 @@
 
     <section class="section" id="about">
         <div class="container about-layout">
-            <div class="about-left">
+            <div class="about-left reveal reveal-up">
                 <p class="section-label">About</p>
                 <h2 class="section-title">Holtsnider Tech is built around practical judgment.</h2>
             </div>
 
-            <div class="about-right">
+            <div class="about-right reveal reveal-up reveal-delay-1">
                 <p>
                     A lot of businesses do not need more buzzwords, more platforms, or more technical theater.
                     They need someone who can look at a situation clearly, figure out where the friction actually is,
@@ -219,7 +242,7 @@
     </section>
 
     <section class="section contact-section" id="contact">
-        <div class="container contact-shell">
+        <div class="container contact-shell reveal reveal-up">
             <p class="section-label">Contact</p>
             <h2 class="contact-title">Let’s talk about the problem you’re trying to solve.</h2>
             <p class="contact-text">
