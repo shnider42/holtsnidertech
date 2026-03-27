@@ -1,92 +1,217 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}{{ business_name }} | Practical Technical Consulting{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container hero-grid">
-        <div>
-            <p class="eyebrow">Practical technical consulting</p>
-            <h1>Clear thinking for messy technical problems.</h1>
-            <p class="lead">
-                {{ business_name }} helps small businesses and independent operators troubleshoot systems,
-                improve workflows, clean up technical messes, and make better decisions about the tools they rely on.
-            </p>
-            <div class="button-row">
-                <a class="btn btn-primary" href="{{ url_for('contact.contact') }}">Start a conversation</a>
-                <a class="btn btn-secondary" href="{{ url_for('services.services') }}">See services</a>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="#top" class="brand">{{ business_name }}</a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+            <a href="#services">Services</a>
+            <a href="#approach">Approach</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<main id="top">
+    <section class="hero">
+        <div class="container hero-layout">
+            <div class="hero-copy">
+                <p class="eyebrow">Holtsnider Tech</p>
+                <h1>{{ tagline }}</h1>
+                <p class="hero-text">
+                    Holtsnider Tech helps businesses untangle technical problems, improve workflows,
+                    and make clearer decisions about the systems they rely on every day. The focus
+                    is not on unnecessary complexity. It is on figuring out what is actually wrong,
+                    what matters most, and what practical next step will create momentum.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#contact">Start a conversation</a>
+                    <a class="button button-secondary" href="#services">See services</a>
+                </div>
+            </div>
+
+            <div class="hero-panel">
+                <p class="panel-kicker">What this looks like in practice</p>
+                <ul class="hero-list">
+                    <li>Troubleshooting messy technical issues</li>
+                    <li>Improving repetitive or fragile workflows</li>
+                    <li>Cleaning up systems, data, and process sprawl</li>
+                    <li>Translating technical complexity into plain language</li>
+                    <li>Helping small teams make better technology decisions</li>
+                </ul>
             </div>
         </div>
-        <aside class="panel">
-            <h2>What this starter site is built for</h2>
-            <p>
-                A simple but extensible foundation: Flask, templates, static assets, an app factory,
-                and a structure you can grow without throwing away the basics later.
-            </p>
-        </aside>
-    </div>
-</section>
+    </section>
 
-<section id="services">
-    <div class="container">
-        <h2>Services</h2>
-        <p class="section-intro">
-            This first version is intentionally clean and light. It gives you a real homepage you can test locally now,
-            while leaving room for future pages, forms, case studies, blog content, and integrations.
-        </p>
-        <div class="card-grid">
-            {% for service in services %}
-            <article class="card">
-                <h3>{{ service.title }}</h3>
-                <p>{{ service.body }}</p>
-            </article>
-            {% endfor %}
+    <section class="section intro-band">
+        <div class="container intro-layout">
+            <div>
+                <p class="section-label">How Holtsnider Tech works</p>
+                <h2 class="section-title">A clear head in the middle of technical noise.</h2>
+            </div>
+            <div>
+                <p class="section-text">
+                    Many businesses do not need a giant digital transformation plan. They need someone
+                    who can look at a problem clearly, understand the moving parts, and help them make
+                    progress without wasting time or money. That is the lane Holtsnider Tech is built for.
+                </p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="approach">
-    <div class="container split-grid">
-        <article class="card">
-            <h2>Approach</h2>
-            <ul>
-                <li>Start with the real problem, not just the software involved.</li>
-                <li>Prefer clarity, maintainability, and practical value over buzzwords.</li>
-                <li>Keep the repo modular so future changes stay manageable.</li>
-                <li>Build locally first, then deploy cleanly to Render.</li>
-            </ul>
-        </article>
-        <article class="card">
-            <h2>Who it is for</h2>
-            <ul>
-                <li>Small businesses that need technical help without a full internal team.</li>
-                <li>Operators dealing with aging workflows, confusing tools, or messy data.</li>
-                <li>Clients who need both troubleshooting and plain-English explanation.</li>
-            </ul>
-        </article>
-    </div>
-</section>
+    <section class="section" id="services">
+        <div class="container section-shell">
+            <div class="section-heading">
+                <p class="section-label">Services</p>
+                <h2 class="section-title">Practical support where systems, process, and people intersect.</h2>
+                <p class="section-text">
+                    Holtsnider Tech is most useful in the space between a simple website fix and a full in-house
+                    engineering team. The work usually starts with understanding the real problem, then making
+                    the path forward clearer and more workable.
+                </p>
+            </div>
 
-<section id="about">
-    <div class="container narrow">
-        <h2>About {{ business_name }}</h2>
-        <p>
-            {{ business_name }} is built around a simple idea: many businesses do not need more complexity.
-            They need someone who can assess a system, identify the friction, and help make it workable.
-        </p>
-        <p>
-            This starter site is based on the direction you already outlined for your business messaging and service offering,
-            including the earlier static draft you created for the brand. fileciteturn0file0
-        </p>
-    </div>
-</section>
+            <div class="service-grid">
+                <article class="service-card">
+                    <p class="card-number">01</p>
+                    <h3>Troubleshooting & Technical Problem Solving</h3>
+                    <p>
+                        Diagnose confusing software, workflow, integration, and operational issues. Isolate root
+                        causes, reduce guesswork, and move toward a solution with structure.
+                    </p>
+                </article>
 
-<section id="contact" class="contact-band">
-    <div class="container narrow">
-        <h2>Contact</h2>
-        <p>Replace the placeholder details below once your business contact info is finalized.</p>
-        <p><strong>Email:</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
-        <p><strong>Phone:</strong> <a href="tel:{{ contact_phone|replace('-', '') }}">{{ contact_phone }}</a></p>
-    </div>
-</section>
+                <article class="service-card">
+                    <p class="card-number">02</p>
+                    <h3>Process Improvement & Automation</h3>
+                    <p>
+                        Identify repetitive work, fragile steps, and avoidable bottlenecks. Improve reliability and
+                        save time by simplifying the way the work actually gets done.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <p class="card-number">03</p>
+                    <h3>Web, Platform & Systems Support</h3>
+                    <p>
+                        Support websites, connected tools, and business systems that need clearer structure,
+                        better upkeep, or more practical technical direction.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <p class="card-number">04</p>
+                    <h3>Inventory & Data Organization</h3>
+                    <p>
+                        Clean up inconsistent naming, duplicate records, spreadsheet chaos, and legacy structures
+                        that have become harder to trust over time.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <p class="card-number">05</p>
+                    <h3>Technical Translation</h3>
+                    <p>
+                        Turn technical detail into plain English. Help clients understand what is happening, what
+                        the tradeoffs are, and what deserves attention first.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <p class="card-number">06</p>
+                    <h3>Planning Around Real Constraints</h3>
+                    <p>
+                        Build next steps that respect budget, time, tools, and business reality. Not every problem
+                        needs to be solved with a rebuild.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-dark" id="approach">
+        <div class="container section-shell">
+            <div class="section-heading narrow">
+                <p class="section-label">Approach</p>
+                <h2 class="section-title">Grounded, direct, and built around the actual problem.</h2>
+            </div>
+
+            <div class="approach-grid">
+                <div class="approach-block">
+                    <h3>How the work is approached</h3>
+                    <ul class="clean-list">
+                        <li>Start with the real issue, not just the software name attached to it.</li>
+                        <li>Understand the business context before recommending tools.</li>
+                        <li>Favor clarity, maintainability, and usefulness over hype.</li>
+                        <li>Reduce complexity where possible instead of adding to it.</li>
+                        <li>Keep communication understandable and direct.</li>
+                    </ul>
+                </div>
+
+                <div class="approach-block">
+                    <h3>Who this is for</h3>
+                    <ul class="clean-list">
+                        <li>Small businesses that need strong technical judgment without a full internal team.</li>
+                        <li>Operators dealing with aging systems, messy workflows, or unclear tooling.</li>
+                        <li>Clients who need help evaluating websites, automation, vendors, or software setups.</li>
+                        <li>People who want someone who can troubleshoot and explain at the same time.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container about-layout">
+            <div class="about-left">
+                <p class="section-label">About</p>
+                <h2 class="section-title">Holtsnider Tech is built around practical judgment.</h2>
+            </div>
+
+            <div class="about-right">
+                <p>
+                    A lot of businesses do not need more buzzwords, more platforms, or more technical theater.
+                    They need someone who can look at a situation clearly, figure out where the friction actually is,
+                    and help make the system more workable.
+                </p>
+
+                <p>
+                    Holtsnider Tech is built for that kind of work. It sits at the intersection of troubleshooting,
+                    process improvement, technical translation, and common sense. Sometimes that means cleaning up
+                    data. Sometimes it means improving a workflow. Sometimes it means helping a client understand
+                    what a tool, platform, or project is really asking of them.
+                </p>
+
+                <p>
+                    The goal is clarity, momentum, and solutions that make sense in the real world.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+        <div class="container contact-shell">
+            <p class="section-label">Contact</p>
+            <h2 class="contact-title">Let’s talk about the problem you’re trying to solve.</h2>
+            <p class="contact-text">
+                Whether you need help troubleshooting an issue, cleaning up a process, or deciding what to do next,
+                Holtsnider Tech can help bring structure to the problem and turn it into a workable path forward.
+            </p>
+
+            <div class="contact-actions">
+                <a class="button button-primary" href="mailto:chris@holtsnidertech.com">Email Chris</a>
+                <a class="button button-secondary" href="tel:1234567890">Call or text</a>
+            </div>
+
+            <p class="contact-note">
+                Replace the phone number with your real number when you are ready.
+            </p>
+        </div>
+    </section>
+</main>
 {% endblock %}
