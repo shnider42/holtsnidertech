@@ -4,62 +4,68 @@
 
 {% block content %}
 <header class="site-header">
-    <div class="container header-inner">
-        <a href="#top" class="brand">{{ business_name }}</a>
+    <div class="container">
+        <div class="header-bar">
+            <a href="#top" class="brand" aria-label="Go to top">
+                <span class="brand-name">{{ business_name }}</span>
+                <span class="brand-meta">Practical Technical Consulting</span>
+            </a>
 
-        <nav class="site-nav" aria-label="Primary navigation">
-            <a href="#services">Services</a>
-            <a href="#approach">Approach</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
+            <nav class="site-nav" aria-label="Primary navigation">
+                <a href="#services">Services</a>
+                <a href="#approach">Approach</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <a class="header-cta" href="#contact">Start</a>
+        </div>
     </div>
 </header>
 
 <main id="top">
     <section class="hero">
-    <div class="container hero-shell">
-        <div class="hero-copy">
+    <div class="container hero-stage">
+        <div class="hero-column">
             <p class="eyebrow">Practical technical consulting</p>
 
-            <h1>
+            <h1 class="hero-title">
                 Clear technical judgment
-                <span>for messy real-world problems.</span>
+                <span>for businesses dealing with messy systems, unclear tools, and real-world constraints.</span>
             </h1>
 
-            <p class="hero-text hero-text-lead">
-                Holtsnider Tech helps businesses troubleshoot issues, improve workflows,
-                and make better decisions about the systems they depend on.
-            </p>
-
-            <p class="hero-text">
-                The goal is not to create more complexity. It is to understand what is
-                actually happening, identify what matters, and move toward a practical
-                next step with confidence.
+            <p class="hero-summary">
+                Holtsnider Tech helps businesses troubleshoot problems, improve workflows,
+                and make better technical decisions without adding unnecessary complexity.
             </p>
 
             <div class="hero-actions">
                 <a class="button button-primary" href="#contact">Start a conversation</a>
-                <a class="button button-secondary" href="#services">Explore services</a>
+                <a class="button button-secondary" href="#services">See services</a>
             </div>
         </div>
 
-        <div class="hero-aside">
-            <div class="hero-mark">
-                <p class="hero-mark-label">Holtsnider Tech</p>
-                <p class="hero-mark-line">Troubleshooting</p>
-                <p class="hero-mark-line">Systems clarity</p>
-                <p class="hero-mark-line">Process improvement</p>
-                <p class="hero-mark-line">Technical translation</p>
+        <div class="hero-rail">
+            <div class="hero-quote">
+                <p class="hero-quote-mark">Holtsnider Tech</p>
+                <p class="hero-quote-text">
+                    Built for businesses that need clarity, momentum, and practical next steps
+                    more than jargon, noise, or technical theater.
+                </p>
             </div>
 
-            <div class="hero-proof">
-                <p class="hero-proof-label">Built for businesses that need</p>
-                <div class="hero-proof-grid">
-                    <span>practical answers</span>
-                    <span>clear communication</span>
-                    <span>less guesswork</span>
-                    <span>maintainable solutions</span>
+            <div class="hero-stat-block">
+                <div class="hero-stat">
+                    <span class="hero-stat-label">Focus</span>
+                    <span class="hero-stat-value">Troubleshooting</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-label">Strength</span>
+                    <span class="hero-stat-value">Systems clarity</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-label">Approach</span>
+                    <span class="hero-stat-value">Practical over performative</span>
                 </div>
             </div>
         </div>
