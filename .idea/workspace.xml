@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9502ac58-ec0e-49c8-bc93-ea706b216cbf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/holtsnidertech_website.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/holtsnidertech_website.iml" afterDir="false" />
+    <list default="true" id="9502ac58-ec0e-49c8-bc93-ea706b216cbf" name="Changes" comment="Not functioning, but progress">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/contact.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/services.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +73,20 @@
       <option name="presentableId" value="Default" />
       <updated>1774213817190</updated>
     </task>
+    <task id="LOCAL-00001" summary="Not functioning, but progress">
+      <option name="closed" value="true" />
+      <created>1774587750252</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774587750252</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Not functioning, but progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Not functioning, but progress" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
