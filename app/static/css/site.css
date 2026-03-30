@@ -112,7 +112,7 @@ section {
 
 .brand-name {
     font-size: 0.98rem;
-    font-weight: 700;
+    font-weight: 650;
     letter-spacing: 0.01em;
     color: var(--text);
     line-height: 1.05;
@@ -140,7 +140,7 @@ section {
     position: relative;
     color: var(--muted);
     font-size: 0.78rem;
-    font-weight: 650;
+    font-weight: 600;
     letter-spacing: 0.10em;
     text-transform: uppercase;
     transition: color 0.18s ease, opacity 0.18s ease;
@@ -178,7 +178,7 @@ section {
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: var(--text);
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 650;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     transition:
@@ -339,9 +339,9 @@ section {
     margin: 14px 0 0;
     max-width: 10.5ch;
     font-size: clamp(3.9rem, 8vw, 7.8rem);
-    line-height: 0.86;
-    letter-spacing: -0.068em;
-    font-weight: 790;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    font-weight: 700;
     text-wrap: balance;
 }
 
@@ -380,7 +380,7 @@ section {
     padding: 0 20px;
     border-radius: 999px;
     font-size: 0.88rem;
-    font-weight: 700;
+    font-weight: 650;
     letter-spacing: 0.03em;
     transition:
         transform 0.18s ease,
@@ -476,18 +476,20 @@ section {
 
 .hero-scrub-copy {
     position: relative;
+    display: grid;
     margin-bottom: 28px;
     padding-right: 14px;
-    min-height: 3.1em;
+    min-height: 3.35em;
 }
 
 .hero-scrub-base,
 .hero-scrub-active {
+    grid-area: 1 / 1;
     margin: 0;
     font-size: clamp(2.1rem, 4vw, 4.1rem);
-    line-height: 0.94;
-    letter-spacing: -0.07em;
-    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-weight: 700;
     max-width: 9ch;
 }
 
@@ -496,12 +498,10 @@ section {
 }
 
 .hero-scrub-active {
-    position: absolute;
-    inset: 0 auto auto 0;
+    position: relative;
     color: var(--text);
-    width: var(--hero-scrub-percent);
-    overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
+    clip-path: inset(0 calc(100% - var(--hero-scrub-percent)) 0 0);
     text-shadow:
         0 0 24px rgba(255, 138, 61, 0.18),
         0 0 42px rgba(125, 255, 155, 0.08);
@@ -619,9 +619,9 @@ section {
 .contact-title {
     margin: 14px 0 0;
     font-size: clamp(2.2rem, 4vw, 4rem);
-    line-height: 0.98;
-    letter-spacing: -0.05em;
-    font-weight: 740;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 680;
     text-wrap: balance;
 }
 
@@ -660,9 +660,9 @@ section {
     margin: 12px 0 12px;
     max-width: 20ch;
     font-size: 1.28rem;
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    font-weight: 690;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    font-weight: 620;
 }
 
 .service-card p:last-child,
@@ -790,7 +790,7 @@ section {
     }
 
     .hero-scrub-active {
-        width: 100%;
+        clip-path: inset(0 0 0 0);
     }
 
     .hero-scrub-beam {
@@ -917,7 +917,7 @@ section {
     }
 
     .hero-scrub-copy {
-        min-height: 2.5em;
+        min-height: 2.8em;
     }
 
     .hero-scrub-base,
