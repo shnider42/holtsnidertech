@@ -647,7 +647,10 @@ section {
 }
 
 .service-card,
-.approach-block {
+.approach-block,
+.portfolio-card,
+.mini-card,
+.contact-card {
     padding: 30px;
     border-radius: var(--radius-md);
     background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.025));
@@ -656,7 +659,8 @@ section {
 }
 
 .service-card h3,
-.approach-block h3 {
+.approach-block h3,
+.portfolio-card h3 {
     margin: 12px 0 12px;
     max-width: 20ch;
     font-size: 1.28rem;
@@ -667,7 +671,10 @@ section {
 
 .service-card p:last-child,
 .approach-block p,
-.clean-list li {
+.clean-list li,
+.portfolio-card p,
+.mini-card span,
+.contact-card span {
     color: var(--muted);
     font-size: 0.98rem;
     line-height: 1.72;
@@ -684,6 +691,115 @@ section {
         linear-gradient(180deg, #0b141d 0%, #0f1821 100%);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.portfolio-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.portfolio-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(125, 255, 155, 0.08), transparent 34%);
+    pointer-events: none;
+}
+
+.portfolio-card > * {
+    position: relative;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 22px;
+}
+
+.project-tags span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--muted-strong);
+    font-size: 0.76rem;
+    font-weight: 650;
+}
+
+.project-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 22px;
+    color: var(--green);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.project-link:hover {
+    color: var(--text);
+}
+
+.daily-flyer-layout .about-right {
+    max-width: 68ch;
+}
+
+.mini-card-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.mini-card {
+    padding: 20px;
+    display: grid;
+    gap: 6px;
+}
+
+.mini-card strong {
+    font-size: 0.92rem;
+    color: var(--text);
+}
+
+.contact-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 34px;
+}
+
+.contact-card {
+    display: grid;
+    gap: 6px;
+    padding: 24px;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.contact-card strong {
+    color: var(--text);
+    font-size: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .approach-grid {
@@ -799,6 +915,12 @@ section {
 
     .hero-scrub-glow {
         left: 100%;
+    }
+}
+
+@media (max-width: 1120px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -936,7 +1058,13 @@ section {
     }
 
     .service-card,
-    .approach-block {
+    .approach-block,
+    .portfolio-card {
         padding: 24px 22px;
+    }
+
+    .portfolio-grid,
+    .contact-card-grid {
+        grid-template-columns: 1fr;
     }
 }
