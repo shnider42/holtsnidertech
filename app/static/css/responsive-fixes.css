@@ -182,3 +182,127 @@
         letter-spacing: -0.045em;
     }
 }
+
+/*
+ * Display typography cleanup.
+ * The smaller body/card text works well, so these overrides only target the
+ * oversized hero/display copy that was feeling cramped and inconsistent.
+ */
+.hero-title,
+.section-title,
+.contact-title,
+.hero-scrub-base {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-feature-settings: "kern";
+}
+
+.hero-title {
+    max-width: min(980px, 100%);
+    font-size: clamp(2.85rem, 6.8vw, 5.65rem);
+    line-height: 1.04;
+    letter-spacing: -0.038em;
+    text-wrap: balance;
+    overflow-wrap: normal;
+    hyphens: none;
+}
+
+.hero-title span {
+    max-width: min(760px, 100%);
+    margin-top: 18px;
+    font-size: clamp(1.04rem, 1.35vw, 1.22rem);
+    line-height: 1.48;
+    letter-spacing: -0.012em;
+    font-weight: 500;
+}
+
+.section-title,
+.contact-title {
+    max-width: min(820px, 100%);
+    font-size: clamp(2rem, 3.55vw, 3.45rem);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+    text-wrap: balance;
+}
+
+.contact-title {
+    max-width: min(720px, 100%);
+}
+
+.hero-stage {
+    align-items: center;
+}
+
+.hero-column {
+    padding-top: clamp(34px, 5vw, 64px);
+}
+
+.hero-scrub-copy {
+    display: block;
+    margin-bottom: 24px;
+    min-height: 0;
+}
+
+.hero-scrub-base {
+    max-width: min(15ch, 100%);
+    color: var(--text);
+    font-size: clamp(1.95rem, 2.75vw, 2.85rem);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+}
+
+.hero-scrub-active,
+.hero-scrub-beam,
+.hero-scrub-glow {
+    display: none;
+}
+
+.hero-panel {
+    transform: none;
+}
+
+.hero-column,
+.hero-orbit,
+.hero-stage::before,
+.hero-stage::after {
+    transform: none;
+}
+
+@media (max-width: 1180px) {
+    .hero-title {
+        max-width: min(900px, 100%);
+        font-size: clamp(2.85rem, 7.4vw, 5.3rem);
+    }
+
+    .hero-title span {
+        max-width: min(680px, 100%);
+    }
+
+    .hero-scrub-base {
+        max-width: min(18ch, 100%);
+    }
+}
+
+@media (max-width: 720px) {
+    .hero-title {
+        max-width: 100%;
+        font-size: clamp(2.35rem, 10vw, 3.8rem);
+        line-height: 1.06;
+        letter-spacing: -0.032em;
+    }
+
+    .hero-title span {
+        margin-top: 14px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .section-title,
+    .contact-title {
+        font-size: clamp(1.9rem, 8vw, 2.75rem);
+        line-height: 1.1;
+    }
+
+    .hero-scrub-base {
+        font-size: clamp(1.75rem, 8vw, 2.35rem);
+    }
+}
