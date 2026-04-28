@@ -306,3 +306,68 @@
         font-size: clamp(1.75rem, 8vw, 2.35rem);
     }
 }
+
+/*
+ * iOS/mobile portfolio card clipping fix.
+ * Mobile Safari can be touchy when grid children combine overflow clipping,
+ * reveal transforms, pseudo-elements, and ancestor overflow rules. These
+ * overrides keep the card content in normal document flow on narrow screens.
+ */
+@media (max-width: 720px) {
+    main,
+    .section-dark,
+    #portfolio,
+    #portfolio .section-shell,
+    #portfolio .portfolio-grid,
+    #portfolio .portfolio-card {
+        overflow: visible;
+    }
+
+    #portfolio .section-shell {
+        gap: 34px;
+    }
+
+    #portfolio .portfolio-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    #portfolio .portfolio-card {
+        display: block;
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        padding: 24px;
+        contain: none;
+        transform: none;
+        isolation: isolate;
+    }
+
+    #portfolio .portfolio-card > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    #portfolio .portfolio-card p {
+        overflow: visible;
+    }
+
+    #portfolio .project-tags {
+        margin-top: 20px;
+        padding-top: 0;
+    }
+
+    #portfolio .project-link {
+        margin-top: 18px;
+    }
+
+    #portfolio .reveal,
+    #portfolio .reveal-up,
+    #portfolio .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
