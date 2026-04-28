@@ -1,0 +1,184 @@
+/*
+ * Modular layout overrides.
+ * Keep broad responsive/layout fixes here so the main visual system can evolve separately.
+ */
+
+.header-bar,
+.hero-stage,
+.hero-column,
+.hero-aside,
+.hero-panel,
+.portfolio-grid,
+.portfolio-card {
+    min-width: 0;
+}
+
+.header-bar {
+    gap: clamp(16px, 2.5vw, 28px);
+}
+
+.site-nav {
+    gap: clamp(14px, 2vw, 24px);
+}
+
+.hero {
+    padding-top: clamp(32px, 5vw, 56px);
+}
+
+.hero-stage {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, clamp(320px, 33vw, 440px));
+    gap: clamp(34px, 5vw, 72px);
+    align-items: center;
+}
+
+.hero-column {
+    max-width: 100%;
+}
+
+.hero-title {
+    max-width: min(12ch, 100%);
+    font-size: clamp(3.25rem, 5.7vw, 5.8rem);
+    line-height: 0.94;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.hero-title span {
+    max-width: min(24ch, 100%);
+}
+
+.hero-summary {
+    max-width: min(58ch, 100%);
+}
+
+.hero-aside {
+    justify-self: end;
+    width: min(100%, 440px);
+    max-width: 100%;
+}
+
+.hero-panel {
+    width: 100%;
+}
+
+.hero-scrub-copy {
+    min-height: auto;
+}
+
+.hero-scrub-base,
+.hero-scrub-active {
+    max-width: min(10ch, 100%);
+    font-size: clamp(2rem, 3.25vw, 3.35rem);
+    overflow-wrap: break-word;
+}
+
+.hero-panel-text,
+.hero-metric-value,
+.hero-note {
+    overflow-wrap: break-word;
+}
+
+.portfolio-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1180px) {
+    :root {
+        --header-height: 132px;
+    }
+
+    .header-bar {
+        grid-template-columns: 1fr auto;
+        align-items: start;
+        border-radius: 28px;
+        padding: 16px 18px;
+    }
+
+    .site-nav {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+
+    .hero-stage {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        align-items: start;
+    }
+
+    .hero-column {
+        padding-top: clamp(30px, 5vw, 58px);
+        padding-bottom: 0;
+    }
+
+    .hero-title {
+        max-width: min(12.5ch, 100%);
+        font-size: clamp(3.15rem, 8vw, 5.8rem);
+    }
+
+    .hero-aside {
+        justify-self: start;
+        width: min(100%, 760px);
+        padding-top: 0;
+    }
+
+    .hero-panel-text {
+        max-width: 48ch;
+    }
+
+    .hero-scrub-base,
+    .hero-scrub-active {
+        max-width: min(13ch, 100%);
+    }
+}
+
+@media (max-width: 960px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    :root {
+        --header-height: 156px;
+    }
+
+    .header-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .header-cta {
+        display: none;
+    }
+
+    .hero-title {
+        max-width: 100%;
+        font-size: clamp(2.55rem, 12vw, 4.3rem);
+    }
+
+    .hero-title span {
+        max-width: 100%;
+    }
+
+    .hero-panel {
+        border-radius: 24px;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .site-nav {
+        gap: 10px 14px;
+    }
+
+    .site-nav a {
+        font-size: 0.7rem;
+        letter-spacing: 0.07em;
+    }
+
+    .hero-title {
+        letter-spacing: -0.045em;
+    }
+}
