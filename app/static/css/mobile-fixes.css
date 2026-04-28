@@ -1,0 +1,55 @@
+/*
+ * Mobile-specific layout fixes.
+ * Loaded after the main visual styles so narrow-device browser fixes stay isolated.
+ */
+
+@media (max-width: 720px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    main {
+        overflow: visible;
+    }
+
+    #portfolio,
+    #portfolio .section-shell,
+    #portfolio .portfolio-grid,
+    #portfolio .portfolio-card {
+        overflow: visible;
+    }
+
+    #portfolio .section-shell {
+        gap: 36px;
+    }
+
+    #portfolio .portfolio-grid {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: none;
+        gap: 18px;
+        align-items: stretch;
+    }
+
+    #portfolio .portfolio-card {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 24px;
+        contain: none;
+    }
+
+    #portfolio .portfolio-card h3,
+    #portfolio .portfolio-card p {
+        max-width: 100%;
+    }
+
+    #portfolio .project-tags {
+        margin-top: 20px;
+        padding-top: 0;
+    }
+
+    #portfolio .project-link {
+        margin-top: 18px;
+    }
+}
