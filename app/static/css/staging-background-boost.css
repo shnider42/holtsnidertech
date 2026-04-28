@@ -1,0 +1,40 @@
+/*
+ * Background visibility boost for staging.
+ * Keeps the existing treatment, but lets the toolkit/circuit artwork read more clearly.
+ */
+
+body::before {
+    background:
+        linear-gradient(90deg, rgba(6, 12, 19, 0.72) 0%, rgba(6, 12, 19, 0.28) 44%, rgba(6, 12, 19, 0.62) 100%),
+        radial-gradient(circle at 70% 34%, rgba(45, 143, 139, 0.34), transparent 34%),
+        url("../img/toolkit-circuit-bg.svg");
+    background-repeat: no-repeat;
+    background-position: center top, center top, clamp(46%, 58vw, 72%) 42px;
+    background-size: cover, cover, min(70vw, 780px) auto;
+    opacity: 0.72;
+    filter: saturate(1.18) brightness(1.22) contrast(1.12);
+}
+
+body::after {
+    background:
+        linear-gradient(180deg, rgba(6, 12, 19, 0.02), rgba(6, 12, 19, 0.50) 48%, rgba(6, 12, 19, 0.74)),
+        radial-gradient(circle at 50% 0%, transparent 0, rgba(6, 12, 19, 0.14) 62%, rgba(6, 12, 19, 0.68) 100%);
+}
+
+@media (max-width: 1180px) {
+    body::before {
+        opacity: 0.58;
+    }
+}
+
+@media (max-width: 960px) {
+    body::before {
+        opacity: 0.40;
+    }
+}
+
+@media (max-width: 720px) {
+    body::before {
+        opacity: 0.30;
+    }
+}
