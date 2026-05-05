@@ -19,7 +19,7 @@
       <section class="demo-panel">
         <p class="section-label">Portfolio Demo</p>
         <h1 class="section-title">Grepper</h1>
-        <p class="section-text">This is a static demonstration of the Grepper workflow: paste a Workday careers URL, choose a location, and see how ranked job results could be presented. The real project is a Python tool; this page exists so portfolio visitors can understand the idea without reading GitHub.</p>
+        <p class="section-text">This page demonstrates the Grepper workflow: paste a Workday careers URL, choose a location, and review ranked job results. The portfolio version shows the user experience while the underlying project focuses on parsing, normalizing, ranking, and explaining job matches.</p>
         <div class="demo-input">
           <label for="url">Workday careers URL</label>
           <input id="url" value="https://cisco.wd5.myworkdayjobs.com/en-US/Cisco_Careers" />
@@ -27,13 +27,13 @@
           <input id="location" value="Boston" />
           <button class="button button-primary" id="rankBtn" type="button">Rank sample jobs</button>
         </div>
-        <p class="demo-note">Demo data only. The point is the workflow: parse, normalize, rank, and explain.</p>
+        <p class="demo-note">Portfolio demonstration using representative results.</p>
         <div class="demo-results" id="results"></div>
       </section>
     </div>
   </main>
   <script>
-    const jobs=[['Senior Quality Engineer - Infrastructure','Linux, Python, Kubernetes, customer impact',94],['Systems Test Engineer - Storage Platform','enterprise storage, lab validation, automation',91],['DevOps / SRE Tools Engineer','observability, CI, containers, troubleshooting',86],['Generic Frontend Designer','visual polish, HTML, CSS',51]];
+    const jobs=[['Senior Quality Engineer - Infrastructure','Linux, Python, Kubernetes, customer impact',94],['Systems Test Engineer - Storage Platform','enterprise storage, lab validation, automation',91],['DevOps / SRE Tools Engineer','observability, CI, containers, troubleshooting',86],['Frontend Designer','visual polish, HTML, CSS',51]];
     document.getElementById('rankBtn').addEventListener('click',()=>{document.getElementById('results').innerHTML=jobs.map(j=>`<article class="demo-job"><strong>${j[0]}</strong><span>${j[1]}</span><p class="demo-score">Match score: ${j[2]}</p></article>`).join('')});
   </script>
 </body>
