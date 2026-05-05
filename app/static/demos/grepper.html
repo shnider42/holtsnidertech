@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grepper Demo | Holtsnider Tech</title>
+  <link rel="stylesheet" href="/static/css/site.css" />
+  <link rel="stylesheet" href="/static/css/responsive-fixes.css" />
+  <link rel="stylesheet" href="/static/css/staging-polish.css" />
+  <link rel="stylesheet" href="/static/css/staging-background-boost.css" />
+  <link rel="stylesheet" href="/static/css/proof-capabilities.css" />
+  <style>
+    .demo-wrap{padding:56px 0 120px}.demo-shell{max-width:980px;margin:0 auto}.demo-panel{padding:32px;border:1px solid rgba(198,208,218,.16);border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),linear-gradient(135deg,rgba(45,143,139,.14),rgba(255,138,61,.05));box-shadow:0 24px 60px rgba(0,0,0,.28)}.demo-input{display:grid;gap:10px;margin:24px 0}.demo-input input{width:100%;padding:16px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(6,12,19,.72);color:var(--text);font:inherit}.demo-results{display:grid;gap:14px;margin-top:24px}.demo-job{padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035)}.demo-job strong{display:block;color:var(--text);font-size:1.05rem}.demo-score{color:var(--green);font-weight:700}.demo-note{color:var(--muted);font-size:.95rem}.back-link{display:inline-flex;margin-bottom:24px;color:var(--green);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem}</style>
+</head>
+<body>
+  <main class="demo-wrap">
+    <div class="container demo-shell">
+      <a class="back-link" href="/">← Back to Holtsnider Tech</a>
+      <section class="demo-panel">
+        <p class="section-label">Portfolio Demo</p>
+        <h1 class="section-title">Grepper</h1>
+        <p class="section-text">This page demonstrates the Grepper workflow: paste a Workday careers URL, choose a location, and review ranked job results. The portfolio version shows the user experience while the underlying project focuses on parsing, normalizing, ranking, and explaining job matches.</p>
+        <div class="demo-input">
+          <label for="url">Workday careers URL</label>
+          <input id="url" value="https://cisco.wd5.myworkdayjobs.com/en-US/Cisco_Careers" />
+          <label for="location">Location search</label>
+          <input id="location" value="Boston" />
+          <button class="button button-primary" id="rankBtn" type="button">Rank sample jobs</button>
+        </div>
+        <p class="demo-note">Portfolio demonstration using representative results.</p>
+        <div class="demo-results" id="results"></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const jobs=[['Senior Quality Engineer - Infrastructure','Linux, Python, Kubernetes, customer impact',94],['Systems Test Engineer - Storage Platform','enterprise storage, lab validation, automation',91],['DevOps / SRE Tools Engineer','observability, CI, containers, troubleshooting',86],['Frontend Designer','visual polish, HTML, CSS',51]];
+    document.getElementById('rankBtn').addEventListener('click',()=>{document.getElementById('results').innerHTML=jobs.map(j=>`<article class="demo-job"><strong>${j[0]}</strong><span>${j[1]}</span><p class="demo-score">Match score: ${j[2]}</p></article>`).join('')});
+  </script>
+</body>
+</html>

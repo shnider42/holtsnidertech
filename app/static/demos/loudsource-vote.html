@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LoudSource Voting Demo | Holtsnider Tech</title>
+  <link rel="stylesheet" href="/static/css/site.css" />
+  <link rel="stylesheet" href="/static/css/responsive-fixes.css" />
+  <link rel="stylesheet" href="/static/css/staging-polish.css" />
+  <link rel="stylesheet" href="/static/css/staging-background-boost.css" />
+  <link rel="stylesheet" href="/static/css/proof-capabilities.css" />
+  <style>
+    .demo-wrap{padding:56px 0 120px}.demo-shell{max-width:980px;margin:0 auto}.vote-panel{padding:32px;border:1px solid rgba(198,208,218,.16);border-radius:28px;background:linear-gradient(135deg,rgba(255,138,61,.18),rgba(45,143,139,.14)),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));box-shadow:0 24px 60px rgba(0,0,0,.28)}.vote-grid{display:grid;gap:14px;margin-top:28px}.vote-card{padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04)}.vote-top{display:flex;justify-content:space-between;gap:16px;align-items:center}.vote-card strong{color:var(--text)}.vote-card button{border:0;border-radius:999px;padding:10px 14px;background:linear-gradient(135deg,var(--orange),#ff9e5c);color:#101010;font-weight:800;cursor:pointer}.bar{height:9px;margin-top:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--green),var(--orange));transition:width .2s ease}.back-link{display:inline-flex;margin-bottom:24px;color:var(--green);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem}.demo-note{color:var(--muted);font-size:.95rem}</style>
+</head>
+<body>
+  <main class="demo-wrap">
+    <div class="container demo-shell">
+      <a class="back-link" href="/">← Back to Holtsnider Tech</a>
+      <section class="vote-panel">
+        <p class="section-label">Interactive Daily Flyer Demo</p>
+        <h1 class="section-title">LoudSource Voting Flyer</h1>
+        <p class="section-text">A functional demonstration of how a Daily Flyer page could become participatory: people vote on prompts, songs, themes, fundraiser ideas, events, or community picks.</p>
+        <p class="demo-note">For this portfolio demo, votes are stored only in this browser tab.</p>
+        <div class="vote-grid" id="voteGrid"></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const items=[{name:'Song of the Day',votes:8},{name:'Local History Feature',votes:5},{name:'Community Shoutout',votes:3},{name:'Trivia Challenge',votes:7}];
+    const render=()=>{const max=Math.max(...items.map(i=>i.votes));document.getElementById('voteGrid').innerHTML=items.map((i,idx)=>`<article class="vote-card"><div class="vote-top"><strong>${i.name}</strong><button data-idx="${idx}">Vote</button></div><div class="bar"><span style="width:${Math.round((i.votes/max)*100)}%"></span></div><p class="demo-note">${i.votes} votes</p></article>`).join('');document.querySelectorAll('button[data-idx]').forEach(b=>b.addEventListener('click',()=>{items[Number(b.dataset.idx)].votes++;render()}))};render();
+  </script>
+</body>
+</html>
