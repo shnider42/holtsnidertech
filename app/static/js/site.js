@@ -1,4 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.querySelector(".site-nav");
+    const portfolio = document.getElementById("portfolio");
+
+    const ensureStyle = () => {
+        if (document.querySelector('link[href$="proof-capabilities.css"]')) {
+            return;
+        }
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "/static/css/proof-capabilities.css";
+        document.head.appendChild(link);
+    };
+
+    const addNavLink = (href, label, afterHref) => {
+        if (!nav || nav.querySelector(`a[href="${href}"]`)) {
+            return;
+        }
+
+        const link = document.createElement("a");
+        link.href = href;
+        link.textContent = label;
+
+        const anchor = nav.querySelector(`a[href="${afterHref}"]`);
+        if (anchor) {
+            anchor.insertAdjacentElement("afterend", link);
+            return;
+        }
+
+        nav.appendChild(link);
+    };
+
+    const showReveals = (rootNode) => {
+        rootNode.querySelectorAll(".reveal").forEach((item) => item.classList.add("is-visible"));
+    };
+
+    const injectProofCapabilities = async () => {
+        if (!portfolio || document.getElementById("proof")) {
+            return;
+        }
+
+        ensureStyle();
+        addNavLink("#proof", "Proof", "#portfolio");
+        addNavLink("#capabilities", "Depth", "#proof");
+
+        try {
+            const response = await fetch("/static/html/proof-capabilities.html");
+            if (!response.ok) {
+                return;
+            }
+
+            const html = await response.text();
+            const wrapper = document.createElement("div");
+            wrapper.className = "proof-capabilities-injection";
+            wrapper.innerHTML = html;
+            portfolio.insertAdjacentElement("afterend", wrapper);
+            showReveals(wrapper);
+        } catch (error) {
+            console.warn("Unable to load proof/capabilities section", error);
+        }
+    };
+
+    injectProofCapabilities();
+
     const revealItems = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
