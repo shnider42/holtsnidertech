@@ -19,14 +19,14 @@
       <section class="vote-panel">
         <p class="section-label">Interactive Daily Flyer Demo</p>
         <h1 class="section-title">LoudSource Voting Flyer</h1>
-        <p class="section-text">A dummy but functional demonstration of how a Daily Flyer page could become participatory: people vote on prompts, songs, themes, fundraiser ideas, events, or community picks.</p>
-        <p class="demo-note">Votes are stored only in this browser tab for demo purposes.</p>
+        <p class="section-text">A functional demonstration of how a Daily Flyer page could become participatory: people vote on prompts, songs, themes, fundraiser ideas, events, or community picks.</p>
+        <p class="demo-note">For this portfolio demo, votes are stored only in this browser tab.</p>
         <div class="vote-grid" id="voteGrid"></div>
       </section>
     </div>
   </main>
   <script>
-    const items=[{name:'Song of the Day',votes:8},{name:'Local History Throwback',votes:5},{name:'Community Shoutout',votes:3},{name:'Ridiculous Trivia Prompt',votes:7}];
+    const items=[{name:'Song of the Day',votes:8},{name:'Local History Feature',votes:5},{name:'Community Shoutout',votes:3},{name:'Trivia Challenge',votes:7}];
     const render=()=>{const max=Math.max(...items.map(i=>i.votes));document.getElementById('voteGrid').innerHTML=items.map((i,idx)=>`<article class="vote-card"><div class="vote-top"><strong>${i.name}</strong><button data-idx="${idx}">Vote</button></div><div class="bar"><span style="width:${Math.round((i.votes/max)*100)}%"></span></div><p class="demo-note">${i.votes} votes</p></article>`).join('');document.querySelectorAll('button[data-idx]').forEach(b=>b.addEventListener('click',()=>{items[Number(b.dataset.idx)].votes++;render()}))};render();
   </script>
 </body>
