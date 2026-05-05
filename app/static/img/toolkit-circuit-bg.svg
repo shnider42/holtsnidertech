@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" fill="none">
+  <defs>
+    <linearGradient id="teal" x1="180" y1="1040" x2="980" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2D8F8B"/>
+      <stop offset="0.55" stop-color="#35A6A0"/>
+      <stop offset="1" stop-color="#7DFF9B"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="280" y1="180" x2="780" y2="980" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#BFCAD3"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="170" y1="760" x2="1000" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8A3D"/>
+      <stop offset="1" stop-color="#FF9E5C"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.176 0 0 0 0 0.561 0 0 0 0 0.545 0 0 0 0.55 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g opacity="0.92" filter="url(#glow)">
+    <!-- outer circuit cradle -->
+    <path d="M188 610V842L600 1086L1012 842V610" stroke="url(#teal)" stroke-width="50" stroke-linecap="square" stroke-linejoin="round" opacity="0.78"/>
+    <path d="M290 685L450 805V925L598 1012L746 925V805L910 685" stroke="url(#teal)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+    <path d="M246 792L415 910V990M954 792L785 910V990" stroke="url(#teal)" stroke-width="16" stroke-linecap="round" opacity="0.84"/>
+
+    <!-- chip badge -->
+    <path d="M500 805L600 746L700 805V922L600 981L500 922V805Z" stroke="url(#teal)" stroke-width="22" stroke-linejoin="round" fill="#0F1720" fill-opacity="0.38"/>
+    <rect x="558" y="842" width="84" height="84" rx="8" fill="url(#teal)" opacity="0.9"/>
+    <path d="M548 852H520M548 884H520M548 916H520M652 852H680M652 884H680M652 916H680M568 832V804M600 832V804M632 832V804M568 966V994M600 966V994M632 966V994" stroke="url(#teal)" stroke-width="10" stroke-linecap="round" opacity="0.92"/>
+
+    <!-- circuit nodes -->
+    <path d="M382 756L270 678V604M818 756L930 678V604M430 820L255 728M770 820L945 728" stroke="url(#teal)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+    <circle cx="270" cy="604" r="24" stroke="url(#teal)" stroke-width="14"/>
+    <circle cx="930" cy="604" r="24" stroke="url(#teal)" stroke-width="14"/>
+    <circle cx="255" cy="728" r="26" stroke="url(#orange)" stroke-width="14"/>
+    <circle cx="945" cy="728" r="26" stroke="url(#orange)" stroke-width="14"/>
+
+    <!-- wrench silhouette -->
+    <path d="M334 192C405 215 444 286 423 356L392 462L462 820L410 834L338 492C287 462 260 406 272 348C282 300 314 262 356 244L377 330L428 348L470 309L449 223C410 192 372 181 334 192Z" fill="url(#steel)" opacity="0.85"/>
+    <path d="M384 484L424 808" stroke="#060C13" stroke-width="16" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- screwdriver -->
+    <path d="M575 190L600 136L625 190V380H575V190Z" fill="url(#teal)" opacity="0.9"/>
+    <path d="M552 410H648L664 494H536L552 410Z" fill="url(#teal)" opacity="0.9"/>
+    <path d="M550 500H650V820L600 852L550 820V500Z" fill="url(#teal)" opacity="0.9"/>
+    <path d="M575 540V742M600 540V742M625 540V742" stroke="#060C13" stroke-width="12" stroke-linecap="round" opacity="0.78"/>
+
+    <!-- USB cable/tool -->
+    <path d="M690 302H790V410H690V302Z" fill="url(#steel)" opacity="0.86"/>
+    <path d="M672 432H808V568C808 612 775 648 734 654L744 820L700 832L686 654C648 644 622 609 622 568V432H672Z" fill="url(#steel)" opacity="0.86"/>
+    <rect x="709" y="338" width="24" height="24" rx="4" fill="#060C13" opacity="0.9"/>
+    <rect x="762" y="338" width="24" height="24" rx="4" fill="#060C13" opacity="0.9"/>
+    <path d="M736 584V494M736 494L712 526M736 494L760 526M712 584C712 550 692 548 692 548M760 584C760 550 780 548 780 548M712 584V604M760 584V604" stroke="#060C13" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.84"/>
+
+    <!-- soldering iron -->
+    <path d="M950 175L926 348" stroke="url(#teal)" stroke-width="20" stroke-linecap="round" opacity="0.9"/>
+    <path d="M888 356L942 364L900 688L844 678L888 356Z" fill="url(#teal)" opacity="0.88"/>
+    <path d="M852 446L948 462" stroke="url(#teal)" stroke-width="24" stroke-linecap="round" opacity="0.88"/>
+    <path d="M875 510L918 518M868 552L911 560M861 594L904 602M854 636L897 644" stroke="#060C13" stroke-width="9" stroke-linecap="round" opacity="0.68"/>
+  </g>
+</svg>
