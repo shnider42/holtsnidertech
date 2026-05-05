@@ -13,55 +13,40 @@ document.addEventListener("DOMContentLoaded", () => {
         document.head.appendChild(link);
     };
 
-    const addNavLink = (href, label, afterHref) => {
-        if (!nav || nav.querySelector(`a[href="${href}"]`)) {
-            return;
-        }
-
-        const link = document.createElement("a");
-        link.href = href;
-        link.textContent = label;
-
-        const anchor = nav.querySelector(`a[href="${afterHref}"]`);
-        if (anchor) {
-            anchor.insertAdjacentElement("afterend", link);
-            return;
-        }
-
-        nav.appendChild(link);
-    };
-
     const showReveals = (rootNode) => {
         rootNode.querySelectorAll(".reveal").forEach((item) => item.classList.add("is-visible"));
     };
 
-    const injectProofCapabilities = async () => {
-        if (!portfolio || document.getElementById("proof")) {
+    const refactorPortfolio = async () => {
+        if (!portfolio) {
             return;
         }
 
         ensureStyle();
-        addNavLink("#proof", "Proof", "#portfolio");
-        addNavLink("#capabilities", "Depth", "#proof");
+
+        const proofLinks = nav ? nav.querySelectorAll('a[href="#proof"], a[href="#capabilities"]') : [];
+        proofLinks.forEach((link) => link.remove());
+
+        const grid = portfolio.querySelector(".portfolio-grid");
+        if (!grid) {
+            return;
+        }
 
         try {
-            const response = await fetch("/static/html/proof-capabilities.html");
+            const response = await fetch("/static/html/portfolio-cards.html");
             if (!response.ok) {
                 return;
             }
 
             const html = await response.text();
-            const wrapper = document.createElement("div");
-            wrapper.className = "proof-capabilities-injection";
-            wrapper.innerHTML = html;
-            portfolio.insertAdjacentElement("afterend", wrapper);
-            showReveals(wrapper);
+            grid.innerHTML = html;
+            showReveals(grid);
         } catch (error) {
-            console.warn("Unable to load proof/capabilities section", error);
+            console.warn("Unable to load portfolio cards", error);
         }
     };
 
-    injectProofCapabilities();
+    refactorPortfolio();
 
     const revealItems = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
