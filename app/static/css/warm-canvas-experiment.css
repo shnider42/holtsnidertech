@@ -1,0 +1,326 @@
+/*
+ * Warm canvas color experiment.
+ * Loaded after the existing staging polish/background layers so the current site
+ * structure stays intact and this can be removed by deleting one stylesheet link.
+ */
+
+:root {
+    --bg: #f7f4ec;
+    --bg-deep: #e6dac8;
+    --bg-soft: #fffaf1;
+
+    --panel: rgba(255, 250, 241, 0.68);
+    --panel-strong: rgba(255, 250, 241, 0.88);
+
+    --text: #271e15;
+    --muted: #54453b;
+    --muted-strong: #3b3027;
+
+    --line: rgba(39, 30, 21, 0.15);
+    --line-bright: rgba(39, 30, 21, 0.20);
+
+    /* Light-mode versions of the existing accent family. */
+    --orange: #b65f2e;
+    --teal: #1f6f6b;
+    --green: #4c7f4e;
+
+    --shadow-lg: 0 26px 66px rgba(39, 30, 21, 0.16);
+}
+
+body {
+    background:
+        radial-gradient(circle at 18% 8%, rgba(31, 111, 107, 0.16), transparent 30%),
+        radial-gradient(circle at 82% 10%, rgba(182, 95, 46, 0.13), transparent 25%),
+        radial-gradient(circle at 52% 36%, rgba(76, 127, 78, 0.10), transparent 32%),
+        linear-gradient(180deg, #f7f4ec 0%, #fbf7ef 42%, #eadfce 100%);
+    color: var(--text);
+}
+
+/*
+ * The existing background artwork layer is intentionally preserved, but the
+ * desktop positioning is changed from top-right to centered and softened into
+ * a watermark so the rectangular artwork edges do not dominate the light mode.
+ */
+body::before {
+    background-position: center top, center top, 50% 58px;
+    background-size: cover, cover, min(82vw, 940px) auto;
+    background-repeat: no-repeat;
+    opacity: 0.13;
+    filter: sepia(0.62) saturate(0.72) contrast(0.82) brightness(1.05);
+    mix-blend-mode: multiply;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 28%, #000 0%, rgba(0, 0, 0, 0.86) 38%, transparent 74%);
+    mask-image: radial-gradient(ellipse at 50% 28%, #000 0%, rgba(0, 0, 0, 0.86) 38%, transparent 74%);
+}
+
+body::after {
+    background:
+        linear-gradient(180deg, rgba(247, 244, 236, 0.08), rgba(247, 244, 236, 0.58) 42%, rgba(247, 244, 236, 0.86)),
+        radial-gradient(circle at 50% 0%, transparent 0, rgba(247, 244, 236, 0.18) 54%, rgba(230, 218, 200, 0.66) 100%);
+}
+
+.site-header {
+    background: linear-gradient(180deg, rgba(247, 244, 236, 0.96), rgba(247, 244, 236, 0.64) 78%, transparent);
+}
+
+.header-bar {
+    border-color: rgba(39, 30, 21, 0.14);
+    background: rgba(255, 250, 241, 0.82);
+    box-shadow:
+        0 18px 44px rgba(39, 30, 21, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.66);
+}
+
+.brand-name,
+.hero-title,
+.section-title,
+.contact-title,
+.service-card h3,
+.approach-block h3,
+.portfolio-card h3,
+.mini-card strong,
+.contact-card strong {
+    color: var(--text);
+}
+
+.brand-meta,
+.site-nav a,
+.hero-note,
+.contact-note,
+.service-card p:last-child,
+.approach-block p,
+.clean-list li,
+.portfolio-card p,
+.mini-card span,
+.contact-card span {
+    color: var(--muted);
+}
+
+.hero-title span,
+.hero-summary,
+.hero-panel-text,
+.hero-metric-value,
+.section-text,
+.about-right p,
+.contact-text,
+.project-tags span {
+    color: var(--muted-strong);
+}
+
+.eyebrow,
+.section-label,
+.hero-panel-kicker,
+.hero-metric-label,
+.project-link {
+    color: var(--teal);
+}
+
+.card-number {
+    color: var(--orange);
+}
+
+.header-cta,
+.button-secondary,
+.project-tags span {
+    border-color: rgba(39, 30, 21, 0.15);
+    background: rgba(255, 250, 241, 0.58);
+    color: var(--text);
+}
+
+.header-cta:hover,
+.button-secondary:hover,
+.contact-card:hover {
+    border-color: rgba(31, 111, 107, 0.28);
+    background: rgba(255, 250, 241, 0.86);
+}
+
+.site-nav a::after {
+    background: rgba(182, 95, 46, 0.82);
+}
+
+.site-nav a:hover,
+.project-link:hover {
+    color: var(--text);
+}
+
+.button-primary {
+    background: linear-gradient(135deg, #a9552b, #c9783e);
+    color: #fffaf1;
+    box-shadow: 0 14px 30px rgba(169, 85, 43, 0.24);
+}
+
+.button-primary:hover {
+    box-shadow: 0 18px 38px rgba(169, 85, 43, 0.26);
+}
+
+.hero-stage::before {
+    right: 18%;
+    top: 10%;
+    background: radial-gradient(circle, rgba(182, 95, 46, 0.20) 0%, rgba(182, 95, 46, 0.08) 38%, transparent 74%);
+}
+
+.hero-stage::after {
+    border-color: rgba(31, 111, 107, 0.18);
+    box-shadow:
+        0 0 0 24px rgba(31, 111, 107, 0.045),
+        0 0 0 56px rgba(76, 127, 78, 0.028);
+}
+
+.hero-orbit-ring-1 {
+    border-color: rgba(39, 30, 21, 0.12);
+}
+
+.hero-orbit-ring-2 {
+    border-color: rgba(31, 111, 107, 0.18);
+}
+
+.hero-orbit-dot-1 {
+    background: var(--orange);
+    box-shadow: 0 0 22px rgba(182, 95, 46, 0.30);
+}
+
+.hero-orbit-dot-2 {
+    background: var(--green);
+    box-shadow: 0 0 18px rgba(76, 127, 78, 0.28);
+}
+
+.hero-panel,
+.service-card,
+.approach-block,
+.portfolio-card,
+.mini-card,
+.contact-card {
+    border-color: var(--line-bright);
+    background:
+        linear-gradient(180deg, rgba(255, 250, 241, 0.88), rgba(246, 239, 226, 0.70)),
+        linear-gradient(135deg, rgba(31, 111, 107, 0.09), rgba(182, 95, 46, 0.06));
+    box-shadow:
+        0 20px 48px rgba(39, 30, 21, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.hero-panel {
+    background:
+        linear-gradient(180deg, rgba(255, 250, 241, 0.88), rgba(244, 236, 221, 0.74)),
+        radial-gradient(circle at 82% 0%, rgba(182, 95, 46, 0.15), transparent 40%),
+        radial-gradient(circle at 8% 100%, rgba(31, 111, 107, 0.16), transparent 44%);
+}
+
+.hero-panel::before {
+    background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.55), transparent 28%),
+        linear-gradient(180deg, transparent, rgba(39, 30, 21, 0.018));
+}
+
+.hero-panel::after {
+    background:
+        linear-gradient(
+            110deg,
+            transparent 38%,
+            rgba(255, 255, 255, 0.16) 46%,
+            rgba(255, 255, 255, 0.34) 50%,
+            rgba(255, 255, 255, 0.12) 54%,
+            transparent 62%
+        );
+}
+
+.hero-scrub-base {
+    color: rgba(39, 30, 21, 0.17);
+}
+
+.hero-scrub-active {
+    text-shadow:
+        0 0 24px rgba(182, 95, 46, 0.12),
+        0 0 42px rgba(31, 111, 107, 0.08);
+}
+
+.hero-scrub-beam {
+    background: linear-gradient(
+        180deg,
+        rgba(31, 111, 107, 0),
+        rgba(31, 111, 107, 0.92),
+        rgba(182, 95, 46, 0)
+    );
+    box-shadow:
+        0 0 20px rgba(31, 111, 107, 0.28),
+        0 0 46px rgba(182, 95, 46, 0.16),
+        0 0 80px rgba(182, 95, 46, 0.08);
+}
+
+.hero-scrub-glow {
+    background: radial-gradient(circle at center, rgba(182, 95, 46, 0.13), rgba(31, 111, 107, 0.08) 30%, transparent 72%);
+}
+
+.hero-panel-divider {
+    background: linear-gradient(90deg, rgba(39, 30, 21, 0.24), rgba(39, 30, 21, 0.035));
+}
+
+.section-dark {
+    background:
+        linear-gradient(180deg, rgba(255, 250, 241, 0.42), rgba(255, 250, 241, 0.58)),
+        linear-gradient(135deg, rgba(31, 111, 107, 0.08), transparent 44%),
+        linear-gradient(180deg, #e8dccb 0%, #f9f4eb 100%);
+    border-top-color: rgba(39, 30, 21, 0.11);
+    border-bottom-color: rgba(39, 30, 21, 0.11);
+}
+
+.portfolio-card::before {
+    background: radial-gradient(circle at top right, rgba(76, 127, 78, 0.10), transparent 34%);
+}
+
+.portfolio-card:first-child {
+    background:
+        linear-gradient(135deg, rgba(31, 111, 107, 0.15), rgba(255, 250, 241, 0.74) 48%, rgba(182, 95, 46, 0.14)),
+        linear-gradient(180deg, rgba(255, 250, 241, 0.94), rgba(244, 236, 221, 0.68));
+}
+
+.project-tags span {
+    background: rgba(255, 250, 241, 0.62);
+}
+
+.service-card:hover,
+.portfolio-card:hover,
+.approach-block:hover,
+.contact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(31, 111, 107, 0.30);
+    box-shadow:
+        0 24px 56px rgba(39, 30, 21, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.contact-shell {
+    border-color: rgba(39, 30, 21, 0.16);
+    background:
+        linear-gradient(180deg, rgba(255, 250, 241, 0.88), rgba(244, 236, 221, 0.72)),
+        radial-gradient(circle at 92% 10%, rgba(182, 95, 46, 0.12), transparent 36%);
+    box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 1180px) {
+    body::before {
+        background-position: center top, center top, 50% 78px;
+        background-size: cover, cover, min(98vw, 760px) auto;
+        opacity: 0.11;
+    }
+}
+
+@media (max-width: 720px) {
+    body::before {
+        background-position: center top, center top, 50% 126px;
+        background-size: cover, cover, 118vw auto;
+        opacity: 0.09;
+        -webkit-mask-image: radial-gradient(ellipse at 50% 22%, #000 0%, rgba(0, 0, 0, 0.78) 34%, transparent 72%);
+        mask-image: radial-gradient(ellipse at 50% 22%, #000 0%, rgba(0, 0, 0, 0.78) 34%, transparent 72%);
+    }
+
+    .header-bar,
+    .hero-panel,
+    .service-card,
+    .approach-block,
+    .portfolio-card,
+    .mini-card,
+    .contact-card,
+    .contact-shell {
+        background-color: rgba(255, 250, 241, 0.78);
+    }
+}
