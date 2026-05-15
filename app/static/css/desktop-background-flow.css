@@ -1,10 +1,19 @@
 /*
  * Desktop-only background alignment and blending.
  * Loaded after the staging background boost so mobile/tablet behavior remains unchanged.
+ *
+ * The staging boost previously embedded a raster WebP as the final background
+ * layer. On desktop that can read as a rectangular picture. This override
+ * restores the transparent SVG artwork and fades it into the page canvas.
  */
 
 @media (min-width: 961px) {
     body::before {
+        background:
+            linear-gradient(90deg, rgba(6, 12, 19, 0.72) 0%, rgba(6, 12, 19, 0.24) 44%, rgba(6, 12, 19, 0.62) 100%),
+            radial-gradient(circle at 70% 34%, rgba(45, 143, 139, 0.30), transparent 34%),
+            url("../img/toolkit-circuit-bg.svg");
+        background-repeat: no-repeat;
         background-position:
             center top,
             center top,
@@ -18,15 +27,15 @@
         -webkit-mask-image: radial-gradient(
             ellipse at 50% 30%,
             #000 0%,
-            #000 44%,
-            rgba(0, 0, 0, 0.72) 61%,
+            #000 42%,
+            rgba(0, 0, 0, 0.66) 60%,
             transparent 84%
         );
         mask-image: radial-gradient(
             ellipse at 50% 30%,
             #000 0%,
-            #000 44%,
-            rgba(0, 0, 0, 0.72) 61%,
+            #000 42%,
+            rgba(0, 0, 0, 0.66) 60%,
             transparent 84%
         );
     }
