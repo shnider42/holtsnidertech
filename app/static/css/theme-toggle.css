@@ -1,3 +1,11 @@
+.header-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    white-space: nowrap;
+}
+
 .theme-toggle {
     display: inline-flex;
     align-items: center;
@@ -76,6 +84,14 @@ html[data-theme="light"] .theme-toggle-track {
 
 html[data-theme="light"] .theme-toggle-thumb {
     transform: translateX(20px);
+}
+
+@media (max-width: 960px) {
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
 }
 
 @media (max-width: 720px) {
