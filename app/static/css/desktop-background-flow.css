@@ -13,22 +13,30 @@
             cover,
             cover,
             clamp(520px, 48vw, 680px) auto;
-        opacity: 0.56;
-        filter: saturate(1.02) brightness(0.96) contrast(1.02);
-        -webkit-mask-image: radial-gradient(
-            ellipse at 50% 30%,
-            #000 0%,
-            #000 44%,
-            rgba(0, 0, 0, 0.72) 61%,
-            transparent 84%
-        );
-        mask-image: radial-gradient(
-            ellipse at 50% 30%,
-            #000 0%,
-            #000 44%,
-            rgba(0, 0, 0, 0.72) 61%,
-            transparent 84%
-        );
+        opacity: 0.52;
+        filter: saturate(1.02) brightness(0.96) contrast(0.98);
+        -webkit-mask-image:
+            linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%),
+            radial-gradient(
+                ellipse at 50% 30%,
+                #000 0%,
+                rgba(0, 0, 0, 0.92) 30%,
+                rgba(0, 0, 0, 0.58) 52%,
+                rgba(0, 0, 0, 0.20) 68%,
+                transparent 82%
+            );
+        mask-image:
+            linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%),
+            radial-gradient(
+                ellipse at 50% 30%,
+                #000 0%,
+                rgba(0, 0, 0, 0.92) 30%,
+                rgba(0, 0, 0, 0.58) 52%,
+                rgba(0, 0, 0, 0.20) 68%,
+                transparent 82%
+            );
+        -webkit-mask-composite: source-in;
+        mask-composite: intersect;
     }
 
     body::after {
