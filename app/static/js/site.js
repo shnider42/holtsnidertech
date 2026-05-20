@@ -1,6 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
     const nav = document.querySelector(".site-nav");
     const portfolio = document.getElementById("portfolio");
+    const root = document.documentElement;
+    const themeToggle = document.querySelector("[data-theme-toggle]");
+    const themeToggleLabel = document.querySelector("[data-theme-toggle-label]");
+    const lightThemeStylesheet = document.getElementById("light-theme-stylesheet");
+
+    const applyTheme = (theme) => {
+        const isLight = theme === "light";
+
+        root.dataset.theme = isLight ? "light" : "dark";
+
+        if (lightThemeStylesheet) {
+            lightThemeStylesheet.disabled = !isLight;
+        }
+
+        if (themeToggle) {
+            themeToggle.setAttribute("aria-pressed", String(isLight));
+            themeToggle.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+        }
+
+        if (themeToggleLabel) {
+            themeToggleLabel.textContent = isLight ? "Light mode" : "Dark mode";
+        }
+    };
+
+    let savedTheme = "dark";
+
+    try {
+        savedTheme = window.localStorage.getItem("holtsnider-theme") || "dark";
+    } catch (error) {
+        savedTheme = "dark";
+    }
+
+    applyTheme(savedTheme === "light" ? "light" : "dark");
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+            applyTheme(nextTheme);
+
+            try {
+                window.localStorage.setItem("holtsnider-theme", nextTheme);
+            } catch (error) {
+                // Keep the visible toggle working even if storage is unavailable.
+            }
+        });
+    }
 
     const ensureStyle = () => {
         if (document.querySelector('link[href$="proof-capabilities.css"]')) {
@@ -50,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const revealItems = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const root = document.documentElement;
     const heroScrub = document.querySelector(".hero-scrub");
 
     if (prefersReducedMotion) {
