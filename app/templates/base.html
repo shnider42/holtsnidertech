@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +13,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/staging-polish.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/staging-background-boost.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop-background-flow.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/warm-canvas-experiment.css') }}" />
+    <link id="light-theme-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/warm-canvas-experiment.css') }}" disabled />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-toggle.css') }}" />
+    <script>
+        (() => {
+            try {
+                if (window.localStorage.getItem("holtsnider-theme") === "light") {
+                    document.documentElement.dataset.theme = "light";
+                    const lightTheme = document.getElementById("light-theme-stylesheet");
+                    if (lightTheme) {
+                        lightTheme.disabled = false;
+                    }
+                }
+            } catch (error) {
+                document.documentElement.dataset.theme = "dark";
+            }
+        })();
+    </script>
 </head>
 <body>
     {% block content %}{% endblock %}
