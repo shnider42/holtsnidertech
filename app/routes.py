@@ -12,6 +12,14 @@ def home():
     )
 
 
+@main.route("/style-lab")
+def style_lab():
+    return render_template(
+        "style_lab.html",
+        business_name="Holtsnider Tech",
+    )
+
+
 @main.route("/healthz")
 def healthz():
     return {"status": "ok", "service": "holtsnidertech"}
@@ -30,6 +38,10 @@ def sitemap_xml():
   <url>
     <loc>https://holtsnidertech.com/</loc>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://holtsnidertech.com/style-lab</loc>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://holtsnidertech.com/static/demos/grepper.html</loc>
