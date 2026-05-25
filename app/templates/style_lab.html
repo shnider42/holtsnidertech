@@ -95,7 +95,7 @@
     }
 
     .style-card {
-        min-height: 360px;
+        min-height: 390px;
         padding: 21px;
         border-radius: 26px;
         border: 1px solid rgba(255,255,255,0.09);
@@ -164,6 +164,23 @@
         line-height: 1.48;
     }
 
+    .style-card-link {
+        display: inline-flex;
+        margin-top: 18px;
+        min-height: 38px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 13px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #101010;
+        background: var(--orange);
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.10em;
+        text-transform: uppercase;
+    }
+
     .style-lab-plan {
         display: grid;
         grid-template-columns: 0.35fr 0.65fr;
@@ -222,62 +239,33 @@
         <div class="container">
             <section class="style-lab-hero">
                 <p class="style-lab-kicker">feat/ht2 experiment</p>
-                <h1 class="style-lab-title">Five ways to make Holtsnider Tech feel less AI and more like Chris.</h1>
+                <h1 class="style-lab-title">Five actual homepage-style directions for Holtsnider Tech.</h1>
                 <p class="style-lab-summary">
-                    This is a comparison board, not the final homepage. It keeps the current site’s best pieces — background, transparency, animation-friendly sections, services, portfolio, Daily Flyer, about, contact, and the Start concept — while testing different voices and page rhythms.
+                    Each card below now opens a real preview page with its own layout rhythm, color treatment, voice, services framing, proof section, and contact section. These are still experiments, but they are no longer just descriptions of possible styles.
                 </p>
             </section>
 
             <section class="style-grid" aria-label="Holtsnider Tech style directions">
-                <article class="style-card">
-                    <div class="number">Style 01</div>
-                    <h2>Field Notes / Chris Explains It</h2>
-                    <p><strong>Feel:</strong> first-person, plainspoken, visibly human.</p>
-                    <p>Less agency brochure, more working notebook: what I build, what I notice, what I can help fix, and where the project is going next.</p>
-                    <blockquote>This site is a workbench, not a brochure.</blockquote>
-                </article>
-
-                <article class="style-card">
-                    <div class="number">Style 02</div>
-                    <h2>Daily Flyer Inspired</h2>
-                    <p><strong>Feel:</strong> structured, card-based, themed, and alive.</p>
-                    <p>Borrow the best Daily Flyer lesson: small, purposeful cards can make a project feel approachable, useful, and repeatable.</p>
-                    <blockquote>The pattern matters more than one finished page.</blockquote>
-                </article>
-
-                <article class="style-card">
-                    <div class="number">Style 03</div>
-                    <h2>Technical Workshop</h2>
-                    <p><strong>Feel:</strong> diagnostic, hands-on, builder energy.</p>
-                    <p>Lean into troubleshooting, testing, reliability, small tools, cleanup passes, and practical engineering judgment.</p>
-                    <blockquote>Bring the weird problem. I’ll help take it apart.</blockquote>
-                </article>
-
-                <article class="style-card">
-                    <div class="number">Style 04</div>
-                    <h2>Small Business Tech Translator</h2>
-                    <p><strong>Feel:</strong> warm, plain-English, client-friendly.</p>
-                    <p>Explain services through recognizable problems: websites, spreadsheets, inventory, confusing software, repeated manual work, and unclear next steps.</p>
-                    <blockquote>You can explain the problem badly. That is allowed.</blockquote>
-                </article>
-
-                <article class="style-card">
-                    <div class="number">Style 05</div>
-                    <h2>Boston Practical / Local Operator</h2>
-                    <p><strong>Feel:</strong> grounded, restrained, local, competent.</p>
-                    <p>Less startup gloss, more accountable and direct; a subtle Boston/New England feel without forcing skyline clichés.</p>
-                    <blockquote>No theater. Just a clearer way through the problem.</blockquote>
-                </article>
+                {% for slug, item in variants.items() %}
+                    <article class="style-card">
+                        <div class="number">Style {{ loop.index }}</div>
+                        <h2>{{ item.name }}</h2>
+                        <p><strong>Hero:</strong> {{ item.hero_title }}</p>
+                        <p>{{ item.hero_body }}</p>
+                        <blockquote>{{ item.proof_items[0] }}</blockquote>
+                        <a class="style-card-link" href="{{ url_for('main.style_lab_variant', slug=slug) }}">Open style</a>
+                    </article>
+                {% endfor %}
             </section>
 
             <section class="style-lab-plan">
                 <div>
                     <span>Next step</span>
-                    <h2>Pick the strongest one or combine two.</h2>
+                    <h2>Compare the actual previews.</h2>
                 </div>
                 <div>
                     <p>
-                        My starting recommendation is a blend of Field Notes, Technical Workshop, and Daily Flyer Inspired: human voice, concrete troubleshooting credibility, and a reusable card structure for projects and services.
+                        My starting recommendation is still a blend of Field Notes, Technical Workshop, and Daily Flyer Inspired: human voice, concrete troubleshooting credibility, and a reusable card structure for projects and services.
                     </p>
                 </div>
             </section>
