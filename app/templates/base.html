@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop-background-flow.css') }}" />
     <link id="light-theme-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/warm-canvas-experiment.css') }}" disabled />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-toggle.css') }}" />
+    {% block extra_head %}{% endblock %}
     <script>
         (() => {
             try {
