@@ -1,0 +1,118 @@
+diff --git a/app/templates/base.html b/app/templates/base.html
+--- a/app/templates/base.html
++++ b/app/templates/base.html
+@@ -18,8 +18,6 @@
+     <link id="light-theme-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='css/warm-canvas-experiment.css') }}" disabled />
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-toggle.css') }}" />
+     {% block extra_head %}{% endblock %}
+-    <link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-raster-logo.css') }}" />
+-    <link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-background-layer.css') }}" />
+     <script>
+         (() => {
+             try {
+diff --git a/app/templates/style_variants/boston_practical.html b/app/templates/style_variants/boston_practical.html
+--- a/app/templates/style_variants/boston_practical.html
++++ b/app/templates/style_variants/boston_practical.html
+@@ -1,5 +1,6 @@
+ {% extends "base.html" %}
+ {% block title %}Boston Practical Style | {{ business_name }}{% endblock %}
+ {% block meta_description %}A tighter Boston Practical homepage direction for Holtsnider Tech with a diagnostic problem selector, specific proof blocks, and a direct contact path.{% endblock %}
+ {% block extra_head %}
+@@
+ </style>
++<link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-staging-background.css') }}" />
+ {% endblock %}
+diff --git a/app/static/css/boston-practical-staging-background.css b/app/static/css/boston-practical-staging-background.css
+new file mode 100644
+--- /dev/null
++++ b/app/static/css/boston-practical-staging-background.css
+@@ -0,0 +1,75 @@
++/*
++ * Boston Practical + staging background drop-in
++ *
++ * Purpose:
++ * - Keep Boston Practical as the page style: typography, grids, cards, diagnostic selector.
++ * - Let the existing staging background system be the visual source of truth.
++ * - Do NOT recreate the logo, use a new raster image, or use Boston-specific pseudo-element backgrounds.
++ *
++ * Requires base.html to preserve this load order:
++ * 1. site.css
++ * 2. responsive-fixes.css
++ * 3. staging-polish.css
++ * 4. staging-background-boost.css
++ * 5. desktop-background-flow.css
++ * 6. warm-canvas-experiment.css disabled by default
++ * 7. theme-toggle.css
++ *
++ * Load this file AFTER the inline Boston Practical <style> block.
++ */
++
++.boston {
++    position: relative !important;
++    isolation: auto !important;
++    overflow-x: clip !important;
++    min-height: 100vh;
++    background: transparent !important;
++    color: #f4f1ea;
++}
++
++/* Disable the custom Boston background experiments so the staging background shows through. */
++.boston::before,
++.boston::after,
++body:has(.boston)::before,
++body:has(.boston)::after {
++    content: none !important;
++    display: none !important;
++    background: none !important;
++    opacity: 0 !important;
++    filter: none !important;
++}
++
++/*
++ * Keep Boston Practical readable over the staging artwork.
++ * These are content surfaces only, not replacement background artwork.
++ */
++.boston .bos-block,
++.boston .bos-step {
++    background: rgba(8, 16, 24, 0.34) !important;
++}
++
++.boston .bos-diagnostic {
++    background: rgba(8, 16, 24, 0.24) !important;
++}
++
++.boston .bos-picker {
++    background: rgba(8, 16, 24, 0.62) !important;
++    backdrop-filter: blur(6px);
++}
++
++.boston .bos-panels {
++    background: rgba(255, 255, 255, 0.024) !important;
++}
++
++.boston .bos-mini,
++.boston .bos-proof-card {
++    background: rgba(8, 16, 24, 0.46) !important;
++}
++
++.boston .bos-proof-card:hover {
++    background: rgba(255, 255, 255, 0.06) !important;
++}
++
++@media (max-width: 850px) {
++    .boston {
++        overflow-x: hidden !important;
++    }
++
++    .boston .bos-picker,
++    .boston .bos-mini,
++    .boston .bos-proof-card,
++    .boston .bos-block,
++    .boston .bos-step {
++        background: rgba(8, 16, 24, 0.58) !important;
++    }
++
++    .boston .bos-diagnostic {
++        background: rgba(8, 16, 24, 0.32) !important;
++    }
++}

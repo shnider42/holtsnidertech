@@ -1,0 +1,81 @@
+/*
+ * Boston Practical + staging background drop-in
+ *
+ * Keep Boston Practical as the page style, but let the existing staging
+ * background system remain the visual source of truth.
+ *
+ * This file should be loaded AFTER the inline <style> block in
+ * app/templates/style_variants/boston_practical.html.
+ */
+
+.boston {
+    position: relative !important;
+    isolation: auto !important;
+    overflow-x: clip !important;
+    min-height: 100vh;
+    background: transparent !important;
+    color: #f4f1ea;
+}
+
+/*
+ * Disable Boston-specific background experiments.
+ * This allows the staging background from site.css + staging-polish.css +
+ * staging-background-boost.css + desktop-background-flow.css to show through.
+ */
+.boston::before,
+.boston::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    opacity: 0 !important;
+    filter: none !important;
+}
+
+/*
+ * These are readability surfaces only. They do not create or replace
+ * the site background artwork.
+ */
+.boston .bos-block,
+.boston .bos-step {
+    background: rgba(8, 16, 24, 0.34) !important;
+}
+
+.boston .bos-diagnostic {
+    background: rgba(8, 16, 24, 0.24) !important;
+}
+
+.boston .bos-picker {
+    background: rgba(8, 16, 24, 0.62) !important;
+    backdrop-filter: blur(6px);
+}
+
+.boston .bos-panels {
+    background: rgba(255, 255, 255, 0.024) !important;
+}
+
+.boston .bos-mini,
+.boston .bos-proof-card {
+    background: rgba(8, 16, 24, 0.46) !important;
+}
+
+.boston .bos-proof-card:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+@media (max-width: 850px) {
+    .boston {
+        overflow-x: hidden !important;
+    }
+
+    .boston .bos-picker,
+    .boston .bos-mini,
+    .boston .bos-proof-card,
+    .boston .bos-block,
+    .boston .bos-step {
+        background: rgba(8, 16, 24, 0.58) !important;
+    }
+
+    .boston .bos-diagnostic {
+        background: rgba(8, 16, 24, 0.32) !important;
+    }
+}

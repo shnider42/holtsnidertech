@@ -1,65 +1,80 @@
-# Holtsnider Tech Flask Starter
+# Boston Practical + staging background local test v2
 
-A modular Flask starter for holtsnidertech.com that runs locally first and is structured so it can deploy cleanly to Render later.
+This replaces the broken patch with a safer PowerShell-based drop-in.
 
-## Project structure
+## Goal
 
-```text
-holtsnidertech_scaffold/
-├── app/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── routes/
-│   │   └── main.py
-│   ├── static/
-│   │   └── css/
-│   │       └── site.css
-│   └── templates/
-│       ├── base.html
-│       └── home.html
-├── run.py
-├── requirements.txt
-└── render.yaml
-```
+Keep **Boston Practical** as the page style while letting the current staging background treatment show through.
 
-## Local setup
+This means:
 
-### 1. Create and activate a virtual environment
+- no separate Boston Practical SVG background
+- no embedded raster data URL
+- no recreated logo
+- staging remains the visual source of truth
+- Boston Practical remains the typography/layout/card/diagnostic-selector style
 
-Windows PowerShell:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-### 2. Install dependencies
-
-```powershell
-pip install -r requirements.txt
-```
-
-### 3. Run locally
-
-```powershell
-python run.py
-```
-
-Then open:
+## Files
 
 ```text
-http://127.0.0.1:5000
+app/static/css/boston-practical-staging-background.css
+scripts/apply-boston-practical-staging-background.ps1
 ```
 
-## Future growth ideas
+## How to test locally on Windows PowerShell
 
-- Add a real contact form with Flask-WTF or an email service
-- Break out separate pages for services, about, and case studies
-- Add Jinja partials/macros for reusable components
-- Add environment-specific config classes
-- Add tests with pytest
-- Add a blog or notes section later
+From your repo root:
 
-## Render deployment
+```powershell
+# 1. Extract this ZIP into the repo root so the app/ and scripts/ folders line up.
 
-This repo includes a basic `render.yaml` for a web service.
+# 2. Optional dry run:
+powershell -ExecutionPolicy Bypass -File .\scripts\apply-boston-practical-staging-background.ps1 -DryRun
+
+# 3. Apply:
+powershell -ExecutionPolicy Bypass -File .\scripts\apply-boston-practical-staging-background.ps1
+
+# 4. Inspect:
+git diff -- app/templates/base.html app/templates/style_variants/boston_practical.html app/static/css/boston-practical-staging-background.css
+```
+
+Then restart Flask if needed and hard refresh:
+
+```text
+/style-lab/boston-practical
+```
+
+## What the script does
+
+1. Removes these failed experimental links from `base.html`, if present:
+
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-raster-logo.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-background-layer.css') }}" />
+```
+
+2. Adds this line after the inline `</style>` in `app/templates/style_variants/boston_practical.html`:
+
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-staging-background.css') }}" />
+```
+
+3. Leaves the normal staging CSS load order alone:
+
+```html
+site.css
+responsive-fixes.css
+staging-polish.css
+staging-background-boost.css
+desktop-background-flow.css
+warm-canvas-experiment.css
+theme-toggle.css
+```
+
+## If the script does not work
+
+Do the same two edits manually and copy the CSS file into:
+
+```text
+app/static/css/boston-practical-staging-background.css
+```
