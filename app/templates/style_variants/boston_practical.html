@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Boston Practical Style | {{ business_name }}{% endblock %}
-{% block meta_description %}A fuller Boston Practical homepage direction for Holtsnider Tech with a diagnostic problem selector, proof blocks, approach, and contact path.{% endblock %}
+{% block meta_description %}A tighter Boston Practical homepage direction for Holtsnider Tech with a diagnostic problem selector, specific proof blocks, and a direct contact path.{% endblock %}
 {% block extra_head %}
 <style>
     body {
@@ -12,8 +12,8 @@
         min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
         background:
-            radial-gradient(circle at 12% 8%, rgba(255, 138, 61, 0.10), transparent 28%),
-            radial-gradient(circle at 88% 18%, rgba(45, 143, 139, 0.10), transparent 24%),
+            radial-gradient(circle at 10% 7%, rgba(255, 138, 61, 0.10), transparent 26%),
+            radial-gradient(circle at 88% 16%, rgba(45, 143, 139, 0.09), transparent 22%),
             linear-gradient(120deg, #101010 0%, #162026 55%, #221b14 100%);
         color: #f4f1ea;
     }
@@ -33,7 +33,7 @@
         grid-template-columns: 1fr auto;
         gap: 20px;
         align-items: center;
-        padding: 28px 0;
+        padding: 26px 0;
     }
 
     .bos-mark {
@@ -50,41 +50,56 @@
         align-items: center;
     }
 
-    .bos-links a {
+    .bos-links a,
+    .bos-proof-card a {
         color: #cfc7bc;
-        font-size: 0.8rem;
-        font-weight: 800;
+        font-size: 0.78rem;
+        font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.12em;
     }
 
+    .bos a,
+    .bos label {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .bos a:focus-visible,
+    .bos label:focus-visible,
+    .bos-option-input:focus-visible + .bos-option,
+    .bos-btn:focus-visible {
+        outline: 3px solid rgba(255, 138, 61, 0.70);
+        outline-offset: 4px;
+    }
+
     .bos-hero {
-        padding: clamp(64px, 9vw, 108px) 0 clamp(54px, 7vw, 82px);
+        padding: clamp(56px, 8vw, 96px) 0 clamp(46px, 7vw, 74px);
         border-top: 1px solid rgba(255, 255, 255, 0.16);
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .bos-hero-grid {
         display: grid;
-        grid-template-columns: 0.72fr 1.28fr;
+        grid-template-columns: 0.70fr 1.30fr;
         gap: 48px;
         align-items: end;
     }
 
     .bos-side {
-        max-width: 330px;
+        max-width: 300px;
         padding-left: 20px;
         border-left: 5px solid #ff8a3d;
         color: #cfc7bc;
-        font-size: 1.05rem;
-        line-height: 1.55;
+        font-size: 1rem;
+        line-height: 1.48;
     }
 
     .bos-kicker,
     .bos-block span,
     .bos-proof-card span,
     .bos-step span,
-    .bos-path-kicker {
+    .bos-path-kicker,
+    .bos-mini strong {
         color: #ff8a3d;
         font-size: 0.72rem;
         font-weight: 900;
@@ -106,25 +121,25 @@
 
     .bos h1 {
         margin-bottom: 0;
-        font-size: clamp(3.2rem, 8vw, 7.8rem);
+        font-size: clamp(3.05rem, 7.6vw, 7.4rem);
         line-height: 0.86;
         letter-spacing: -0.085em;
         font-weight: 900;
     }
 
     .bos-lede {
-        max-width: 720px;
-        margin: 28px 0 0;
+        max-width: 690px;
+        margin: 26px 0 0;
         color: #d8d1c7;
-        font-size: 1.12rem;
-        line-height: 1.68;
+        font-size: 1.08rem;
+        line-height: 1.58;
     }
 
     .bos-actions {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
-        margin-top: 30px;
+        margin-top: 28px;
     }
 
     .bos-btn {
@@ -136,16 +151,28 @@
         border: 1px solid #ff8a3d;
         background: #ff8a3d;
         color: #101010 !important;
-        font-size: 0.75rem;
+        font-size: 0.74rem;
         font-weight: 900;
         letter-spacing: 0.10em;
         text-transform: uppercase;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    }
+
+    .bos-btn:hover {
+        transform: translateY(-1px);
+        background: #ffa05f;
+        border-color: #ffa05f;
     }
 
     .bos-btn.alt {
         background: transparent;
         color: #f4f1ea !important;
-        border-color: rgba(255, 255, 255, 0.28);
+        border-color: rgba(255, 255, 255, 0.30);
+    }
+
+    .bos-btn.alt:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.48);
     }
 
     .bos-band {
@@ -155,8 +182,8 @@
     }
 
     .bos-block {
-        min-height: 250px;
-        padding: 28px 24px;
+        min-height: 210px;
+        padding: 26px 24px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
 
@@ -165,8 +192,8 @@
     }
 
     .bos-block h2 {
-        margin: 24px 0 14px;
-        font-size: 2.1rem;
+        margin: 22px 0 12px;
+        font-size: 2rem;
         line-height: 0.98;
         letter-spacing: -0.055em;
     }
@@ -177,35 +204,36 @@
     .bos-contact p,
     .bos-section-text,
     .bos-panel p,
-    .bos-list li {
+    .bos-list li,
+    .bos-path-note {
         color: #d8d1c7;
-        line-height: 1.62;
+        line-height: 1.55;
     }
 
     .bos-section {
-        padding: clamp(54px, 7vw, 84px) 0;
+        padding: clamp(44px, 6vw, 72px) 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .bos-section-heading {
         display: grid;
         grid-template-columns: 0.38fr 0.62fr;
-        gap: 40px;
+        gap: 38px;
         align-items: start;
-        margin-bottom: 34px;
+        margin-bottom: 28px;
     }
 
     .bos-section-heading h2 {
         margin: 0;
-        font-size: clamp(2.2rem, 5vw, 5.1rem);
+        font-size: clamp(2.1rem, 4.8vw, 4.8rem);
         line-height: 0.9;
         letter-spacing: -0.075em;
     }
 
     .bos-section-text {
-        max-width: 620px;
+        max-width: 590px;
         margin: 0;
-        font-size: 1.02rem;
+        font-size: 1rem;
     }
 
     .bos-diagnostic {
@@ -215,9 +243,9 @@
     .bos-picker {
         position: relative;
         display: grid;
-        grid-template-columns: 0.44fr 0.56fr;
-        border-top: 1px solid rgba(255, 255, 255, 0.16);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+        grid-template-columns: 0.38fr 0.62fr;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(16, 16, 16, 0.24);
     }
 
     .bos-option-input {
@@ -228,20 +256,21 @@
 
     .bos-options {
         display: grid;
+        align-content: start;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .bos-option {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 16px;
+        gap: 15px;
         align-items: center;
-        min-height: 76px;
-        padding: 18px 22px;
+        min-height: 68px;
+        padding: 16px 20px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
         color: #f4f1ea;
         cursor: pointer;
-        transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+        transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, padding-left 0.16s ease;
     }
 
     .bos-option:last-child {
@@ -250,71 +279,77 @@
 
     .bos-option strong {
         color: inherit;
-        font-size: 0.98rem;
+        font-size: 0.94rem;
         font-weight: 900;
-        line-height: 1.1;
+        line-height: 1.08;
         letter-spacing: -0.02em;
     }
 
     .bos-option em {
         color: #cfc7bc;
         font-style: normal;
-        font-size: 0.78rem;
-        font-weight: 800;
+        font-size: 0.74rem;
+        font-weight: 900;
         letter-spacing: 0.10em;
         text-transform: uppercase;
     }
 
     .bos-option:hover {
-        background: rgba(255, 255, 255, 0.05);
+        padding-left: 24px;
+        background: rgba(255, 255, 255, 0.055);
     }
 
     .bos-panels {
-        min-height: 520px;
-        background: linear-gradient(135deg, rgba(255, 138, 61, 0.08), rgba(255, 255, 255, 0.025));
+        min-height: 430px;
+        background: linear-gradient(135deg, rgba(255, 138, 61, 0.075), rgba(255, 255, 255, 0.022));
     }
 
     .bos-panel {
         display: none;
         min-height: 100%;
-        padding: clamp(28px, 4vw, 46px);
+        padding: clamp(26px, 4vw, 42px);
     }
 
     .bos-panel h3 {
-        max-width: 680px;
-        margin: 18px 0 18px;
-        font-size: clamp(2rem, 4.5vw, 4.6rem);
-        line-height: 0.92;
+        max-width: 640px;
+        margin: 16px 0 16px;
+        font-size: clamp(1.8rem, 4vw, 4.1rem);
+        line-height: 0.94;
         letter-spacing: -0.07em;
     }
 
     .bos-panel p {
-        max-width: 700px;
-        margin-bottom: 22px;
-        font-size: 1rem;
+        max-width: 660px;
+        margin-bottom: 18px;
+        font-size: 0.98rem;
+    }
+
+    .bos-path-note {
+        display: inline-flex;
+        margin-bottom: 18px;
+        padding: 7px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.82rem;
+        font-weight: 800;
     }
 
     .bos-panel-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-top: 24px;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 16px;
+        margin-top: 22px;
     }
 
     .bos-mini {
-        padding: 18px;
+        padding: 17px;
         border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(16, 16, 16, 0.25);
+        background: rgba(16, 16, 16, 0.24);
     }
 
     .bos-mini strong {
         display: block;
-        margin-bottom: 10px;
-        color: #f4f1ea;
-        font-size: 0.88rem;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        margin-bottom: 9px;
     }
 
     .bos-list {
@@ -323,7 +358,7 @@
     }
 
     .bos-list li + li {
-        margin-top: 6px;
+        margin-top: 5px;
     }
 
     #bos-problem-data:checked ~ .bos-options label[for="bos-problem-data"],
@@ -334,6 +369,7 @@
     #bos-problem-shaping:checked ~ .bos-options label[for="bos-problem-shaping"] {
         background: #ff8a3d;
         color: #101010;
+        padding-left: 24px;
     }
 
     #bos-problem-data:checked ~ .bos-options label[for="bos-problem-data"] em,
@@ -362,28 +398,30 @@
     }
 
     .bos-proof-card {
-        min-height: 300px;
-        padding: 24px;
+        min-height: 260px;
+        padding: 22px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
         background: rgba(255, 255, 255, 0.03);
+        transition: background 0.16s ease, transform 0.16s ease;
+    }
+
+    .bos-proof-card:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.052);
     }
 
     .bos-proof-card h3 {
-        margin: 22px 0 14px;
-        font-size: 1.68rem;
+        margin: 20px 0 12px;
+        font-size: 1.55rem;
         line-height: 0.98;
         letter-spacing: -0.055em;
     }
 
     .bos-proof-card a {
         display: inline-flex;
-        margin-top: 16px;
+        margin-top: 14px;
         color: #ff8a3d;
-        font-size: 0.74rem;
-        font-weight: 900;
-        letter-spacing: 0.10em;
-        text-transform: uppercase;
     }
 
     .bos-steps {
@@ -393,8 +431,8 @@
     }
 
     .bos-step {
-        min-height: 260px;
-        padding: 28px 24px;
+        min-height: 230px;
+        padding: 26px 24px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
 
@@ -403,8 +441,8 @@
     }
 
     .bos-step h3 {
-        margin: 22px 0 14px;
-        font-size: 2rem;
+        margin: 20px 0 12px;
+        font-size: 1.82rem;
         line-height: 0.98;
         letter-spacing: -0.055em;
     }
@@ -413,12 +451,12 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 40px;
-        padding: 64px 0 86px;
+        padding: 56px 0 78px;
     }
 
     .bos-contact h2 {
         margin: 0;
-        font-size: clamp(2rem, 5vw, 5rem);
+        font-size: clamp(2rem, 5vw, 4.8rem);
         line-height: 0.9;
         letter-spacing: -0.07em;
     }
@@ -428,28 +466,32 @@
     }
 
     .bos-contact-note {
-        margin-top: 20px;
-        padding-top: 18px;
+        margin-top: 18px;
+        padding-top: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.16);
         color: #cfc7bc;
-        font-size: 0.95rem;
+        font-size: 0.93rem;
     }
 
     @media (max-width: 980px) {
         .bos-section-heading,
-        .bos-picker,
         .bos-proof-grid,
         .bos-steps {
             grid-template-columns: 1fr 1fr;
         }
 
+        .bos-picker {
+            display: block;
+        }
+
         .bos-options {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             border-right: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.16);
         }
 
-        .bos-picker {
-            display: block;
+        .bos-option:nth-child(odd) {
+            border-right: 1px solid rgba(255, 255, 255, 0.16);
         }
 
         .bos-proof-grid {
@@ -458,6 +500,10 @@
     }
 
     @media (max-width: 850px) {
+        .bos-wrap {
+            width: min(100% - 28px, 1120px);
+        }
+
         .bos-head,
         .bos-hero-grid,
         .bos-band,
@@ -469,20 +515,114 @@
             grid-template-columns: 1fr;
         }
 
+        .bos-head {
+            align-items: start;
+            padding: 20px 0;
+        }
+
         .bos-links,
         .bos-actions {
             flex-wrap: wrap;
         }
 
+        .bos-links {
+            gap: 10px 14px;
+        }
+
+        .bos-hero {
+            padding: 42px 0 40px;
+        }
+
+        .bos-side {
+            max-width: none;
+            padding: 13px 0 13px 16px;
+            font-size: 0.94rem;
+        }
+
+        .bos h1 {
+            font-size: clamp(2.82rem, 17vw, 4.2rem);
+        }
+
+        .bos-lede {
+            margin-top: 22px;
+            font-size: 1rem;
+            line-height: 1.48;
+        }
+
+        .bos-section {
+            padding: 38px 0;
+        }
+
+        .bos-section-heading {
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .bos-section-heading h2,
+        .bos-panel h3,
+        .bos-contact h2 {
+            letter-spacing: -0.06em;
+        }
+
         .bos-block,
         .bos-step {
+            min-height: unset;
+            padding: 22px 18px;
             border-right: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.16);
         }
 
+        .bos-block h2,
+        .bos-step h3 {
+            margin-top: 16px;
+        }
+
+        .bos-options {
+            grid-template-columns: 1fr;
+        }
+
+        .bos-option,
+        .bos-option:nth-child(odd) {
+            min-height: 58px;
+            padding: 14px 16px;
+            border-right: 0;
+        }
+
+        .bos-option:hover,
+        #bos-problem-data:checked ~ .bos-options label[for="bos-problem-data"],
+        #bos-problem-automation:checked ~ .bos-options label[for="bos-problem-automation"],
+        #bos-problem-website:checked ~ .bos-options label[for="bos-problem-website"],
+        #bos-problem-troubleshooting:checked ~ .bos-options label[for="bos-problem-troubleshooting"],
+        #bos-problem-translation:checked ~ .bos-options label[for="bos-problem-translation"],
+        #bos-problem-shaping:checked ~ .bos-options label[for="bos-problem-shaping"] {
+            padding-left: 18px;
+        }
+
+        .bos-panels {
+            min-height: unset;
+        }
+
+        .bos-panel {
+            padding: 22px 18px;
+        }
+
+        .bos-panel h3 {
+            font-size: clamp(1.85rem, 10vw, 2.8rem);
+        }
+
+        .bos-panel p {
+            line-height: 1.48;
+        }
+
         .bos-proof-card {
             min-height: unset;
+            padding: 20px 18px;
             border-right: 0;
+        }
+
+        .bos-contact {
+            gap: 24px;
+            padding: 42px 0 62px;
         }
     }
 </style>
@@ -512,7 +652,7 @@
                     <span class="bos-kicker">Boston Practical candidate homepage</span>
                     <h1>Practical technical help, built close to the problem.</h1>
                     <p class="bos-lede">
-                        Holtsnider Tech helps people turn unclear technical messes into smaller, more understandable next steps:
+                        Holtsnider Tech helps turn unclear technical messes into smaller next steps:
                         websites, automation, data cleanup, troubleshooting, and project shaping without the agency fog.
                     </p>
                     <div class="bos-actions">
@@ -527,17 +667,17 @@
             <article class="bos-block">
                 <span>01</span>
                 <h2>Restraint</h2>
-                <p>Fewer buzzwords. More confidence. Less need to prove every sentence is technical.</p>
+                <p>Fewer buzzwords. More confidence. Less technical performance.</p>
             </article>
             <article class="bos-block">
                 <span>02</span>
                 <h2>Accountability</h2>
-                <p>A site that feels like a person stands behind it, not a generic agency template.</p>
+                <p>A site that feels like a person stands behind it.</p>
             </article>
             <article class="bos-block">
                 <span>03</span>
                 <h2>Usefulness</h2>
-                <p>Scope, tradeoffs, and next steps presented without drama.</p>
+                <p>Scope, tradeoffs, and next steps without drama.</p>
             </article>
         </section>
 
@@ -545,8 +685,8 @@
             <div class="bos-section-heading">
                 <h2>Start with the problem, not the tool.</h2>
                 <p class="bos-section-text">
-                    Pick the closest version of what is going on. The first job is making the problem smaller,
-                    clearer, and actionable. The exact tool comes later.
+                    Pick the closest mess. The selector is the intake path: name the problem, shrink it,
+                    then choose the smallest useful next move.
                 </p>
             </div>
 
@@ -559,155 +699,137 @@
                 <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-shaping">
 
                 <div class="bos-options" role="list" aria-label="Problem types">
-                    <label class="bos-option" for="bos-problem-data"><em>01</em><strong>Messy data or inventory</strong></label>
-                    <label class="bos-option" for="bos-problem-automation"><em>02</em><strong>Workflow drag</strong></label>
-                    <label class="bos-option" for="bos-problem-website"><em>03</em><strong>Website or public presence</strong></label>
-                    <label class="bos-option" for="bos-problem-troubleshooting"><em>04</em><strong>Weird technical issue</strong></label>
-                    <label class="bos-option" for="bos-problem-translation"><em>05</em><strong>Technical translation</strong></label>
-                    <label class="bos-option" for="bos-problem-shaping"><em>06</em><strong>Loose idea, unclear shape</strong></label>
+                    <label class="bos-option" for="bos-problem-data"><em>01</em><strong>Messy data</strong></label>
+                    <label class="bos-option" for="bos-problem-automation"><em>02</em><strong>Manual workflow</strong></label>
+                    <label class="bos-option" for="bos-problem-website"><em>03</em><strong>Public presence</strong></label>
+                    <label class="bos-option" for="bos-problem-troubleshooting"><em>04</em><strong>Weird failure</strong></label>
+                    <label class="bos-option" for="bos-problem-translation"><em>05</em><strong>Technical fog</strong></label>
+                    <label class="bos-option" for="bos-problem-shaping"><em>06</em><strong>Loose idea</strong></label>
                 </div>
 
                 <div class="bos-panels">
                     <article class="bos-panel panel-data">
                         <span class="bos-path-kicker">Diagnostic path / Data</span>
-                        <h3>Messy data usually means the real problem is trust.</h3>
-                        <p>
-                            The names are inconsistent, duplicates hide in plain sight, and nobody is fully sure which version is correct.
-                            I would start by mapping the fields, spotting duplicate patterns, and creating a repeatable cleanup process before recommending a bigger system.
-                        </p>
+                        <h3>Messy data is usually a trust problem.</h3>
+                        <p class="bos-path-note">First move: find the patterns before choosing the platform.</p>
+                        <p>Inconsistent names, hidden duplicates, and unclear fields make people stop trusting the spreadsheet.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
-                                    <li>Duplicate-detection rules</li>
-                                    <li>Cleaner spreadsheet structure</li>
-                                    <li>Naming conventions</li>
-                                    <li>Import-ready data checks</li>
+                                    <li>Duplicate rules</li>
+                                    <li>Cleaner structure</li>
+                                    <li>Validation checks</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Inventory cleanup, spreadsheet triage, validation scripts, and practical process cleanup for people who need the data to be usable.</p>
+                                <strong>Fit</strong>
+                                <p>Inventory cleanup, import prep, naming conventions, and spreadsheet triage.</p>
                             </div>
                         </div>
                     </article>
 
                     <article class="bos-panel panel-automation">
                         <span class="bos-path-kicker">Diagnostic path / Automation</span>
-                        <h3>Workflow drag is usually a sign that a small tool could remove friction.</h3>
-                        <p>
-                            Not every workflow needs a full platform. Sometimes the useful answer is a focused script, form, generator,
-                            dashboard, or handoff step that makes repeated work less annoying and less error-prone.
-                        </p>
+                        <h3>Manual workflow is where small tools earn their keep.</h3>
+                        <p class="bos-path-note">First move: identify the repeated step that wastes time.</p>
+                        <p>The answer may be a script, form, generator, checklist, or handoff step — not a whole platform.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
                                     <li>Small internal tool</li>
-                                    <li>Repeatable script or checklist</li>
-                                    <li>Prototype before a larger build</li>
-                                    <li>Cleaner handoff between tools</li>
+                                    <li>Repeatable script</li>
+                                    <li>Prototype workflow</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Python tooling, simple Flask prototypes, content generators, API glue, and practical automation around real constraints.</p>
+                                <strong>Fit</strong>
+                                <p>Python tooling, simple Flask prototypes, API glue, and repeatable content systems.</p>
                             </div>
                         </div>
                     </article>
 
                     <article class="bos-panel panel-website">
                         <span class="bos-path-kicker">Diagnostic path / Web</span>
-                        <h3>A website should make the work easier to understand, not harder to trust.</h3>
-                        <p>
-                            The question is not just whether the site looks good. It is whether a real person can quickly understand what you do,
-                            why it matters, what proof exists, and what they should do next.
-                        </p>
+                        <h3>Public presence should make the work easier to trust.</h3>
+                        <p class="bos-path-note">First move: clarify what the visitor needs to understand.</p>
+                        <p>A good page explains what you do, what proves it, and what a real next step looks like.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
+                                    <li>Homepage direction</li>
                                     <li>Portfolio structure</li>
-                                    <li>Cleaner homepage direction</li>
-                                    <li>Case study pages</li>
-                                    <li>Sharper contact path</li>
+                                    <li>Case-study framing</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Small business sites, personal portfolio pages, public project homes, and practical web cleanup without overbuilding.</p>
+                                <strong>Fit</strong>
+                                <p>Small business sites, portfolio pages, public project homes, and practical web cleanup.</p>
                             </div>
                         </div>
                     </article>
 
                     <article class="bos-panel panel-troubleshooting">
-                        <span class="bos-path-kicker">Diagnostic path / Troubleshooting</span>
-                        <h3>Weird technical issues get easier once the layers are separated.</h3>
-                        <p>
-                            The move is to stop guessing and start isolating. What changed? What layer is failing? What still works?
-                            What evidence do we have, and what test would shrink the problem fastest?
-                        </p>
+                        <span class="bos-path-kicker">Diagnostic path / Failure</span>
+                        <h3>Weird failures get smaller when the layers are separated.</h3>
+                        <p class="bos-path-note">First move: stop guessing and isolate what still works.</p>
+                        <p>What changed? What fails? What reaches? What test would shrink the problem fastest?</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
                                     <li>Root-cause notes</li>
-                                    <li>Reproduction steps</li>
-                                    <li>Decision tree</li>
-                                    <li>Fix or mitigation plan</li>
+                                    <li>Repro steps</li>
+                                    <li>Fix path</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Networking, deployment weirdness, broken workflows, software behavior, toolchain confusion, and operational triage.</p>
+                                <strong>Fit</strong>
+                                <p>Networking, deployment weirdness, broken workflows, and toolchain confusion.</p>
                             </div>
                         </div>
                     </article>
 
                     <article class="bos-panel panel-translation">
                         <span class="bos-path-kicker">Diagnostic path / Translation</span>
-                        <h3>Sometimes the job is making the technical decision understandable.</h3>
-                        <p>
-                            A vendor, platform, or tool may be asking for decisions that sound technical but are really business tradeoffs.
-                            I can help translate what is being asked, what the options mean, and what deserves attention first.
-                        </p>
+                        <h3>Technical fog hides the real decision.</h3>
+                        <p class="bos-path-note">First move: turn the terms into tradeoffs.</p>
+                        <p>Vendor language and platform choices are often business decisions wearing technical clothes.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
                                     <li>Plain-English summary</li>
-                                    <li>Tradeoff comparison</li>
-                                    <li>Questions for vendors</li>
-                                    <li>Next-step recommendation</li>
+                                    <li>Tradeoff map</li>
+                                    <li>Vendor questions</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Technical vendor conversations, web/platform choices, software terms, process changes, and decisions where clarity matters.</p>
+                                <strong>Fit</strong>
+                                <p>Platform choices, vendor conversations, software terms, and implementation planning.</p>
                             </div>
                         </div>
                     </article>
 
                     <article class="bos-panel panel-shaping">
-                        <span class="bos-path-kicker">Diagnostic path / Project shaping</span>
-                        <h3>A loose idea does not need a giant plan. It needs a useful first shape.</h3>
-                        <p>
-                            Early ideas often fail because they skip straight to tools. I would help define the audience, input, output,
-                            proof of value, and smallest version worth building.
-                        </p>
+                        <span class="bos-path-kicker">Diagnostic path / Shaping</span>
+                        <h3>A loose idea needs a first useful shape.</h3>
+                        <p class="bos-path-note">First move: define the smallest version worth building.</p>
+                        <p>Before tools, define the audience, input, output, and proof that the idea is useful.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
-                                <strong>Useful outputs</strong>
+                                <strong>Outputs</strong>
                                 <ul class="bos-list">
                                     <li>Project framing</li>
-                                    <li>Smallest useful version</li>
-                                    <li>Build/no-build guidance</li>
                                     <li>Prototype roadmap</li>
+                                    <li>Build/no-build call</li>
                                 </ul>
                             </div>
                             <div class="bos-mini">
-                                <strong>Relevant fit</strong>
-                                <p>Daily Flyer-style concepts, personal projects, early product ideas, portfolio experiments, and practical prototypes.</p>
+                                <strong>Fit</strong>
+                                <p>Daily Flyer-style concepts, portfolio experiments, and early product ideas.</p>
                             </div>
                         </div>
                     </article>
@@ -717,36 +839,36 @@
 
         <section class="bos-section" id="proof">
             <div class="bos-section-heading">
-                <h2>Proof should feel specific.</h2>
+                <h2>Proof, not pitch.</h2>
                 <p class="bos-section-text">
-                    This section would become the bridge between the diagnostic selector and actual portfolio work:
-                    not just claims, but examples of systems, demos, and practical judgment.
+                    The portfolio is not finished yet, so this section stays honest: it shows the kinds of work
+                    that can become real case studies as the site matures.
                 </p>
             </div>
 
             <div class="bos-proof-grid">
                 <article class="bos-proof-card">
                     <span>Daily Flyer</span>
-                    <h3>Reusable content engine</h3>
-                    <p>A pattern for turning structured ideas into themed, repeatable web pages: Irish Today, birthdays, local history, and niche educational pages.</p>
-                    <a href="#contact">Use this pattern</a>
+                    <h3>Repeatable content system</h3>
+                    <p>Turns structured topics into themed daily pages: Irish Today, birthdays, local history, and niche explainers.</p>
+                    <a href="#contact">Use the pattern</a>
                 </article>
                 <article class="bos-proof-card">
-                    <span>Web presence</span>
-                    <h3>This site as the workbench</h3>
-                    <p>HoltsniderTech.com is itself a live project: brand, structure, experiments, case-study framing, and a clearer contact path.</p>
+                    <span>This site</span>
+                    <h3>Live brand workbench</h3>
+                    <p>Tests voice, visual direction, proof structure, and a clearer path from problem to contact.</p>
                     <a href="{{ url_for('main.style_lab') }}">Compare styles</a>
                 </article>
                 <article class="bos-proof-card">
                     <span>Data cleanup</span>
-                    <h3>Hidden duplicate thinking</h3>
-                    <p>Practical inventory and spreadsheet cleanup: naming inconsistencies, duplicate records, unclear structures, and validation before bigger system decisions.</p>
+                    <h3>Hidden duplicate logic</h3>
+                    <p>Practical thinking for inconsistent names, duplicate records, import prep, and trust problems.</p>
                     <a href="#diagnostic">Start with data</a>
                 </article>
                 <article class="bos-proof-card">
                     <span>Translation</span>
                     <h3>Technical clarity</h3>
-                    <p>Taking technical detail, vendor language, and implementation tradeoffs and turning them into language normal people can act on.</p>
+                    <p>Turns vendor language, platform choices, and implementation tradeoffs into plain-English next steps.</p>
                     <a href="#diagnostic">Choose a path</a>
                 </article>
             </div>
@@ -756,44 +878,43 @@
             <div class="bos-section-heading">
                 <h2>The method is simple on purpose.</h2>
                 <p class="bos-section-text">
-                    This direction should make the work feel grounded: scope the problem, reduce the ambiguity,
-                    and build the smallest useful next step before making anything bigger.
+                    Make the mess visible, separate the layers, then build the next useful thing.
                 </p>
             </div>
 
             <div class="bos-steps">
                 <article class="bos-step">
                     <span>Step 01</span>
-                    <h3>Make the mess visible.</h3>
-                    <p>Gather the actual symptoms, constraints, examples, files, pages, workflows, or decisions causing friction.</p>
+                    <h3>Make it visible.</h3>
+                    <p>Gather the symptoms, constraints, files, pages, workflows, or decisions causing friction.</p>
                 </article>
                 <article class="bos-step">
                     <span>Step 02</span>
                     <h3>Separate the layers.</h3>
-                    <p>Identify what is content, process, tooling, data, integration, design, communication, or actual engineering work.</p>
+                    <p>Sort what is content, process, tooling, data, design, communication, or engineering.</p>
                 </article>
                 <article class="bos-step">
                     <span>Step 03</span>
-                    <h3>Build the next useful thing.</h3>
-                    <p>Create the fix, prototype, cleanup path, explanation, or public-facing page that moves the problem forward.</p>
+                    <h3>Build the next thing.</h3>
+                    <p>Create the fix, prototype, cleanup path, explanation, or page that moves the work forward.</p>
                 </article>
             </div>
         </section>
 
         <section class="bos-contact" id="contact">
-            <h2>Good technical work should survive contact with real people.</h2>
+            <h2>Bring the messy version.</h2>
             <div>
                 <p>
-                    A direct note about what is not working, what you are trying to build, or what feels confusing is enough.
-                    You do not need perfect requirements to start.
+                    A direct note about what is not working, what you are trying to build,
+                    or what feels confusing is enough. Perfect requirements are not required.
                 </p>
                 <div class="bos-actions">
                     <a class="bos-btn" href="mailto:chris@holtsnidertech.com?subject=Holtsnider%20Tech%20project%20inquiry">Email Chris</a>
                     <a class="bos-btn alt" href="#diagnostic">Pick a problem type</a>
                 </div>
                 <p class="bos-contact-note">
-                    This is still a Style Lab prototype, but it is meant to test the actual future shape of the homepage:
-                    direct, local, practical, and diagnostic before it becomes salesy.
+                    This is still a Style Lab prototype. The point is to test a homepage that feels direct,
+                    useful, and diagnostic before it becomes salesy.
                 </p>
             </div>
         </section>
