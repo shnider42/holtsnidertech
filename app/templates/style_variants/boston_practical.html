@@ -9,13 +9,36 @@
     }
 
     .boston {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
-        background:
-            radial-gradient(circle at 10% 7%, rgba(255, 138, 61, 0.10), transparent 26%),
-            radial-gradient(circle at 88% 16%, rgba(45, 143, 139, 0.09), transparent 22%),
-            linear-gradient(120deg, #101010 0%, #162026 55%, #221b14 100%);
+        background: #101010;
         color: #f4f1ea;
+    }
+
+    .boston::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: #101010;
+        pointer-events: none;
+    }
+
+    .boston::after {
+        content: "";
+        position: fixed;
+        top: 7vh;
+        right: -12vw;
+        z-index: -1;
+        width: min(78vw, 860px);
+        aspect-ratio: 1;
+        background: url("{{ url_for('static', filename='img/toolkit-circuit-bg.svg') }}") center / contain no-repeat;
+        opacity: 0.13;
+        filter: saturate(0.95) contrast(0.95);
+        pointer-events: none;
     }
 
     .bos-rule {
@@ -185,6 +208,7 @@
         min-height: 210px;
         padding: 26px 24px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(16, 16, 16, 0.28);
     }
 
     .bos-block:last-child {
@@ -237,7 +261,7 @@
     }
 
     .bos-diagnostic {
-        background: rgba(16, 16, 16, 0.26);
+        background: rgba(16, 16, 16, 0.32);
     }
 
     .bos-picker {
@@ -245,7 +269,8 @@
         display: grid;
         grid-template-columns: 0.38fr 0.62fr;
         border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(16, 16, 16, 0.24);
+        background: rgba(16, 16, 16, 0.58);
+        backdrop-filter: blur(2px);
     }
 
     .bos-option-input {
@@ -301,7 +326,7 @@
 
     .bos-panels {
         min-height: 430px;
-        background: linear-gradient(135deg, rgba(255, 138, 61, 0.075), rgba(255, 255, 255, 0.022));
+        background: rgba(255, 255, 255, 0.026);
     }
 
     .bos-panel {
@@ -344,7 +369,7 @@
     .bos-mini {
         padding: 17px;
         border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(16, 16, 16, 0.24);
+        background: rgba(16, 16, 16, 0.48);
     }
 
     .bos-mini strong {
@@ -402,13 +427,13 @@
         padding: 22px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(16, 16, 16, 0.44);
         transition: background 0.16s ease, transform 0.16s ease;
     }
 
     .bos-proof-card:hover {
         transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.052);
+        background: rgba(255, 255, 255, 0.06);
     }
 
     .bos-proof-card h3 {
@@ -434,6 +459,7 @@
         min-height: 230px;
         padding: 26px 24px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(16, 16, 16, 0.28);
     }
 
     .bos-step:last-child {
@@ -500,6 +526,14 @@
     }
 
     @media (max-width: 850px) {
+        .boston::after {
+            position: absolute;
+            top: 92px;
+            right: -58vw;
+            width: 138vw;
+            opacity: 0.085;
+        }
+
         .bos-wrap {
             width: min(100% - 28px, 1120px);
         }
