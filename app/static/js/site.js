@@ -48,6 +48,65 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const initBostonMotion = () => {
+        const boston = document.querySelector(".boston");
+        if (!boston) {
+            return;
+        }
+
+        const motionItems = [
+            ...boston.querySelectorAll(
+                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-cta-strip, .bos-proof-card, .bos-contact"
+            )
+        ];
+
+        if (!motionItems.length) {
+            return;
+        }
+
+        motionItems.forEach((item, index) => {
+            item.classList.add("bos-motion-item");
+            item.style.setProperty("--bos-reveal-delay", `${Math.min(index * 28, 140)}ms`);
+        });
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            motionItems.forEach((item) => item.classList.add("is-visible"));
+            return;
+        }
+
+        document.body.classList.add("bos-motion-ready");
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const item = entry.target;
+
+                    if (entry.isIntersecting) {
+                        item.classList.add("is-visible");
+                        item.classList.remove("is-past");
+                        return;
+                    }
+
+                    item.classList.remove("is-visible");
+
+                    if (entry.boundingClientRect.top < 0) {
+                        item.classList.add("is-past");
+                    } else {
+                        item.classList.remove("is-past");
+                    }
+                });
+            },
+            {
+                threshold: 0.16,
+                rootMargin: "-8% 0px -12% 0px"
+            }
+        );
+
+        motionItems.forEach((item) => observer.observe(item));
+    };
+
+    initBostonMotion();
+
     const ensureStyle = () => {
         if (document.querySelector('link[href$="proof-capabilities.css"]')) {
             return;
