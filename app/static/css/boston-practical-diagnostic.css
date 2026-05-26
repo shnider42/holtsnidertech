@@ -1,0 +1,191 @@
+/*
+ * Boston Practical diagnostic treatment.
+ * This file makes the diagnostic selector read more like a practical triage board
+ * instead of a generic tab list, while preserving the staging background system.
+ */
+
+.boston .bos-diagnostic {
+    position: relative;
+}
+
+.boston .bos-picker {
+    overflow: hidden;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.boston .bos-options {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+        rgba(8, 16, 24, 0.40);
+}
+
+.boston .bos-option {
+    position: relative;
+    grid-template-columns: 42px 1fr;
+    gap: 16px;
+    min-height: 104px;
+    padding: 20px 22px;
+}
+
+.boston .bos-option::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: #ff8a3d;
+    transition: width 0.16s ease;
+}
+
+.boston .bos-option em {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 0.72rem;
+}
+
+.boston .bos-option-copy {
+    display: grid;
+    gap: 7px;
+}
+
+.boston .bos-option strong {
+    font-size: 1.02rem;
+}
+
+.boston .bos-option small {
+    display: block;
+    max-width: 32ch;
+    color: #b9c3cd;
+    font-size: 0.76rem;
+    font-weight: 750;
+    line-height: 1.28;
+    letter-spacing: 0.015em;
+}
+
+.boston .bos-option:hover::before,
+#bos-problem-data:checked ~ .bos-options label[for="bos-problem-data"]::before,
+#bos-problem-automation:checked ~ .bos-options label[for="bos-problem-automation"]::before,
+#bos-problem-website:checked ~ .bos-options label[for="bos-problem-website"]::before,
+#bos-problem-troubleshooting:checked ~ .bos-options label[for="bos-problem-troubleshooting"]::before {
+    width: 5px;
+}
+
+#bos-problem-data:checked ~ .bos-options label[for="bos-problem-data"] small,
+#bos-problem-automation:checked ~ .bos-options label[for="bos-problem-automation"] small,
+#bos-problem-website:checked ~ .bos-options label[for="bos-problem-website"] small,
+#bos-problem-troubleshooting:checked ~ .bos-options label[for="bos-problem-troubleshooting"] small {
+    color: rgba(16, 16, 16, 0.76);
+}
+
+.boston .bos-panels {
+    position: relative;
+}
+
+.boston .bos-panel {
+    padding: clamp(28px, 4.2vw, 48px);
+}
+
+.boston .bos-panel::before {
+    content: "Conversation shape";
+    display: inline-flex;
+    margin-bottom: 16px;
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 138, 61, 0.34);
+    color: #ff8a3d;
+    background: rgba(255, 138, 61, 0.07);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.boston .bos-panel h3 {
+    max-width: 780px;
+}
+
+.boston .bos-path-note {
+    display: inline-flex;
+    max-width: min(100%, 720px);
+    border-color: rgba(255, 138, 61, 0.25);
+    color: #f4f1ea;
+    background: rgba(255, 138, 61, 0.08);
+}
+
+.boston .bos-panel > p:not(.bos-path-note) {
+    max-width: 720px;
+    font-size: 1.03rem;
+}
+
+.boston .bos-panel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 800px;
+}
+
+.boston .bos-mini {
+    position: relative;
+}
+
+.boston .bos-mini strong {
+    color: #ff8a3d;
+}
+
+.boston .bos-mini p,
+.boston .bos-list li {
+    font-size: 0.94rem;
+}
+
+@media (max-width: 980px) {
+    .boston .bos-option {
+        min-height: 98px;
+    }
+}
+
+@media (max-width: 850px) {
+    .boston .bos-option {
+        grid-template-columns: 36px 1fr;
+        min-height: auto;
+        padding: 16px 16px;
+    }
+
+    .boston .bos-option em {
+        width: 30px;
+        height: 30px;
+    }
+
+    .boston .bos-option strong {
+        font-size: 0.98rem;
+    }
+
+    .boston .bos-option small {
+        font-size: 0.75rem;
+    }
+
+    .boston .bos-panel {
+        padding: 22px 18px;
+    }
+
+    .boston .bos-panel::before {
+        margin-bottom: 12px;
+    }
+
+    .boston .bos-panel h3 {
+        font-size: clamp(1.75rem, 8vw, 2.45rem);
+    }
+
+    .boston .bos-panel > p:not(.bos-path-note) {
+        font-size: 0.96rem;
+    }
+
+    .boston .bos-panel-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
