@@ -61,10 +61,34 @@ document.addEventListener("DOMContentLoaded", () => {
             <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-troubleshooting">
 
             <div class="bos-options" role="list" aria-label="Problem types">
-                <label class="bos-option" for="bos-problem-data"><em>01</em><strong>Advice / translation</strong></label>
-                <label class="bos-option" for="bos-problem-automation"><em>02</em><strong>Specific technical problem</strong></label>
-                <label class="bos-option" for="bos-problem-website"><em>03</em><strong>Existing team problem</strong></label>
-                <label class="bos-option" for="bos-problem-troubleshooting"><em>04</em><strong>Longer-term support</strong></label>
+                <label class="bos-option" for="bos-problem-data">
+                    <em>01</em>
+                    <span class="bos-option-copy">
+                        <strong>Advice / translation</strong>
+                        <small>Help me understand the options before work starts.</small>
+                    </span>
+                </label>
+                <label class="bos-option" for="bos-problem-automation">
+                    <em>02</em>
+                    <span class="bos-option-copy">
+                        <strong>Specific technical problem</strong>
+                        <small>Something is broken, unclear, inefficient, or needs hands-on work.</small>
+                    </span>
+                </label>
+                <label class="bos-option" for="bos-problem-website">
+                    <em>03</em>
+                    <span class="bos-option-copy">
+                        <strong>Existing team problem</strong>
+                        <small>A technical team needs another lens, review, or bridge.</small>
+                    </span>
+                </label>
+                <label class="bos-option" for="bos-problem-troubleshooting">
+                    <em>04</em>
+                    <span class="bos-option-copy">
+                        <strong>Longer-term support</strong>
+                        <small>This may need recurring help, fractional support, or a deeper conversation.</small>
+                    </span>
+                </label>
             </div>
 
             <div class="bos-panels">
