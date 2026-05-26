@@ -1,0 +1,21 @@
+/*
+ * Boston Practical raster logo override.
+ * This intentionally loads after the Style Lab inline CSS so the candidate
+ * homepage uses a pre-rendered image instead of asking the browser to paint
+ * the SVG logo in real time.
+ */
+
+.boston::after {
+    background-image: url("data:image/webp;base64,UklGRqjuAABXRUJQVlA4TJzuAAAv/wDIAB8AEKsgA0W5ZJM8E0mLWcdnddhmqS6RdZdnqWmZLpZ6Z5mqu3wx3/OLfzJjKTkJCckoiDPSo1HytXEIkekBDCU5QMyTvQkr5W+zs0ypCqc1B8KThBcygMw/5Rs0/dC+TovvTnbVpmik5CQnJKIgzklQWkyhNV36BH9sLhVO18drBYfzts8mRvJ7MGAdku9LmOkvmgJrzE9EaUR3/9jPYT8MND5TPu17S36oX+Z/0I+e+ZX3MYr89yU+n6IO62/w9aLkBmn5Eyb4X+YnwjeqP999RMR+m7mWSHvpP6VyJ54/R9v5UF2Bc4Ddr9PZmYj6V+rVpLZvtbL+tfI/h/rX5U+9J/+yN/SCpfrMW5fpP/pbdKd/smt//Z5PiBOz9Nn+/mNbiLK15okfLzupX6elP8MLkcp309Wh2S+2p7d33bdrDTFJ8kf1dcIwR/8w8Bbb+GdffPUX+gF2/W6wrbcHfvVI9PzQzz+/m632K6ezBlrN+eF372t/ZHnrhF782FHM0/XiArzdufnf5n//gfbsUXzSv96++P/Jf+qvpfyJzlIx/jiZrI/yW8ROyCe5GpnmUfIpm7Br5VW1I/b4LLdRnQ/8j6b10/nmVf4F7FLmv0osC9z88/7f4t+x47v/+B/y+mpt9XxVf0m2k0xU/pj5qzod5z/8l+AsYa3ZBgpNgBgsAg27hQ71XiBN0s7cPZhAChwgbSh4efn5/CrrgAAAASUVORK5CYII=") !important;
+    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    opacity: 0.15 !important;
+    filter: none !important;
+}
+
+@media (max-width: 850px) {
+    .boston::after {
+        opacity: 0.09 !important;
+    }
+}
