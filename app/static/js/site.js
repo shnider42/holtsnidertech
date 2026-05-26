@@ -48,6 +48,115 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const renderBostonDiagnostic = () => {
+        const picker = document.querySelector(".boston .bos-picker");
+        if (!picker) {
+            return;
+        }
+
+        picker.innerHTML = `
+            <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-data" checked>
+            <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-automation">
+            <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-website">
+            <input class="bos-option-input" type="radio" name="bos-problem" id="bos-problem-troubleshooting">
+
+            <div class="bos-options" role="list" aria-label="Problem types">
+                <label class="bos-option" for="bos-problem-data"><em>01</em><strong>Advice / translation</strong></label>
+                <label class="bos-option" for="bos-problem-automation"><em>02</em><strong>Specific technical problem</strong></label>
+                <label class="bos-option" for="bos-problem-website"><em>03</em><strong>Existing team problem</strong></label>
+                <label class="bos-option" for="bos-problem-troubleshooting"><em>04</em><strong>Longer-term support</strong></label>
+            </div>
+
+            <div class="bos-panels">
+                <article class="bos-panel panel-data">
+                    <span class="bos-path-kicker">Diagnostic path / Advice</span>
+                    <h3>You do not need the work done yet. You need the situation made clearer.</h3>
+                    <p class="bos-path-note">Good first step: a consulting call to translate the options and risks.</p>
+                    <p>For a small business facing DNS, hosting, cloud, vendor, security, software, or general IT choices, the first value may be independent guidance before anyone touches the system.</p>
+                    <div class="bos-panel-grid">
+                        <div class="bos-mini">
+                            <strong>Useful outputs</strong>
+                            <ul class="bos-list">
+                                <li>Plain-English explanation</li>
+                                <li>Questions to ask a provider</li>
+                                <li>Decision tradeoffs</li>
+                            </ul>
+                        </div>
+                        <div class="bos-mini">
+                            <strong>Fit</strong>
+                            <p>Small-business tech guidance, provider selection, vendor translation, and ad hoc technical sanity checks.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bos-panel panel-automation">
+                    <span class="bos-path-kicker">Diagnostic path / Hands-on</span>
+                    <h3>There is a specific technical problem and you need someone to work through it.</h3>
+                    <p class="bos-path-note">Good first step: isolate what changed, what fails, and what evidence exists.</p>
+                    <p>This is the direct problem-solving lane: debugging, troubleshooting, small tooling, workflow repair, deployment weirdness, data cleanup, or practical implementation work.</p>
+                    <div class="bos-panel-grid">
+                        <div class="bos-mini">
+                            <strong>Useful outputs</strong>
+                            <ul class="bos-list">
+                                <li>Root-cause notes</li>
+                                <li>Fix or workaround</li>
+                                <li>Small tool or cleanup path</li>
+                            </ul>
+                        </div>
+                        <div class="bos-mini">
+                            <strong>Fit</strong>
+                            <p>When there is a concrete issue, limited context, and a need to start untangling the problem directly.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bos-panel panel-website">
+                    <span class="bos-path-kicker">Diagnostic path / Team advisory</span>
+                    <h3>Your team has the work, but needs another technical lens.</h3>
+                    <p class="bos-path-note">Good first step: review the current thinking and pressure-test the path forward.</p>
+                    <p>This is for existing technical teams that need outside perspective on reliability, testing, process, rollout risk, customer impact, or cross-functional communication.</p>
+                    <div class="bos-panel-grid">
+                        <div class="bos-mini">
+                            <strong>Useful outputs</strong>
+                            <ul class="bos-list">
+                                <li>Problem framing</li>
+                                <li>Risk review</li>
+                                <li>Next-step recommendation</li>
+                            </ul>
+                        </div>
+                        <div class="bos-mini">
+                            <strong>Fit</strong>
+                            <p>Technical review, QE/SRE-style judgment, stakeholder translation, and practical second-opinion support.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bos-panel panel-troubleshooting">
+                    <span class="bos-path-kicker">Diagnostic path / Ongoing</span>
+                    <h3>Some problems are not one-and-done. They need a steady technical partner.</h3>
+                    <p class="bos-path-note">Good first step: define the support shape before promising the solution.</p>
+                    <p>This is for longer-term support, fractional technical help, recurring advisory time, or a bigger conversation about embedded support or full-time fit.</p>
+                    <div class="bos-panel-grid">
+                        <div class="bos-mini">
+                            <strong>Useful outputs</strong>
+                            <ul class="bos-list">
+                                <li>Support scope</li>
+                                <li>Operating rhythm</li>
+                                <li>Priority map</li>
+                            </ul>
+                        </div>
+                        <div class="bos-mini">
+                            <strong>Fit</strong>
+                            <p>When the need is ongoing guidance, technical ownership, recurring support, or a deeper working relationship.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        `;
+    };
+
+    renderBostonDiagnostic();
+
     const ensureStyle = () => {
         if (document.querySelector('link[href$="proof-capabilities.css"]')) {
             return;
