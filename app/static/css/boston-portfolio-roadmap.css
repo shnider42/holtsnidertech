@@ -72,8 +72,12 @@
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.20);
 }
 
-.boston .bos-career-detail {
+.boston .bos-topic-detail {
     background: linear-gradient(135deg, rgba(45, 143, 139, 0.14), rgba(8, 16, 24, 0.34) 48%, rgba(255, 138, 61, 0.08));
+}
+
+.boston .bos-games-detail {
+    background: linear-gradient(135deg, rgba(125, 255, 155, 0.10), rgba(8, 16, 24, 0.36) 48%, rgba(255, 138, 61, 0.12));
 }
 
 .boston .bos-detail-heading {
@@ -118,7 +122,7 @@
     gap: 18px;
 }
 
-.boston .bos-career-feature-grid {
+.boston .bos-topic-feature-grid {
     grid-template-columns: minmax(0, 1fr);
 }
 
@@ -258,6 +262,37 @@
 }
 
 .boston .bos-demo-card.topic-coverage .bos-demo-eyebrow {
+    color: #7dff9b;
+}
+
+.boston .bos-demo-card.jiporady-game {
+    border-color: rgba(255, 138, 61, 0.42);
+    background: linear-gradient(135deg, rgba(255, 138, 61, 0.22), rgba(16, 16, 16, 0.56) 52%, rgba(125, 255, 155, 0.12));
+}
+
+.boston .bos-demo-card.jiporady-game::before {
+    opacity: 0.13;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        radial-gradient(circle at 18% 20%, rgba(255, 138, 61, 0.80), transparent 22%);
+    background-size: 42px 42px, 42px 42px, auto;
+}
+
+.boston .bos-demo-card.chrono-explain {
+    border-color: rgba(125, 255, 155, 0.32);
+    background: linear-gradient(135deg, rgba(45, 143, 139, 0.24), rgba(16, 16, 16, 0.56) 50%, rgba(255, 138, 61, 0.14));
+}
+
+.boston .bos-demo-card.chrono-explain::before {
+    opacity: 0.16;
+    background:
+        linear-gradient(90deg, transparent 0 18%, rgba(255, 255, 255, 0.18) 18% 19%, transparent 19% 36%, rgba(255, 255, 255, 0.18) 36% 37%, transparent 37%),
+        radial-gradient(circle at 22% 35%, rgba(125, 255, 155, 0.62), transparent 18%),
+        radial-gradient(circle at 70% 58%, rgba(255, 138, 61, 0.52), transparent 18%);
+}
+
+.boston .bos-games-detail .bos-demo-eyebrow {
     color: #7dff9b;
 }
 
