@@ -72,6 +72,10 @@
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.20);
 }
 
+.boston .bos-career-detail {
+    background: linear-gradient(135deg, rgba(45, 143, 139, 0.14), rgba(8, 16, 24, 0.34) 48%, rgba(255, 138, 61, 0.08));
+}
+
 .boston .bos-detail-heading {
     display: grid;
     grid-template-columns: 0.35fr 0.65fr;
@@ -114,6 +118,10 @@
     gap: 18px;
 }
 
+.boston .bos-career-feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .boston .bos-demo-card {
     position: relative;
     overflow: hidden;
@@ -154,6 +162,10 @@
     margin: 0;
     color: #d8d1c7;
     line-height: 1.52;
+}
+
+.boston .bos-demo-card.topic-coverage p {
+    max-width: 740px;
 }
 
 .boston .bos-demo-card ul {
@@ -227,6 +239,26 @@
 .boston .bos-demo-card.your-passage .bos-demo-eyebrow,
 .boston .bos-demo-card.your-passage a {
     color: #e8dbc0;
+}
+
+.boston .bos-demo-card.topic-coverage {
+    min-height: 300px;
+    border-color: rgba(45, 143, 139, 0.48);
+    background: linear-gradient(135deg, rgba(45, 143, 139, 0.30), rgba(16, 16, 16, 0.54) 52%, rgba(255, 138, 61, 0.16));
+}
+
+.boston .bos-demo-card.topic-coverage::before {
+    opacity: 0.14;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+        radial-gradient(circle at 18% 22%, rgba(255, 138, 61, 0.72), transparent 22%),
+        radial-gradient(circle at 78% 18%, rgba(45, 143, 139, 0.78), transparent 24%);
+    background-size: 34px 34px, 34px 34px, auto, auto;
+}
+
+.boston .bos-demo-card.topic-coverage .bos-demo-eyebrow {
+    color: #7dff9b;
 }
 
 .boston .bos-pipeline-heading {
