@@ -108,6 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
         boston.querySelectorAll(".bos-contact-note").forEach((item) => {
             item.textContent = "The useful first step is simple: describe the messy version, the constraint, or the decision you are trying to make.";
         });
+
+        boston.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
     };
 
     polishBostonHeadings();
@@ -132,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const motionItems = [
             ...boston.querySelectorAll(
-                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-process-flow, .bos-cta-strip, .bos-proof-card, .bos-portfolio-detail, .bos-contact"
+                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-process-flow, .bos-proof-card, .bos-portfolio-detail, .bos-contact"
             )
         ];
 
@@ -194,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            diagnostic.insertAdjacentHTML("afterend", await response.text());
+            diagnostic.insertAdjacentHTML("beforebegin", await response.text());
         } catch (error) {
             console.warn("Unable to load Boston process flow", error);
         }
