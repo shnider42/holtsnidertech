@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrono Explain Demo | Holtsnider Tech</title>
+    <style>
+        :root {
+            --bg: #081018;
+            --panel: #0f1720;
+            --text: #f3f4f6;
+            --muted: #a8b3bf;
+            --orange: #ff8a3d;
+            --teal: #2d8f8b;
+            --green: #7dff9b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 16% 12%, rgba(45, 143, 139, 0.24), transparent 30%),
+                radial-gradient(circle at 82% 18%, rgba(255, 138, 61, 0.16), transparent 32%),
+                var(--bg);
+            color: var(--text);
+            font-family: "Aptos", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        main {
+            width: min(1120px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 28px 0 54px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .demo-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 24px;
+        }
+
+        .brand,
+        .back-link,
+        .eyebrow,
+        button,
+        .phase-label,
+        .meta-label {
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+
+        .brand {
+            font-size: 0.82rem;
+        }
+
+        .back-link {
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 800;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 0.76fr 1.24fr;
+            gap: 34px;
+            align-items: end;
+            padding: 28px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .side-note {
+            padding: 16px 18px;
+            border-left: 5px solid var(--teal);
+            background: rgba(15, 23, 32, 0.72);
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            margin-bottom: 12px;
+            color: var(--green);
+            font-size: 0.68rem;
+        }
+
+        h1 {
+            max-width: 820px;
+            margin: 0;
+            font-family: "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 0.86;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        .lede {
+            max-width: 690px;
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 1.04rem;
+            line-height: 1.55;
+        }
+
+        .demo-shell {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr;
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .panel,
+        .timeline {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(15, 23, 32, 0.78);
+        }
+
+        .panel {
+            padding: 20px;
+        }
+
+        .scenario-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .scenario {
+            min-height: 54px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .scenario[aria-pressed="true"] {
+            border-color: rgba(125, 255, 155, 0.56);
+            background: rgba(125, 255, 155, 0.09);
+        }
+
+        .timeline {
+            position: relative;
+            overflow: hidden;
+            padding: 22px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 31px;
+            top: 26px;
+            bottom: 26px;
+            width: 2px;
+            background: linear-gradient(var(--teal), var(--orange));
+            opacity: 0.76;
+        }
+
+        .event {
+            position: relative;
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            gap: 16px;
+            padding: 0 0 22px;
+        }
+
+        .dot {
+            position: relative;
+            z-index: 1;
+            width: 20px;
+            height: 20px;
+            margin-top: 4px;
+            border: 3px solid var(--bg);
+            border-radius: 999px;
+            background: var(--green);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+        }
+
+        .event-card {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(16, 16, 16, 0.38);
+        }
+
+        .phase-label {
+            display: inline-flex;
+            margin-bottom: 10px;
+            color: var(--orange);
+            font-size: 0.64rem;
+        }
+
+        .event-card h2 {
+            margin: 0 0 8px;
+            font-family: "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif;
+            font-size: clamp(1.35rem, 3vw, 2.4rem);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .event-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.48;
+        }
+
+        .meta-box {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .meta-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--green);
+            font-size: 0.64rem;
+        }
+
+        .meta-box p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 880px) {
+            .hero,
+            .demo-shell {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <nav class="demo-nav" aria-label="Demo navigation">
+            <a class="brand" href="/">Holtsnider Tech</a>
+            <a class="back-link" href="/#games-learning-detail">Back to portfolio</a>
+        </nav>
+
+        <section class="hero">
+            <aside class="side-note">
+                This demo shows the Chrono Explain idea without depending on the Arcmad repo yet: pick a messy sequence and turn it into ordered context.
+            </aside>
+            <div>
+                <span class="eyebrow">Demo concept / Chrono Explain</span>
+                <h1>Make sequence easier to understand</h1>
+                <p class="lede">
+                    Chrono Explain is a timeline-style explainer pattern for showing what happened, why order matters, and where a better decision point existed.
+                </p>
+            </div>
+        </section>
+
+        <section class="demo-shell">
+            <aside class="panel">
+                <span class="eyebrow">Choose a scenario</span>
+                <div class="scenario-list" id="scenario-list"></div>
+                <div class="meta-box">
+                    <span class="meta-label">What this proves</span>
+                    <p>A timeline can turn a messy explanation into a guided sequence, which is useful for history, learning, incident review, and technical troubleshooting.</p>
+                </div>
+            </aside>
+            <div class="timeline" id="timeline" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script>
+        const scenarios = [
+            {
+                title: "A small-business website problem",
+                events: [
+                    { phase: "Symptom", title: "The site stops loading", text: "The visible problem is vague: the business sees a broken site, not DNS, hosting, SSL, deployment, or application layers." },
+                    { phase: "First split", title: "Separate name, server, and app", text: "The diagnostic move is to split the timeline into DNS resolution, server reachability, app response, and recent changes." },
+                    { phase: "Useful output", title: "A clear vendor question", text: "Instead of saying 'fix the website,' the owner can ask a provider about the exact failing layer and the last known working state." }
+                ]
+            },
+            {
+                title: "A product idea becomes a demo",
+                events: [
+                    { phase: "Raw idea", title: "A theme exists", text: "There is a good concept, but it is not yet a product: a daily page, a game, or a research mapper." },
+                    { phase: "Structure", title: "Find the repeatable pattern", text: "The idea becomes buildable when the repeated input, audience, output, and interaction are named." },
+                    { phase: "Demo", title: "Ship a small proof", text: "A lightweight demo can prove the pattern before a larger product is built." }
+                ]
+            },
+            {
+                title: "An incident review",
+                events: [
+                    { phase: "Noise", title: "Everyone remembers a different failure", text: "The team has symptoms, guesses, and partial logs, but not a shared order of events." },
+                    { phase: "Timeline", title: "Put facts in sequence", text: "A useful review starts with what happened first, what changed, what was observed, and what was tried." },
+                    { phase: "Learning", title: "Turn sequence into prevention", text: "Once the order is clear, the team can improve detection, handoff, and rollback decisions." }
+                ]
+            }
+        ];
+
+        const list = document.getElementById("scenario-list");
+        const timeline = document.getElementById("timeline");
+
+        function renderScenario(index) {
+            const scenario = scenarios[index];
+            timeline.innerHTML = scenario.events.map((event) => `
+                <article class="event">
+                    <span class="dot" aria-hidden="true"></span>
+                    <div class="event-card">
+                        <span class="phase-label">${event.phase}</span>
+                        <h2>${event.title}</h2>
+                        <p>${event.text}</p>
+                    </div>
+                </article>
+            `).join("");
+
+            [...list.querySelectorAll("button")].forEach((button, buttonIndex) => {
+                button.setAttribute("aria-pressed", String(buttonIndex === index));
+            });
+        }
+
+        scenarios.forEach((scenario, index) => {
+            const button = document.createElement("button");
+            button.className = "scenario";
+            button.type = "button";
+            button.textContent = scenario.title;
+            button.setAttribute("aria-pressed", "false");
+            button.addEventListener("click", () => renderScenario(index));
+            list.appendChild(button);
+        });
+
+        renderScenario(0);
+    </script>
+</body>
+</html>
