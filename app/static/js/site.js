@@ -76,6 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     polishBostonHeadings();
 
+    const ensureStylesheet = (href) => {
+        if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
+            return;
+        }
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+    };
+
     const initBostonMotion = () => {
         const boston = document.querySelector(".boston");
         if (!boston) {
@@ -133,17 +144,32 @@ document.addEventListener("DOMContentLoaded", () => {
         motionItems.forEach((item) => observer.observe(item));
     };
 
-    initBostonMotion();
-
-    const ensureStyle = () => {
-        if (document.querySelector('link[href$="proof-capabilities.css"]')) {
+    const loadBostonPortfolioRoadmap = async () => {
+        const boston = document.querySelector(".boston");
+        const proofGrid = boston ? boston.querySelector(".bos-proof-grid") : null;
+        if (!proofGrid) {
             return;
         }
 
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "/static/css/proof-capabilities.css";
-        document.head.appendChild(link);
+        ensureStylesheet("/static/css/boston-portfolio-roadmap.css");
+
+        try {
+            const response = await fetch("/static/html/boston-portfolio-roadmap.html");
+            if (!response.ok) {
+                return;
+            }
+
+            proofGrid.innerHTML = await response.text();
+            proofGrid.classList.add("is-roadmap");
+        } catch (error) {
+            console.warn("Unable to load Boston portfolio roadmap", error);
+        }
+    };
+
+    loadBostonPortfolioRoadmap().finally(initBostonMotion);
+
+    const ensureStyle = () => {
+        ensureStylesheet("/static/css/proof-capabilities.css");
     };
 
     const showReveals = (rootNode) => {
