@@ -167,11 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 proofGrid.insertAdjacentHTML("afterend", await detailResponse.text());
             }
 
-            const careerResponse = await fetch("/static/html/boston-career-compass-detail.html");
+            const topicResponse = await fetch("/static/html/boston-topic-coverage-mapper-detail.html");
             const dailyDetail = boston.querySelector(".bos-daily-detail");
-            if (careerResponse.ok) {
+            if (topicResponse.ok) {
                 const insertTarget = dailyDetail || proofGrid;
-                insertTarget.insertAdjacentHTML("afterend", await careerResponse.text());
+                insertTarget.insertAdjacentHTML("afterend", await topicResponse.text());
             }
         } catch (error) {
             console.warn("Unable to load Boston portfolio roadmap", error);
