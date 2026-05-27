@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const motionItems = [
             ...boston.querySelectorAll(
-                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-cta-strip, .bos-proof-card, .bos-portfolio-detail, .bos-contact"
+                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-process-flow, .bos-cta-strip, .bos-proof-card, .bos-portfolio-detail, .bos-contact"
             )
         ];
 
@@ -181,6 +181,25 @@ document.addEventListener("DOMContentLoaded", () => {
         motionItems.forEach((item) => observer.observe(item));
     };
 
+    const loadBostonProcessFlow = async () => {
+        const boston = document.querySelector(".boston");
+        const diagnostic = boston ? boston.querySelector("#diagnostic") : null;
+        if (!diagnostic || boston.querySelector("#process-flow")) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/static/html/boston-process-flow.html");
+            if (!response.ok) {
+                return;
+            }
+
+            diagnostic.insertAdjacentHTML("afterend", await response.text());
+        } catch (error) {
+            console.warn("Unable to load Boston process flow", error);
+        }
+    };
+
     const loadBostonPortfolioRoadmap = async () => {
         const boston = document.querySelector(".boston");
         const proofGrid = boston ? boston.querySelector(".bos-proof-grid") : null;
@@ -215,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    loadBostonPortfolioRoadmap().finally(initBostonMotion);
+    Promise.all([loadBostonProcessFlow(), loadBostonPortfolioRoadmap()]).finally(initBostonMotion);
 
     const ensureStyle = () => {
         ensureStylesheet("/static/css/proof-capabilities.css");
