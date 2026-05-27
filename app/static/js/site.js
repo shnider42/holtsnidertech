@@ -166,6 +166,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (detailResponse.ok) {
                 proofGrid.insertAdjacentHTML("afterend", await detailResponse.text());
             }
+
+            const careerResponse = await fetch("/static/html/boston-career-compass-detail.html");
+            const dailyDetail = boston.querySelector(".bos-daily-detail");
+            if (careerResponse.ok) {
+                const insertTarget = dailyDetail || proofGrid;
+                insertTarget.insertAdjacentHTML("afterend", await careerResponse.text());
+            }
         } catch (error) {
             console.warn("Unable to load Boston portfolio roadmap", error);
         }
