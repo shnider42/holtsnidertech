@@ -81,7 +81,9 @@
 }
 
 .boston .bos-detail-heading span,
-.boston .bos-demo-eyebrow {
+.boston .bos-demo-eyebrow,
+.boston .bos-pipeline-heading span,
+.boston .bos-pipeline-card span {
     color: #ff8a3d;
     font-family: var(--bos-font-monoish, "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif);
     font-size: 0.68rem;
@@ -227,15 +229,82 @@
     color: #e8dbc0;
 }
 
+.boston .bos-pipeline-heading {
+    display: grid;
+    grid-template-columns: 0.35fr 0.65fr;
+    gap: 24px;
+    align-items: start;
+    margin: 28px 0 14px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.boston .bos-pipeline-heading p {
+    max-width: 680px;
+    margin: 0;
+    color: #d8d1c7;
+    line-height: 1.5;
+}
+
+.boston .bos-pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.boston .bos-pipeline-card {
+    display: flex;
+    min-height: 220px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(16, 16, 16, 0.36);
+}
+
+.boston .bos-pipeline-card h4 {
+    margin: 0;
+    color: #f4f1ea;
+    font-family: var(--bos-font-display, "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif);
+    font-size: 1.32rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.boston .bos-pipeline-card p {
+    margin: 0;
+    color: #d8d1c7;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.boston .bos-pipeline-card em {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: auto;
+    padding: 6px 8px;
+    border: 1px solid rgba(45, 143, 139, 0.36);
+    background: rgba(45, 143, 139, 0.09);
+    color: #c6d0da;
+    font-family: var(--bos-font-monoish, "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
 @media (max-width: 1080px) {
-    .boston .bos-proof-grid.is-roadmap {
+    .boston .bos-proof-grid.is-roadmap,
+    .boston .bos-pipeline-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 760px) {
     .boston .bos-detail-heading,
-    .boston .bos-demo-grid {
+    .boston .bos-demo-grid,
+    .boston .bos-pipeline-heading {
         grid-template-columns: 1fr;
     }
 
@@ -246,11 +315,16 @@
 }
 
 @media (max-width: 680px) {
-    .boston .bos-proof-grid.is-roadmap {
+    .boston .bos-proof-grid.is-roadmap,
+    .boston .bos-pipeline-grid {
         grid-template-columns: 1fr;
     }
 
     .boston .bos-family-list li {
         font-size: 0.88rem;
+    }
+
+    .boston .bos-pipeline-card {
+        min-height: unset;
     }
 }
