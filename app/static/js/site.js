@@ -48,6 +48,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const polishBostonHeadings = () => {
+        const boston = document.querySelector(".boston");
+        if (!boston) {
+            return;
+        }
+
+        const replacements = new Map([
+            ["Practical technical help, built close to the problem.", "Practical technical help, built close to the problem"],
+            ["Start with the problem, not the tool.", "Start with the problem, not the tool"],
+            ["You do not need the work done yet. You need the situation made clearer.", "You do not need the work done yet. You need the situation made clearer"],
+            ["Bring the messy version.", "Bring the messy version"],
+            ["Proof, not pitch.", "Proof, not pitch"],
+            ["Good technical work should survive contact with real people.", "Good technical work should survive contact with real people"],
+            ["There is a specific technical problem and you need someone to work through it.", "There is a specific technical problem and you need someone to work through it"],
+            ["Your team has the work, but needs another technical lens.", "Your team has the work, but needs another technical lens"],
+            ["Some problems are not one-and-done. They need a steady technical partner.", "Some problems are not one-and-done. They need a steady technical partner"]
+        ]);
+
+        boston.querySelectorAll("h1, h2, h3").forEach((heading) => {
+            const replacement = replacements.get(heading.textContent.trim());
+            if (replacement) {
+                heading.textContent = replacement;
+            }
+        });
+    };
+
+    polishBostonHeadings();
+
     const initBostonMotion = () => {
         const boston = document.querySelector(".boston");
         if (!boston) {
