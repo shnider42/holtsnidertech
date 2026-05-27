@@ -1,0 +1,81 @@
+/*
+ * Boston Practical portfolio roadmap.
+ * Styles the proof section as project families instead of generic proof cards.
+ */
+
+.boston .bos-family-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.boston .bos-family-card h3 {
+    margin-bottom: 0;
+}
+
+.boston .bos-family-card p {
+    margin-bottom: 0;
+}
+
+.boston .bos-family-list {
+    display: grid;
+    gap: 7px;
+    margin: 2px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.boston .bos-family-list li {
+    position: relative;
+    padding-left: 16px;
+    color: #d8d1c7;
+    font-size: 0.9rem;
+    line-height: 1.36;
+}
+
+.boston .bos-family-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 138, 61, 0.76);
+}
+
+.boston .bos-card-status {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: auto;
+    padding: 6px 9px;
+    border: 1px solid rgba(45, 143, 139, 0.42);
+    background: rgba(45, 143, 139, 0.10);
+    color: #c6d0da;
+    font-family: var(--bos-font-monoish, "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif);
+    font-size: 0.68rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
+.boston .bos-proof-grid.is-roadmap {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1080px) {
+    .boston .bos-proof-grid.is-roadmap {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 680px) {
+    .boston .bos-proof-grid.is-roadmap {
+        grid-template-columns: 1fr;
+    }
+
+    .boston .bos-family-list li {
+        font-size: 0.88rem;
+    }
+}
