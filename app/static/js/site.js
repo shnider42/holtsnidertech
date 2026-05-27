@@ -74,7 +74,44 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
+    const polishBostonPublicCopy = () => {
+        const boston = document.querySelector(".boston");
+        if (!boston) {
+            return;
+        }
+
+        const mark = boston.querySelector(".bos-mark");
+        if (mark) {
+            mark.setAttribute("href", "/");
+        }
+
+        boston.querySelectorAll('a[href*="style-lab"]').forEach((link) => link.remove());
+
+        document.querySelectorAll('a[href*="style-lab"]').forEach((link) => {
+            if (link.textContent.trim().toLowerCase() === "style lab") {
+                link.remove();
+            }
+        });
+
+        boston.querySelectorAll(".bos-kicker").forEach((item) => {
+            if (item.textContent.includes("candidate homepage")) {
+                item.textContent = "Holtsnider Tech";
+            }
+        });
+
+        boston.querySelectorAll(".bos-section-text").forEach((item) => {
+            if (item.textContent.includes("portfolio is not finished")) {
+                item.textContent = "Selected project families that show how Holtsnider Tech turns unclear ideas, workflows, and research problems into practical tools and demos.";
+            }
+        });
+
+        boston.querySelectorAll(".bos-contact-note").forEach((item) => {
+            item.textContent = "The useful first step is simple: describe the messy version, the constraint, or the decision you are trying to make.";
+        });
+    };
+
     polishBostonHeadings();
+    polishBostonPublicCopy();
 
     const ensureStylesheet = (href) => {
         if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
