@@ -44,6 +44,40 @@
     background: rgba(255, 138, 61, 0.76);
 }
 
+.boston .bos-family-actions,
+.boston .bos-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+    margin-top: auto;
+}
+
+.boston .bos-family-actions a,
+.boston .bos-card-actions a {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 138, 61, 0.42);
+    background: rgba(255, 138, 61, 0.09);
+    color: #f4f1ea;
+    font-family: var(--bos-font-monoish, "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+}
+
+.boston .bos-family-actions a:hover,
+.boston .bos-card-actions a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 138, 61, 0.68);
+    background: rgba(255, 138, 61, 0.16);
+}
+
 .boston .bos-card-status {
     display: inline-flex;
     width: fit-content;
@@ -60,11 +94,17 @@
     text-transform: uppercase;
 }
 
+.boston .bos-family-actions .bos-card-status,
+.boston .bos-card-actions .bos-card-status {
+    margin-top: 0;
+}
+
 .boston .bos-proof-grid.is-roadmap {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .boston .bos-portfolio-detail {
+    scroll-margin-top: 24px;
     margin-top: 26px;
     padding: clamp(24px, 4vw, 38px);
     border: 1px solid rgba(255, 255, 255, 0.16);
@@ -188,6 +228,10 @@
     line-height: 1.38;
 }
 
+.boston .bos-demo-card li strong {
+    color: #f4f1ea;
+}
+
 .boston .bos-demo-card li::before {
     content: "";
     position: absolute;
@@ -200,7 +244,7 @@
     opacity: 0.72;
 }
 
-.boston .bos-demo-card a {
+.boston .bos-demo-card > a {
     display: inline-flex;
     width: fit-content;
     min-height: 40px;
@@ -345,6 +389,40 @@
     line-height: 1.45;
 }
 
+.boston .bos-proof-list {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+}
+
+.boston .bos-proof-list div {
+    display: grid;
+    gap: 2px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.boston .bos-proof-list dt,
+.boston .bos-proof-list dd {
+    margin: 0;
+}
+
+.boston .bos-proof-list dt {
+    color: #ff8a3d;
+    font-family: var(--bos-font-monoish, "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif);
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
+.boston .bos-proof-list dd {
+    color: #d8d1c7;
+    font-size: 0.86rem;
+    line-height: 1.34;
+}
+
 .boston .bos-pipeline-card em {
     display: inline-flex;
     width: fit-content;
@@ -389,6 +467,20 @@
 
     .boston .bos-family-list li {
         font-size: 0.88rem;
+    }
+
+    .boston .bos-family-actions,
+    .boston .bos-card-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .boston .bos-family-actions a,
+    .boston .bos-card-actions a,
+    .boston .bos-family-actions .bos-card-status,
+    .boston .bos-card-actions .bos-card-status {
+        width: 100%;
+        justify-content: center;
     }
 
     .boston .bos-pipeline-card {
