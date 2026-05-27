@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const motionItems = [
             ...boston.querySelectorAll(
-                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-cta-strip, .bos-proof-card, .bos-contact"
+                ".bos-hero-grid, .bos-operating-line, .bos-section-heading, .bos-picker, .bos-cta-strip, .bos-proof-card, .bos-portfolio-detail, .bos-contact"
             )
         ];
 
@@ -161,6 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             proofGrid.innerHTML = await response.text();
             proofGrid.classList.add("is-roadmap");
+
+            const detailResponse = await fetch("/static/html/boston-daily-flyer-detail.html");
+            if (detailResponse.ok) {
+                proofGrid.insertAdjacentHTML("afterend", await detailResponse.text());
+            }
         } catch (error) {
             console.warn("Unable to load Boston portfolio roadmap", error);
         }
