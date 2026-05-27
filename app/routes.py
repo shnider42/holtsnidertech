@@ -47,9 +47,11 @@ STYLE_TEMPLATES = {
 @main.route("/")
 def home():
     return render_template(
-        "home.html",
+        "style_variants/boston_practical.html",
         business_name="Holtsnider Tech",
-        tagline="Practical technical consulting for businesses that need real solutions.",
+        variants=STYLE_VARIANTS,
+        slug="boston-practical",
+        variant=STYLE_VARIANTS["boston-practical"],
     )
 
 
@@ -95,30 +97,6 @@ def sitemap_xml():
   <url>
     <loc>https://holtsnidertech.com/</loc>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab/field-notes</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab/daily-flyer</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab/workshop</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab/tech-translator</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/style-lab/boston-practical</loc>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://holtsnidertech.com/static/demos/grepper.html</loc>
