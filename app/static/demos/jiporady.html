@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jiporady Demo | Holtsnider Tech</title>
+    <style>
+        :root {
+            --bg: #081018;
+            --panel: #0f1720;
+            --panel-2: #101820;
+            --text: #f3f4f6;
+            --muted: #a8b3bf;
+            --orange: #ff8a3d;
+            --teal: #2d8f8b;
+            --green: #7dff9b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 10%, rgba(255, 138, 61, 0.18), transparent 30%),
+                radial-gradient(circle at 82% 8%, rgba(45, 143, 139, 0.26), transparent 34%),
+                var(--bg);
+            color: var(--text);
+            font-family: "Aptos", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        main {
+            width: min(1180px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 28px 0 54px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .demo-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 24px;
+        }
+
+        .brand,
+        .eyebrow,
+        button,
+        .score-label,
+        .tile-value,
+        .status-pill {
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+
+        .brand {
+            color: var(--text);
+            font-size: 0.82rem;
+        }
+
+        .back-link {
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 0.76fr 1.24fr;
+            gap: 34px;
+            align-items: end;
+            padding: 28px 0 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .side-note {
+            padding: 16px 18px;
+            border-left: 5px solid var(--orange);
+            background: rgba(15, 23, 32, 0.72);
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            margin-bottom: 12px;
+            color: var(--orange);
+            font-size: 0.68rem;
+        }
+
+        h1 {
+            max-width: 820px;
+            margin: 0;
+            font-family: "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 0.86;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        .lede {
+            max-width: 690px;
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 1.04rem;
+            line-height: 1.55;
+        }
+
+        .game-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .category {
+            min-height: 74px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 138, 61, 0.14);
+            color: var(--text);
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            font-size: 0.84rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 1.15;
+            text-transform: uppercase;
+        }
+
+        .tile {
+            min-height: 106px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            background: rgba(15, 23, 32, 0.84);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+        }
+
+        .tile:hover,
+        .tile:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(255, 138, 61, 0.62);
+            background: rgba(255, 138, 61, 0.13);
+            outline: none;
+        }
+
+        .tile[disabled] {
+            cursor: default;
+            opacity: 0.42;
+            transform: none;
+        }
+
+        .tile-value {
+            color: var(--green);
+            font-size: clamp(1.35rem, 3vw, 2.25rem);
+        }
+
+        .panel {
+            min-height: 100%;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(15, 23, 32, 0.78);
+        }
+
+        .score-box {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .score-label {
+            color: var(--orange);
+            font-size: 0.68rem;
+        }
+
+        .score {
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            color: var(--green);
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            margin-bottom: 14px;
+            padding: 6px 9px;
+            border: 1px solid rgba(45, 143, 139, 0.48);
+            background: rgba(45, 143, 139, 0.14);
+            color: var(--text);
+            font-size: 0.64rem;
+        }
+
+        .question-title {
+            margin: 0 0 10px;
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            font-size: 1.8rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .question-text,
+        .answer-text,
+        .hint-text {
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .answer-text {
+            display: none;
+            margin-top: 14px;
+            padding: 12px;
+            border-left: 4px solid var(--green);
+            background: rgba(125, 255, 155, 0.08);
+        }
+
+        .answer-text.is-visible {
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        button.control {
+            min-height: 40px;
+            padding: 0 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.68rem;
+        }
+
+        button.control.primary {
+            border-color: rgba(255, 138, 61, 0.66);
+            background: rgba(255, 138, 61, 0.15);
+        }
+
+        button.control:hover,
+        button.control:focus-visible {
+            border-color: rgba(255, 138, 61, 0.75);
+            outline: none;
+        }
+
+        .meta {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 920px) {
+            .hero,
+            .game-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .board {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 560px) {
+            main {
+                width: min(100% - 20px, 1180px);
+            }
+
+            .board {
+                grid-template-columns: 1fr;
+            }
+
+            .tile,
+            .category {
+                min-height: 68px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <nav class="demo-nav" aria-label="Demo navigation">
+            <a class="brand" href="/">Holtsnider Tech</a>
+            <a class="back-link" href="/#games-learning-detail">Back to portfolio</a>
+        </nav>
+
+        <section class="hero">
+            <aside class="side-note">
+                This is a small, self-contained portfolio demo: enough interaction to show the concept without pretending the whole product is finished.
+            </aside>
+            <div>
+                <span class="eyebrow">Playable demo / Jiporady</span>
+                <h1>Turn topics into a game board</h1>
+                <p class="lede">
+                    Jiporady is a category-and-question game pattern for turning niche knowledge into a structured, replayable learning experience.
+                </p>
+            </div>
+        </section>
+
+        <section class="game-shell" aria-label="Jiporady game demo">
+            <div class="board" id="board"></div>
+            <aside class="panel" aria-live="polite">
+                <div class="score-box">
+                    <span class="score-label">Score</span>
+                    <strong class="score" id="score">0</strong>
+                </div>
+                <span class="status-pill" id="status">Pick a tile</span>
+                <h2 class="question-title" id="question-title">Choose a category and value</h2>
+                <p class="question-text" id="question-text">The board is a prototype showing how a content set can become an interactive learning surface.</p>
+                <p class="hint-text" id="hint-text"></p>
+                <p class="answer-text" id="answer-text"></p>
+                <div class="controls">
+                    <button class="control primary" id="show-answer" type="button">Show answer</button>
+                    <button class="control" id="mark-correct" type="button">Mark correct</button>
+                    <button class="control" id="reset-game" type="button">Reset</button>
+                </div>
+                <p class="meta">
+                    What this proves: a simple static page can still demonstrate game flow, content structure, scoring, and repeatable category logic.
+                </p>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        const categories = [
+            {
+                name: "Boston / Local",
+                clues: [
+                    { value: 100, q: "This Boston bridge is often used as a visual shorthand for local tech and infrastructure work.", a: "What is the Zakim Bridge?", hint: "Think cables, towers, and a very recognizable skyline shape." },
+                    { value: 200, q: "A practical client question might start with this three-letter system that maps names to servers.", a: "What is DNS?", hint: "It is why a domain name knows where to go." },
+                    { value: 300, q: "This is the useful first move when a small business says a vendor explanation makes no sense.", a: "What is translating the problem into plain English?", hint: "Not fixing yet — clarifying." }
+                ]
+            },
+            {
+                name: "Problem Solving",
+                clues: [
+                    { value: 100, q: "Before picking a tool, Holtsnider Tech tries to define this.", a: "What is the actual problem?", hint: "The site says to start here, not with the tool." },
+                    { value: 200, q: "This kind of answer keeps the work useful when requirements are messy.", a: "What is the smallest useful next step?", hint: "Smaller than a whole platform." },
+                    { value: 300, q: "When a system fails, this separates symptoms from causes.", a: "What is root-cause thinking?", hint: "It is common in QE/SRE work." }
+                ]
+            },
+            {
+                name: "Portfolio Patterns",
+                clues: [
+                    { value: 100, q: "Daily Flyer turns themes and dates into this kind of repeatable page.", a: "What is daily content?", hint: "Irish Today and Your Passage both use this pattern." },
+                    { value: 200, q: "Topic Coverage Mapper checks what already exists before choosing this.", a: "What is a distinctive angle?", hint: "Coverage first, positioning second." },
+                    { value: 300, q: "Jiporady turns topic lists into this more interactive format.", a: "What is a replayable game board?", hint: "You are using it now." }
+                ]
+            },
+            {
+                name: "Tech Translation",
+                clues: [
+                    { value: 100, q: "This kind of person can help a business understand what a larger tech provider is really saying.", a: "What is a technical translator or advisor?", hint: "A bridge between business and vendor language." },
+                    { value: 200, q: "This is a better first deliverable than a huge build when the client is unsure.", a: "What is a recommendation or decision map?", hint: "Useful before committing to implementation." },
+                    { value: 300, q: "This portfolio phrase means evidence matters more than sales language.", a: "What is proof, not pitch?", hint: "It appears in the homepage portfolio section." }
+                ]
+            }
+        ];
+
+        const board = document.getElementById("board");
+        const scoreEl = document.getElementById("score");
+        const statusEl = document.getElementById("status");
+        const titleEl = document.getElementById("question-title");
+        const questionEl = document.getElementById("question-text");
+        const hintEl = document.getElementById("hint-text");
+        const answerEl = document.getElementById("answer-text");
+        const showAnswerBtn = document.getElementById("show-answer");
+        const markCorrectBtn = document.getElementById("mark-correct");
+        const resetBtn = document.getElementById("reset-game");
+
+        let activeTile = null;
+        let activeClue = null;
+        let score = 0;
+
+        function renderBoard() {
+            board.innerHTML = "";
+            categories.forEach((category) => {
+                const heading = document.createElement("div");
+                heading.className = "category";
+                heading.textContent = category.name;
+                board.appendChild(heading);
+            });
+
+            for (let row = 0; row < 3; row += 1) {
+                categories.forEach((category) => {
+                    const clue = category.clues[row];
+                    const button = document.createElement("button");
+                    button.className = "tile";
+                    button.type = "button";
+                    button.innerHTML = `<span class="tile-value">${clue.value}</span>`;
+                    button.addEventListener("click", () => selectClue(button, category, clue));
+                    board.appendChild(button);
+                });
+            }
+        }
+
+        function selectClue(tile, category, clue) {
+            activeTile = tile;
+            activeClue = clue;
+            statusEl.textContent = `${category.name} / ${clue.value}`;
+            titleEl.textContent = category.name;
+            questionEl.textContent = clue.q;
+            hintEl.textContent = `Hint: ${clue.hint}`;
+            answerEl.textContent = clue.a;
+            answerEl.classList.remove("is-visible");
+        }
+
+        showAnswerBtn.addEventListener("click", () => {
+            if (!activeClue) {
+                return;
+            }
+            answerEl.classList.add("is-visible");
+        });
+
+        markCorrectBtn.addEventListener("click", () => {
+            if (!activeClue || !activeTile || activeTile.disabled) {
+                return;
+            }
+            score += activeClue.value;
+            scoreEl.textContent = score;
+            activeTile.disabled = true;
+            activeTile.innerHTML = "";
+            statusEl.textContent = "Marked correct";
+            activeClue = null;
+            activeTile = null;
+        });
+
+        resetBtn.addEventListener("click", () => {
+            score = 0;
+            activeTile = null;
+            activeClue = null;
+            scoreEl.textContent = score;
+            statusEl.textContent = "Pick a tile";
+            titleEl.textContent = "Choose a category and value";
+            questionEl.textContent = "The board is a prototype showing how a content set can become an interactive learning surface.";
+            hintEl.textContent = "";
+            answerEl.textContent = "";
+            answerEl.classList.remove("is-visible");
+            renderBoard();
+        });
+
+        renderBoard();
+    </script>
+</body>
+</html>
