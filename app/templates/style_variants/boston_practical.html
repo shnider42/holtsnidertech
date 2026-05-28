@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Boston Practical Style | {{ business_name }}{% endblock %}
-{% block meta_description %}A tighter Boston Practical homepage direction for Holtsnider Tech with a diagnostic selector, proof blocks, and a direct contact path.{% endblock %}
+{% block title %}{{ business_name }} | Practical Technical Help Backed by Real Systems Experience{% endblock %}
+{% block meta_description %}Holtsnider Tech combines enterprise systems experience, automation, troubleshooting, and clear communication to help people turn messy technical problems into practical next steps.{% endblock %}
 {% block extra_head %}
 <style>
     body {
@@ -44,7 +44,8 @@
     }
 
     .bos-links,
-    .bos-actions {
+    .bos-actions,
+    .bos-pill-row {
         display: flex;
         flex-wrap: wrap;
         gap: 12px 16px;
@@ -52,7 +53,8 @@
     }
 
     .bos-links a,
-    .bos-proof-card a {
+    .bos-proof-card a,
+    .bos-featured-project a {
         color: #cfc7bc;
         font-size: 0.78rem;
         font-weight: 900;
@@ -89,7 +91,7 @@
     }
 
     .bos-side {
-        max-width: 300px;
+        max-width: 330px;
         padding-left: 20px;
         border-left: 5px solid #ff8a3d;
         color: #cfc7bc;
@@ -97,11 +99,25 @@
         line-height: 1.48;
     }
 
+    .bos-side strong {
+        display: block;
+        margin-bottom: 10px;
+        color: #f4f1ea;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
     .bos-kicker,
     .bos-proof-card span,
     .bos-path-kicker,
     .bos-mini strong,
-    .bos-operating-line strong {
+    .bos-operating-line strong,
+    .bos-proof-label,
+    .bos-field-card span,
+    .bos-stack-card strong,
+    .bos-featured-project span {
         color: #ff8a3d;
         font-size: 0.72rem;
         font-weight: 900;
@@ -130,7 +146,7 @@
     }
 
     .bos-lede {
-        max-width: 690px;
+        max-width: 730px;
         margin: 26px 0 0;
         color: #d8d1c7;
         font-size: 1.08rem;
@@ -211,12 +227,23 @@
         letter-spacing: -0.075em;
     }
 
-    .bos-section-text {
-        max-width: 620px;
-        margin: 0;
+    .bos-section-text,
+    .bos-panel p,
+    .bos-list li,
+    .bos-proof-card p,
+    .bos-contact p,
+    .bos-cta-strip p,
+    .bos-field-card p,
+    .bos-stack-card p,
+    .bos-featured-project p {
         color: #d8d1c7;
-        font-size: 1rem;
         line-height: 1.55;
+    }
+
+    .bos-section-text {
+        max-width: 650px;
+        margin: 0;
+        font-size: 1rem;
     }
 
     .bos-picker {
@@ -271,6 +298,14 @@
         text-transform: uppercase;
     }
 
+    .bos-option small {
+        display: block;
+        margin-top: 3px;
+        color: inherit;
+        opacity: 0.76;
+        line-height: 1.35;
+    }
+
     .bos-panel {
         display: none;
         min-height: 100%;
@@ -283,15 +318,6 @@
         font-size: clamp(1.8rem, 4vw, 4.1rem);
         line-height: 0.94;
         letter-spacing: -0.07em;
-    }
-
-    .bos-panel p,
-    .bos-list li,
-    .bos-proof-card p,
-    .bos-contact p,
-    .bos-cta-strip p {
-        color: #d8d1c7;
-        line-height: 1.55;
     }
 
     .bos-path-note {
@@ -360,15 +386,33 @@
         margin-bottom: 0;
     }
 
-    .bos-proof-grid {
+    .bos-field-grid,
+    .bos-stack-grid,
+    .bos-proof-grid,
+    .bos-public-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
         border-top: 1px solid rgba(255, 255, 255, 0.16);
         border-left: 1px solid rgba(255, 255, 255, 0.16);
     }
 
-    .bos-proof-card {
-        min-height: 238px;
+    .bos-field-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .bos-stack-grid {
+        grid-template-columns: repeat(6, 1fr);
+        margin-top: 18px;
+    }
+
+    .bos-proof-grid,
+    .bos-public-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .bos-field-card,
+    .bos-stack-card,
+    .bos-proof-card,
+    .bos-featured-project {
         padding: 24px;
         border-right: 1px solid rgba(255, 255, 255, 0.16);
         border-bottom: 1px solid rgba(255, 255, 255, 0.16);
@@ -376,22 +420,91 @@
         transition: background 0.16s ease, transform 0.16s ease;
     }
 
-    .bos-proof-card:hover {
+    .bos-field-card,
+    .bos-proof-card {
+        min-height: 238px;
+    }
+
+    .bos-field-card:hover,
+    .bos-stack-card:hover,
+    .bos-proof-card:hover,
+    .bos-featured-project:hover {
         transform: translateY(-2px);
         background: rgba(255, 255, 255, 0.06);
     }
 
-    .bos-proof-card h3 {
+    .bos-field-card h3,
+    .bos-proof-card h3,
+    .bos-featured-project h3 {
         margin: 20px 0 12px;
         font-size: 1.65rem;
         line-height: 0.98;
         letter-spacing: -0.055em;
     }
 
-    .bos-proof-card a {
+    .bos-stack-card {
+        min-height: 168px;
+        padding: 20px;
+    }
+
+    .bos-stack-card strong {
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .bos-stack-card p,
+    .bos-field-card p,
+    .bos-proof-card p,
+    .bos-featured-project p {
+        margin-bottom: 0;
+    }
+
+    .bos-proof-card a,
+    .bos-featured-project a {
         display: inline-flex;
         margin-top: 14px;
         color: #ff8a3d;
+    }
+
+    .bos-proof-intro {
+        display: grid;
+        grid-template-columns: 0.42fr 0.58fr;
+        gap: 28px;
+        align-items: start;
+        padding: 24px;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.035);
+    }
+
+    .bos-proof-intro p {
+        margin-bottom: 0;
+    }
+
+    .bos-proof-band + .bos-proof-band {
+        margin-top: 34px;
+    }
+
+    .bos-proof-band-heading {
+        display: grid;
+        grid-template-columns: 0.30fr 0.70fr;
+        gap: 18px;
+        align-items: end;
+        margin-bottom: 14px;
+    }
+
+    .bos-proof-band-heading h3 {
+        margin-bottom: 0;
+        font-size: clamp(1.5rem, 3vw, 2.6rem);
+        line-height: 0.96;
+        letter-spacing: -0.055em;
+    }
+
+    .bos-proof-band-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: #d8d1c7;
+        line-height: 1.55;
     }
 
     .bos-contact {
@@ -407,9 +520,34 @@
         font-size: 0.93rem;
     }
 
+    .bos-pill-row {
+        margin-top: 18px;
+    }
+
+    .bos-pill {
+        display: inline-flex;
+        padding: 7px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #d8d1c7;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 1080px) {
+        .bos-stack-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
     @media (max-width: 980px) {
         .bos-section-heading,
-        .bos-proof-grid {
+        .bos-proof-intro,
+        .bos-proof-band-heading,
+        .bos-field-grid,
+        .bos-proof-grid,
+        .bos-public-grid {
             grid-template-columns: 1fr 1fr;
         }
 
@@ -439,7 +577,12 @@
         .bos-cta-strip,
         .bos-section-heading,
         .bos-panel-grid,
-        .bos-proof-grid {
+        .bos-proof-intro,
+        .bos-proof-band-heading,
+        .bos-field-grid,
+        .bos-stack-grid,
+        .bos-proof-grid,
+        .bos-public-grid {
             grid-template-columns: 1fr;
         }
 
@@ -502,9 +645,17 @@
             font-size: clamp(1.85rem, 10vw, 2.8rem);
         }
 
-        .bos-proof-card {
+        .bos-field-card,
+        .bos-proof-card,
+        .bos-featured-project {
             min-height: unset;
             padding: 22px 18px;
+            border-right: 0;
+        }
+
+        .bos-stack-card {
+            min-height: unset;
+            padding: 18px;
             border-right: 0;
         }
 
@@ -527,6 +678,7 @@
             <a class="bos-mark" href="{{ url_for('main.style_lab') }}">Holtsnider Tech</a>
             <nav class="bos-links" aria-label="Boston Practical preview navigation">
                 <a href="#diagnostic">Diagnostic</a>
+                <a href="#experience">Experience</a>
                 <a href="#proof">Proof</a>
                 <a href="#contact">Contact</a>
                 <a href="{{ url_for('main.style_lab') }}">Compare</a>
@@ -536,19 +688,27 @@
         <section class="bos-hero">
             <div class="bos-hero-grid">
                 <aside class="bos-side">
-                    No theater. No inflated pitch. Just a clearer way through the problem.
+                    <strong>Built from real systems work</strong>
+                    Enterprise storage, lab infrastructure, automation, reliability, troubleshooting, and technical translation — not just portfolio polish.
                 </aside>
 
                 <div>
                     <span class="bos-kicker">Boston Practical candidate homepage</span>
                     <h1>Practical technical help, built close to the problem.</h1>
                     <p class="bos-lede">
-                        Holtsnider Tech helps turn unclear technical messes into smaller next steps:
-                        guidance, troubleshooting, team advisory, and longer-term technical support without the agency fog.
+                        Holtsnider Tech helps turn unclear technical messes into smaller next steps: guidance,
+                        troubleshooting, automation, team advisory, and longer-term support grounded in years of real
+                        infrastructure and reliability engineering experience.
                     </p>
+                    <div class="bos-pill-row" aria-label="Core experience areas">
+                        <span class="bos-pill">Systems reliability</span>
+                        <span class="bos-pill">Automation</span>
+                        <span class="bos-pill">Troubleshooting</span>
+                        <span class="bos-pill">Technical translation</span>
+                    </div>
                     <div class="bos-actions">
                         <a class="bos-btn" href="#diagnostic">Find your conversation shape</a>
-                        <a class="bos-btn alt" href="mailto:chris@holtsnidertech.com?subject=Holtsnider%20Tech%20project%20inquiry">Start simple</a>
+                        <a class="bos-btn alt" href="#experience">See the experience layer</a>
                     </div>
                 </div>
             </div>
@@ -556,14 +716,15 @@
 
         <div class="bos-operating-line" aria-label="Operating principle">
             <strong>Operating principle</strong>
-            <p>Fewer buzzwords. Clearer tradeoffs. Practical next steps.</p>
+            <p>Fewer buzzwords. Clearer tradeoffs. Practical next steps. Work that survives contact with real systems and real people.</p>
         </div>
 
         <section class="bos-section bos-diagnostic" id="diagnostic">
             <div class="bos-section-heading">
                 <h2>Start with the problem, not the tool.</h2>
                 <p class="bos-section-text">
-                    Pick the closest conversation shape. The point is not to force a package — it is to name the situation, shrink the ambiguity, and choose the smallest useful next move.
+                    Pick the closest conversation shape. The point is not to force a package — it is to name the situation,
+                    shrink the ambiguity, and choose the smallest useful next move.
                 </p>
             </div>
 
@@ -609,7 +770,7 @@
                         <span class="bos-path-kicker">Diagnostic path / Advice</span>
                         <h3>You do not need the work done yet. You need the situation made clearer.</h3>
                         <p class="bos-path-note">Good first step: a consulting call to translate the options and risks.</p>
-                        <p>For a small business facing DNS, hosting, cloud, vendor, security, software, or general IT choices, the first value may be independent guidance before anyone touches the system.</p>
+                        <p>For a small business facing DNS, hosting, cloud, vendor, security, software, data, or general IT choices, the first value may be independent guidance before anyone touches the system.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
                                 <strong>Useful outputs</strong>
@@ -621,7 +782,7 @@
                             </div>
                             <div class="bos-mini">
                                 <strong>Fit</strong>
-                                <p>Small-business tech guidance, provider selection, vendor translation, and ad hoc technical sanity checks.</p>
+                                <p>Small-business tech guidance, provider selection, vendor translation, implementation sanity checks, and honest assessment of what actually needs to happen next.</p>
                             </div>
                         </div>
                     </article>
@@ -630,7 +791,7 @@
                         <span class="bos-path-kicker">Diagnostic path / Hands-on</span>
                         <h3>There is a specific technical problem and you need someone to work through it.</h3>
                         <p class="bos-path-note">Good first step: isolate what changed, what fails, and what evidence exists.</p>
-                        <p>This is the direct problem-solving lane: debugging, troubleshooting, small tooling, workflow repair, deployment weirdness, data cleanup, or practical implementation work.</p>
+                        <p>This is the direct problem-solving lane: debugging across software, infrastructure, workflows, environments, logs, APIs, networking assumptions, deployment weirdness, and unclear ownership.</p>
                         <div class="bos-panel-grid">
                             <div class="bos-mini">
                                 <strong>Useful outputs</strong>
@@ -642,7 +803,7 @@
                             </div>
                             <div class="bos-mini">
                                 <strong>Fit</strong>
-                                <p>When there is a concrete issue, limited context, and a need to start untangling the problem directly.</p>
+                                <p>When there is a concrete issue, limited context, and a need to start untangling the problem directly without turning it into an overbuilt project.</p>
                             </div>
                         </div>
                     </article>
@@ -663,7 +824,7 @@
                             </div>
                             <div class="bos-mini">
                                 <strong>Fit</strong>
-                                <p>Technical review, QE/SRE-style judgment, stakeholder translation, and practical second-opinion support.</p>
+                                <p>Technical review, QE/SRE-style judgment, stakeholder translation, release-risk thinking, and practical second-opinion support.</p>
                             </div>
                         </div>
                     </article>
@@ -684,7 +845,7 @@
                             </div>
                             <div class="bos-mini">
                                 <strong>Fit</strong>
-                                <p>When the need is ongoing guidance, technical ownership, recurring support, or a deeper working relationship.</p>
+                                <p>When the need is ongoing guidance, technical ownership, recurring support, or a deeper working relationship with someone who can move between detail and decision-making.</p>
                             </div>
                         </div>
                     </article>
@@ -705,39 +866,146 @@
             </div>
         </section>
 
+        <section class="bos-section" id="experience">
+            <div class="bos-section-heading">
+                <h2>Field experience across messy systems.</h2>
+                <p class="bos-section-text">
+                    Before Holtsnider Tech became a public workbench, the foundation was enterprise engineering:
+                    storage systems, lab infrastructure, networking, automation, release quality, root-cause investigation,
+                    and customer-facing technical support.
+                </p>
+            </div>
+
+            <div class="bos-field-grid">
+                <article class="bos-field-card">
+                    <span>Reliability</span>
+                    <h3>Incident response and systems stability</h3>
+                    <p>High-stakes debugging, production-impacting issues, storage reliability, replication quality, data integrity, and long-term stability work.</p>
+                </article>
+                <article class="bos-field-card">
+                    <span>Infrastructure</span>
+                    <h3>Lab and environment architecture</h3>
+                    <p>Replica environments, rack-level systems, switches, VLANs, Fibre Channel, Linux, VMware, and realistic test conditions.</p>
+                </article>
+                <article class="bos-field-card">
+                    <span>Automation</span>
+                    <h3>Workflow tooling and integrations</h3>
+                    <p>Python, APIs, Terraform, GitHub workflows, CLI tools, security review workflows, and repeatable operational processes.</p>
+                </article>
+                <article class="bos-field-card">
+                    <span>Translation</span>
+                    <h3>Technical clarity for real decisions</h3>
+                    <p>Turning deep technical detail into practical direction for clients, teams, vendors, stakeholders, and non-specialists.</p>
+                </article>
+            </div>
+
+            <div class="bos-stack-grid" aria-label="Systems stack experience">
+                <div class="bos-stack-card">
+                    <strong>Hardware</strong>
+                    <p>Rack systems, lab devices, oscilloscopes, I²C, Raspberry Pi, FPGAs, and physical debugging context.</p>
+                </div>
+                <div class="bos-stack-card">
+                    <strong>Networking</strong>
+                    <p>Layers 1-3, switches, VLANs, Fibre Channel, nginx, network assumptions, and connectivity failures.</p>
+                </div>
+                <div class="bos-stack-card">
+                    <strong>Systems</strong>
+                    <p>Linux, Windows, VMware ESXi, storage platforms, Kubernetes labs, and environment management.</p>
+                </div>
+                <div class="bos-stack-card">
+                    <strong>Automation</strong>
+                    <p>Python, Bash, PowerShell, Terraform, GitHub Actions, ServiceNow-style APIs, and repeatable workflows.</p>
+                </div>
+                <div class="bos-stack-card">
+                    <strong>Operations</strong>
+                    <p>Incident response, reliability analysis, root cause review, rollout risk, and support paths.</p>
+                </div>
+                <div class="bos-stack-card">
+                    <strong>People</strong>
+                    <p>Customers, engineers, vendors, executives, documentation, whitepapers, and cross-functional communication.</p>
+                </div>
+            </div>
+        </section>
+
         <section class="bos-section" id="proof">
             <div class="bos-section-heading">
                 <h2>Proof, not pitch.</h2>
                 <p class="bos-section-text">
-                    The portfolio is not finished yet, so this section stays honest: it shows the kinds of work that can become real case studies as the site matures.
+                    Public projects are only part of the story. The proof layer should show what can be clicked today and what comes from years of professional systems work.
                 </p>
             </div>
 
-            <div class="bos-proof-grid">
-                <article class="bos-proof-card">
-                    <span>Daily Flyer</span>
-                    <h3>Repeatable content system</h3>
-                    <p>Turns structured topics into themed daily pages: Irish Today, birthdays, local history, and niche explainers.</p>
-                    <a href="#contact">Use the pattern</a>
-                </article>
-                <article class="bos-proof-card">
-                    <span>This site</span>
-                    <h3>Live brand workbench</h3>
-                    <p>Tests voice, visual direction, proof structure, and a clearer path from problem to contact.</p>
-                    <a href="{{ url_for('main.style_lab') }}">Compare styles</a>
-                </article>
-                <article class="bos-proof-card">
-                    <span>Data cleanup</span>
-                    <h3>Hidden duplicate logic</h3>
-                    <p>Practical thinking for inconsistent names, duplicate records, import prep, and trust problems.</p>
-                    <a href="#diagnostic">Start with data</a>
-                </article>
-                <article class="bos-proof-card">
-                    <span>Translation</span>
-                    <h3>Technical clarity</h3>
-                    <p>Turns vendor language, platform choices, and implementation tradeoffs into plain-English next steps.</p>
-                    <a href="#diagnostic">Choose a path</a>
-                </article>
+            <div class="bos-proof-intro">
+                <span class="bos-proof-label">How to read this section</span>
+                <p class="bos-section-text">
+                    Some work can be linked publicly. Some professional work has to be represented as anonymized case shapes. Both matter: one shows current building momentum, the other explains why the technical judgment is credible.
+                </p>
+            </div>
+
+            <div class="bos-proof-band">
+                <div class="bos-proof-band-heading">
+                    <h3>Public / visible work</h3>
+                    <p>Projects, demos, and live workbench pieces that show current implementation style, product thinking, and practical build habits.</p>
+                </div>
+                <div class="bos-public-grid">
+                    <article class="bos-featured-project">
+                        <span>Daily Flyer</span>
+                        <h3>Irish Today</h3>
+                        <p>A working Daily Flyer implementation: compact, themed daily pages built around repeatable structure, presentation, and content automation.</p>
+                        <a href="https://daily-flyer.onrender.com/" target="_blank" rel="noopener noreferrer">View site</a>
+                    </article>
+                    <article class="bos-featured-project">
+                        <span>Tool prototype</span>
+                        <h3>Grepper</h3>
+                        <p>A Workday job search, scraping, and ranking workflow with URL parsing, tenant configuration, ranking logic, exports, and a browser-style demo.</p>
+                        <a href="/static/demos/grepper.html">View demo</a>
+                    </article>
+                    <article class="bos-featured-project">
+                        <span>Interactive demo</span>
+                        <h3>LoudSource Voting Flyer</h3>
+                        <p>A functional voting prototype showing how a themed content page can become interactive instead of only informational.</p>
+                        <a href="/static/demos/loudsource-vote.html">Try demo</a>
+                    </article>
+                    <article class="bos-featured-project">
+                        <span>This site</span>
+                        <h3>Live brand workbench</h3>
+                        <p>Tests voice, visual direction, proof structure, contact paths, and the bridge between portfolio work and client-ready consulting.</p>
+                        <a href="{{ url_for('main.style_lab') }}">Compare styles</a>
+                    </article>
+                </div>
+            </div>
+
+            <div class="bos-proof-band">
+                <div class="bos-proof-band-heading">
+                    <h3>Professional / field proof</h3>
+                    <p>Anonymized experience shapes that connect the public portfolio to the deeper systems background behind it.</p>
+                </div>
+                <div class="bos-proof-grid">
+                    <article class="bos-proof-card">
+                        <span>Enterprise reliability</span>
+                        <h3>Storage systems under pressure</h3>
+                        <p>Reliability engineering, incident response, replication quality, data integrity, and long-term stability in complex storage environments.</p>
+                        <a href="#contact">Discuss reliability work</a>
+                    </article>
+                    <article class="bos-proof-card">
+                        <span>Security labs</span>
+                        <h3>Replica environments and rollout risk</h3>
+                        <p>Lab architectures using switches, Fibre Channel, VLANs, realistic workloads, and pre-rollout testing to surface problems early.</p>
+                        <a href="#contact">Discuss lab strategy</a>
+                    </article>
+                    <article class="bos-proof-card">
+                        <span>Root cause</span>
+                        <h3>Cross-layer debugging</h3>
+                        <p>Packet captures, file-level analysis, OS layers, drivers, firmware, network paths, and the boundary between hardware and software.</p>
+                        <a href="#diagnostic">Start troubleshooting</a>
+                    </article>
+                    <article class="bos-proof-card">
+                        <span>Operational tooling</span>
+                        <h3>APIs, automation, and governance</h3>
+                        <p>Python tooling, CMDB/security API workflows, Terraform-based GitHub provisioning, branch protection, and repeatable operational review.</p>
+                        <a href="#diagnostic">Start with automation</a>
+                    </article>
+                </div>
             </div>
         </section>
 
@@ -745,14 +1013,17 @@
             <h2>Good technical work should survive contact with real people.</h2>
             <div>
                 <p>
-                    Holtsnider Tech is being shaped around practical, close-to-the-problem support: the kind of help that makes technical choices, failures, teams, and tools easier to reason about.
+                    Holtsnider Tech is being shaped around practical, close-to-the-problem support: the kind of help that makes technical choices, failures, teams, tools, and tradeoffs easier to reason about.
+                </p>
+                <p>
+                    The site can show the current projects, but the larger value is the combination behind them: systems reliability, automation, low-level troubleshooting, client-facing communication, and the patience to make a messy problem understandable.
                 </p>
                 <div class="bos-actions">
                     <a class="bos-btn" href="mailto:chris@holtsnidertech.com?subject=Holtsnider%20Tech%20project%20inquiry">Email Chris</a>
                     <a class="bos-btn alt" href="#diagnostic">Pick a conversation shape</a>
                 </div>
                 <p class="bos-contact-note">
-                    This is still a Style Lab prototype. The point is to test a homepage that feels direct, useful, and diagnostic before it becomes salesy.
+                    This is still a Style Lab prototype, but this branch intentionally leans harder into the full experience story: current public work plus the professional background that makes the work credible.
                 </p>
             </div>
         </section>
