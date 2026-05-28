@@ -5,7 +5,8 @@
  */
 
 html {
-    scroll-behavior: smooth;
+    /* Custom JS controls automatic scroll duration; native smooth scrolling fights it. */
+    scroll-behavior: auto;
 }
 
 .boston {
