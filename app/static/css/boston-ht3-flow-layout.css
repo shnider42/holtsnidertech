@@ -1,7 +1,7 @@
 /*
  * ht3 flow/layout polish.
- * Keeps the first viewport direction, but makes later sections behave more like
- * deliberate panels when anchor links move the visitor down the page.
+ * Keeps the first viewport direction, but makes later sections behave like
+ * deliberate content panels without forcing short sections to waste space.
  */
 
 html {
@@ -9,7 +9,8 @@ html {
 }
 
 .boston {
-    --bos-panel-min-height: calc(100svh - 10px);
+    --bos-panel-min-height: min(760px, 84svh);
+    --bos-panel-y: clamp(42px, 5.5vw, 76px);
 }
 
 .boston .bos-wrap {
@@ -122,6 +123,8 @@ html {
 .boston .bos-contact {
     min-height: var(--bos-panel-min-height);
     scroll-margin-top: 0;
+    padding-top: var(--bos-panel-y) !important;
+    padding-bottom: var(--bos-panel-y) !important;
 }
 
 .boston .bos-wrap > .bos-section {
@@ -144,8 +147,15 @@ html {
 }
 
 .boston #paths {
-    padding-top: clamp(34px, 5vw, 64px) !important;
-    padding-bottom: clamp(34px, 5vw, 64px) !important;
+    padding-top: var(--bos-panel-y) !important;
+    padding-bottom: var(--bos-panel-y) !important;
+}
+
+.boston #paths .bos-section-heading,
+.boston #experience .bos-section-heading,
+.boston #work .bos-section-heading,
+.boston #case-shapes .bos-section-heading {
+    margin-bottom: clamp(16px, 2.6vw, 28px) !important;
 }
 
 .boston #paths .bos-section-heading h2::after {
@@ -153,7 +163,13 @@ html {
 }
 
 .boston #paths::after {
+    margin-top: 16px;
     margin-bottom: 0;
+}
+
+.boston .bos-path-grid {
+    gap: clamp(12px, 1.7vw, 18px) !important;
+    margin-top: clamp(18px, 2.4vw, 26px) !important;
 }
 
 .boston .bos-path-grid::before {
@@ -161,6 +177,7 @@ html {
 }
 
 .boston .bos-path-grid .bos-card {
+    min-height: clamp(285px, 34vh, 350px) !important;
     overflow: hidden;
 }
 
@@ -195,6 +212,20 @@ html {
     transition-delay: 0s;
 }
 
+.boston .bos-stack-grid,
+.boston .bos-work-grid,
+.boston .bos-case-grid,
+.boston .bos-contact-grid {
+    gap: clamp(12px, 1.6vw, 20px) !important;
+}
+
+.boston .bos-mini,
+.boston .bos-work-card,
+.boston .bos-case-card,
+.boston .bos-contact-card {
+    padding: clamp(16px, 2vw, 22px) !important;
+}
+
 .boston .bos-choice-card,
 .boston .bos-card,
 .boston .bos-mini,
@@ -220,13 +251,13 @@ html {
 }
 
 @media (min-width: 1081px) {
-    .boston .bos-wrap > .bos-section,
-    .boston .bos-contact {
-        max-height: none;
-    }
-
     .boston #experience .bos-stack-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .boston #work,
+    .boston #case-shapes {
+        min-height: auto;
     }
 }
 
@@ -338,6 +369,10 @@ html {
         min-height: auto !important;
         padding-top: 34px !important;
         padding-bottom: 34px !important;
+    }
+
+    .boston .bos-path-grid .bos-card {
+        min-height: auto !important;
     }
 
     .boston .bos-path-grid .bos-card p,
