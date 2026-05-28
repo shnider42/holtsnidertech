@@ -232,6 +232,200 @@
     color: #2d8f8b !important;
 }
 
+/*
+ * ht3 flowchart pass.
+ * The first viewport already offers four choices. This deepens the next section
+ * so those choices become an actual decision map: situation -> lane -> first
+ * move -> output.
+ */
+.boston #paths {
+    position: relative;
+    padding-top: clamp(50px, 6vw, 82px) !important;
+}
+
+.boston #paths .bos-section-heading {
+    align-items: end !important;
+    margin-bottom: 22px !important;
+}
+
+.boston #paths .bos-section-heading::before {
+    content: "Flow chart / after the first click";
+    grid-column: 1 / -1;
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 4px;
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 138, 61, 0.34);
+    background: rgba(255, 138, 61, 0.08);
+    color: #ff8a3d;
+    font-family: var(--bos-font-display);
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.boston #paths .bos-section-heading h2 {
+    position: relative;
+}
+
+.boston #paths .bos-section-heading h2::after {
+    content: "Situation → lane → first move → useful output";
+    display: block;
+    margin-top: 12px;
+    color: #cfc7bc;
+    font-family: var(--bos-font-body);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.boston #paths .bos-section-text {
+    max-width: 760px !important;
+}
+
+.boston .bos-path-grid {
+    position: relative;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    margin-top: 28px !important;
+    border: 0 !important;
+}
+
+.boston .bos-path-grid::before {
+    content: "";
+    position: absolute;
+    top: 44px;
+    left: 9%;
+    right: 9%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 138, 61, 0.18), rgba(255, 138, 61, 0.72), rgba(45, 143, 139, 0.68), rgba(255, 255, 255, 0.22));
+    z-index: 0;
+}
+
+.boston .bos-path-grid .bos-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 390px !important;
+    flex-direction: column;
+    padding: 22px !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    background: rgba(8, 16, 24, 0.54) !important;
+    box-shadow: 0 18px 52px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.boston .bos-path-grid .bos-card::before {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 16px;
+    padding: 7px 10px;
+    border: 1px solid color-mix(in srgb, var(--path-accent, #ff8a3d) 48%, rgba(255, 255, 255, 0.18));
+    background: color-mix(in srgb, var(--path-accent, #ff8a3d) 14%, transparent);
+    color: var(--path-accent, #ff8a3d);
+    font-family: var(--bos-font-display);
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.boston .bos-path-grid .bos-card::after {
+    display: block;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+    color: #f4f1ea;
+    font-family: var(--bos-font-display);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.boston #solve {
+    --path-accent: #ff8a3d;
+    border-left: 5px solid var(--path-accent) !important;
+}
+
+.boston #solve::before {
+    content: "01 / Solutions Engineering";
+}
+
+.boston #solve::after {
+    content: "Output: isolate cause, reduce risk, choose a fix path";
+}
+
+.boston #opportunity {
+    --path-accent: #7dff9b;
+    border-left: 5px solid var(--path-accent) !important;
+    background: linear-gradient(135deg, rgba(125, 255, 155, 0.08), rgba(8, 16, 24, 0.56) 54%, rgba(45, 143, 139, 0.11)) !important;
+}
+
+.boston #opportunity::before {
+    content: "02 / Opportunity Engineering";
+}
+
+.boston #opportunity::after {
+    content: "Output: map leverage, shape the idea, prototype the better path";
+}
+
+.boston #not-sure {
+    --path-accent: #2d8f8b;
+    border-left: 5px solid var(--path-accent) !important;
+}
+
+.boston #not-sure::before {
+    content: "03 / Discovery";
+}
+
+.boston #not-sure::after {
+    content: "Output: name the work before choosing the solution";
+}
+
+.boston .bos-path-grid .bos-card-label {
+    display: none !important;
+}
+
+.boston .bos-path-grid .bos-card h3 {
+    margin-bottom: 12px !important;
+    font-size: clamp(1.55rem, 2.4vw, 2.35rem) !important;
+    line-height: 0.98 !important;
+}
+
+.boston .bos-path-grid .bos-card p {
+    margin-bottom: 18px !important;
+    color: #d8d1c7 !important;
+}
+
+.boston .bos-path-grid .bos-details {
+    margin-top: auto !important;
+    padding-top: 14px !important;
+}
+
+.boston .bos-path-grid .bos-details summary {
+    color: var(--path-accent, #ff8a3d) !important;
+}
+
+.boston .bos-path-grid .bos-details li {
+    margin-top: 6px;
+}
+
+.boston #paths::after {
+    content: "The point is not to force every request into a ticket. The point is to find the right first move: fix, shape, clarify, prototype, or pause.";
+    display: block;
+    margin-top: 20px;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 138, 61, 0.26);
+    background: linear-gradient(135deg, rgba(255, 138, 61, 0.10), rgba(8, 16, 24, 0.34) 58%, rgba(45, 143, 139, 0.08));
+    color: #d8d1c7;
+    font-size: 0.98rem;
+    line-height: 1.5;
+}
+
 @media (max-width: 1080px) {
     .boston .bos-first-screen {
         min-height: auto !important;
@@ -240,6 +434,11 @@
     .boston .bos h1,
     .boston h1 {
         font-size: clamp(3.2rem, 10vw, 6.9rem) !important;
+    }
+
+    .boston .bos-path-grid::before {
+        left: 6%;
+        right: 6%;
     }
 }
 
@@ -285,6 +484,24 @@
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 
+    .boston .bos-path-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+
+    .boston .bos-path-grid::before {
+        top: 0;
+        bottom: 0;
+        left: 22px;
+        right: auto;
+        width: 1px;
+        height: auto;
+    }
+
+    .boston .bos-path-grid .bos-card {
+        min-height: unset !important;
+    }
+
     .boston .bos-picker,
     .boston .bos-mini,
     .boston .bos-proof-card,
@@ -326,5 +543,9 @@
 
     .boston .bos-start-panel .bos-choice-card p {
         display: none !important;
+    }
+
+    .boston #paths .bos-section-heading h2::after {
+        font-size: 0.7rem;
     }
 }
