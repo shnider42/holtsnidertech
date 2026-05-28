@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const SECTION_SETTLE_DELAY_MS = 250;
     const AUTO_SCROLL_DURATION_MS = 500;
     let isAutomaticScrollActive = false;
+    let activeScrollAnimation = null;
+    let scrollInterruptListenersBound = false;
 
     const ensureStylesheet = (href) => {
         if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
@@ -261,30 +263,74 @@ document.addEventListener("DOMContentLoaded", () => {
     const motionToggleState = initBostonMotionToggle();
     ensureStylesheet("/static/css/boston-ht3-flow-layout.css");
 
+    const cancelAutomaticScroll = () => {
+        if (!activeScrollAnimation) {
+            return;
+        }
+
+        activeScrollAnimation.cancelled = true;
+        activeScrollAnimation = null;
+        isAutomaticScrollActive = false;
+    };
+
+    const bindScrollInterrupts = () => {
+        if (scrollInterruptListenersBound) {
+            return;
+        }
+
+        scrollInterruptListenersBound = true;
+        window.addEventListener("wheel", cancelAutomaticScroll, { passive: true });
+        window.addEventListener("touchstart", cancelAutomaticScroll, { passive: true });
+        window.addEventListener("keydown", (event) => {
+            const navigationKeys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " ", "Spacebar"];
+            if (navigationKeys.includes(event.key)) {
+                cancelAutomaticScroll();
+            }
+        });
+    };
+
     const smoothScrollTo = (targetY, duration = AUTO_SCROLL_DURATION_MS) => {
         const startY = window.scrollY || window.pageYOffset;
         const distance = targetY - startY;
         const startTime = window.performance.now();
+        const animation = { cancelled: false };
 
         if (Math.abs(distance) < 2) {
             return Promise.resolve();
         }
 
+        if (activeScrollAnimation) {
+            activeScrollAnimation.cancelled = true;
+        }
+
+        activeScrollAnimation = animation;
+
         return new Promise((resolve) => {
             const step = (currentTime) => {
+                if (animation.cancelled) {
+                    if (activeScrollAnimation === animation) {
+                        activeScrollAnimation = null;
+                    }
+                    resolve({ cancelled: true });
+                    return;
+                }
+
                 const elapsed = Math.min((currentTime - startTime) / duration, 1);
                 const eased = elapsed < 0.5
                     ? 4 * elapsed * elapsed * elapsed
                     : 1 - Math.pow(-2 * elapsed + 2, 3) / 2;
 
-                window.scrollTo(0, startY + (distance * eased));
+                window.scrollTo({ top: startY + (distance * eased), left: 0, behavior: "auto" });
 
                 if (elapsed < 1) {
                     window.requestAnimationFrame(step);
                     return;
                 }
 
-                resolve();
+                if (activeScrollAnimation === animation) {
+                    activeScrollAnimation = null;
+                }
+                resolve({ cancelled: false });
             };
 
             window.requestAnimationFrame(step);
@@ -297,10 +343,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const runAutomaticScroll = (scrollTask) => {
+        bindScrollInterrupts();
         isAutomaticScrollActive = true;
         return scrollTask().finally(() => {
             window.setTimeout(() => {
-                isAutomaticScrollActive = false;
+                if (!activeScrollAnimation) {
+                    isAutomaticScrollActive = false;
+                }
             }, 80);
         });
     };
