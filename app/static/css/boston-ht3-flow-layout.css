@@ -53,6 +53,29 @@ html {
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
     transform: translateX(-50%);
+    transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+@supports (animation-timeline: scroll()) {
+    .boston .bos-head {
+        animation: bos-head-scroll-fade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 150px;
+    }
+
+    @keyframes bos-head-scroll-fade {
+        from {
+            background-color: rgba(8, 16, 24, 0.78);
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+        }
+
+        to {
+            background-color: rgba(8, 16, 24, 0.36);
+            border-color: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+        }
+    }
 }
 
 .boston .bos-hero {
