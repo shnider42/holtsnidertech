@@ -1,0 +1,59 @@
+/*
+ * Shared Boston Practical display typography.
+ *
+ * The earlier look used aggressive negative tracking on multiple large uppercase
+ * headings. That made some pairs, especially T/Y-heavy pairs, crowd at certain
+ * viewport widths. Keep the bold display feel, but centralize the rhythm here so
+ * headings behave consistently across the homepage and portfolio cards.
+ */
+
+.boston {
+    --bos-display-tracking: -0.018em;
+    --bos-display-tracking-mobile: -0.012em;
+    --bos-display-line-height: 0.96;
+}
+
+.boston .bos-hero-grid > div::before,
+.boston h1,
+.boston .bos-section-heading h2,
+.boston .bos-contact h2,
+.boston .bos-panel h3,
+.boston .bos-proof-card h3,
+.boston .bos-detail-heading h3,
+.boston .bos-demo-card h4,
+.boston .bos-pipeline-card h4,
+.boston .bos-flow-card h3,
+.boston .bos-flow-output h3,
+.boston .bos-route-question h3,
+.boston .bos-route-panel h3 {
+    font-kerning: normal !important;
+    font-feature-settings: normal !important;
+    letter-spacing: var(--bos-display-tracking) !important;
+    line-height: var(--bos-display-line-height) !important;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.boston .bos-route-option strong {
+    letter-spacing: -0.012em !important;
+    line-height: 1.04 !important;
+}
+
+@media (max-width: 850px) {
+    .boston .bos-hero-grid > div::before,
+    .boston h1,
+    .boston .bos-section-heading h2,
+    .boston .bos-contact h2,
+    .boston .bos-panel h3,
+    .boston .bos-proof-card h3,
+    .boston .bos-detail-heading h3,
+    .boston .bos-demo-card h4,
+    .boston .bos-pipeline-card h4,
+    .boston .bos-flow-card h3,
+    .boston .bos-flow-output h3,
+    .boston .bos-route-question h3,
+    .boston .bos-route-panel h3 {
+        letter-spacing: var(--bos-display-tracking-mobile) !important;
+        line-height: 1 !important;
+    }
+}
