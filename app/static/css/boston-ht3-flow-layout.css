@@ -12,10 +12,17 @@ html {
 .boston {
     --bos-panel-min-height: min(760px, 84svh);
     --bos-panel-y: clamp(42px, 5.5vw, 76px);
+    --bos-floating-head-top: clamp(8px, 1.4vw, 18px);
+    --bos-floating-head-pad-x: clamp(8px, 1.2vw, 14px);
+    --bos-floating-head-offset: clamp(58px, 7vw, 76px);
 }
 
 .boston .bos-wrap {
     width: min(calc(100% - clamp(24px, 5vw, 72px)), 1320px) !important;
+}
+
+.boston .bos-first-screen {
+    padding-top: var(--bos-floating-head-offset) !important;
 }
 
 .boston .bos-mark {
@@ -31,18 +38,21 @@ html {
 }
 
 .boston .bos-head {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 100 !important;
+    position: fixed !important;
+    top: var(--bos-floating-head-top) !important;
+    left: 50% !important;
+    z-index: 1000 !important;
+    width: min(calc(100% - clamp(24px, 5vw, 72px)), 1320px) !important;
     align-items: center !important;
-    margin: 0 -8px;
-    padding: 12px 8px !important;
+    margin: 0 !important;
+    padding: 12px var(--bos-floating-head-pad-x) !important;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-top: 0;
+    border-radius: 0;
     background: rgba(8, 16, 24, 0.78);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+    transform: translateX(-50%);
 }
 
 .boston .bos-hero {
@@ -123,7 +133,7 @@ html {
 .boston .bos-wrap > .bos-section,
 .boston .bos-contact {
     min-height: var(--bos-panel-min-height);
-    scroll-margin-top: 0;
+    scroll-margin-top: var(--bos-floating-head-offset);
     padding-top: var(--bos-panel-y) !important;
     padding-bottom: var(--bos-panel-y) !important;
 }
@@ -270,12 +280,22 @@ html {
 }
 
 @media (max-width: 850px) {
+    .boston {
+        --bos-floating-head-top: 8px;
+        --bos-floating-head-offset: 58px;
+    }
+
     .boston .bos-wrap {
         width: min(calc(100% - 22px), 1320px) !important;
     }
 
+    .boston .bos-first-screen {
+        padding-top: var(--bos-floating-head-offset) !important;
+    }
+
     .boston .bos-head {
-        margin: 0 -11px;
+        width: min(calc(100% - 22px), 1320px) !important;
+        margin: 0 !important;
         padding: 10px 11px !important;
     }
 
@@ -291,12 +311,21 @@ html {
 }
 
 @media (max-width: 620px) {
+    .boston {
+        --bos-floating-head-offset: 56px;
+    }
+
     .boston .bos-wrap {
         width: min(calc(100% - 18px), 1320px) !important;
     }
 
     .boston .bos-first-screen {
         min-height: auto !important;
+        padding-top: var(--bos-floating-head-offset) !important;
+    }
+
+    .boston .bos-head {
+        width: min(calc(100% - 18px), 1320px) !important;
     }
 
     .boston .bos-hero {
