@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.querySelector("[data-theme-toggle]");
     const themeToggleLabel = document.querySelector("[data-theme-toggle-label]");
     const lightThemeStylesheet = document.getElementById("light-theme-stylesheet");
+    const SECTION_SETTLE_DELAY_MS = 250;
+    const AUTO_SCROLL_DURATION_MS = 500;
+    let isAutomaticScrollActive = false;
 
     const ensureStylesheet = (href) => {
         if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
@@ -257,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const motionToggleState = initBostonMotionToggle();
     ensureStylesheet("/static/css/boston-ht3-flow-layout.css");
 
-    const smoothScrollTo = (targetY, duration = 500) => {
+    const smoothScrollTo = (targetY, duration = AUTO_SCROLL_DURATION_MS) => {
         const startY = window.scrollY || window.pageYOffset;
         const distance = targetY - startY;
         const startTime = window.performance.now();
@@ -287,9 +290,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    const scrollTargetToTop = (target, duration = 500) => {
+    const scrollTargetToTop = (target, duration = AUTO_SCROLL_DURATION_MS) => {
         const targetY = target.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
         return smoothScrollTo(targetY, duration);
+    };
+
+    const runAutomaticScroll = (scrollTask) => {
+        isAutomaticScrollActive = true;
+        return scrollTask().finally(() => {
+            window.setTimeout(() => {
+                isAutomaticScrollActive = false;
+            }, 80);
+        });
     };
 
     const initBostonAnchorScroll = () => {
@@ -311,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 event.preventDefault();
-                scrollTargetToTop(target, 500);
+                runAutomaticScroll(() => scrollTargetToTop(target, AUTO_SCROLL_DURATION_MS));
                 try {
                     window.history.replaceState(null, "", selector);
                 } catch (error) {
@@ -333,7 +345,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let settleTimer = null;
-        let isProgrammaticScroll = false;
 
         const getTargets = () => [
             ...boston.querySelectorAll(".bos-wrap > .bos-section, .bos-contact")
@@ -377,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const settleSection = () => {
-            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isProgrammaticScroll) {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isAutomaticScrollActive) {
                 return;
             }
 
@@ -386,21 +397,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            isProgrammaticScroll = true;
-            scrollTargetToTop(target.section, 500).finally(() => {
-                window.setTimeout(() => {
-                    isProgrammaticScroll = false;
-                }, 80);
-            });
+            runAutomaticScroll(() => scrollTargetToTop(target.section, AUTO_SCROLL_DURATION_MS));
         };
 
         const requestSettle = () => {
-            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isProgrammaticScroll) {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isAutomaticScrollActive) {
                 return;
             }
 
             window.clearTimeout(settleTimer);
-            settleTimer = window.setTimeout(settleSection, 250);
+            settleTimer = window.setTimeout(settleSection, SECTION_SETTLE_DELAY_MS);
         };
 
         window.addEventListener("scroll", requestSettle, { passive: true });
