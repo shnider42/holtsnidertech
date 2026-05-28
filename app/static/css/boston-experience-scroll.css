@@ -9,7 +9,7 @@
     grid-auto-flow: column;
     grid-auto-columns: minmax(240px, 0.32fr);
     grid-template-columns: none !important;
-    grid-template-rows: repeat(2, minmax(138px, auto));
+    grid-template-rows: minmax(138px, auto);
     gap: 0 !important;
     overflow-x: auto;
     overflow-y: hidden;
@@ -74,7 +74,7 @@
 @media (max-width: 850px) {
     .boston .bos-stack-grid {
         grid-auto-columns: minmax(235px, 76vw);
-        grid-template-rows: repeat(2, minmax(128px, auto));
+        grid-template-rows: minmax(128px, auto);
     }
 
     .boston .bos-stack-grid .bos-mini {
@@ -85,7 +85,7 @@
 @media (max-width: 520px) {
     .boston .bos-stack-grid {
         grid-auto-columns: minmax(220px, 82vw);
-        grid-template-rows: repeat(2, minmax(118px, auto));
+        grid-template-rows: minmax(118px, auto);
     }
 
     .boston .bos-stack-grid .bos-mini {
