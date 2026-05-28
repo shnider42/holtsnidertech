@@ -71,9 +71,9 @@ html {
         }
 
         to {
-            background-color: rgba(8, 16, 24, 0.36);
-            border-color: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+            background-color: rgba(8, 16, 24, 0.24);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         }
     }
 }
@@ -292,6 +292,97 @@ html {
     .boston #work,
     .boston #case-shapes {
         min-height: auto;
+    }
+}
+
+@media (min-width: 1081px) and (min-aspect-ratio: 3 / 2) and (max-aspect-ratio: 17 / 10) and (max-height: 980px) {
+    .boston {
+        --bos-floating-head-offset: clamp(50px, 6.2vh, 64px);
+    }
+
+    .boston .bos-first-screen {
+        min-height: 100svh !important;
+        grid-template-rows: auto minmax(0, 0.78fr) auto !important;
+        gap: 0 !important;
+    }
+
+    .boston .bos-head {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+    }
+
+    .boston .bos-hero {
+        padding-top: clamp(8px, 1.6vh, 18px) !important;
+        padding-bottom: clamp(6px, 1.3vh, 14px) !important;
+    }
+
+    .boston .bos h1,
+    .boston h1 {
+        font-size: clamp(3.2rem, 7.3vw, 6.9rem) !important;
+        line-height: 0.92 !important;
+    }
+
+    .boston .bos-lede {
+        max-width: 720px !important;
+        margin-top: 10px !important;
+        font-size: clamp(0.92rem, 0.98vw, 1rem) !important;
+        line-height: 1.38 !important;
+    }
+
+    .boston .bos-signal-row {
+        gap: 6px 10px !important;
+        margin-top: 8px !important;
+    }
+
+    .boston .bos-actions {
+        margin-top: 12px !important;
+    }
+
+    .boston .bos-start-panel {
+        padding-top: clamp(8px, 1.4vh, 14px) !important;
+        padding-bottom: clamp(10px, 1.8vh, 18px) !important;
+    }
+
+    .boston .bos-start-heading {
+        gap: clamp(12px, 2vw, 24px) !important;
+        margin-bottom: 10px !important;
+    }
+
+    .boston .bos-start-heading h2 {
+        font-size: clamp(1.58rem, 2.7vw, 2.72rem) !important;
+        line-height: 0.96 !important;
+    }
+
+    .boston .bos-start-heading .bos-section-text {
+        max-width: 560px !important;
+        font-size: 0.86rem !important;
+        line-height: 1.34 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: clamp(104px, 14vh, 134px) !important;
+        padding: clamp(11px, 1.6vh, 16px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::before {
+        margin-bottom: 9px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card h3 {
+        margin-bottom: 6px !important;
+        font-size: clamp(0.98rem, 1.18vw, 1.22rem) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card p {
+        min-height: 2.35em;
+        margin-top: 6px !important;
+        font-size: clamp(0.78rem, 0.82vw, 0.88rem) !important;
+        line-height: 1.3 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        min-height: 1.1em;
+        padding-top: 8px !important;
     }
 }
 
