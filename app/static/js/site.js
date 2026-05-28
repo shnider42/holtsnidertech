@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.querySelector("[data-theme-toggle]");
     const themeToggleLabel = document.querySelector("[data-theme-toggle-label]");
     const lightThemeStylesheet = document.getElementById("light-theme-stylesheet");
+    // Keep the pause before section settling separate from the scroll animation duration.
     const SECTION_SETTLE_DELAY_MS = 250;
     const AUTO_SCROLL_DURATION_MS = 500;
     let isAutomaticScrollActive = false;
