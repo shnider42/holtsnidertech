@@ -79,6 +79,11 @@ def style_lab_variant(slug):
     )
 
 
+@main.route("/privacy")
+def privacy():
+    return render_template("privacy.html", business_name="Holtsnider Tech")
+
+
 @main.route("/healthz")
 def healthz():
     return {"status": "ok", "service": "holtsnidertech"}
@@ -97,6 +102,10 @@ def sitemap_xml():
   <url>
     <loc>https://holtsnidertech.com/</loc>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://holtsnidertech.com/privacy</loc>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://holtsnidertech.com/static/demos/grepper.html</loc>
