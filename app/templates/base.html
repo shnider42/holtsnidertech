@@ -8,6 +8,8 @@
         name="description"
         content="{% block meta_description %}Holtsnider Tech provides practical technical consulting, troubleshooting, process improvement, automation, and website/system support for businesses that need clarity and real-world solutions.{% endblock %}"
     />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" sizes="any" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive-fixes.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/staging-polish.css') }}" />
@@ -26,6 +28,10 @@
                         lightTheme.disabled = false;
                     }
                 }
+
+                if (window.localStorage.getItem("holtsnider-reduce-motion") === null) {
+                    window.localStorage.setItem("holtsnider-reduce-motion", "true");
+                }
             } catch (error) {
                 document.documentElement.dataset.theme = "dark";
             }
@@ -34,7 +40,6 @@
 </head>
 <body>
     {% block content %}{% endblock %}
-    <a href="{{ url_for('main.style_lab') }}" style="position: fixed; right: 18px; bottom: 18px; z-index: 1100; display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 15px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(8, 16, 24, 0.72); color: #f3f4f6; box-shadow: 0 14px 34px rgba(0,0,0,0.28); backdrop-filter: blur(16px); font-size: 0.74rem; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase;">Style Lab</a>
     <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 </body>
 </html>
