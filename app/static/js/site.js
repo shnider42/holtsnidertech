@@ -112,6 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         boston.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href*="/style-lab"]').forEach((link) => link.remove());
+        document.querySelectorAll('a[href*="style-lab"], a[href*="/style-lab"]').forEach((link) => {
+            if (!link.closest(".bos-project-site")) {
+                link.remove();
+            }
+        });
 
         const heroKicker = boston.querySelector(".bos-hero .bos-kicker");
         if (heroKicker) {
@@ -141,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const startText = boston.querySelector(".bos-start-heading .bos-section-text");
         if (startText) {
-            startText.textContent = "Pick the closest starting point. Hover or focus each card for the first conversation cue.";
+            startText.textContent = "Pick the closest starting point. Tap a card to continue, or hover/focus for the first conversation cue.";
         }
 
         updateChoiceCard(
@@ -149,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "01 / Solve",
             "Solve",
             "Address an issue",
-            "Address an issue"
+            "Go to Solutions path"
         );
 
         updateChoiceCard(
@@ -157,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "02 / Launch an idea",
             "Launch an idea",
             "Find an opportunity to explore",
-            "Find an opportunity to explore"
+            "Go to Opportunity path"
         );
 
         updateChoiceCard(
@@ -165,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "03 / HT Experience",
             "HT Experience",
             "Chris's experience",
-            "Chris's experience"
+            "Go to experience"
         );
 
         updateChoiceCard(
@@ -173,8 +178,25 @@ document.addEventListener("DOMContentLoaded", () => {
             "04 / Start a discovery",
             "Start a discovery",
             "You're unsure, let's figure it out together!",
-            "Start discovery"
+            "Go to Discovery path"
         );
+
+        const solveChoice = boston.querySelector(".bos-start-panel .bos-choice-solve");
+        if (solveChoice) {
+            solveChoice.setAttribute("href", "#solve");
+        }
+        const opportunityChoice = boston.querySelector(".bos-start-panel .bos-choice-opportunity");
+        if (opportunityChoice) {
+            opportunityChoice.setAttribute("href", "#opportunity");
+        }
+        const experienceChoice = boston.querySelector(".bos-start-panel .bos-choice-experience");
+        if (experienceChoice) {
+            experienceChoice.setAttribute("href", "#experience");
+        }
+        const discoveryChoice = boston.querySelector(".bos-start-panel .bos-choice-not-sure");
+        if (discoveryChoice) {
+            discoveryChoice.setAttribute("href", "#not-sure");
+        }
 
         const siteCard = boston.querySelector(".bos-project-site");
         if (siteCard) {
@@ -202,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         boston.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
+        document.querySelectorAll(".style-lab-link, .style-switcher, .variant-switcher").forEach((item) => item.remove());
     };
 
     polishBostonHeadings();
