@@ -74,6 +74,30 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
+    const updateChoiceCard = (card, label, title, description, action) => {
+        if (!card) {
+            return;
+        }
+
+        const labelNode = card.querySelector(".bos-card-label");
+        const titleNode = card.querySelector("h3");
+        const descriptionNode = card.querySelector("p");
+        const actionNode = card.querySelector(".bos-choice-action");
+
+        if (labelNode) {
+            labelNode.textContent = label;
+        }
+        if (titleNode) {
+            titleNode.textContent = title;
+        }
+        if (descriptionNode) {
+            descriptionNode.textContent = description;
+        }
+        if (actionNode) {
+            actionNode.textContent = action;
+        }
+    };
+
     const polishBostonPublicCopy = () => {
         const boston = document.querySelector(".boston");
         if (!boston) {
@@ -112,13 +136,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const startHeading = boston.querySelector(".bos-start-heading h2");
         if (startHeading) {
-            startHeading.textContent = "What are you trying to change?";
+            startHeading.textContent = "Where should we start?";
         }
 
         const startText = boston.querySelector(".bos-start-heading .bos-section-text");
         if (startText) {
-            startText.textContent = "Pick the closest starting point. The deeper flow below turns that choice into a practical conversation path.";
+            startText.textContent = "Pick the closest starting point. Hover or focus each card for the first conversation cue.";
         }
+
+        updateChoiceCard(
+            boston.querySelector(".bos-choice-solve"),
+            "01 / Solve",
+            "Solve",
+            "Address an issue",
+            "Address an issue"
+        );
+
+        updateChoiceCard(
+            boston.querySelector(".bos-choice-opportunity"),
+            "02 / Launch an idea",
+            "Launch an idea",
+            "Find an opportunity to explore",
+            "Find an opportunity to explore"
+        );
+
+        updateChoiceCard(
+            boston.querySelector(".bos-choice-experience"),
+            "03 / HT Experience",
+            "HT Experience",
+            "Chris's experience",
+            "Chris's experience"
+        );
+
+        updateChoiceCard(
+            boston.querySelector(".bos-choice-not-sure"),
+            "04 / Start a discovery",
+            "Start a discovery",
+            "You're unsure, let's figure it out together!",
+            "Start discovery"
+        );
 
         const siteCard = boston.querySelector(".bos-project-site");
         if (siteCard) {
