@@ -32,6 +32,14 @@ html {
     border-bottom: 0 !important;
 }
 
+.boston .bos-hero-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.boston .bos-side {
+    display: none !important;
+}
+
 .boston .bos-start-panel {
     position: relative;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
@@ -48,6 +56,51 @@ html {
 
 .boston .bos-hero h1 span {
     color: #ff8a3d !important;
+}
+
+.boston .bos-start-heading h2 {
+    text-wrap: balance;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    overflow: hidden;
+}
+
+.boston .bos-start-panel .bos-choice-card .bos-card-label {
+    color: var(--card-accent, #ff8a3d) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card p,
+.boston .bos-start-panel .bos-choice-card .bos-choice-action {
+    max-height: 0;
+    margin: 0 !important;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: max-height 180ms ease, opacity 180ms ease, transform 180ms ease, padding-top 180ms ease;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover p,
+.boston .bos-start-panel .bos-choice-card:focus-visible p,
+.boston .bos-start-panel .bos-choice-card:focus-within p,
+.boston .bos-start-panel .bos-choice-card:hover .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-action {
+    max-height: 8rem;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.boston .bos-start-panel .bos-choice-card:hover p,
+.boston .bos-start-panel .bos-choice-card:focus-visible p,
+.boston .bos-start-panel .bos-choice-card:focus-within p {
+    margin-top: 8px !important;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-action {
+    padding-top: 12px !important;
 }
 
 .boston .bos-wrap > .bos-section,
@@ -94,6 +147,19 @@ html {
 .boston .bos-work-card,
 .boston .bos-case-card {
     border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+@media (hover: none) {
+    .boston .bos-start-panel .bos-choice-card p {
+        max-height: 8rem;
+        margin-top: 8px !important;
+        opacity: 1;
+        transform: none;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        display: none;
+    }
 }
 
 @media (min-width: 1081px) {
