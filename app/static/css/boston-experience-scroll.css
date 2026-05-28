@@ -1,0 +1,94 @@
+/*
+ * Horizontally draggable systems-stack row for the lower Experience categories.
+ * The upper .bos-experience-grid credibility table intentionally remains alone.
+ */
+
+.boston .bos-stack-grid {
+    position: relative;
+    display: grid !important;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 0.32fr);
+    grid-template-columns: none !important;
+    grid-template-rows: repeat(2, minmax(138px, auto));
+    gap: 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.boston .bos-stack-grid:active,
+.boston .bos-stack-grid.is-dragging {
+    cursor: grabbing;
+}
+
+.boston .bos-stack-grid.is-dragging {
+    scroll-snap-type: none;
+}
+
+.boston .bos-stack-grid .bos-mini {
+    min-width: 240px;
+    scroll-snap-align: start;
+    user-select: none;
+}
+
+.boston .bos-stack-grid .bos-mini p,
+.boston .bos-stack-grid .bos-mini strong {
+    user-select: none;
+}
+
+.boston .bos-stack-grid:focus-visible {
+    outline: 3px solid rgba(255, 138, 61, 0.70);
+    outline-offset: 6px;
+}
+
+.boston .bos-stack-grid::after {
+    content: "Drag sideways";
+    position: sticky;
+    right: 10px;
+    bottom: 10px;
+    align-self: end;
+    justify-self: end;
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(8, 16, 24, 0.42);
+    color: rgba(244, 241, 234, 0.68);
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    pointer-events: none;
+    text-transform: uppercase;
+}
+
+@media (min-width: 1081px) {
+    .boston .bos-stack-grid {
+        grid-auto-columns: minmax(250px, 26vw);
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 850px) {
+    .boston .bos-stack-grid {
+        grid-auto-columns: minmax(235px, 76vw);
+        grid-template-rows: repeat(2, minmax(128px, auto));
+    }
+
+    .boston .bos-stack-grid .bos-mini {
+        min-width: 235px;
+    }
+}
+
+@media (max-width: 520px) {
+    .boston .bos-stack-grid {
+        grid-auto-columns: minmax(220px, 82vw);
+        grid-template-rows: repeat(2, minmax(118px, auto));
+    }
+
+    .boston .bos-stack-grid .bos-mini {
+        min-width: 220px;
+    }
+}
