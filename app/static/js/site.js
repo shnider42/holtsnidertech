@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const replacements = new Map([
             ["Practical technical help, built close to the problem.", "Practical technical help, built close to the problem"],
             ["Start with the problem, not the tool.", "Start with the problem, not the tool"],
-            ["You do not need the work done yet. You need the situation made clearer.", "You do not need the work done yet. You need the situation made clearer"],
+            ["You do not need the work done yet. You need the situation made clearer.", "You do not need the situation made clearer"],
             ["Bring the messy version.", "Bring the messy version"],
             ["Proof, not pitch.", "Proof, not pitch"],
             ["Good technical work should survive contact with real people.", "Good technical work should survive contact with real people"],
@@ -273,6 +273,89 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     initBostonAnchorScroll();
+
+    const initDesktopSectionSettle = () => {
+        const boston = document.querySelector(".boston");
+        const desktopQuery = window.matchMedia("(min-width: 1081px)");
+        const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        if (!boston) {
+            return;
+        }
+
+        let settleTimer = null;
+        let isProgrammaticScroll = false;
+
+        const getTargets = () => [
+            ...boston.querySelectorAll(".bos-wrap > .bos-section, .bos-contact")
+        ].filter((section) => section.id);
+
+        const chooseTarget = () => {
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            const firstScreen = boston.querySelector(".bos-first-screen");
+
+            if (firstScreen && firstScreen.getBoundingClientRect().bottom > viewportHeight * 0.35) {
+                return null;
+            }
+
+            const candidates = getTargets()
+                .map((section) => {
+                    const rect = section.getBoundingClientRect();
+                    const containsFocusLine = rect.top <= viewportHeight * 0.54 && rect.bottom >= viewportHeight * 0.38;
+                    const tooTallToSnap = rect.height > viewportHeight * 1.35;
+
+                    return {
+                        section,
+                        rect,
+                        containsFocusLine,
+                        score: Math.abs(rect.top)
+                    };
+                })
+                .filter((candidate) => !candidate.tooTallToSnap && candidate.rect.bottom > 0 && candidate.rect.top < viewportHeight);
+
+            if (!candidates.length) {
+                return null;
+            }
+
+            const containing = candidates.filter((candidate) => candidate.containsFocusLine);
+            const pool = containing.length ? containing : candidates;
+
+            pool.sort((a, b) => a.score - b.score);
+            return pool[0];
+        };
+
+        const settleSection = () => {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isProgrammaticScroll) {
+                return;
+            }
+
+            const target = chooseTarget();
+            if (!target || Math.abs(target.rect.top) < 10) {
+                return;
+            }
+
+            isProgrammaticScroll = true;
+            target.section.scrollIntoView({ block: "start", behavior: "smooth" });
+
+            window.setTimeout(() => {
+                isProgrammaticScroll = false;
+            }, 700);
+        };
+
+        const requestSettle = () => {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isProgrammaticScroll) {
+                return;
+            }
+
+            window.clearTimeout(settleTimer);
+            settleTimer = window.setTimeout(settleSection, 250);
+        };
+
+        window.addEventListener("scroll", requestSettle, { passive: true });
+        window.addEventListener("resize", () => window.clearTimeout(settleTimer));
+    };
+
+    initDesktopSectionSettle();
 
     const initBostonMotion = () => {
         const boston = document.querySelector(".boston");
