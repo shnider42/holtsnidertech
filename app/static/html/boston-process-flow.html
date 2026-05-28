@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="/static/css/boston-routing-selector.css">
+
+<section class="bos-section bos-process-flow bos-routing" id="process-flow" aria-label="Solutions Engineering and Opportunity Engineering router">
+    <div class="bos-section-heading">
+        <h2>Solutions Engineering + Opportunity Engineering</h2>
+        <p class="bos-section-text">
+            The starting point is not always a ticket. Sometimes something is broken. Sometimes something works,
+            but the product, process, customer experience, or conversion path could create more value.
+        </p>
+    </div>
+
+    <div class="bos-router" aria-label="Choose a starting point">
+        <input class="bos-route-input" type="radio" name="bos-route" id="bos-route-solutions" checked>
+        <input class="bos-route-input" type="radio" name="bos-route" id="bos-route-opportunity">
+        <input class="bos-route-input" type="radio" name="bos-route" id="bos-route-discovery">
+
+        <div class="bos-route-question">
+            <span>Step 1 / Choose the lane</span>
+            <h3>What are you trying to change?</h3>
+            <p>Pick the closest starting point. The next section narrows it into a useful first conversation.</p>
+        </div>
+
+        <div class="bos-route-options" role="list" aria-label="Starting point options">
+            <label class="bos-route-option" for="bos-route-solutions">
+                <span>01</span>
+                <strong>Something is not working</strong>
+                <small>Broken, unclear, risky, inefficient, stuck, or technically messy.</small>
+            </label>
+
+            <label class="bos-route-option" for="bos-route-opportunity">
+                <span>02</span>
+                <strong>Something could work better</strong>
+                <small>Customer experience, lead conversion, retention, product value, or internal process.</small>
+            </label>
+
+            <label class="bos-route-option" for="bos-route-discovery">
+                <span>03</span>
+                <strong>I am not sure yet</strong>
+                <small>You can describe the mess, the stakes, or the goal, but not the shape of the work.</small>
+            </label>
+        </div>
+
+        <div class="bos-route-panels">
+            <article class="bos-route-panel route-solutions">
+                <span class="bos-route-kicker">Recommended lane / Solutions Engineering</span>
+                <h3>Fix the break. Clarify the system. Stabilize the path forward.</h3>
+                <p>
+                    This is the lane for a concrete problem: a failing technical system, unclear vendor explanation,
+                    broken workflow, risky rollout, unreliable process, or team that needs another technical lens.
+                </p>
+
+                <div class="bos-route-detail-grid">
+                    <div>
+                        <strong>Good first conversation</strong>
+                        <ul>
+                            <li>What changed?</li>
+                            <li>Who is affected?</li>
+                            <li>Where does the failure show up?</li>
+                            <li>What evidence already exists?</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>Likely outputs</strong>
+                        <ul>
+                            <li>Root-cause notes</li>
+                            <li>Tradeoff map</li>
+                            <li>Fix or workaround</li>
+                            <li>Implementation or support path</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bos-route-actions">
+                    <a href="#diagnostic">Narrow the problem below</a>
+                    <a href="mailto:chris@holtsnidertech.com?subject=Solutions%20Engineering%20conversation">Start a Solutions conversation</a>
+                </div>
+            </article>
+
+            <article class="bos-route-panel route-opportunity">
+                <span class="bos-route-kicker">Recommended lane / Opportunity Engineering</span>
+                <h3>Find the leverage point. Shape the better path. Prototype what could help.</h3>
+                <p>
+                    This is the lane for less obvious value: improving customer experience, lead conversion,
+                    retention, product clarity, internal workflow, content systems, or a promising idea that needs shape.
+                </p>
+
+                <div class="bos-route-detail-grid">
+                    <div>
+                        <strong>Good first conversation</strong>
+                        <ul>
+                            <li>What outcome should improve?</li>
+                            <li>Where do people get stuck?</li>
+                            <li>What behavior should change?</li>
+                            <li>What would make the product or process more useful?</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>Likely outputs</strong>
+                        <ul>
+                            <li>Opportunity map</li>
+                            <li>Process or customer-flow review</li>
+                            <li>Feature direction</li>
+                            <li>Small prototype or demo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bos-route-actions">
+                    <a href="#diagnostic">Turn the opportunity into a starting shape</a>
+                    <a href="mailto:chris@holtsnidertech.com?subject=Opportunity%20Engineering%20conversation">Start an Opportunity conversation</a>
+                </div>
+            </article>
+
+            <article class="bos-route-panel route-discovery">
+                <span class="bos-route-kicker">Recommended lane / Discovery</span>
+                <h3>The useful first step is naming the shape of the work.</h3>
+                <p>
+                    This is for the messy middle: you know something needs attention, but you are not sure whether
+                    it is a technical fix, a workflow problem, a product opportunity, a customer-experience gap, or all of the above.
+                </p>
+
+                <div class="bos-route-detail-grid">
+                    <div>
+                        <strong>Useful prompts</strong>
+                        <ul>
+                            <li>What feels expensive, confusing, or repetitive?</li>
+                            <li>Who feels the pain first?</li>
+                            <li>What decision are you trying to make?</li>
+                            <li>What would be better if this worked?</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>Likely outputs</strong>
+                        <ul>
+                            <li>Clearer problem frame</li>
+                            <li>Solutions vs. Opportunity recommendation</li>
+                            <li>Next-step map</li>
+                            <li>Decision on whether to fix, shape, prototype, or pause</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bos-route-actions">
+                    <a href="#diagnostic">Use the conversation shapes below</a>
+                    <a href="mailto:chris@holtsnidertech.com?subject=Messy%20input%20discovery%20conversation">Start with discovery</a>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="bos-route-bridge" aria-label="How the route turns into a conversation">
+        <article>
+            <span>Step 2</span>
+            <strong>Name the shape</strong>
+            <p>The lane tells us what kind of value we are chasing. The next section turns it into a practical conversation path.</p>
+        </article>
+        <article>
+            <span>Step 3</span>
+            <strong>Find the constraint</strong>
+            <p>Budget, timeline, access, risk, people, and existing tools decide what kind of solution is realistic.</p>
+        </article>
+        <article>
+            <span>Step 4</span>
+            <strong>Choose the first move</strong>
+            <p>That might be advice, hands-on work, team review, recurring support, or a prototype that proves the idea.</p>
+        </article>
+    </div>
+
+    <div class="bos-route-frame" aria-label="Framing questions">
+        <span>The frame I work through</span>
+        <div class="bos-route-frame-grid">
+            <p><strong>Who</strong> is affected, deciding, using it, or living with the result?</p>
+            <p><strong>What</strong> is happening, being requested, or getting in the way?</p>
+            <p><strong>When</strong> does the timeline, rhythm, urgency, or trigger matter?</p>
+            <p><strong>Where</strong> does the friction live: internal, external, or both?</p>
+            <p><strong>Why</strong> are the stakes real, and what does inaction cost?</p>
+            <p><strong>How</strong> do constraints shape the answer: budget, access, risk, people, or tooling?</p>
+        </div>
+    </div>
+
+    <div class="bos-route-handoff">
+        <span>Then get specific</span>
+        <p>Use the diagnostic selector below to choose the first conversation shape.</p>
+        <a href="#diagnostic">Go to diagnostic</a>
+    </div>
+</section>

@@ -6,13 +6,12 @@
     <title>Chrono Explain Demo | Holtsnider Tech</title>
     <style>
         :root {
-            --bg: #081018;
-            --panel: #0f1720;
-            --text: #f3f4f6;
-            --muted: #a8b3bf;
-            --orange: #ff8a3d;
-            --teal: #2d8f8b;
-            --green: #7dff9b;
+            --bg: #050505;
+            --panel: #111111;
+            --text: #ffffff;
+            --muted: #d7d7d7;
+            --yellow: #ffdc00;
+            --yellow-soft: rgba(255, 220, 0, 0.14);
         }
 
         * {
@@ -22,8 +21,8 @@
         body {
             margin: 0;
             background:
-                radial-gradient(circle at 16% 12%, rgba(45, 143, 139, 0.24), transparent 30%),
-                radial-gradient(circle at 82% 18%, rgba(255, 138, 61, 0.16), transparent 32%),
+                radial-gradient(circle at 16% 12%, rgba(255, 220, 0, 0.22), transparent 30%),
+                radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.14), transparent 32%),
                 var(--bg);
             color: var(--text);
             font-family: "Aptos", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -53,8 +52,10 @@
         .back-link,
         .eyebrow,
         button,
-        .phase-label,
-        .meta-label {
+        .timer,
+        .round-label,
+        .meta-label,
+        .score-label {
             font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
             font-weight: 900;
             letter-spacing: 0.10em;
@@ -77,14 +78,14 @@
             gap: 34px;
             align-items: end;
             padding: 28px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.14);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
         }
 
         .side-note {
             padding: 16px 18px;
-            border-left: 5px solid var(--teal);
-            background: rgba(15, 23, 32, 0.72);
+            border-left: 5px solid var(--yellow);
+            background: rgba(17, 17, 17, 0.78);
             color: var(--muted);
             line-height: 1.5;
         }
@@ -92,7 +93,7 @@
         .eyebrow {
             display: inline-flex;
             margin-bottom: 12px;
-            color: var(--green);
+            color: var(--yellow);
             font-size: 0.68rem;
         }
 
@@ -107,7 +108,7 @@
         }
 
         .lede {
-            max-width: 690px;
+            max-width: 720px;
             margin: 18px 0 0;
             color: var(--muted);
             font-size: 1.04rem;
@@ -116,128 +117,148 @@
 
         .demo-shell {
             display: grid;
-            grid-template-columns: 0.7fr 1.3fr;
+            grid-template-columns: 0.74fr 1.26fr;
             gap: 18px;
             margin-top: 24px;
         }
 
         .panel,
-        .timeline {
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            background: rgba(15, 23, 32, 0.78);
+        .round-card {
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(17, 17, 17, 0.82);
         }
 
-        .panel {
+        .panel,
+        .round-card {
             padding: 20px;
         }
 
-        .scenario-list {
+        .timer {
             display: grid;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .scenario {
-            min-height: 54px;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text);
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .scenario[aria-pressed="true"] {
-            border-color: rgba(125, 255, 155, 0.56);
-            background: rgba(125, 255, 155, 0.09);
-        }
-
-        .timeline {
-            position: relative;
-            overflow: hidden;
-            padding: 22px;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 31px;
-            top: 26px;
-            bottom: 26px;
-            width: 2px;
-            background: linear-gradient(var(--teal), var(--orange));
-            opacity: 0.76;
-        }
-
-        .event {
-            position: relative;
-            display: grid;
-            grid-template-columns: 34px 1fr;
-            gap: 16px;
-            padding: 0 0 22px;
-        }
-
-        .dot {
-            position: relative;
-            z-index: 1;
-            width: 20px;
-            height: 20px;
-            margin-top: 4px;
-            border: 3px solid var(--bg);
-            border-radius: 999px;
-            background: var(--green);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
-        }
-
-        .event-card {
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            background: rgba(16, 16, 16, 0.38);
-        }
-
-        .phase-label {
-            display: inline-flex;
-            margin-bottom: 10px;
-            color: var(--orange);
-            font-size: 0.64rem;
-        }
-
-        .event-card h2 {
-            margin: 0 0 8px;
-            font-family: "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif;
-            font-size: clamp(1.35rem, 3vw, 2.4rem);
-            line-height: 1;
+            place-items: center;
+            min-height: 120px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 220, 0, 0.52);
+            background: var(--yellow-soft);
+            color: var(--yellow);
+            font-size: clamp(2.4rem, 7vw, 5rem);
             letter-spacing: -0.03em;
         }
 
-        .event-card p {
-            margin: 0;
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            min-height: 42px;
+            padding: 0 12px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.68rem;
+        }
+
+        button.primary {
+            border-color: rgba(255, 220, 0, 0.72);
+            background: rgba(255, 220, 0, 0.18);
+            color: var(--yellow);
+        }
+
+        button:hover,
+        button:focus-visible {
+            border-color: rgba(255, 220, 0, 0.78);
+            outline: none;
+        }
+
+        .round-card {
+            display: grid;
+            gap: 18px;
+        }
+
+        .round-label,
+        .score-label,
+        .meta-label {
+            color: var(--yellow);
+            font-size: 0.64rem;
+        }
+
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .prompt-box,
+        .judge-box,
+        .rule-box {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(0, 0, 0, 0.36);
+        }
+
+        .prompt-box h2 {
+            margin: 8px 0 0;
+            font-family: "Bahnschrift", "Aptos Display", "Segoe UI", system-ui, sans-serif;
+            font-size: clamp(1.6rem, 4vw, 3.7rem);
+            line-height: 0.9;
+            letter-spacing: -0.035em;
+            text-transform: uppercase;
+        }
+
+        .prompt-box p,
+        .judge-box p,
+        .rule-box p,
+        .meta-box p {
+            margin: 8px 0 0;
             color: var(--muted);
             line-height: 1.48;
         }
 
-        .meta-box {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.14);
+        .judge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
         }
 
-        .meta-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--green);
-            font-size: 0.64rem;
+        .judge-box button {
+            width: 100%;
+            margin-top: 12px;
         }
 
-        .meta-box p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.5;
+        .judge-box.is-scored {
+            border-color: rgba(255, 220, 0, 0.58);
+            background: rgba(255, 220, 0, 0.10);
+        }
+
+        .score-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .score {
+            color: var(--yellow);
+            font-family: "Bahnschrift", "Aptos", "Segoe UI", system-ui, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
         }
 
         @media (max-width: 880px) {
             .hero,
-            .demo-shell {
+            .demo-shell,
+            .prompt-grid,
+            .judge-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
                 grid-template-columns: 1fr;
             }
         }
@@ -252,90 +273,223 @@
 
         <section class="hero">
             <aside class="side-note">
-                This demo shows the Chrono Explain idea without depending on the Arcmad repo yet: pick a messy sequence and turn it into ordered context.
+                One player is from 2026. Everyone else is from another era. The explainer has to make a modern object make sense without leaning on modern assumptions or jargon.
             </aside>
             <div>
-                <span class="eyebrow">Demo concept / Chrono Explain</span>
-                <h1>Make sequence easier to understand</h1>
+                <span class="eyebrow">Party game / Chrono Explain</span>
+                <h1>Explain the future to the past</h1>
                 <p class="lede">
-                    Chrono Explain is a timeline-style explainer pattern for showing what happened, why order matters, and where a better decision point existed.
+                    Choose the modern explainer, generate a modern object and historical audience, give the player two minutes, then let the group judge whether they understood what it is, what it does, and why someone would use it.
                 </p>
             </div>
         </section>
 
         <section class="demo-shell">
             <aside class="panel">
-                <span class="eyebrow">Choose a scenario</span>
-                <div class="scenario-list" id="scenario-list"></div>
+                <span class="eyebrow">Round timer</span>
+                <div class="timer" id="timer">2:00</div>
+                <div class="controls">
+                    <button class="primary" id="new-round" type="button">New round</button>
+                    <button id="start-timer" type="button">Start timer</button>
+                    <button id="pause-timer" type="button">Pause</button>
+                    <button id="reset-score" type="button">Reset score</button>
+                </div>
                 <div class="meta-box">
-                    <span class="meta-label">What this proves</span>
-                    <p>A timeline can turn a messy explanation into a guided sequence, which is useful for history, learning, incident review, and technical troubleshooting.</p>
+                    <span class="meta-label">Core loop</span>
+                    <p>Generate object + audience, explain for two minutes, then judge understanding across three questions.</p>
                 </div>
             </aside>
-            <div class="timeline" id="timeline" aria-live="polite"></div>
+
+            <div class="round-card" aria-live="polite">
+                <span class="round-label">Current round</span>
+                <div class="prompt-grid">
+                    <article class="prompt-box">
+                        <span class="round-label">Modern object</span>
+                        <h2 id="object-name">Smartphone</h2>
+                        <p id="object-note">A pocket-sized computer used for communication, navigation, photos, payments, entertainment, and information.</p>
+                    </article>
+                    <article class="prompt-box">
+                        <span class="round-label">Historical audience</span>
+                        <h2 id="audience-name">Medieval villagers</h2>
+                        <p id="audience-note">Assume no electricity, no mass literacy, no modern science vocabulary, and strong reliance on lived analogies.</p>
+                    </article>
+                </div>
+
+                <article class="rule-box">
+                    <span class="round-label">Explainer constraint</span>
+                    <p id="constraint-text">Avoid saying computer, internet, app, satellite, electricity, screen, camera, or phone. Use objects and experiences the audience could plausibly understand.</p>
+                </article>
+
+                <div class="judge-grid">
+                    <article class="judge-box" data-score="what">
+                        <span class="score-label">Judge 1</span>
+                        <p>Did they understand what it is?</p>
+                        <button type="button">Award point</button>
+                    </article>
+                    <article class="judge-box" data-score="does">
+                        <span class="score-label">Judge 2</span>
+                        <p>Did they understand what it does?</p>
+                        <button type="button">Award point</button>
+                    </article>
+                    <article class="judge-box" data-score="why">
+                        <span class="score-label">Judge 3</span>
+                        <p>Did they understand why someone would use it?</p>
+                        <button type="button">Award point</button>
+                    </article>
+                </div>
+
+                <div class="score-row">
+                    <span class="score-label">Round score</span>
+                    <strong class="score" id="score">0 / 3</strong>
+                </div>
+            </div>
         </section>
     </main>
 
     <script>
-        const scenarios = [
+        const objects = [
             {
-                title: "A small-business website problem",
-                events: [
-                    { phase: "Symptom", title: "The site stops loading", text: "The visible problem is vague: the business sees a broken site, not DNS, hosting, SSL, deployment, or application layers." },
-                    { phase: "First split", title: "Separate name, server, and app", text: "The diagnostic move is to split the timeline into DNS resolution, server reachability, app response, and recent changes." },
-                    { phase: "Useful output", title: "A clear vendor question", text: "Instead of saying 'fix the website,' the owner can ask a provider about the exact failing layer and the last known working state." }
-                ]
+                name: "Smartphone",
+                note: "A pocket-sized computer used for communication, navigation, photos, payments, entertainment, and information.",
+                banned: "computer, internet, app, satellite, electricity, screen, camera, phone"
             },
             {
-                title: "A product idea becomes a demo",
-                events: [
-                    { phase: "Raw idea", title: "A theme exists", text: "There is a good concept, but it is not yet a product: a daily page, a game, or a research mapper." },
-                    { phase: "Structure", title: "Find the repeatable pattern", text: "The idea becomes buildable when the repeated input, audience, output, and interaction are named." },
-                    { phase: "Demo", title: "Ship a small proof", text: "A lightweight demo can prove the pattern before a larger product is built." }
-                ]
+                name: "Microwave oven",
+                note: "A kitchen machine that heats food very quickly using invisible energy inside a metal box.",
+                banned: "microwave, radiation, electricity, appliance, button, timer, motor"
             },
             {
-                title: "An incident review",
-                events: [
-                    { phase: "Noise", title: "Everyone remembers a different failure", text: "The team has symptoms, guesses, and partial logs, but not a shared order of events." },
-                    { phase: "Timeline", title: "Put facts in sequence", text: "A useful review starts with what happened first, what changed, what was observed, and what was tried." },
-                    { phase: "Learning", title: "Turn sequence into prevention", text: "Once the order is clear, the team can improve detection, handoff, and rollback decisions." }
-                ]
+                name: "Credit card",
+                note: "A small plastic object that lets someone buy things now by promising payment through a bank network later.",
+                banned: "plastic, bank network, digital, account, magnetic strip, payment processor"
+            },
+            {
+                name: "Noise-canceling headphones",
+                note: "A wearable device that plays sound and reduces surrounding noise so the listener can focus.",
+                banned: "headphones, electronics, battery, audio signal, microphone, algorithm"
+            },
+            {
+                name: "GPS navigation",
+                note: "A guidance system that tells someone where they are and how to get somewhere else.",
+                banned: "satellite, GPS, signal, map app, phone, orbit, coordinates"
             }
         ];
 
-        const list = document.getElementById("scenario-list");
-        const timeline = document.getElementById("timeline");
+        const audiences = [
+            {
+                name: "Ancient Roman merchants",
+                note: "Assume roads, trade, ledgers, messengers, coins, and empire-scale logistics, but no modern machines."
+            },
+            {
+                name: "Medieval villagers",
+                note: "Assume no electricity, no mass literacy, no modern science vocabulary, and strong reliance on lived analogies."
+            },
+            {
+                name: "Victorian factory workers",
+                note: "Assume steam power, factories, newspapers, telegraphs, and early industrial machines."
+            },
+            {
+                name: "1920s radio listeners",
+                note: "Assume radio, cars, cinema, telephones, and newspapers, but no computers or digital networks."
+            },
+            {
+                name: "Age of Sail sailors",
+                note: "Assume navigation by stars, charts, compasses, ship routines, weather, and physical tools."
+            }
+        ];
 
-        function renderScenario(index) {
-            const scenario = scenarios[index];
-            timeline.innerHTML = scenario.events.map((event) => `
-                <article class="event">
-                    <span class="dot" aria-hidden="true"></span>
-                    <div class="event-card">
-                        <span class="phase-label">${event.phase}</span>
-                        <h2>${event.title}</h2>
-                        <p>${event.text}</p>
-                    </div>
-                </article>
-            `).join("");
+        const constraints = [
+            "Use only objects and experiences the audience could plausibly understand.",
+            "You may compare it to three familiar things, but you cannot name the modern category.",
+            "You must explain why someone would want it before explaining how it works.",
+            "You cannot use any banned words from the object card.",
+            "The group may ask yes/no questions only after the first minute."
+        ];
 
-            [...list.querySelectorAll("button")].forEach((button, buttonIndex) => {
-                button.setAttribute("aria-pressed", String(buttonIndex === index));
-            });
+        const objectName = document.getElementById("object-name");
+        const objectNote = document.getElementById("object-note");
+        const audienceName = document.getElementById("audience-name");
+        const audienceNote = document.getElementById("audience-note");
+        const constraintText = document.getElementById("constraint-text");
+        const timer = document.getElementById("timer");
+        const score = document.getElementById("score");
+        const judgeBoxes = [...document.querySelectorAll(".judge-box")];
+
+        let seconds = 120;
+        let intervalId = null;
+
+        function sample(items) {
+            return items[Math.floor(Math.random() * items.length)];
         }
 
-        scenarios.forEach((scenario, index) => {
-            const button = document.createElement("button");
-            button.className = "scenario";
-            button.type = "button";
-            button.textContent = scenario.title;
-            button.setAttribute("aria-pressed", "false");
-            button.addEventListener("click", () => renderScenario(index));
-            list.appendChild(button);
+        function formatTime(value) {
+            const minutes = Math.floor(value / 60);
+            const secs = String(value % 60).padStart(2, "0");
+            return `${minutes}:${secs}`;
+        }
+
+        function updateTimer() {
+            timer.textContent = formatTime(seconds);
+        }
+
+        function stopTimer() {
+            if (intervalId) {
+                window.clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        function resetJudges() {
+            judgeBoxes.forEach((box) => box.classList.remove("is-scored"));
+            score.textContent = "0 / 3";
+        }
+
+        function newRound() {
+            const object = sample(objects);
+            const audience = sample(audiences);
+            const constraint = sample(constraints);
+
+            stopTimer();
+            seconds = 120;
+            updateTimer();
+            resetJudges();
+
+            objectName.textContent = object.name;
+            objectNote.textContent = object.note;
+            audienceName.textContent = audience.name;
+            audienceNote.textContent = audience.note;
+            constraintText.textContent = `${constraint} Banned words: ${object.banned}.`;
+        }
+
+        document.getElementById("new-round").addEventListener("click", newRound);
+
+        document.getElementById("start-timer").addEventListener("click", () => {
+            if (intervalId) {
+                return;
+            }
+
+            intervalId = window.setInterval(() => {
+                seconds = Math.max(0, seconds - 1);
+                updateTimer();
+                if (seconds === 0) {
+                    stopTimer();
+                }
+            }, 1000);
         });
 
-        renderScenario(0);
+        document.getElementById("pause-timer").addEventListener("click", stopTimer);
+        document.getElementById("reset-score").addEventListener("click", resetJudges);
+
+        judgeBoxes.forEach((box) => {
+            const button = box.querySelector("button");
+            button.addEventListener("click", () => {
+                box.classList.toggle("is-scored");
+                const total = judgeBoxes.filter((item) => item.classList.contains("is-scored")).length;
+                score.textContent = `${total} / 3`;
+            });
+        });
+
+        updateTimer();
     </script>
 </body>
 </html>
