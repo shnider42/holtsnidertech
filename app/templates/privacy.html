@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy | {{ business_name }}{% endblock %}
+{% block meta_description %}Privacy policy for Holtsnider Tech.{% endblock %}
+{% block extra_head %}
+<style>
+    body {
+        background: #101010;
+        color: #f4f1ea;
+    }
+
+    .privacy-page {
+        min-height: 100vh;
+        padding: 48px 0 72px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .privacy-wrap {
+        width: min(860px, 91vw);
+        margin: 0 auto;
+    }
+
+    .privacy-back,
+    .privacy-page h1,
+    .privacy-page h2 {
+        font-weight: 900;
+    }
+
+    .privacy-back {
+        display: inline-flex;
+        margin-bottom: 34px;
+        color: #ff8a3d;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .privacy-page h1 {
+        margin: 0 0 16px;
+        font-size: clamp(2.4rem, 7vw, 5.4rem);
+        line-height: 0.9;
+        letter-spacing: -0.075em;
+    }
+
+    .privacy-page h2 {
+        margin: 34px 0 10px;
+        font-size: 1.45rem;
+        letter-spacing: -0.03em;
+    }
+
+    .privacy-page p,
+    .privacy-page li {
+        color: #d8d1c7;
+        line-height: 1.6;
+    }
+
+    .privacy-page ul {
+        padding-left: 20px;
+    }
+
+    .privacy-note {
+        padding: 18px;
+        margin: 28px 0;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.035);
+    }
+</style>
+{% endblock %}
+{% block content %}
+<main class="privacy-page">
+    <div class="privacy-wrap">
+        <a class="privacy-back" href="{{ url_for('main.home') }}">Back to Holtsnider Tech</a>
+        <h1>Privacy Policy</h1>
+        <p>Last updated: May 2026</p>
+
+        <div class="privacy-note">
+            <p>
+                Holtsnider Tech is currently a small business and portfolio site. This page is intentionally plain-English and may be updated as the site adds more forms, analytics, demos, or client-facing features.
+            </p>
+        </div>
+
+        <h2>Information you choose to send</h2>
+        <p>
+            If you contact Holtsnider Tech by email, the information you include in that message may be used to respond to your inquiry, discuss a project, or continue a professional conversation.
+        </p>
+
+        <h2>Site usage information</h2>
+        <p>
+            This site may be hosted by third-party infrastructure providers that collect standard technical logs, such as IP address, browser type, requested pages, timestamps, and basic diagnostic information needed to operate and secure the site.
+        </p>
+
+        <h2>Cookies and analytics</h2>
+        <p>
+            The current site does not intentionally depend on advertising cookies. If analytics, embedded services, forms, or third-party tools are added later, this policy should be updated to describe them.
+        </p>
+
+        <h2>How information is used</h2>
+        <ul>
+            <li>To respond to messages or project inquiries.</li>
+            <li>To operate, troubleshoot, secure, and improve the website.</li>
+            <li>To understand whether the site is communicating services, experience, and project work clearly.</li>
+        </ul>
+
+        <h2>Sharing</h2>
+        <p>
+            Holtsnider Tech does not sell personal information. Information may be handled by normal service providers involved in email, hosting, security, analytics, or website operation.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+            Questions about this policy can be sent to Chris through the contact link on the main site.
+        </p>
+    </div>
+</main>
+{% endblock %}
