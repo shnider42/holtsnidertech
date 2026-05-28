@@ -83,15 +83,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const mark = boston.querySelector(".bos-mark");
         if (mark) {
             mark.setAttribute("href", "/");
+            mark.setAttribute("aria-label", "Holtsnider Tech home");
+            mark.textContent = "HT";
         }
 
-        boston.querySelectorAll('a[href*="style-lab"]').forEach((link) => link.remove());
+        boston.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href*="/style-lab"]').forEach((link) => link.remove());
 
-        document.querySelectorAll('a[href*="style-lab"]').forEach((link) => {
-            if (link.textContent.trim().toLowerCase() === "style lab") {
-                link.remove();
+        const heroKicker = boston.querySelector(".bos-hero .bos-kicker");
+        if (heroKicker) {
+            heroKicker.textContent = "Solutions Engineering + Opportunity Engineering";
+        }
+
+        const heroTitle = boston.querySelector(".bos-hero h1");
+        if (heroTitle) {
+            heroTitle.innerHTML = "Holtsnider <span>Tech</span>";
+        }
+
+        const heroLede = boston.querySelector(".bos-hero .bos-lede");
+        if (heroLede) {
+            heroLede.textContent = "Practical help for messy technical situations: solve what is broken, find what could work better, and turn unclear systems, workflows, and ideas into the next useful move.";
+        }
+
+        const primaryHeroAction = boston.querySelector('.bos-hero .bos-btn[href="#start"]');
+        if (primaryHeroAction) {
+            primaryHeroAction.setAttribute("href", "#paths");
+            primaryHeroAction.textContent = "Follow the decision path";
+        }
+
+        const startHeading = boston.querySelector(".bos-start-heading h2");
+        if (startHeading) {
+            startHeading.textContent = "What are you trying to change?";
+        }
+
+        const startText = boston.querySelector(".bos-start-heading .bos-section-text");
+        if (startText) {
+            startText.textContent = "Pick the closest starting point. The deeper flow below turns that choice into a practical conversation path.";
+        }
+
+        const siteCard = boston.querySelector(".bos-project-site");
+        if (siteCard) {
+            siteCard.setAttribute("href", "#contact");
+            const action = siteCard.querySelector(".bos-card-action");
+            if (action) {
+                action.textContent = "Discuss site direction";
             }
-        });
+        }
 
         boston.querySelectorAll(".bos-kicker").forEach((item) => {
             if (item.textContent.includes("candidate homepage")) {
@@ -125,6 +161,39 @@ document.addEventListener("DOMContentLoaded", () => {
         link.href = href;
         document.head.appendChild(link);
     };
+
+    ensureStylesheet("/static/css/boston-ht3-flow-layout.css");
+
+    const initBostonAnchorScroll = () => {
+        const boston = document.querySelector(".boston");
+        if (!boston) {
+            return;
+        }
+
+        boston.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener("click", (event) => {
+                const selector = link.getAttribute("href");
+                if (!selector || selector === "#") {
+                    return;
+                }
+
+                const target = boston.querySelector(selector);
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+                target.scrollIntoView({ block: "start", behavior: "smooth" });
+                try {
+                    window.history.replaceState(null, "", selector);
+                } catch (error) {
+                    // Ignore history failures; scrolling still worked.
+                }
+            });
+        });
+    };
+
+    initBostonAnchorScroll();
 
     const initBostonMotion = () => {
         const boston = document.querySelector(".boston");
