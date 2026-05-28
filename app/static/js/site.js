@@ -6,9 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggleLabel = document.querySelector("[data-theme-toggle-label]");
     const lightThemeStylesheet = document.getElementById("light-theme-stylesheet");
 
+    const ensureStylesheet = (href) => {
+        if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
+            return;
+        }
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+    };
+
     const applyTheme = (theme) => {
         const isLight = theme === "light";
-
         root.dataset.theme = isLight ? "light" : "dark";
 
         if (lightThemeStylesheet) {
@@ -26,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let savedTheme = "dark";
-
     try {
         savedTheme = window.localStorage.getItem("holtsnider-theme") || "dark";
     } catch (error) {
@@ -149,37 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
             startText.textContent = "Pick the closest starting point. Tap a card to continue, or hover/focus for the first conversation cue.";
         }
 
-        updateChoiceCard(
-            boston.querySelector(".bos-choice-solve"),
-            "01 / Solve",
-            "Solve",
-            "Address an issue",
-            "Go to Solutions path"
-        );
-
-        updateChoiceCard(
-            boston.querySelector(".bos-choice-opportunity"),
-            "02 / Launch an idea",
-            "Launch an idea",
-            "Find an opportunity to explore",
-            "Go to Opportunity path"
-        );
-
-        updateChoiceCard(
-            boston.querySelector(".bos-choice-experience"),
-            "03 / HT Experience",
-            "HT Experience",
-            "Chris's experience",
-            "Go to experience"
-        );
-
-        updateChoiceCard(
-            boston.querySelector(".bos-choice-not-sure"),
-            "04 / Start a discovery",
-            "Start a discovery",
-            "You're unsure, let's figure it out together!",
-            "Go to Discovery path"
-        );
+        updateChoiceCard(boston.querySelector(".bos-choice-solve"), "01 / Solve", "Solve", "Address an issue", "Go to Solutions path");
+        updateChoiceCard(boston.querySelector(".bos-choice-opportunity"), "02 / Launch an idea", "Launch an idea", "Find an opportunity to explore", "Go to Opportunity path");
+        updateChoiceCard(boston.querySelector(".bos-choice-experience"), "03 / HT Experience", "HT Experience", "Chris's experience", "Go to experience");
+        updateChoiceCard(boston.querySelector(".bos-choice-not-sure"), "04 / Start a discovery", "Start a discovery", "You're unsure, let's figure it out together!", "Go to Discovery path");
 
         const solveChoice = boston.querySelector(".bos-start-panel .bos-choice-solve");
         if (solveChoice) {
@@ -227,21 +209,88 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".style-lab-link, .style-switcher, .variant-switcher").forEach((item) => item.remove());
     };
 
-    polishBostonHeadings();
-    polishBostonPublicCopy();
-
-    const ensureStylesheet = (href) => {
-        if (document.querySelector(`link[href$="${href.split("/").pop()}"]`)) {
-            return;
+    const initBostonMotionToggle = () => {
+        const boston = document.querySelector(".boston");
+        const links = boston ? boston.querySelector(".bos-links") : null;
+        if (!boston || !links || links.querySelector(".bos-motion-toggle")) {
+            return null;
         }
 
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = href;
-        document.head.appendChild(link);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bos-motion-toggle";
+
+        const readPreference = () => {
+            try {
+                return window.localStorage.getItem("holtsnider-reduce-motion") === "true";
+            } catch (error) {
+                return false;
+            }
+        };
+
+        const applyPreference = (enabled) => {
+            document.body.classList.toggle("bos-reduce-motion", enabled);
+            button.setAttribute("aria-pressed", String(enabled));
+            button.textContent = enabled ? "Motion reduced" : "Reduce motion";
+        };
+
+        applyPreference(readPreference());
+        links.appendChild(button);
+
+        button.addEventListener("click", () => {
+            const nextValue = !button.matches('[aria-pressed="true"]');
+            applyPreference(nextValue);
+            try {
+                window.localStorage.setItem("holtsnider-reduce-motion", String(nextValue));
+            } catch (error) {
+                // Keep the visible toggle working even if storage is unavailable.
+            }
+        });
+
+        return {
+            isReduced: () => button.matches('[aria-pressed="true"]')
+        };
     };
 
+    polishBostonHeadings();
+    polishBostonPublicCopy();
+    const motionToggleState = initBostonMotionToggle();
     ensureStylesheet("/static/css/boston-ht3-flow-layout.css");
+
+    const smoothScrollTo = (targetY, duration = 500) => {
+        const startY = window.scrollY || window.pageYOffset;
+        const distance = targetY - startY;
+        const startTime = window.performance.now();
+
+        if (Math.abs(distance) < 2) {
+            return Promise.resolve();
+        }
+
+        return new Promise((resolve) => {
+            const step = (currentTime) => {
+                const elapsed = Math.min((currentTime - startTime) / duration, 1);
+                const eased = elapsed < 0.5
+                    ? 4 * elapsed * elapsed * elapsed
+                    : 1 - Math.pow(-2 * elapsed + 2, 3) / 2;
+
+                window.scrollTo(0, startY + (distance * eased));
+
+                if (elapsed < 1) {
+                    window.requestAnimationFrame(step);
+                    return;
+                }
+
+                resolve();
+            };
+
+            window.requestAnimationFrame(step);
+        });
+    };
+
+    const scrollTargetToTop = (target, duration = 500) => {
+        const targetY = target.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
+        return smoothScrollTo(targetY, duration);
+    };
 
     const initBostonAnchorScroll = () => {
         const boston = document.querySelector(".boston");
@@ -262,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 event.preventDefault();
-                target.scrollIntoView({ block: "start", behavior: "smooth" });
+                scrollTargetToTop(target, 500);
                 try {
                     window.history.replaceState(null, "", selector);
                 } catch (error) {
@@ -290,6 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ...boston.querySelectorAll(".bos-wrap > .bos-section, .bos-contact")
         ].filter((section) => section.id);
 
+        const isReduced = () => Boolean(motionToggleState && motionToggleState.isReduced());
+
         const chooseTarget = () => {
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
             const firstScreen = boston.querySelector(".bos-first-screen");
@@ -308,6 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         section,
                         rect,
                         containsFocusLine,
+                        tooTallToSnap,
                         score: Math.abs(rect.top)
                     };
                 })
@@ -325,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const settleSection = () => {
-            if (!desktopQuery.matches || reducedMotionQuery.matches || isProgrammaticScroll) {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isProgrammaticScroll) {
                 return;
             }
 
@@ -335,15 +387,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             isProgrammaticScroll = true;
-            target.section.scrollIntoView({ block: "start", behavior: "smooth" });
-
-            window.setTimeout(() => {
-                isProgrammaticScroll = false;
-            }, 700);
+            scrollTargetToTop(target.section, 500).finally(() => {
+                window.setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 80);
+            });
         };
 
         const requestSettle = () => {
-            if (!desktopQuery.matches || reducedMotionQuery.matches || isProgrammaticScroll) {
+            if (!desktopQuery.matches || reducedMotionQuery.matches || isReduced() || isProgrammaticScroll) {
                 return;
             }
 
@@ -378,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
             item.style.setProperty("--bos-reveal-delay", `${Math.min(index * 28, 140)}ms`);
         });
 
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || (motionToggleState && motionToggleState.isReduced())) {
             motionItems.forEach((item) => item.classList.add("is-visible"));
             return;
         }
