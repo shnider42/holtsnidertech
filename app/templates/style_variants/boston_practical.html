@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ business_name }} | Practical Technical Help Backed by Real Systems Experience{% endblock %}
+{% block title %}{{ business_name }} | Solutions Engineering for Messy Systems{% endblock %}
 {% block meta_description %}Holtsnider Tech combines enterprise systems experience, automation, troubleshooting, and clear communication to help people turn messy technical problems into practical next steps.{% endblock %}
 {% block extra_head %}
 <style>
@@ -33,6 +33,12 @@
         background: linear-gradient(90deg, var(--bos-orange) 0 25%, var(--bos-teal) 25% 50%, var(--bos-text) 50% 75%, transparent 75%);
     }
 
+    .bos-first-screen {
+        min-height: calc(100svh - 10px);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+    }
+
     .bos-wrap {
         width: min(1120px, 91vw);
         margin: 0 auto;
@@ -43,7 +49,7 @@
         grid-template-columns: 1fr auto;
         gap: 20px;
         align-items: center;
-        padding: 26px 0;
+        padding: clamp(14px, 2.2vh, 24px) 0;
     }
 
     .bos-mark,
@@ -96,7 +102,7 @@
     }
 
     .bos-hero {
-        padding: clamp(56px, 8vw, 96px) 0 clamp(36px, 6vw, 62px);
+        padding: clamp(18px, 3.6vh, 42px) 0 clamp(14px, 2.8vh, 28px);
         border-bottom: 1px solid var(--bos-line);
     }
 
@@ -104,8 +110,8 @@
     .bos-cta-strip,
     .bos-contact {
         display: grid;
-        grid-template-columns: 0.70fr 1.30fr;
-        gap: 48px;
+        grid-template-columns: 0.62fr 1.38fr;
+        gap: clamp(24px, 4vw, 48px);
         align-items: end;
     }
 
@@ -161,10 +167,16 @@
 
     .bos h1 {
         margin-bottom: 0;
-        font-size: clamp(3.05rem, 7.6vw, 7.4rem);
-        line-height: 0.86;
-        letter-spacing: -0.085em;
-        font-weight: 900;
+        font-size: clamp(3.6rem, 10vw, 8.8rem);
+        line-height: 0.78;
+        letter-spacing: -0.075em;
+        font-weight: 950;
+        text-transform: uppercase;
+    }
+
+    .bos h1 span {
+        display: block;
+        color: var(--bos-orange);
     }
 
     .bos h2,
@@ -199,12 +211,12 @@
 
     .bos-lede {
         max-width: 730px;
-        margin: 26px 0 0;
-        font-size: 1.08rem;
+        margin: 22px 0 0;
+        font-size: 1.05rem;
     }
 
     .bos-actions {
-        margin-top: 28px;
+        margin-top: 24px;
     }
 
     .bos-btn {
@@ -238,7 +250,7 @@
     }
 
     .bos-signal-row {
-        margin-top: 18px;
+        margin-top: 16px;
     }
 
     .bos-signal {
@@ -268,12 +280,26 @@
         border-bottom: 1px solid var(--bos-line);
     }
 
-    .bos-section-heading {
+    .bos-start-panel {
+        align-self: end;
+        padding: clamp(14px, 2.6vh, 28px) 0 clamp(18px, 3vh, 34px);
+    }
+
+    .bos-section-heading,
+    .bos-start-heading {
         display: grid;
         grid-template-columns: 0.38fr 0.62fr;
         gap: 38px;
         align-items: start;
         margin-bottom: 28px;
+    }
+
+    .bos-start-heading {
+        margin-bottom: 16px;
+    }
+
+    .bos-start-heading h2 {
+        font-size: clamp(1.75rem, 3.8vw, 3.45rem);
     }
 
     .bos-section-text {
@@ -335,6 +361,11 @@
         transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
     }
 
+    .bos-start-panel .bos-choice-card {
+        min-height: clamp(142px, 20vh, 190px);
+        padding: clamp(16px, 2.4vh, 22px);
+    }
+
     .bos-choice-card::before,
     .bos-work-card::before,
     .bos-case-card::before {
@@ -344,6 +375,10 @@
         height: 5px;
         margin-bottom: 20px;
         background: var(--card-accent, var(--bos-orange));
+    }
+
+    .bos-start-panel .bos-choice-card::before {
+        margin-bottom: 14px;
     }
 
     .bos-choice-card:hover,
@@ -466,6 +501,10 @@
         .bos-path-grid {
             grid-template-columns: repeat(3, 1fr);
         }
+
+        .bos-first-screen {
+            min-height: auto;
+        }
     }
 
     @media (max-width: 850px) {
@@ -478,7 +517,6 @@
         .bos-contact,
         .bos-cta-strip,
         .bos-section-heading,
-        .bos-choice-grid,
         .bos-path-grid,
         .bos-experience-grid,
         .bos-stack-grid,
@@ -489,27 +527,35 @@
 
         .bos-head {
             align-items: start;
-            padding: 20px 0;
+            padding: 16px 0;
         }
 
         .bos-hero {
-            padding: 42px 0 34px;
+            padding: 26px 0 20px;
         }
 
         .bos-side {
             max-width: none;
-            padding: 13px 0 13px 16px;
-            font-size: 0.94rem;
+            padding: 11px 0 11px 16px;
+            font-size: 0.92rem;
         }
 
         .bos h1 {
-            font-size: clamp(2.82rem, 17vw, 4.2rem);
+            font-size: clamp(3.15rem, 17vw, 5.2rem);
         }
 
         .bos-lede {
-            margin-top: 22px;
-            font-size: 1rem;
-            line-height: 1.48;
+            margin-top: 18px;
+            font-size: 0.98rem;
+            line-height: 1.46;
+        }
+
+        .bos-actions {
+            margin-top: 18px;
+        }
+
+        .bos-btn {
+            min-height: 40px;
         }
 
         .bos-operating-line {
@@ -521,9 +567,37 @@
             padding: 36px 0;
         }
 
-        .bos-section-heading {
-            gap: 16px;
-            margin-bottom: 22px;
+        .bos-section-heading,
+        .bos-start-heading {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .bos-start-panel {
+            padding: 18px 0 22px;
+        }
+
+        .bos-choice-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .bos-start-panel .bos-choice-card {
+            min-height: 138px;
+            padding: 14px;
+        }
+
+        .bos-start-panel .bos-choice-card h3 {
+            font-size: 1.18rem;
+        }
+
+        .bos-start-panel .bos-choice-card p {
+            display: none;
+        }
+
+        .bos-start-panel .bos-choice-action {
+            padding-top: 12px;
+            font-size: 0.64rem;
         }
 
         .bos-choice-card,
@@ -542,6 +616,39 @@
             padding: 38px 0 40px;
         }
     }
+
+    @media (max-width: 430px) {
+        .bos-links {
+            gap: 10px 12px;
+        }
+
+        .bos-links a {
+            font-size: 0.68rem;
+        }
+
+        .bos-side,
+        .bos-signal-row,
+        .bos-actions {
+            display: none;
+        }
+
+        .bos h1 {
+            font-size: clamp(2.95rem, 18vw, 4.6rem);
+        }
+
+        .bos-lede {
+            font-size: 0.92rem;
+        }
+
+        .bos-start-heading .bos-section-text {
+            display: none;
+        }
+
+        .bos-start-panel .bos-choice-card {
+            min-height: 120px;
+            padding: 12px;
+        }
+    }
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/boston-practical-staging-background.css') }}" />
 {% endblock %}
@@ -549,32 +656,33 @@
 <main class="boston">
     <div class="bos-rule"></div>
 
-    <div class="bos-wrap">
-        <header class="bos-head">
-            <a class="bos-mark" href="{{ url_for('main.style_lab') }}">Holtsnider Tech</a>
-            <nav class="bos-links" aria-label="Boston Practical preview navigation">
-                <a href="#start">Start</a>
-                <a href="#experience">Experience</a>
-                <a href="#work">Work</a>
-                <a href="#contact">Contact</a>
-                <a href="{{ url_for('main.style_lab') }}">Compare</a>
-            </nav>
-        </header>
+    <section class="bos-first-screen" aria-label="Holtsnider Tech starting point">
+        <div class="bos-wrap">
+            <header class="bos-head">
+                <a class="bos-mark" href="{{ url_for('main.style_lab') }}">Holtsnider Tech</a>
+                <nav class="bos-links" aria-label="Boston Practical preview navigation">
+                    <a href="#start">Start</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#work">Work</a>
+                    <a href="#contact">Contact</a>
+                    <a href="{{ url_for('main.style_lab') }}">Compare</a>
+                </nav>
+            </header>
+        </div>
 
         <section class="bos-hero">
-            <div class="bos-hero-grid">
+            <div class="bos-wrap bos-hero-grid">
                 <aside class="bos-side">
                     <strong>Built from real systems work</strong>
                     Enterprise storage, lab infrastructure, automation, reliability, troubleshooting, and technical translation — not just portfolio polish.
                 </aside>
 
                 <div>
-                    <span class="bos-kicker">Boston Practical candidate homepage</span>
-                    <h1>Practical technical help, built close to the problem.</h1>
+                    <span class="bos-kicker">Holtsnider Tech</span>
+                    <h1>Solutions <span>Engineering</span></h1>
                     <p class="bos-lede">
-                        Holtsnider Tech helps turn unclear technical messes into smaller next steps: guidance,
-                        troubleshooting, automation, team advisory, and longer-term support grounded in years of real
-                        infrastructure and reliability engineering experience.
+                        Practical help for messy technical problems: systems reliability, automation, troubleshooting,
+                        team advisory, and turning unclear situations into the next useful step.
                     </p>
                     <div class="bos-signal-row" aria-label="Core experience areas">
                         <span class="bos-signal">Systems reliability</span>
@@ -590,44 +698,57 @@
             </div>
         </section>
 
+        <section class="bos-start-panel" id="start">
+            <div class="bos-wrap">
+                <div class="bos-start-heading">
+                    <h2>What are you looking for?</h2>
+                    <p class="bos-section-text">
+                        Pick the closest path. This is the homepage flowchart: start with the situation, then move to the useful next step.
+                    </p>
+                </div>
+
+                <div class="bos-choice-grid" aria-label="Choose a direction">
+                    <a class="bos-choice-card bos-choice-solve" href="#solve">
+                        <span class="bos-card-label">01 / Solve</span>
+                        <h3>Solve a problem</h3>
+                        <p>Something is broken, unclear, inefficient, risky, or stuck between people, tools, and systems.</p>
+                        <span class="bos-choice-action">Go to problem path</span>
+                    </a>
+                    <a class="bos-choice-card bos-choice-opportunity" href="#opportunity">
+                        <span class="bos-card-label">02 / Explore</span>
+                        <h3>Find or shape an opportunity</h3>
+                        <p>You have an idea, workflow, project, prototype, or automation opportunity and need help making it real.</p>
+                        <span class="bos-choice-action">Go to opportunity path</span>
+                    </a>
+                    <a class="bos-choice-card bos-choice-experience" href="#experience">
+                        <span class="bos-card-label">03 / Background</span>
+                        <h3>Cut to experience and contact</h3>
+                        <p>You already know the context and want background, visible work, contact, or a resume / role conversation.</p>
+                        <span class="bos-choice-action">Go to experience</span>
+                    </a>
+                    <a class="bos-choice-card bos-choice-not-sure" href="#not-sure">
+                        <span class="bos-card-label">04 / Unsure</span>
+                        <h3>Not sure yet</h3>
+                        <p>You do not know whether this is tooling, process, website, vendor, infrastructure, or something else.</p>
+                        <span class="bos-choice-action">Go to discovery path</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <div class="bos-wrap">
         <div class="bos-operating-line" aria-label="Operating principle">
             <strong>Operating principle</strong>
             <p>Fewer buzzwords. Clearer tradeoffs. Practical next steps. Start with the actual situation, then choose the smallest useful move.</p>
         </div>
 
-        <section class="bos-section" id="start">
+        <section class="bos-section" id="paths">
             <div class="bos-section-heading">
-                <h2>What are you looking for?</h2>
+                <h2>Follow the path.</h2>
                 <p class="bos-section-text">
-                    Start with the reason you are here. This keeps the site from becoming one long wall of services, projects, and background.
+                    The first screen gets someone oriented. This section starts the deeper flow for people who want to keep going.
                 </p>
-            </div>
-
-            <div class="bos-choice-grid" aria-label="Choose a direction">
-                <a class="bos-choice-card bos-choice-solve" href="#solve">
-                    <span class="bos-card-label">01 / Solve</span>
-                    <h3>Solve a problem</h3>
-                    <p>Something is broken, unclear, inefficient, risky, or stuck between people, tools, and systems.</p>
-                    <span class="bos-choice-action">Go to problem path</span>
-                </a>
-                <a class="bos-choice-card bos-choice-opportunity" href="#opportunity">
-                    <span class="bos-card-label">02 / Explore</span>
-                    <h3>Find or shape an opportunity</h3>
-                    <p>You have an idea, workflow, project, prototype, or automation opportunity and need help turning it into a real next step.</p>
-                    <span class="bos-choice-action">Go to opportunity path</span>
-                </a>
-                <a class="bos-choice-card bos-choice-experience" href="#experience">
-                    <span class="bos-card-label">03 / Background</span>
-                    <h3>Cut to experience and contact</h3>
-                    <p>You already know the context and want the professional background, visible work, contact path, or resume conversation.</p>
-                    <span class="bos-choice-action">Go to experience</span>
-                </a>
-                <a class="bos-choice-card bos-choice-not-sure" href="#not-sure">
-                    <span class="bos-card-label">04 / Unsure</span>
-                    <h3>Not sure yet</h3>
-                    <p>You do not know whether this is a tooling issue, process issue, website issue, vendor issue, or something else.</p>
-                    <span class="bos-choice-action">Go to discovery path</span>
-                </a>
             </div>
 
             <div class="bos-path-grid">
