@@ -1,26 +1,29 @@
 /*
- * Horizontally draggable systems-stack row for the lower Experience categories.
+ * Horizontal systems-stack row for the lower Experience categories.
  * The upper .bos-experience-grid credibility table intentionally remains alone.
  */
 
 .boston .bos-stack-grid {
     position: relative;
-    display: grid !important;
-    grid-auto-flow: column;
-    grid-auto-columns: clamp(250px, 27vw, 360px);
-    grid-template-columns: none !important;
-    grid-template-rows: minmax(138px, auto);
-    gap: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: 12px !important;
+    width: 100%;
+    max-width: 100%;
+    margin-top: clamp(16px, 2vw, 24px);
+    padding: 2px 34px 16px 2px;
     overflow-x: auto;
     overflow-y: hidden;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: none;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     cursor: grab;
     user-select: none;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
-    box-shadow: inset -34px 0 28px -28px rgba(255, 138, 61, 0.28);
+    mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 42px), transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 42px), transparent 100%);
 }
 
 .boston .bos-stack-grid:active,
@@ -29,13 +32,12 @@
 }
 
 .boston .bos-stack-grid.is-dragging {
-    scroll-snap-type: none;
-    box-shadow: inset -34px 0 28px -28px rgba(255, 138, 61, 0.38);
+    scroll-behavior: auto;
 }
 
 .boston .bos-stack-grid .bos-mini {
+    flex: 0 0 clamp(260px, 26vw, 360px);
     min-width: 0;
-    scroll-snap-align: start;
     user-select: none;
 }
 
@@ -53,23 +55,23 @@
     content: none;
 }
 
-@media (min-width: 1081px) {
-    .boston .bos-stack-grid {
-        grid-auto-columns: clamp(260px, 27vw, 370px);
-        max-width: 100%;
-    }
-}
-
 @media (max-width: 850px) {
     .boston .bos-stack-grid {
-        grid-auto-columns: minmax(235px, 76vw);
-        grid-template-rows: minmax(128px, auto);
+        gap: 10px !important;
+        padding-right: 28px;
+    }
+
+    .boston .bos-stack-grid .bos-mini {
+        flex-basis: min(76vw, 320px);
     }
 }
 
 @media (max-width: 520px) {
     .boston .bos-stack-grid {
-        grid-auto-columns: minmax(220px, 82vw);
-        grid-template-rows: minmax(118px, auto);
+        padding-right: 22px;
+    }
+
+    .boston .bos-stack-grid .bos-mini {
+        flex-basis: min(82vw, 295px);
     }
 }
