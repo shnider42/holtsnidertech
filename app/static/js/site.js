@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mark) {
             mark.setAttribute("href", "/");
             mark.setAttribute("aria-label", "Holtsnider Tech home");
-            mark.textContent = "HT";
+            mark.textContent = "Holtsnider Tech";
         }
 
         boston.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href*="/style-lab"]').forEach((link) => link.remove());
