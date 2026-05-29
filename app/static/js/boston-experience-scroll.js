@@ -6,60 +6,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     stack.setAttribute("tabindex", "0");
-    stack.setAttribute("aria-label", "Systems stack experience. Drag horizontally or use Shift plus mouse wheel to scroll sideways.");
+    stack.setAttribute("aria-label", "Systems stack experience. Scroll horizontally, drag sideways on desktop, or use Shift plus mouse wheel.");
 
     let isDragging = false;
-    let pointerId = null;
     let startX = 0;
     let startScrollLeft = 0;
     let hasMoved = false;
 
-    const stopDragging = () => {
-        if (!isDragging) {
-            return;
-        }
-
-        if (pointerId !== null && stack.hasPointerCapture(pointerId)) {
-            stack.releasePointerCapture(pointerId);
-        }
-
-        isDragging = false;
-        pointerId = null;
-        stack.classList.remove("is-dragging");
-    };
-
-    stack.addEventListener("pointerdown", (event) => {
-        if (event.button !== 0 || event.pointerType === "touch") {
+    const startDrag = (event) => {
+        if (event.button !== 0) {
             return;
         }
 
         isDragging = true;
-        pointerId = event.pointerId;
         startX = event.clientX;
         startScrollLeft = stack.scrollLeft;
         hasMoved = false;
         stack.classList.add("is-dragging");
-        stack.setPointerCapture(pointerId);
-        event.preventDefault();
-    });
+        document.body.style.cursor = "grabbing";
+    };
 
-    stack.addEventListener("pointermove", (event) => {
-        if (!isDragging || event.pointerId !== pointerId) {
+    const moveDrag = (event) => {
+        if (!isDragging) {
             return;
         }
 
         const distance = event.clientX - startX;
-        if (Math.abs(distance) > 3) {
+        if (Math.abs(distance) > 4) {
             hasMoved = true;
         }
 
         stack.scrollLeft = startScrollLeft - distance;
         event.preventDefault();
-    });
+    };
 
-    stack.addEventListener("pointerup", stopDragging);
-    stack.addEventListener("pointercancel", stopDragging);
-    stack.addEventListener("lostpointercapture", stopDragging);
+    const stopDrag = () => {
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+        stack.classList.remove("is-dragging");
+        document.body.style.cursor = "";
+    };
+
+    stack.addEventListener("mousedown", startDrag);
+    window.addEventListener("mousemove", moveDrag);
+    window.addEventListener("mouseup", stopDrag);
+    window.addEventListener("blur", stopDrag);
 
     stack.addEventListener("click", (event) => {
         if (!hasMoved) {
@@ -81,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: false });
 
     stack.addEventListener("keydown", (event) => {
-        const cardWidth = stack.querySelector(".bos-mini")?.getBoundingClientRect().width || 260;
+        const cardWidth = stack.querySelector(".bos-mini")?.getBoundingClientRect().width || 280;
 
         if (event.key === "ArrowRight") {
             event.preventDefault();
