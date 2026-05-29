@@ -1,0 +1,12 @@
+/* Match the compact HT mark to the favicon: white letters with a black outline. */
+
+.boston .bos-mark {
+    color: #ffffff !important;
+    font-weight: 950 !important;
+    -webkit-text-stroke: 0.7px #050505;
+    text-shadow:
+        -1px -1px 0 #050505,
+        1px -1px 0 #050505,
+        -1px 1px 0 #050505,
+        1px 1px 0 #050505;
+}
