@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (pointerId !== null && stack.hasPointerCapture(pointerId)) {
+            stack.releasePointerCapture(pointerId);
+        }
+
         isDragging = false;
         pointerId = null;
         stack.classList.remove("is-dragging");
@@ -36,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hasMoved = false;
         stack.classList.add("is-dragging");
         stack.setPointerCapture(pointerId);
+        event.preventDefault();
     });
 
     stack.addEventListener("pointermove", (event) => {
@@ -49,11 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         stack.scrollLeft = startScrollLeft - distance;
+        event.preventDefault();
     });
 
     stack.addEventListener("pointerup", stopDragging);
     stack.addEventListener("pointercancel", stopDragging);
-    stack.addEventListener("mouseleave", stopDragging);
+    stack.addEventListener("lostpointercapture", stopDragging);
 
     stack.addEventListener("click", (event) => {
         if (!hasMoved) {
@@ -75,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: false });
 
     stack.addEventListener("keydown", (event) => {
-        const cardWidth = stack.querySelector(".bos-mini")?.getBoundingClientRect().width || 240;
+        const cardWidth = stack.querySelector(".bos-mini")?.getBoundingClientRect().width || 260;
 
         if (event.key === "ArrowRight") {
             event.preventDefault();
