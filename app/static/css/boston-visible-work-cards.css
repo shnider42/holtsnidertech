@@ -1,0 +1,82 @@
+/*
+ * Visible Work card-specific treatments for ht3.
+ * Keeps the general Boston Practical card structure while giving selected
+ * projects a clearer visual identity.
+ */
+
+.boston .bos-work-card {
+    overflow: hidden;
+}
+
+.boston .bos-project-irish {
+    --card-accent: #169b62;
+    background:
+        linear-gradient(90deg,
+            rgba(22, 155, 98, 0.82) 0 33.333%,
+            rgba(244, 241, 234, 0.84) 33.333% 66.666%,
+            rgba(255, 136, 62, 0.82) 66.666% 100%),
+        rgba(8, 16, 24, 0.18) !important;
+    color: #101010 !important;
+}
+
+.boston .bos-project-irish::after,
+.boston .bos-project-passage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(8, 16, 24, 0.18), rgba(8, 16, 24, 0.02) 42%, rgba(8, 16, 24, 0.20));
+}
+
+.boston .bos-project-irish > *,
+.boston .bos-project-passage > * {
+    position: relative;
+    z-index: 1;
+}
+
+.boston .bos-project-irish .bos-card-label,
+.boston .bos-project-irish .bos-card-action,
+.boston .bos-project-irish h3,
+.boston .bos-project-irish p {
+    color: #101010 !important;
+    text-shadow: 0 1px 18px rgba(244, 241, 234, 0.18);
+}
+
+.boston .bos-project-irish::before {
+    background: #101010 !important;
+}
+
+.boston .bos-project-passage,
+.boston .bos-project-site {
+    --card-accent: #8c6a42;
+}
+
+.boston .bos-project-passage {
+    background:
+        radial-gradient(circle at 15% 15%, rgba(255, 246, 221, 0.38), transparent 28%),
+        linear-gradient(135deg, rgba(247, 244, 236, 0.94), rgba(221, 203, 174, 0.88) 48%, rgba(117, 82, 48, 0.84)),
+        #f7f4ec !important;
+    color: #271e15 !important;
+}
+
+.boston .bos-project-passage::before {
+    background: #8c6a42 !important;
+}
+
+.boston .bos-project-passage .bos-card-label,
+.boston .bos-project-passage .bos-card-action,
+.boston .bos-project-passage h3,
+.boston .bos-project-passage p {
+    color: #271e15 !important;
+}
+
+.boston .bos-project-passage .bos-card-label,
+.boston .bos-project-passage .bos-card-action {
+    color: #54453b !important;
+}
+
+.boston .bos-project-irish:hover,
+.boston .bos-project-passage:hover {
+    border-color: rgba(244, 241, 234, 0.48) !important;
+    transform: translateY(-2px);
+}
