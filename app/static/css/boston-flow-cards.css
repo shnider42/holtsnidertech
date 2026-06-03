@@ -1,0 +1,99 @@
+/*
+ * First-screen flow cards.
+ * Keeps the four-card grid stable while making better use of the quiet space
+ * inside each card on hover/focus.
+ */
+
+.boston .bos-start-panel .bos-choice-card {
+    isolation: isolate;
+    gap: 8px;
+}
+
+.boston .bos-start-panel .bos-choice-card > h3 {
+    margin-bottom: 0 !important;
+}
+
+.boston .bos-start-panel .bos-choice-card > p {
+    max-width: 25ch;
+}
+
+.boston .bos-choice-drawer {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    padding: 12px 12px 11px;
+    border: 1px solid color-mix(in srgb, var(--card-accent, #ff8a3d) 24%, rgba(255, 255, 255, 0.12));
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 10%, transparent), rgba(8, 16, 24, 0.22)),
+        rgba(8, 16, 24, 0.28);
+    color: #d8d1c7;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        background-color 180ms ease,
+        border-color 180ms ease;
+}
+
+.boston .bos-choice-drawer strong,
+.boston .bos-choice-drawer span {
+    display: block;
+    color: var(--card-accent, #ff8a3d);
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.boston .bos-choice-drawer ul {
+    display: grid;
+    gap: 3px;
+    margin: 7px 0 8px;
+    padding: 0;
+    list-style: none;
+}
+
+.boston .bos-choice-drawer li {
+    color: rgba(244, 241, 234, 0.82);
+    font-size: 0.76rem;
+    line-height: 1.25;
+}
+
+.boston .bos-choice-drawer li::before {
+    content: "→";
+    margin-right: 6px;
+    color: var(--card-accent, #ff8a3d);
+    opacity: 0.8;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover .bos-choice-drawer,
+.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-drawer,
+.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-drawer {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (hover: none) {
+    .boston .bos-choice-drawer {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 850px) {
+    .boston .bos-start-panel .bos-choice-card > p {
+        max-width: none;
+    }
+
+    .boston .bos-choice-drawer {
+        padding: 11px;
+    }
+}
+
+@media (max-width: 520px) {
+    .boston .bos-choice-drawer {
+        display: none;
+    }
+}
