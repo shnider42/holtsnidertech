@@ -1,0 +1,45 @@
+/*
+ * Restores the subtle fade in/out language as elements enter and leave the
+ * top/bottom of the viewport. This is intentionally independent from the
+ * reduce-motion snap toggle so the page can stay calm without going flat.
+ */
+
+.boston .bos-viewport-fade {
+    opacity: 0.42;
+    transform: translateY(14px) scale(0.992);
+    filter: saturate(0.9);
+    transition:
+        opacity 420ms ease,
+        transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        filter 420ms ease;
+    will-change: opacity, transform;
+}
+
+.boston .bos-viewport-fade.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: saturate(1);
+}
+
+.boston .bos-viewport-fade.is-past {
+    opacity: 0.34;
+    transform: translateY(-10px) scale(0.994);
+}
+
+.boston .bos-first-screen .bos-viewport-fade,
+.boston .bos-head.bos-viewport-fade {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .boston .bos-viewport-fade,
+    .boston .bos-viewport-fade.is-past,
+    .boston .bos-viewport-fade.is-visible {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: opacity 180ms ease;
+    }
+}
