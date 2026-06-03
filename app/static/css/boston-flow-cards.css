@@ -22,8 +22,7 @@
     -webkit-backdrop-filter: blur(10px) !important;
 }
 
-.boston:not(.bos-at-top) .bos-head:hover,
-.boston:not(.bos-at-top) .bos-head:focus-within {
+.boston:not(.bos-at-top) .bos-head:hover {
     opacity: 1;
     background: rgba(8, 16, 24, 0.72) !important;
     border-color: rgba(255, 255, 255, 0.13) !important;
@@ -31,6 +30,14 @@
     filter: none;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.boston:not(.bos-at-top) .bos-head:focus-within:not(:hover) {
+    opacity: 0.22;
+}
+
+.boston:not(.bos-at-top) .bos-head:focus-within:hover {
+    opacity: 1;
 }
 
 .boston .bos-start-panel {
