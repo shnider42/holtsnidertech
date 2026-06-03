@@ -1,6 +1,13 @@
 /*
- * Last-loaded PNG-backed card art and alignment fixes.
- * These are transparent PNG data images, pre-rendered once, not SVG.
+ * Last-loaded card illustration layer.
+ *
+ * Keep this file boring on purpose:
+ * - no generated PNG blobs
+ * - no data-URI SVG blobs
+ * - no template or JS dependency
+ *
+ * The four first-screen cards use the same classes the homepage already owns:
+ * .bos-choice-solve, .bos-choice-opportunity, .bos-choice-experience, .bos-choice-not-sure
  */
 
 .boston .bos-start-panel .bos-choice-card,
@@ -13,32 +20,19 @@
 .boston .bos-start-panel .bos-choice-card {
     position: relative;
     isolation: isolate;
+    overflow: hidden !important;
     justify-content: flex-start !important;
     align-content: start !important;
     align-items: flex-start !important;
     padding-top: clamp(18px, 2.1vw, 28px) !important;
 }
 
-.boston .bos-start-panel .bos-choice-card::before {
-    display: none !important;
-}
-
-.boston .bos-start-panel .bos-choice-card::after {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    background-repeat: no-repeat;
-    background-position: right 7% center;
-    background-size: min(58%, 260px) auto;
-    opacity: 0.72;
-    pointer-events: none;
-    filter: drop-shadow(0 22px 32px rgba(0, 0, 0, 0.24));
+.boston .bos-start-panel .bos-choice-card > * {
+    position: relative;
+    z-index: 2;
 }
 
 .boston .bos-start-panel .bos-choice-card > h3 {
-    position: relative;
-    z-index: 2;
     align-self: start;
     justify-self: start;
     max-width: 9ch;
@@ -46,36 +40,106 @@
     text-align: left !important;
 }
 
+.boston .bos-start-panel .bos-choice-card::before,
+.boston .bos-start-panel .bos-choice-card::after {
+    content: "";
+    display: block !important;
+    position: absolute;
+    z-index: 0;
+    margin: 0 !important;
+    border: 0;
+    pointer-events: none;
+}
+
+.boston .bos-start-panel .bos-choice-card::before {
+    inset: 0;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0;
+    background:
+        radial-gradient(circle at 82% 28%, color-mix(in srgb, var(--card-accent, #ff8a3d) 24%, transparent), transparent 26%),
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 13%, transparent), transparent 48%),
+        repeating-linear-gradient(135deg, transparent 0 18px, rgba(244, 241, 234, 0.035) 18px 19px, transparent 19px 38px);
+    opacity: 0.78;
+}
+
+.boston .bos-start-panel .bos-choice-card::after {
+    top: 50%;
+    right: clamp(12px, 2.3vw, 36px);
+    width: clamp(96px, 13vw, 190px);
+    height: clamp(76px, 10vw, 142px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto !important;
+    opacity: 0.56;
+    filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.25));
+    transform: translateY(-50%);
+    transition: opacity 160ms ease, transform 160ms ease, filter 160ms ease;
+}
+
+/* Solve: diagnostic lens / cross-layer debugging. */
 .boston .bos-choice-solve::after {
-    background-image:
-        radial-gradient(circle at 74% 46%, rgba(255, 138, 61, 0.18), transparent 38%),
-        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAADVklEQVR42u2dPW7VQBSFPdaji5Quy6CnyA4itoBERxYQiRUgZQHQIbEFlB2koGcZdEh0FKF66MmyPT+ec++ZmXOaFFY84/vlnjs/HmeaJEmSJEmSJEmSJCldf37/+txy/wNDcK6ub+5bgcvaVzPAR//imQKY8izswAMLWMbAXT7Tm6/fvvx4/+5Da7ADG1imoC0BL6/vAWeBHdBwYw/KbIMxwKmwPZ8hIMCWPgzqvhaAWWGHWhBqd9qqHQRgJisPzEH3hlwLsGd2B/Zge0JGALaGfWIf3Z7baX1FaU3LP5ol8MtnLo336UgWec9RW1tVygG+BzsHeCiByzBtsegL2qItrDzboj2z5ur65r5Hq65h5Vtc5pyMYbDEZR9GBZ7qKPMkda25pYFVD32lAcxUe5n7wq6TQoDXz7/fP21de/3q7UfzDG7R8lj7vAc35bqJRTNaomy6cg2WBFgSYEmAJQGWBFgSYAH+L9YNf+ErBNziIoIWPmTRAtyKJcqe03Xas7xWAulhzzU3CVLvVbLzJIt2hotud87JDIaMZnxPrKtBlidk1V4A4LUM8Qh0D59ToM1gbfh3OIpOzSivw2dS5Rq8BRIJgOGM8FCDLEvIe3BfHm+fPIOGfhOyZrvNfcLhEm54eL6zLA8lB9BS5q4l4Jbnk7ZiXlSDY2d2c8615nyEZZm5L4+3T2jIrau5zyit2TMS8tEsRmRwavYWLXSsAUAMerbuuwbTsibHzuqytT+jgSDuYwl5rS9ekNfajcVqRmVeDuyS3/GGzKCUfoWpcVnW5JJ6XKsG59RdaAabjxI3MtmiLltZ9ZF2utgP3srY2pBZrDqnH91s+IeH5zuLurwMLjqLS625O8Ce0ygU5Br37fKVHTRki6lTyZRoGMBekFnq7hCAPSDXyuKjdXcYwB41+Sjk2lY/xGuzSMix7IotYsSuHy0FYRpIyFWvGnvHNa15qAz2sOtcq0VNtYY72YCCfGTqVGtKJMAOkL2nYMOeTbKCHMtiRN0VYOOavAXZYjdq+NOFiO3G0ixErI7p+OiE2W6MWTXamgV4BTLass9QLd/pCkKLXRDx/uebymDw4CsGD70rJcCOkC22HAWYYBolwB1APmfr8qcGWYQDLx14G2h0za5/O2pU2NS33LsAAAAASUVORK5CYII=");
+    border-radius: 50%;
+    background:
+        linear-gradient(45deg, transparent 0 61%, rgba(255, 138, 61, 0.72) 61% 68%, transparent 68% 100%),
+        radial-gradient(circle at 38% 40%, transparent 0 27%, rgba(244, 241, 234, 0.58) 28% 33%, transparent 34%),
+        radial-gradient(circle at 38% 40%, rgba(255, 138, 61, 0.14), transparent 45%),
+        linear-gradient(90deg, transparent 0 36%, rgba(244, 241, 234, 0.28) 36% 39%, transparent 39% 100%),
+        linear-gradient(0deg, transparent 0 38%, rgba(45, 143, 139, 0.28) 38% 41%, transparent 41% 100%);
 }
 
+/* Launch Idea: structured bulb / prototype spark. */
 .boston .bos-choice-opportunity::after {
-    background-image:
-        radial-gradient(circle at 74% 44%, rgba(125, 255, 155, 0.15), transparent 38%),
-        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAACvUlEQVR42u2du07DMBSG24gNJDbGvknfgI2dDSGxwwYDbGWvhLqxs/UNeBNGNiSYy1SpiprE8e1c8v0LAsnJib/+9nFjH2Yz1KnH3Wb9uNusLT9DA0aEEEJIRHPvD/j78x2cJJ2dX9wB2BHQKQBvPIHNCbfUNY8txXBwJcfWdvQh3Jf5zR2AI8COgVLimiGuLQXXJOAQCDmcVuo+NVxrFnBfp5dMiHLdtzZcU4C7OrlmppsSgwRcM4A1wI2NpeZ8axLwsQ7VsD4NiUvKtWbWwVrhdsXRjncPVQquagdrhmspzga45Z0M4Arr2qnG11hwr0VpeY5Ge6dYeaOjdahurHUa8RoF7GVo1vZcDW7wHTfbZp1LBeD2MGZ9q0w7fslhGgfjYARgBOCpzL/a5mEcjIMRgJFandAFMhp7oiF2VwgOxsGohGrt08LBJFkIwAjAXdL05iWntHxDh4NxsF3tVsvt4c/S7QAsCDcUVmw7AE9oHtb0hqzx7N7Qv6e2w8EZXJAKtxT8XHG7B5xjGDsGYf7weRlzrWPtYpwsvYHB3PngGEhtWG1Q7d+72llzrzrAKed7uiClaujD0Renhu1H6hwc0ykhQ2cXqJgPRsj9tOwtM5FF97k4Zd4NnVOH5mPNyzqVgFOG6j64Q+Bj2o4txlJbc2vOPey82Hk3p+v/bj++QuFKFGMxdz74EHquRCpWQ3DbUCX+yYeLQmi71XI7Fva+zdi2vz/f69O3q0UI3LYoZZgA2UoMFCONzKYtFCOVgEw5YaH71KphSUHwwteUdjMl/ROz+lyQcbAgaMtHWt0ArvFSXnrd7e6LDk1wa94HwIKdbg2yq8NnJYbQfZb7/Pq+sNgnbHx3LgAPSLIcP4ARgKfuYgA7l6ss2sNhMRxcYWnUp6f76y8AO4VsDS6KkMS+KpIshBBCCCGEauofwmP5hb3Xdu0AAAAASUVORK5CYII=");
+    border-radius: 34% 34% 46% 46%;
+    background:
+        radial-gradient(circle at 50% 30%, transparent 0 26%, rgba(244, 241, 234, 0.50) 27% 31%, transparent 32%),
+        radial-gradient(circle at 50% 30%, rgba(125, 255, 155, 0.18), transparent 48%),
+        linear-gradient(90deg, transparent 0 38%, rgba(255, 138, 61, 0.58) 38% 62%, transparent 62% 100%),
+        linear-gradient(0deg, transparent 0 72%, rgba(244, 241, 234, 0.36) 72% 77%, transparent 77% 100%),
+        repeating-linear-gradient(90deg, transparent 0 16%, rgba(125, 255, 155, 0.22) 16% 18%, transparent 18% 32%);
+    clip-path: polygon(16% 2%, 84% 2%, 100% 46%, 66% 98%, 34% 98%, 0 46%);
 }
 
+/* HT Experience: resume / system stack / proof card. */
 .boston .bos-choice-experience::after {
-    background-image:
-        radial-gradient(circle at 74% 44%, rgba(45, 143, 139, 0.18), transparent 38%),
-        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAACFUlEQVR42u2dP0rEQBSHsyGVCnaWew8Lb2DnASJpBNsFsUqx1SJsK9iIHsDOG1jkHpZ2gtbauDCErM7MjjNv3nxfFfJnN+TLb/Imk5CqAgAAAAAAN2aSd+7j/e1W0v7s353NN9OfF0+vLtseHB5dIlio2CnBPpJTiK5pxMIJp4l2T28vTOjDz+S6qqqFkeRzi82XKVJMgv1ZT4gXB4KVS0awcskIVi4ZwcolI1i5ZAQrl4xg5ZIRrFwyguNJniMYycFpOP5eLHw3jC2ZBCfg6+bkOdZ/MZoUj+UmwbOrl1MSrBSfhwQQDAhGMCAY8kNdP/j4/vF6PG/o2hWCFYodLytRdKNd7ng9W8khBggsn7ZEsIvcKYHmOi6SKbIykDs13zbxNNGC+CuVQ9euXMRKaF6LTrApy7bJNdcrJcX0gxEMCAYEA4K9q2aXGx2uhRmChfaJXZcjOIO+7zaJtjdENKLimSyXdCaUyxv+oZIsUC5N9H9LLnVMWN1oEhW0ogT7VsaMJmUq97dkjtcvZVw4yyp6l25Pwi5Tkiq6yT25Q9fumQfPohjbeuB3QOwrNnXmcot9WlL9NdiQ24c4YbSeLHWmUoP+puaWgNdH48GtSkAwIBgQjGCgHyywOhVIT4KBBEtPCddgQDAgGBAMCEYw0E2SRcwbHT0JBhJceqpIMASDL4BHhi+Ag/4Ea0xy7OQCAABAWr4Bx6vjmZoqxu0AAAAASUVORK5CYII=");
+    border: 2px solid rgba(244, 241, 234, 0.28);
+    border-radius: 10px;
+    background:
+        linear-gradient(135deg, transparent 0 69%, rgba(255, 138, 61, 0.46) 69% 72%, transparent 72% 100%),
+        linear-gradient(90deg, transparent 0 18%, rgba(45, 143, 139, 0.38) 18% 24%, transparent 24% 100%),
+        repeating-linear-gradient(0deg, transparent 0 18px, rgba(244, 241, 234, 0.34) 18px 22px, transparent 22px 34px),
+        linear-gradient(135deg, rgba(106, 169, 255, 0.13), rgba(244, 241, 234, 0.04));
+    box-shadow: -14px 14px 0 rgba(106, 169, 255, 0.10);
 }
 
+/* Start a Discovery: trail map / unknown path becoming named. */
 .boston .bos-choice-not-sure::after {
-    background-image:
-        radial-gradient(circle at 72% 42%, rgba(255, 138, 61, 0.14), transparent 36%),
-        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAAEDElEQVR42u2dP2ocMRTGZx+kciBdSt/AKdKl8A1CGh/AEAImOUBgTzDgFOlsDCGwB0hjcoMU6X0El+4MduXCKZIFRZFGT9KT9N7m+8Cws97Z0cxP36c/MzszTRAEQRAEQRAEQRAEQRAEQRAEQRAU0wqHIKy725szd/nps+cfAHgHwfqyBhqAI3B9kEv/g4zATbk353NaREDLg/94enhgCSwiOhC/oehdgmohquFgpvYujs4tlhuAM3rUFiEDMAOuC9Z9baFNBmCnLQ0B8117f/LtPRy8Y9Es9Vn0ohW3ua5zt++772ntUQNwpiOXIlsjZABmwl3qQWuGDMDLveZ5mqY1Z32tkNHJSjt1dv5Y62nqeAFwHMhcUzm0QAZgZjvLjWpts10E9/52WmxIVFNRNLiYADfcWbo/+Xad696SYRcAd4xm37keZJPtMcG98Vjeuzjar3GvBsg0+iAffP70svfO+2PeBbiiHbcRkFdaHNRzgsDtWDHgriW2OWoihEbDffV182XUtnvBHelk0gS39Y4zTiTst9z+CMikAa77elRnJAA36d4XT94cC0+m2AWciuXWkEvPFKXglkDuWZlJA9zW7TED7lwC113OAd0zqkkL3BG1e0GL8Xz1cLmpjexekFca4f58e/xOakhR6N51qZtTlaD38KlLROdGr1RUF7a7WUOjWje3djL1cK+G74kc1Fni+64eLjch0Bogr1rDrXFjTVTHDpTn3LnGvRKRvY1of1ZNKq5JK9ya9ZlwRYBKurmFk0krXOmojrS5c2K5CnQIsg/aL5f0RAhph5s7AcL5+UnCwU0hx9wcmheXcDFpd24O5NClrwxHNIfMdXOLqCbtcEu+OwNuF8glwykpyGQBLie6BOIsBrmpm68eLjexiigBmSzBjUV17Le8hZC7udmHHTk/XQWZLDk3tT3BHuiwyJZ2MlmCGypLw4n65pBLh3k5+0wW4Ya23ehEejfInPKX7CNZdK5fhsZXSaydNvL6z3IzJ6d+VZH7qwmyCHea/p6n7qD19iJ4B8A8+hhwIJNFuB2iOeWyay37nIJMFuF2du8/selcoDePqqxcyKyI1gq3h3tH3DaJu00OZKrJ9/8tmj33Dh86cSATojkrms+nBueQW0Imi3AV3jNybgFLAjJZ6jH3hBtx79IEyPC2P3RsyALc0dHc28WSY2SyBHdgxyq0XXVtcSiqyUIsK4rmFORZw76665NmuEaiuVlU15RnC3l1d3tzpvnZA7Xly1m/9GFYj6eH393l1ccfr6Xa0Fo2pP3BErXlaw2XA3ykcBslAUk4VrpiA3Aj90q7ePhls7sGV5OL4WCFbb62thj3qhSEK+1iicpGcGtbSbjY4jMTd7IdbhHNtZcG/wIoVKP4vgLXdwAAAABJRU5ErkJggg==");
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 18% 70%, rgba(255, 138, 61, 0.82) 0 5px, transparent 6px),
+        radial-gradient(circle at 44% 34%, rgba(244, 241, 234, 0.70) 0 5px, transparent 6px),
+        radial-gradient(circle at 74% 64%, rgba(45, 143, 139, 0.82) 0 5px, transparent 6px),
+        linear-gradient(28deg, transparent 0 29%, rgba(244, 241, 234, 0.34) 29% 32%, transparent 32% 100%),
+        linear-gradient(-32deg, transparent 0 45%, rgba(255, 138, 61, 0.42) 45% 48%, transparent 48% 100%),
+        repeating-radial-gradient(circle at 62% 52%, transparent 0 18px, rgba(244, 241, 234, 0.16) 19px 20px, transparent 21px 36px);
+    clip-path: polygon(9% 18%, 93% 2%, 100% 82%, 28% 100%, 0 64%);
+}
+
+.boston .bos-start-panel .bos-choice-card:hover::before,
+.boston .bos-start-panel .bos-choice-card:focus-visible::before,
+.boston .bos-start-panel .bos-choice-card:focus-within::before,
+.boston .bos-start-panel .bos-choice-card.is-selected::before {
+    opacity: 0.96;
 }
 
 .boston .bos-start-panel .bos-choice-card:hover::after,
 .boston .bos-start-panel .bos-choice-card:focus-visible::after,
 .boston .bos-start-panel .bos-choice-card:focus-within::after,
 .boston .bos-start-panel .bos-choice-card.is-selected::after {
-    opacity: 0.92;
-    background-size: min(62%, 282px) auto;
+    opacity: 0.78;
+    background-size: auto !important;
+    filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.30));
+    transform: translateY(-50%) scale(1.035);
 }
 
 .boston .bos-guided-flow-head .bos-guided-flow-eyebrow { order: 1; }
@@ -114,17 +178,20 @@
     content: "" !important;
     position: absolute !important;
     z-index: -1 !important;
-    inset: auto -12px -18px auto !important;
+    inset: auto -8px -12px auto !important;
     width: min(58%, 190px) !important;
     height: auto !important;
     aspect-ratio: 1 / 1 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAADWElEQVR42u2du3HjMBCGyR26AaUqQYHbcAtyrkSpXYadMrlcbsFtOGAJTNnAObjE8HA4fAAnAvvvA5k9Eg3uh2/xpFlVXqLK5+tjK7He5Oj0wq2qqmq0QjkcT39SvzP03UVbHGrLQGOAB3uf3r6ubrACqDPX/+sGg4JNSblz17ydm1+4zx/fDxLTeK0FbGzgD8dTO/RdVLodD64CYGn9dSMZbM4gj+E+vX1dp3UIP6ODbhxs2ghbGmiSBHfou0uJQK7Ne5fqkHvApwrwNFilwKYaPa0TImRCAzsHd8frt/fYG9NdzN2DA15Jydz1ilngQE7ZhAg3d0peMvmeNWfUlE2IcDnqsdeGAhpkcrj5plQIkAk1KBLtRWyshGAvqrn37iCN74vLYuKGy11KbuZz3Ddxw9W4yY7UHxPSzWduWC2XvZyNmLjsRTd37xMcXP2x2UN3kg/SQQKWZG+JVF3KYpMG386NmXsla/Zywy1tsR98LzDAUm2w28trsQmDYzb6vQ9WOLDSlIpZACNPjZ4/vk2kabJo75q52qw2N4q2kJZNAZ4+oTBKkVcHvFP/6+byxasuUWHug3Q/zxa1MwOd6/RznGBzxEl9il6Ca2V+rA7w4Xh6CVauwZ2DfDieXsL3tZRGIryN+eX7lrlzc+Lbufn97tbfCZ9zwBkAlgj60Hfva3VJaWhmAOdMfXsEczrAirUZvREUA/w/NxMb3PC5PQOWAhY5ZUP3wamBuxf0GKqkflbNICu1QQx9FzXQCvNhLVBNzYO3liS1L1ma2GxYgmhhPbrIUuVPME0eleWOEWW05gIUyDbmd8xZJku8yJAtJs9lmTw2awk2OVgHvEu/gnIAAAVyqf1y09MkN9iLA5aYprmtLnmcyQ12g/VarN1eN9gNdosl2+sGu8FusWR72Q0uCRllWqTa4LnWq91k7n1xFoP9/2QpB2ylP0Z4AA/6pRyaUrOZPthCf4x0Ho3dYG2Q0Q4b1qiByRGcsNmfY8qE+t4n6JdySLEZFS6UwaXSXMr7gyWmZFiDt/plNJtzv2dRNeC1lM0NeqkOqIs36I+PwryUGell1WoAx4LOFei1bCFlubWuBJbYNJ0CIcc1HXAh0LnGBA5YOGwNu15qAO8B3J9h9iKu/AMPAlqPtW+DnAAAAABJRU5ErkJggg==") !important;
-    background-repeat: no-repeat !important;
-    background-size: contain !important;
+    border: 1px solid rgba(18, 27, 43, 0.28) !important;
+    border-radius: 50% !important;
+    background:
+        radial-gradient(circle, transparent 0 44%, rgba(18, 27, 43, 0.20) 45% 47%, transparent 48%),
+        linear-gradient(45deg, transparent 47%, rgba(18, 27, 43, 0.34) 48% 52%, transparent 53%),
+        linear-gradient(-45deg, transparent 47%, rgba(18, 27, 43, 0.20) 48% 52%, transparent 53%),
+        conic-gradient(from 28deg, transparent 0 20deg, rgba(18, 27, 43, 0.20) 20deg 26deg, transparent 26deg 110deg, rgba(18, 27, 43, 0.16) 110deg 116deg, transparent 116deg 360deg) !important;
     background-position: center !important;
-    opacity: 0.48 !important;
+    background-repeat: no-repeat !important;
+    opacity: 0.50 !important;
     transform: rotate(-7deg) !important;
 }
 
@@ -139,8 +206,9 @@
     }
 
     .boston .bos-start-panel .bos-choice-card::after {
-        background-position: right -18px center;
-        background-size: min(56%, 210px) auto;
-        opacity: 0.42;
+        right: -16px;
+        width: min(52%, 160px);
+        height: min(74%, 118px);
+        opacity: 0.36;
     }
 }
