@@ -39,6 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return drawer;
     };
 
+    const applyCardAccent = (card, ...drawers) => {
+        const accent = window.getComputedStyle(card).getPropertyValue("--card-accent").trim();
+        drawers.forEach((drawer) => {
+            if (accent) {
+                drawer.style.setProperty("--card-accent", accent);
+            }
+        });
+    };
+
     const positionDrawer = (drawer, clientX, clientY) => {
         if (!window.matchMedia("(min-width: 851px)").matches) return;
 
@@ -48,14 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const height = drawer.offsetHeight || 130;
 
         let left = clientX + offset;
-        let top = clientY + offset;
-
         if (left + width + margin > window.innerWidth) {
             left = clientX - width - offset;
         }
 
+        const above = clientY - height - offset;
+        const below = clientY + offset;
+        let top = above >= margin ? above : below;
+
         if (top + height + margin > window.innerHeight) {
-            top = clientY - height - offset;
+            top = above;
         }
 
         drawer.style.left = `${clamp(left, margin, window.innerWidth - width - margin)}px`;
@@ -80,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.addEventListener("focusin", () => {
             const rect = card.getBoundingClientRect();
-            show(rect.left + rect.width / 2, rect.bottom);
+            show(rect.left + rect.width / 2, rect.top);
         });
 
         card.addEventListener("focusout", () => {
@@ -110,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const inlineDrawer = buildDrawer(drawerItems, drawerNext, "bos-choice-inline", drawerId);
         const floatingDrawer = buildDrawer(drawerItems, drawerNext, "bos-choice-floating", drawerId);
 
+        applyCardAccent(card, inlineDrawer, floatingDrawer);
         card.appendChild(inlineDrawer);
         document.body.appendChild(floatingDrawer);
         attachDrawerTracking(card, floatingDrawer);
