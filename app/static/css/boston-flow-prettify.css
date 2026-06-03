@@ -1,0 +1,194 @@
+/*
+ * Visual polish layer for the first-view cards and progressive flow cards.
+ * Loaded last through boston-guided-flow.css so it can override earlier sizing
+ * without touching the working flow behavior.
+ */
+
+.boston .bos-start-panel .bos-choice-card {
+    position: relative;
+    align-content: end;
+    overflow: hidden !important;
+    min-height: clamp(150px, 19svh, 224px) !important;
+    border-color: color-mix(in srgb, var(--card-accent, #ff8a3d) 26%, rgba(255, 255, 255, 0.12)) !important;
+    background:
+        radial-gradient(circle at 18% 20%, color-mix(in srgb, var(--card-accent, #ff8a3d) 24%, transparent), transparent 34%),
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 12%, transparent), rgba(255, 255, 255, 0.025) 42%),
+        rgba(255, 255, 255, 0.032) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 18px 50px rgba(0, 0, 0, 0.16);
+}
+
+.boston .bos-start-panel .bos-choice-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -12% -45% 18%;
+    height: 72%;
+    border-radius: 999px 999px 0 0;
+    background: color-mix(in srgb, var(--card-accent, #ff8a3d) 12%, transparent);
+    filter: blur(1px);
+    opacity: 0.55;
+    pointer-events: none;
+    transform: rotate(-8deg);
+}
+
+.boston .bos-choice-solve::after {
+    clip-path: polygon(0 44%, 100% 12%, 100% 100%, 0 100%);
+}
+
+.boston .bos-choice-opportunity::after {
+    clip-path: circle(58% at 64% 72%);
+}
+
+.boston .bos-choice-experience::after {
+    clip-path: polygon(0 24%, 100% 38%, 100% 100%, 0 100%);
+}
+
+.boston .bos-choice-not-sure::after {
+    clip-path: polygon(6% 18%, 100% 0, 88% 100%, 0 82%);
+}
+
+.boston .bos-start-panel .bos-choice-card:hover,
+.boston .bos-start-panel .bos-choice-card:focus-visible,
+.boston .bos-start-panel .bos-choice-card:focus-within,
+.boston .bos-start-panel .bos-choice-card.is-selected {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.11),
+        0 24px 62px rgba(0, 0, 0, 0.22),
+        0 0 0 1px color-mix(in srgb, var(--card-accent, #ff8a3d) 30%, transparent);
+}
+
+.boston .bos-start-panel .bos-choice-card > h3 {
+    position: relative;
+    z-index: 1;
+    max-width: 9ch;
+    text-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+}
+
+.boston .bos-guided-flow-options-compact {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
+    gap: clamp(14px, 1.7vw, 22px) !important;
+}
+
+.boston .bos-guided-flow-option-button {
+    position: relative;
+    min-height: clamp(124px, 14svh, 166px) !important;
+    align-content: end;
+    gap: clamp(8px, 1vw, 12px) !important;
+    overflow: hidden;
+    padding: clamp(16px, 1.8vw, 22px) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background:
+        radial-gradient(circle at 16% 20%, rgba(255, 138, 61, 0.14), transparent 34%),
+        linear-gradient(135deg, rgba(45, 143, 139, 0.10), rgba(255, 255, 255, 0.025) 48%),
+        rgba(255, 255, 255, 0.038) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.boston .bos-guided-flow-option-button::after {
+    content: "";
+    position: absolute;
+    inset: auto -8% -58% 42%;
+    height: 95%;
+    border-radius: 50%;
+    background: rgba(255, 138, 61, 0.10);
+    pointer-events: none;
+}
+
+.boston .bos-guided-flow-option-button:hover,
+.boston .bos-guided-flow-option-button:focus-visible {
+    transform: translateY(-3px) !important;
+    border-color: rgba(255, 138, 61, 0.42) !important;
+    background:
+        radial-gradient(circle at 16% 20%, rgba(255, 138, 61, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(45, 143, 139, 0.14), rgba(255, 255, 255, 0.04) 48%),
+        rgba(255, 255, 255, 0.052) !important;
+}
+
+.boston .bos-guided-flow-option-button .bos-guided-flow-tag {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 138, 61, 0.26);
+    background: rgba(255, 138, 61, 0.09);
+    color: #ffb47e;
+    font-size: clamp(0.9rem, 1vw, 1.08rem) !important;
+    font-weight: 950;
+    letter-spacing: 0.11em !important;
+    line-height: 1 !important;
+}
+
+.boston .bos-guided-flow-option-button strong {
+    max-width: 11ch;
+    color: #f4f1ea;
+    font-size: clamp(1.7rem, 2.55vw, 3.2rem) !important;
+    font-weight: 950;
+    letter-spacing: -0.065em !important;
+    line-height: 0.9 !important;
+    text-transform: none !important;
+}
+
+.boston .bos-guided-flow-option-button span:last-child {
+    max-width: 28ch;
+    color: rgba(244, 241, 234, 0.80);
+    font-size: clamp(1rem, 1.06vw, 1.2rem) !important;
+    line-height: 1.3 !important;
+}
+
+.boston .bos-guided-flow-option-button,
+.boston .bos-flow-example-card,
+.boston .bos-context-field,
+.boston .bos-guided-flow-action {
+    opacity: 0;
+    animation: bos-choice-deal-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.boston .bos-guided-flow-option-button:nth-child(1),
+.boston .bos-flow-example-card:nth-child(1),
+.boston .bos-context-field:nth-child(1) {
+    animation-delay: 45ms;
+}
+
+.boston .bos-guided-flow-option-button:nth-child(2),
+.boston .bos-flow-example-card:nth-child(2),
+.boston .bos-context-field:nth-child(2) {
+    animation-delay: 125ms;
+}
+
+.boston .bos-guided-flow-option-button:nth-child(3),
+.boston .bos-flow-example-card:nth-child(3),
+.boston .bos-context-field:nth-child(3) {
+    animation-delay: 205ms;
+}
+
+.boston .bos-flow-example-card:nth-child(4),
+.boston .bos-context-field:nth-child(4) {
+    animation-delay: 285ms;
+}
+
+.boston .bos-flow-example-card:nth-child(5),
+.boston .bos-context-field:nth-child(5) {
+    animation-delay: 365ms;
+}
+
+.boston .bos-flow-example-card:nth-child(6) {
+    animation-delay: 445ms;
+}
+
+.boston .bos-guided-flow-action {
+    animation-delay: 520ms;
+}
+
+@media (max-width: 850px) {
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: 122px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > h3 {
+        max-width: none;
+    }
+
+    .boston .bos-guided-flow-option-button {
+        min-height: 118px !important;
+    }
+}
