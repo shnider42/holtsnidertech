@@ -22,30 +22,38 @@
 .boston .bos-start-panel .bos-choice-card::after {
     content: "";
     position: absolute;
-    inset: auto -12% -45% 18%;
-    height: 72%;
-    border-radius: 999px 999px 0 0;
-    background: color-mix(in srgb, var(--card-accent, #ff8a3d) 12%, transparent);
-    filter: blur(1px);
-    opacity: 0.55;
+    inset: 0;
+    background-position: right 8% center;
+    background-repeat: no-repeat;
+    background-size: min(64%, 260px) auto;
+    filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.26));
+    opacity: 0.62;
     pointer-events: none;
-    transform: rotate(-8deg);
+    transform: none;
 }
 
 .boston .bos-choice-solve::after {
-    clip-path: polygon(0 44%, 100% 12%, 100% 100%, 0 100%);
+    background-image:
+        radial-gradient(circle at 76% 46%, rgba(255, 138, 61, 0.18), transparent 38%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 180'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='72' cy='68' r='38' stroke='%23f4f1ea' stroke-opacity='.56' stroke-width='9'/%3E%3Cpath d='M101 97 136 132' stroke='%23ff8a3d' stroke-opacity='.74' stroke-width='12'/%3E%3Cpath d='M166 25 226 45v44c0 39-24 65-60 78-36-13-60-39-60-78V45Z' stroke='%23f4f1ea' stroke-opacity='.50' stroke-width='8'/%3E%3Cpath d='M166 60v70M133 95h66' stroke='%23ff8a3d' stroke-opacity='.62' stroke-width='11'/%3E%3Cpath d='M124 43c-15 12-24 28-24 49' stroke='%232d8f8b' stroke-opacity='.40' stroke-width='5'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .boston .bos-choice-opportunity::after {
-    clip-path: circle(58% at 64% 72%);
+    background-image:
+        radial-gradient(circle at 72% 38%, rgba(125, 255, 155, 0.16), transparent 34%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 180'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M137 30c-36 0-60 26-60 58 0 24 13 37 27 51h66c14-14 27-27 27-51 0-32-24-58-60-58Z' stroke='%23f4f1ea' stroke-opacity='.48' stroke-width='8'/%3E%3Cpath d='M111 151h55M117 166h43' stroke='%23ff8a3d' stroke-opacity='.62' stroke-width='8'/%3E%3Cpath d='M119 126c7-23 31-23 38 0M137 23V8M199 39l13-13M216 91h20M75 39 62 26M58 91H38' stroke='%237dff9b' stroke-opacity='.44' stroke-width='7'/%3E%3Cpath d='M103 78c8-15 21-22 39-22' stroke='%23f4f1ea' stroke-opacity='.34' stroke-width='5'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .boston .bos-choice-experience::after {
-    clip-path: polygon(0 24%, 100% 38%, 100% 100%, 0 100%);
+    background-image:
+        radial-gradient(circle at 75% 44%, rgba(45, 143, 139, 0.18), transparent 38%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 180'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M82 22h83l38 38v98H82Z' stroke='%23f4f1ea' stroke-opacity='.50' stroke-width='8'/%3E%3Cpath d='M164 23v39h39' stroke='%23ff8a3d' stroke-opacity='.55' stroke-width='8'/%3E%3Ccircle cx='119' cy='78' r='17' stroke='%232d8f8b' stroke-opacity='.58' stroke-width='7'/%3E%3Cpath d='M96 116c8-18 37-18 45 0M155 88h28M155 112h28M101 139h78' stroke='%23f4f1ea' stroke-opacity='.43' stroke-width='7'/%3E%3Cpath d='M104 46h38' stroke='%23ff8a3d' stroke-opacity='.42' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .boston .bos-choice-not-sure::after {
-    clip-path: polygon(6% 18%, 100% 0, 88% 100%, 0 82%);
+    background-image:
+        radial-gradient(circle at 72% 40%, rgba(255, 138, 61, 0.14), transparent 34%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 180'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M30 152 83 93l36 39 36-53 95 73' stroke='%23f4f1ea' stroke-opacity='.32' stroke-width='7'/%3E%3Ccircle cx='145' cy='43' r='15' stroke='%23f4f1ea' stroke-opacity='.54' stroke-width='7'/%3E%3Cpath d='M137 60 118 96l30 22 24 40M123 88l-29 22M149 118l-34 34M158 75l28 22M190 72v88' stroke='%23ff8a3d' stroke-opacity='.60' stroke-width='8'/%3E%3Cpath d='M164 70c10 2 20 8 27 18' stroke='%232d8f8b' stroke-opacity='.48' stroke-width='6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .boston .bos-start-panel .bos-choice-card:hover,
@@ -56,6 +64,14 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.11),
         0 24px 62px rgba(0, 0, 0, 0.22),
         0 0 0 1px color-mix(in srgb, var(--card-accent, #ff8a3d) 30%, transparent);
+}
+
+.boston .bos-start-panel .bos-choice-card:hover::after,
+.boston .bos-start-panel .bos-choice-card:focus-visible::after,
+.boston .bos-start-panel .bos-choice-card:focus-within::after,
+.boston .bos-start-panel .bos-choice-card.is-selected::after {
+    opacity: 0.76;
+    background-size: min(68%, 282px) auto;
 }
 
 .boston .bos-start-panel .bos-choice-card > h3 {
@@ -182,6 +198,12 @@
 @media (max-width: 850px) {
     .boston .bos-start-panel .bos-choice-card {
         min-height: 122px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::after {
+        background-position: right -18px center;
+        background-size: 52% auto;
+        opacity: 0.44;
     }
 
     .boston .bos-start-panel .bos-choice-card > h3 {
