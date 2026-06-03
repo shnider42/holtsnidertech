@@ -11,19 +11,20 @@
     width: 100%;
     max-width: 100%;
     margin-top: clamp(16px, 2vw, 24px);
-    padding: 2px 34px 16px 2px;
+    padding: 4px 34px 18px 4px;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: none;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
+    scrollbar-width: none;
     cursor: grab;
     user-select: none;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
-    mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 42px), transparent 100%);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 42px), transparent 100%);
+}
+
+.boston .bos-stack-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .boston .bos-stack-grid:active,
@@ -39,6 +40,13 @@
     flex: 0 0 clamp(260px, 26vw, 360px);
     min-width: 0;
     user-select: none;
+    border-color: rgba(198, 208, 218, 0.10) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.014)),
+        rgba(8, 16, 24, 0.34) !important;
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.12),
+        inset 1px 0 0 rgba(255, 255, 255, 0.035);
 }
 
 .boston .bos-stack-grid .bos-mini p,
@@ -47,12 +55,29 @@
 }
 
 .boston .bos-stack-grid:focus-visible {
-    outline: 3px solid rgba(255, 138, 61, 0.70);
+    outline: 3px solid rgba(255, 138, 61, 0.55);
     outline-offset: 6px;
 }
 
+.boston .bos-stack-grid::before,
 .boston .bos-stack-grid::after {
-    content: none;
+    content: "";
+    position: sticky;
+    z-index: 2;
+    flex: 0 0 24px;
+    pointer-events: none;
+}
+
+.boston .bos-stack-grid::before {
+    left: 0;
+    margin-left: -4px;
+    background: linear-gradient(90deg, rgba(8, 16, 24, 0.76), transparent);
+}
+
+.boston .bos-stack-grid::after {
+    right: 0;
+    margin-right: -34px;
+    background: linear-gradient(270deg, rgba(8, 16, 24, 0.76), transparent);
 }
 
 @media (max-width: 850px) {
