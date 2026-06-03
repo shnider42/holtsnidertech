@@ -80,6 +80,25 @@
     padding-bottom: var(--bos-first-start-pad-bottom) !important;
 }
 
+/*
+ * When the guided flow panel opens, the first-view budget must stop behaving
+ * like a fixed viewport composition. The panel should grow downward from the
+ * choices instead of forcing the hero/start rows to compress into each other.
+ */
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) {
+    min-height: auto !important;
+    grid-template-rows: auto auto auto !important;
+    overflow: visible !important;
+}
+
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) .bos-start-panel {
+    min-height: auto !important;
+}
+
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) .bos-hero {
+    align-items: flex-start;
+}
+
 .boston .bos-start-heading {
     gap: var(--bos-first-start-heading-gap) !important;
     margin-bottom: var(--bos-first-start-heading-margin) !important;
