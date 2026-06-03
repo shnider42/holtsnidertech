@@ -1,7 +1,7 @@
 /*
  * First-screen flow cards.
- * Keeps the four-card grid stable while making better use of the quiet space
- * inside each card on hover/focus.
+ * The card details now stay visible by default so the grid does not feel empty.
+ * Hover/focus only adds emphasis; it should not reveal the majority of the card.
  */
 
 .boston .bos-start-panel .bos-choice-card {
@@ -14,26 +14,37 @@
 }
 
 .boston .bos-start-panel .bos-choice-card > p {
-    max-width: 25ch;
+    max-width: 26ch;
 }
 
 .boston .bos-choice-drawer {
     position: relative;
     z-index: 1;
-    margin-top: auto;
+    margin-top: 12px;
     padding: 12px 12px 11px;
-    border: 1px solid color-mix(in srgb, var(--card-accent, #ff8a3d) 24%, rgba(255, 255, 255, 0.12));
+    border: 1px solid color-mix(in srgb, var(--card-accent, #ff8a3d) 20%, rgba(255, 255, 255, 0.11));
     background:
-        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 10%, transparent), rgba(8, 16, 24, 0.22)),
-        rgba(8, 16, 24, 0.28);
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 8%, transparent), rgba(8, 16, 24, 0.20)),
+        rgba(8, 16, 24, 0.22);
     color: #d8d1c7;
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: 0.86;
+    transform: none;
     transition:
         opacity 180ms ease,
-        transform 180ms ease,
         background-color 180ms ease,
-        border-color 180ms ease;
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover .bos-choice-drawer,
+.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-drawer,
+.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-drawer {
+    opacity: 1;
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--card-accent, #ff8a3d) 34%, rgba(255, 255, 255, 0.13));
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 13%, transparent), rgba(8, 16, 24, 0.24)),
+        rgba(8, 16, 24, 0.28);
 }
 
 .boston .bos-choice-drawer strong,
@@ -56,7 +67,7 @@
 }
 
 .boston .bos-choice-drawer li {
-    color: rgba(244, 241, 234, 0.82);
+    color: rgba(244, 241, 234, 0.84);
     font-size: 0.76rem;
     line-height: 1.25;
 }
@@ -68,18 +79,8 @@
     opacity: 0.8;
 }
 
-.boston .bos-start-panel .bos-choice-card:hover .bos-choice-drawer,
-.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-drawer,
-.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-drawer {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-@media (hover: none) {
-    .boston .bos-choice-drawer {
-        opacity: 1;
-        transform: none;
-    }
+.boston #paths {
+    padding-top: clamp(22px, 3vw, 36px) !important;
 }
 
 @media (max-width: 850px) {
