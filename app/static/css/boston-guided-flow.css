@@ -1,3 +1,5 @@
+@import url("/static/css/boston-progressive-flow.css");
+
 .boston .bos-guided-flow {
     display: none;
     margin-top: clamp(18px, 2.8svh, 30px);
