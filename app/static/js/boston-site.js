@@ -57,12 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     detailTitle: "Shape the useful first version",
                     detailIntro: "These examples show the kind of creative technical shaping I can bring to a fuzzy idea.",
                     examples: [
-                        { title: "Loudsource", body: "Interactive vote-to-queue music concept.", href: "/static/demos/loudsource-vote.html" },
-                        { title: "Jiporady", body: "Custom browser game / living-room trivia concept." },
-                        { title: "Daily Flyer / Irish Today", body: "Repeatable daily content engine and themed presentation.", href: "https://daily-flyer.onrender.com/" },
-                        { title: "Your Passage", body: "Personalized daily-page concept grown from the Daily Flyer idea." },
-                        { title: "Career Compass", body: "Career-direction tooling / structured job-search thinking." },
-                        { title: "Grepper", body: "Job-search scraping, parsing, ranking, and demo workflow.", href: "/static/demos/grepper.html" }
+                        { title: "Irish Today", body: "Daily Flyer family: a repeatable daily culture page with themed presentation.", href: "https://daily-flyer.onrender.com/", theme: "irish", family: "Daily Flyer" },
+                        { title: "Your Passage", body: "Daily Flyer family: a personalized daily-page concept grown from the same engine.", href: "https://mypassages.net/", theme: "passage", family: "Daily Flyer" },
+                        { title: "Loudsource", body: "Daily Flyer family: an interactive vote-to-queue music concept.", href: "/static/demos/loudsource-vote.html", theme: "loudsource", family: "Daily Flyer" },
+                        { title: "Jiporady", body: "Custom browser game / living-room trivia concept.", href: "/static/demos/jiporady.html", theme: "jiporady" },
+                        { title: "Career Compass", body: "Career-direction tooling / structured job-search thinking.", href: "#contact", theme: "career-compass" },
+                        { title: "Grepper", body: "Job-search scraping, parsing, ranking, and demo workflow.", href: "/static/demos/grepper.html", theme: "grepper" }
                     ],
                     questions: ["Who is it for?", "What should it help them do?", "What is the smallest useful version?", "What would make it feel real?", "Other notes"]
                 },
@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const slugify = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
     const buildDrawer = (drawerItems, drawerNext, extraClass, drawerId) => {
         const drawer = document.createElement("div");
@@ -372,7 +373,9 @@ document.addEventListener("DOMContentLoaded", () => {
         option.examples.forEach((example) => {
             const tagName = example.href ? "a" : "article";
             const card = document.createElement(tagName);
-            card.className = "bos-flow-example-card";
+            const theme = example.theme || slugify(example.title);
+            card.className = `bos-flow-example-card bos-project-card bos-project-${theme}`;
+            card.dataset.project = theme;
             if (example.href) {
                 card.href = example.href;
                 if (example.href.startsWith("http")) {
@@ -380,7 +383,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.rel = "noopener noreferrer";
                 }
             }
-            card.innerHTML = `<strong>${example.title}</strong><span>${example.body}</span>`;
+            const family = example.family ? `<em>${example.family}</em>` : "";
+            card.innerHTML = `${family}<strong>${example.title}</strong><span>${example.body}</span>`;
             examples.appendChild(card);
         });
 
