@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Stylized resume document">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
+    <path d="M92 28 H202 L248 74 V194 H92 Z" fill="#101010" fill-opacity="0.36" stroke="#f4f1ea" stroke-opacity="0.64" stroke-width="11"/>
+    <path d="M202 29 V75 H247" stroke="#ff8a3d" stroke-opacity="0.78" stroke-width="10"/>
+    <circle cx="137" cy="88" r="20" stroke="#2d8f8b" stroke-opacity="0.78" stroke-width="9"/>
+    <path d="M108 137 C118 115 157 115 167 137" stroke="#2d8f8b" stroke-opacity="0.65" stroke-width="9"/>
+    <path d="M184 98 H220 M184 124 H220 M113 160 H220" stroke="#f4f1ea" stroke-opacity="0.52" stroke-width="9"/>
+    <path d="M115 52 H175" stroke="#ff8a3d" stroke-opacity="0.58" stroke-width="8"/>
+    <path d="M80 44 H92 M80 180 H92" stroke="#6aa9ff" stroke-opacity="0.38" stroke-width="8"/>
+  </g>
+</svg>
