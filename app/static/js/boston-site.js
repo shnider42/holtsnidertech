@@ -14,69 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-    const positionDrawer = (drawer, clientX, clientY) => {
-        if (!window.matchMedia("(min-width: 851px)").matches) return;
-
-        const margin = 14;
-        const offset = 18;
-        const rect = drawer.getBoundingClientRect();
-        const width = rect.width || 280;
-        const height = rect.height || 120;
-
-        let left = clientX + offset;
-        let top = clientY + offset;
-
-        if (left + width + margin > window.innerWidth) {
-            left = clientX - width - offset;
-        }
-
-        if (top + height + margin > window.innerHeight) {
-            top = clientY - height - offset;
-        }
-
-        drawer.style.left = `${clamp(left, margin, window.innerWidth - width - margin)}px`;
-        drawer.style.top = `${clamp(top, margin, window.innerHeight - height - margin)}px`;
-    };
-
-    const attachDrawerTracking = (card, drawer) => {
-        card.addEventListener("mouseenter", (event) => {
-            positionDrawer(drawer, event.clientX, event.clientY);
-        });
-
-        card.addEventListener("mousemove", (event) => {
-            positionDrawer(drawer, event.clientX, event.clientY);
-        });
-
-        card.addEventListener("mouseleave", () => {
-            drawer.style.left = "";
-            drawer.style.top = "";
-        });
-
-        card.addEventListener("focusin", () => {
-            const rect = card.getBoundingClientRect();
-            positionDrawer(drawer, rect.left + rect.width / 2, rect.bottom);
-        });
-    };
-
-    const setCard = (selector, label, title, body, action, drawerItems, drawerNext) => {
-        const card = page.querySelector(selector);
-        if (!card) return;
-
-        const labelNode = card.querySelector(".bos-card-label");
-        const titleNode = card.querySelector("h3");
-        const bodyNode = card.querySelector("p");
-        const actionNode = card.querySelector(".bos-choice-action");
-
-        if (labelNode) labelNode.textContent = label;
-        if (titleNode) titleNode.textContent = title;
-        if (bodyNode) bodyNode.textContent = body;
-        if (actionNode) actionNode.textContent = action;
-
-        card.querySelector(".bos-choice-drawer")?.remove();
-
+    const buildDrawer = (drawerItems, drawerNext, extraClass, drawerId) => {
         const drawer = document.createElement("div");
-        drawer.className = "bos-choice-drawer";
+        drawer.className = `bos-choice-drawer ${extraClass}`;
         drawer.setAttribute("aria-hidden", "true");
+        drawer.dataset.flowDrawer = drawerId;
 
         const drawerLabel = document.createElement("strong");
         drawerLabel.textContent = "Common starts";
@@ -94,8 +36,83 @@ document.addEventListener("DOMContentLoaded", () => {
         next.textContent = drawerNext;
         drawer.appendChild(next);
 
-        card.appendChild(drawer);
-        attachDrawerTracking(card, drawer);
+        return drawer;
+    };
+
+    const positionDrawer = (drawer, clientX, clientY) => {
+        if (!window.matchMedia("(min-width: 851px)").matches) return;
+
+        const margin = 14;
+        const offset = 18;
+        const width = drawer.offsetWidth || 300;
+        const height = drawer.offsetHeight || 130;
+
+        let left = clientX + offset;
+        let top = clientY + offset;
+
+        if (left + width + margin > window.innerWidth) {
+            left = clientX - width - offset;
+        }
+
+        if (top + height + margin > window.innerHeight) {
+            top = clientY - height - offset;
+        }
+
+        drawer.style.left = `${clamp(left, margin, window.innerWidth - width - margin)}px`;
+        drawer.style.top = `${clamp(top, margin, window.innerHeight - height - margin)}px`;
+    };
+
+    const attachDrawerTracking = (card, drawer) => {
+        const show = (clientX, clientY) => {
+            drawer.classList.add("is-active");
+            positionDrawer(drawer, clientX, clientY);
+        };
+
+        const hide = () => {
+            drawer.classList.remove("is-active");
+            drawer.style.left = "";
+            drawer.style.top = "";
+        };
+
+        card.addEventListener("mouseenter", (event) => show(event.clientX, event.clientY));
+        card.addEventListener("mousemove", (event) => show(event.clientX, event.clientY));
+        card.addEventListener("mouseleave", hide);
+
+        card.addEventListener("focusin", () => {
+            const rect = card.getBoundingClientRect();
+            show(rect.left + rect.width / 2, rect.bottom);
+        });
+
+        card.addEventListener("focusout", () => {
+            window.setTimeout(() => {
+                if (!card.contains(document.activeElement)) hide();
+            }, 0);
+        });
+    };
+
+    const setCard = (selector, label, title, body, action, drawerItems, drawerNext) => {
+        const card = page.querySelector(selector);
+        if (!card) return;
+
+        const labelNode = card.querySelector(".bos-card-label");
+        const titleNode = card.querySelector("h3");
+        const bodyNode = card.querySelector("p");
+        const actionNode = card.querySelector(".bos-choice-action");
+
+        if (labelNode) labelNode.textContent = label;
+        if (titleNode) titleNode.textContent = title;
+        if (bodyNode) bodyNode.textContent = body;
+        if (actionNode) actionNode.textContent = action;
+
+        const drawerId = `flow-${selector.replace(/[^a-z0-9_-]/gi, "")}`;
+        document.querySelectorAll(`[data-flow-drawer="${drawerId}"]`).forEach((drawer) => drawer.remove());
+
+        const inlineDrawer = buildDrawer(drawerItems, drawerNext, "bos-choice-inline", drawerId);
+        const floatingDrawer = buildDrawer(drawerItems, drawerNext, "bos-choice-floating", drawerId);
+
+        card.appendChild(inlineDrawer);
+        document.body.appendChild(floatingDrawer);
+        attachDrawerTracking(card, floatingDrawer);
     };
 
     const normalizeCopy = () => {
