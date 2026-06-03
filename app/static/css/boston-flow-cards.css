@@ -5,30 +5,40 @@
  */
 
 .boston.bos-at-top .bos-head {
+    opacity: 1;
     background: rgba(8, 16, 24, 0.72) !important;
     border-color: rgba(255, 255, 255, 0.13) !important;
     box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18) !important;
+    filter: none;
 }
 
 .boston:not(.bos-at-top) .bos-head {
-    background: rgba(8, 16, 24, 0.045) !important;
-    border-color: rgba(255, 255, 255, 0.018) !important;
+    opacity: 0.22;
+    background: rgba(8, 16, 24, 0.62) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
     box-shadow: none !important;
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
+    filter: saturate(0.74);
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
 }
 
 .boston:not(.bos-at-top) .bos-head:hover,
 .boston:not(.bos-at-top) .bos-head:focus-within {
-    background: rgba(8, 16, 24, 0.68) !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    opacity: 1;
+    background: rgba(8, 16, 24, 0.72) !important;
+    border-color: rgba(255, 255, 255, 0.13) !important;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18) !important;
+    filter: none;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
 }
 
 .boston .bos-start-panel {
     overflow: visible;
+}
+
+.boston .bos-start-heading {
+    margin-bottom: 18px !important;
 }
 
 .boston .bos-choice-grid {
