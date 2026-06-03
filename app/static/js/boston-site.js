@@ -12,6 +12,52 @@ document.addEventListener("DOMContentLoaded", () => {
         if (node) node.setAttribute("href", href);
     };
 
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const positionDrawer = (drawer, clientX, clientY) => {
+        if (!window.matchMedia("(min-width: 851px)").matches) return;
+
+        const margin = 14;
+        const offset = 18;
+        const rect = drawer.getBoundingClientRect();
+        const width = rect.width || 280;
+        const height = rect.height || 120;
+
+        let left = clientX + offset;
+        let top = clientY + offset;
+
+        if (left + width + margin > window.innerWidth) {
+            left = clientX - width - offset;
+        }
+
+        if (top + height + margin > window.innerHeight) {
+            top = clientY - height - offset;
+        }
+
+        drawer.style.left = `${clamp(left, margin, window.innerWidth - width - margin)}px`;
+        drawer.style.top = `${clamp(top, margin, window.innerHeight - height - margin)}px`;
+    };
+
+    const attachDrawerTracking = (card, drawer) => {
+        card.addEventListener("mouseenter", (event) => {
+            positionDrawer(drawer, event.clientX, event.clientY);
+        });
+
+        card.addEventListener("mousemove", (event) => {
+            positionDrawer(drawer, event.clientX, event.clientY);
+        });
+
+        card.addEventListener("mouseleave", () => {
+            drawer.style.left = "";
+            drawer.style.top = "";
+        });
+
+        card.addEventListener("focusin", () => {
+            const rect = card.getBoundingClientRect();
+            positionDrawer(drawer, rect.left + rect.width / 2, rect.bottom);
+        });
+    };
+
     const setCard = (selector, label, title, body, action, drawerItems, drawerNext) => {
         const card = page.querySelector(selector);
         if (!card) return;
@@ -49,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         drawer.appendChild(next);
 
         card.appendChild(drawer);
+        attachDrawerTracking(card, drawer);
     };
 
     const normalizeCopy = () => {
