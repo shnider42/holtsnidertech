@@ -224,6 +224,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return list;
     };
 
+    const collapseFlow = () => {
+        activePath = null;
+        page.querySelectorAll(".bos-choice-card").forEach((card) => {
+            card.classList.remove("is-selected");
+        });
+
+        if (!flowPanel) return;
+        flowPanel.classList.remove("is-active");
+        flowPanel.removeAttribute("data-active-flow");
+        flowPanel.textContent = "";
+    };
+
     const renderFlow = (pathKey, shouldScroll = true) => {
         const data = FLOW_DATA[pathKey];
         const panel = ensureFlowPanel();
@@ -334,6 +346,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.addEventListener("click", (event) => {
             event.preventDefault();
+
+            if (activePath === pathKey) {
+                collapseFlow();
+                return;
+            }
+
             renderFlow(pathKey);
         });
     };
