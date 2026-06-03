@@ -4,10 +4,20 @@
  * description on hover/focus without changing the outer card borders.
  */
 
+.boston .bos-head {
+    transition:
+        opacity 420ms ease,
+        background-color 420ms ease,
+        box-shadow 420ms ease,
+        filter 420ms ease,
+        backdrop-filter 420ms ease,
+        -webkit-backdrop-filter 420ms ease !important;
+}
+
 .boston.bos-at-top .bos-head {
     opacity: 1;
     background: rgba(8, 16, 24, 0.72) !important;
-    border-color: rgba(255, 255, 255, 0.13) !important;
+    border-color: transparent !important;
     box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18) !important;
     filter: none;
 }
@@ -15,7 +25,7 @@
 .boston:not(.bos-at-top) .bos-head {
     opacity: 0.22;
     background: rgba(8, 16, 24, 0.62) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: transparent !important;
     box-shadow: none !important;
     filter: saturate(0.74);
     backdrop-filter: blur(10px) !important;
@@ -25,7 +35,7 @@
 .boston:not(.bos-at-top) .bos-head:hover {
     opacity: 1;
     background: rgba(8, 16, 24, 0.72) !important;
-    border-color: rgba(255, 255, 255, 0.13) !important;
+    border-color: transparent !important;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18) !important;
     filter: none;
     backdrop-filter: blur(16px) !important;
