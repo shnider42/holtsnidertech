@@ -80,7 +80,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setText(".bos-start-heading h2", "Where should we start?");
-        setText(".bos-start-heading .bos-section-text", "Pick the closest starting point. The details can unfold from there.");
+        const startText = page.querySelector(".bos-start-heading .bos-section-text");
+        if (startText) {
+            startText.remove();
+        }
 
         setCard(
             ".bos-choice-solve",
@@ -125,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setHref(".bos-start-panel .bos-choice-not-sure", "#contact");
 
         page.querySelector("#paths")?.remove();
+        page.querySelector(".bos-operating-line")?.remove();
 
         page.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
         page.querySelectorAll(".bos-contact-note").forEach((note) => {
