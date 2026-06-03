@@ -8,26 +8,27 @@
 
 .boston {
     --bos-first-min-height: 100svh;
-    --bos-first-grid-hero: 0.84fr;
+    --bos-first-grid-hero: 0.48fr;
+    --bos-first-start-min-height: clamp(46svh, 50svh, 54svh);
     --bos-first-gap: 0px;
-    --bos-first-hero-pad-top: clamp(14px, 2.8svh, 34px);
-    --bos-first-hero-pad-bottom: clamp(10px, 2svh, 24px);
-    --bos-first-title-size: clamp(3.25rem, 11vmin, 8.2rem);
-    --bos-first-title-line: 0.94;
+    --bos-first-hero-pad-top: clamp(8px, 1.7svh, 22px);
+    --bos-first-hero-pad-bottom: clamp(6px, 1.2svh, 16px);
+    --bos-first-title-size: clamp(3.05rem, 9.2vmin, 7.2rem);
+    --bos-first-title-line: 0.9;
     --bos-first-lede-width: 760px;
-    --bos-first-lede-margin: clamp(10px, 1.8svh, 16px);
-    --bos-first-lede-size: clamp(0.96rem, 1.75vmin, 1.08rem);
-    --bos-first-lede-line: 1.46;
+    --bos-first-lede-margin: clamp(8px, 1.2svh, 12px);
+    --bos-first-lede-size: clamp(0.94rem, 1.55vmin, 1.02rem);
+    --bos-first-lede-line: 1.38;
     --bos-first-signal-display: flex;
-    --bos-first-signal-gap: 8px 14px;
-    --bos-first-signal-margin: clamp(9px, 1.6svh, 13px);
+    --bos-first-signal-gap: 7px 12px;
+    --bos-first-signal-margin: clamp(7px, 1.1svh, 10px);
     --bos-first-actions-display: flex;
-    --bos-first-actions-margin: clamp(12px, 2svh, 18px);
-    --bos-first-start-pad-top: clamp(12px, 2svh, 22px);
-    --bos-first-start-pad-bottom: clamp(16px, 2.6svh, 30px);
+    --bos-first-actions-margin: clamp(9px, 1.5svh, 14px);
+    --bos-first-start-pad-top: clamp(14px, 2.4svh, 28px);
+    --bos-first-start-pad-bottom: clamp(18px, 3svh, 34px);
     --bos-first-start-heading-gap: clamp(18px, 3vw, 34px);
     --bos-first-start-heading-margin: 14px;
-    --bos-first-start-title-size: clamp(1.82rem, 3.4vw, 3.28rem);
+    --bos-first-start-title-size: clamp(1.92rem, 3.7vw, 3.45rem);
     --bos-first-start-text-size: 0.94rem;
     --bos-first-choice-card-min: clamp(126px, 17svh, 172px);
     --bos-first-choice-card-pad: clamp(14px, 2svh, 20px);
@@ -37,7 +38,7 @@
 
 .boston .bos-first-screen {
     min-height: var(--bos-first-min-height) !important;
-    grid-template-rows: auto minmax(0, var(--bos-first-grid-hero)) auto !important;
+    grid-template-rows: auto minmax(0, var(--bos-first-grid-hero)) minmax(var(--bos-first-start-min-height), auto) !important;
     gap: var(--bos-first-gap) !important;
     padding-top: var(--bos-floating-head-offset) !important;
 }
@@ -74,6 +75,7 @@
 }
 
 .boston .bos-start-panel {
+    min-height: var(--bos-first-start-min-height) !important;
     padding-top: var(--bos-first-start-pad-top) !important;
     padding-bottom: var(--bos-first-start-pad-bottom) !important;
 }
@@ -114,22 +116,23 @@
 @media (min-width: 1081px) and (max-height: 980px) {
     .boston {
         --bos-floating-head-offset: clamp(50px, 6.2svh, 64px);
-        --bos-first-grid-hero: 0.78fr;
-        --bos-first-hero-pad-top: clamp(8px, 1.6svh, 18px);
-        --bos-first-hero-pad-bottom: clamp(6px, 1.3svh, 14px);
-        --bos-first-title-size: clamp(3.2rem, 10.5vmin, 6.9rem);
+        --bos-first-grid-hero: 0.42fr;
+        --bos-first-start-min-height: clamp(48svh, 52svh, 56svh);
+        --bos-first-hero-pad-top: clamp(5px, 1svh, 12px);
+        --bos-first-hero-pad-bottom: clamp(4px, 0.8svh, 10px);
+        --bos-first-title-size: clamp(3rem, 8.8vmin, 6.3rem);
         --bos-first-lede-width: 720px;
-        --bos-first-lede-margin: 10px;
-        --bos-first-lede-size: clamp(0.92rem, 1.55vmin, 1rem);
-        --bos-first-lede-line: 1.38;
-        --bos-first-signal-gap: 6px 10px;
-        --bos-first-signal-margin: 8px;
-        --bos-first-actions-margin: 12px;
-        --bos-first-start-pad-top: clamp(8px, 1.4svh, 14px);
-        --bos-first-start-pad-bottom: clamp(10px, 1.8svh, 18px);
+        --bos-first-lede-margin: 8px;
+        --bos-first-lede-size: clamp(0.9rem, 1.42vmin, 0.98rem);
+        --bos-first-lede-line: 1.34;
+        --bos-first-signal-gap: 5px 9px;
+        --bos-first-signal-margin: 6px;
+        --bos-first-actions-margin: 9px;
+        --bos-first-start-pad-top: clamp(14px, 2.2svh, 24px);
+        --bos-first-start-pad-bottom: clamp(16px, 2.7svh, 30px);
         --bos-first-start-heading-gap: clamp(12px, 2vw, 24px);
         --bos-first-start-heading-margin: 10px;
-        --bos-first-start-title-size: clamp(1.58rem, 2.7vw, 2.72rem);
+        --bos-first-start-title-size: clamp(1.7rem, 2.95vw, 2.95rem);
         --bos-first-start-text-size: 0.86rem;
         --bos-first-choice-card-min: clamp(104px, 14svh, 134px);
         --bos-first-choice-card-pad: clamp(11px, 1.6svh, 16px);
@@ -160,11 +163,12 @@
 
 @media (min-width: 1081px) and (max-height: 820px) {
     .boston {
-        --bos-first-grid-hero: 0.68fr;
-        --bos-first-title-size: clamp(2.9rem, 9.4vmin, 5.8rem);
+        --bos-first-grid-hero: 0.34fr;
+        --bos-first-start-min-height: clamp(50svh, 54svh, 58svh);
+        --bos-first-title-size: clamp(2.7rem, 7.7vmin, 5.2rem);
         --bos-first-signal-display: none;
-        --bos-first-actions-margin: 10px;
-        --bos-first-start-title-size: clamp(1.46rem, 2.35vw, 2.3rem);
+        --bos-first-actions-margin: 8px;
+        --bos-first-start-title-size: clamp(1.52rem, 2.55vw, 2.48rem);
         --bos-first-choice-card-min: clamp(96px, 13svh, 118px);
     }
 }
@@ -172,5 +176,6 @@
 @media (max-width: 850px) {
     .boston {
         --bos-first-min-height: auto;
+        --bos-first-start-min-height: auto;
     }
 }
