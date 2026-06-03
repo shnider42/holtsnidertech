@@ -6,12 +6,12 @@
 
 .boston .bos-head {
     transition:
-        opacity 420ms ease,
-        background-color 420ms ease,
-        box-shadow 420ms ease,
-        filter 420ms ease,
-        backdrop-filter 420ms ease,
-        -webkit-backdrop-filter 420ms ease !important;
+        opacity 210ms ease,
+        background-color 210ms ease,
+        box-shadow 210ms ease,
+        filter 210ms ease,
+        backdrop-filter 210ms ease,
+        -webkit-backdrop-filter 210ms ease !important;
 }
 
 .boston.bos-at-top .bos-head {
@@ -88,11 +88,12 @@
 }
 
 .boston .bos-choice-drawer {
-    position: absolute;
+    position: fixed;
     top: calc(100% + 10px);
     left: 10px;
-    right: 10px;
-    z-index: 40;
+    right: auto;
+    width: min(300px, calc(100vw - 28px));
+    z-index: 1200;
     padding: 13px 13px 12px;
     border: 1px solid color-mix(in srgb, var(--card-accent, #ff8a3d) 28%, rgba(255, 255, 255, 0.12));
     background:
@@ -104,17 +105,17 @@
     pointer-events: none;
     transform: translateY(-5px);
     transition:
-        opacity 160ms ease,
-        transform 160ms ease,
-        border-color 160ms ease,
-        background-color 160ms ease;
+        opacity 120ms ease,
+        transform 120ms ease,
+        border-color 120ms ease,
+        background-color 120ms ease;
 }
 
 .boston .bos-start-panel .bos-choice-card:hover .bos-choice-drawer,
 .boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-drawer,
 .boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-drawer {
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: none;
     transform: translateY(0);
 }
 
@@ -158,6 +159,7 @@
     .boston .bos-choice-drawer {
         position: static;
         margin-top: 10px;
+        width: auto;
         opacity: 1;
         pointer-events: auto;
         transform: none;
