@@ -16,3 +16,102 @@
         -1px 1px 0 #050505,
         1px 1px 0 #050505;
 }
+
+/* First-view chooser polish: make "Where should we start?" feel intentional. */
+.boston .bos-start-panel {
+    position: relative;
+    isolation: isolate;
+    background:
+        linear-gradient(90deg, rgba(255, 138, 61, 0.08), transparent 38%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.boston .bos-start-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-top: 1px solid rgba(255, 138, 61, 0.22);
+    pointer-events: none;
+}
+
+.boston .bos-start-heading {
+    align-items: end !important;
+}
+
+.boston .bos-start-heading h2 {
+    max-width: 12ch;
+    letter-spacing: -0.045em !important;
+}
+
+.boston .bos-start-heading .bos-section-text {
+    max-width: 54ch !important;
+    justify-self: end;
+    padding-left: clamp(14px, 2vw, 22px);
+    border-left: 3px solid rgba(255, 138, 61, 0.52);
+    color: rgba(244, 241, 234, 0.74) !important;
+}
+
+.boston .bos-choice-grid {
+    gap: clamp(8px, 1.2vw, 14px) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    position: relative;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+        rgba(8, 16, 24, 0.42) !important;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+    transform: translateY(0);
+    transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.boston .bos-start-panel .bos-choice-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--card-accent, #ff8a3d), transparent 72%);
+    opacity: 0.78;
+    pointer-events: none;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover,
+.boston .bos-start-panel .bos-choice-card:focus-visible {
+    border-color: rgba(255, 138, 61, 0.42) !important;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.24);
+    transform: translateY(-2px);
+}
+
+.boston .bos-start-panel .bos-choice-card .bos-card-label {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.16em !important;
+    opacity: 0.88;
+}
+
+.boston .bos-start-panel .bos-choice-card h3 {
+    letter-spacing: -0.018em !important;
+}
+
+@media (max-width: 850px) {
+    .boston .bos-start-heading {
+        align-items: start !important;
+    }
+
+    .boston .bos-start-heading .bos-section-text {
+        justify-self: start;
+        padding-left: 12px;
+        border-left-width: 2px;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
+    }
+}
