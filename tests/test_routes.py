@@ -13,6 +13,18 @@ def test_homepage_renders_canonical_boston_practical_site():
     assert b"Where should we start?" in response.data or b"What are you looking for?" in response.data
 
 
+def test_homepage_uses_boston_script_not_legacy_site_script():
+    app = create_app()
+    app.testing = True
+
+    with app.test_client() as client:
+        response = client.get("/")
+
+    assert response.status_code == 200
+    assert b"js/boston-site.js" in response.data
+    assert b"js/site.js" not in response.data
+
+
 def test_legacy_style_lab_redirects_home():
     app = create_app()
     app.testing = True
