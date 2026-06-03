@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Stylized resume document icon</title>
+  <desc id="desc">A modern resume or CV document icon with a folded corner, profile circle, text lines, and verification accent.</desc>
+  <defs>
+    <linearGradient id="paper" x1="120" y1="42" x2="400" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F8FDFF"/>
+      <stop offset="1" stop-color="#EAF6F7"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="342" y1="46" x2="431" y2="142" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D8EEF2"/>
+      <stop offset="1" stop-color="#B6DCE5"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="108" y1="100" x2="383" y2="408" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#0EA5A4"/>
+    </linearGradient>
+    <filter id="shadow" x="64" y="20" width="384" height="480" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#0F172A" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M126 44h214l72 72v332c0 15.5-12.5 28-28 28H126c-15.5 0-28-12.5-28-28V72c0-15.5 12.5-28 28-28z" fill="url(#paper)"/>
+    <path d="M340 44v58c0 7.7 6.3 14 14 14h58L340 44z" fill="url(#fold)"/>
+    <path d="M354 116c-7.7 0-14-6.3-14-14V44l72 72h-58z" fill="none" stroke="#8DBDC8" stroke-width="3" stroke-linejoin="round" opacity="0.65"/>
+  </g>
+
+  <path d="M126 44h214l72 72v332c0 15.5-12.5 28-28 28H126c-15.5 0-28-12.5-28-28V72c0-15.5 12.5-28 28-28z" fill="none" stroke="#143B46" stroke-width="10" stroke-linejoin="round" opacity="0.92"/>
+
+  <circle cx="177" cy="154" r="40" fill="url(#accent)"/>
+  <circle cx="177" cy="143" r="14" fill="#E9FFFB"/>
+  <path d="M149 179c5.5-18.5 49.5-18.5 56 0" fill="none" stroke="#E9FFFB" stroke-width="12" stroke-linecap="round"/>
+
+  <rect x="235" y="122" width="112" height="14" rx="7" fill="#143B46" opacity="0.9"/>
+  <rect x="235" y="153" width="82" height="12" rx="6" fill="#5E7C85" opacity="0.78"/>
+  <rect x="235" y="181" width="126" height="12" rx="6" fill="#5E7C85" opacity="0.45"/>
+
+  <rect x="145" y="235" width="222" height="14" rx="7" fill="#143B46" opacity="0.88"/>
+  <rect x="145" y="272" width="189" height="12" rx="6" fill="#5E7C85" opacity="0.58"/>
+  <rect x="145" y="303" width="226" height="12" rx="6" fill="#5E7C85" opacity="0.58"/>
+  <rect x="145" y="334" width="158" height="12" rx="6" fill="#5E7C85" opacity="0.58"/>
+
+  <g transform="translate(320 342)">
+    <circle cx="44" cy="44" r="44" fill="#F97316"/>
+    <path d="M24 45.5l14.2 14.2L66 29" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <rect x="145" y="392" width="136" height="12" rx="6" fill="url(#accent)" opacity="0.9"/>
+  <rect x="145" y="423" width="98" height="12" rx="6" fill="url(#accent)" opacity="0.55"/>
+</svg>
