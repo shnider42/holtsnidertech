@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    const setCard = (selector, label, title, body, action, drawerItems, drawerNext) => {
+    const setCard = (selector, title, body, action, drawerItems, drawerNext) => {
         const card = page.querySelector(selector);
         if (!card) return;
 
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const bodyNode = card.querySelector("p");
         const actionNode = card.querySelector(".bos-choice-action");
 
-        if (labelNode) labelNode.textContent = label;
+        if (labelNode) labelNode.remove();
         if (titleNode) titleNode.textContent = title;
         if (bodyNode) bodyNode.textContent = body;
         if (actionNode) actionNode.textContent = action;
@@ -163,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setCard(
             ".bos-choice-solve",
-            "01 / Find",
             "Solve",
             "Something broke, keeps breaking, or needs to be made smaller.",
             "Go to contact",
@@ -172,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         setCard(
             ".bos-choice-opportunity",
-            "02 / Find",
             "Launch Idea",
             "Shape a new idea or improve something that already exists.",
             "Go to contact",
@@ -181,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         setCard(
             ".bos-choice-experience",
-            "03 / Find",
             "HT Experience",
             "Jump to background, proof, portfolio, and role-fit context.",
             "Go to experience",
@@ -190,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         setCard(
             ".bos-choice-not-sure",
-            "04 / Find",
             "Start a Discovery",
             "You are not sure what category the problem belongs in yet.",
             "Go to contact",
