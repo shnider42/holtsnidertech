@@ -38,12 +38,13 @@ The intent is visual uniqueness without making the site confusing: strong Boston
 │   ├── routes.py              # Canonical routes and legacy redirects
 │   ├── templates/
 │   │   ├── base.html
+│   │   ├── home.html          # Canonical homepage entry point
 │   │   ├── privacy.html
 │   │   └── style_variants/
-│   │       └── boston_practical.html
+│   │       └── boston_practical.html  # Active Boston Practical implementation
 │   └── static/
 │       ├── css/               # Site styling and Boston Practical polish layers
-│       ├── js/                # Theme, motion, scroll, and card behavior
+│       ├── js/                # Motion, scroll, and card behavior
 │       ├── demos/             # Static project demos
 │       └── html/              # Static injected fragments / project detail content
 └── tests/
@@ -120,7 +121,7 @@ The repo should keep moving toward:
 
 Good next cleanup candidates:
 
-- move Boston Practical out of `style_variants/` once the old experiment naming is fully gone
-- move copy that is currently rewritten in `site.js` directly into the Jinja template
+- flatten `style_variants/boston_practical.html` into `home.html` when it can be done safely as a proper file move
+- move copy that is currently rewritten in `site.js` directly into the Jinja template in small patches
 - split large CSS polish files only when the split makes the active page easier to reason about
 - keep static demos, but make sure each one is intentionally linked from the homepage or sitemap
