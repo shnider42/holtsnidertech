@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const primaryAction = page.querySelector('.bos-hero .bos-btn[href="#start"]');
         if (primaryAction) {
-            primaryAction.href = "#paths";
-            primaryAction.textContent = "Follow the decision path";
+            primaryAction.href = "#start";
+            primaryAction.textContent = "Pick a starting point";
         }
 
         setText(".bos-start-heading h2", "Where should we start?");
@@ -87,18 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
             "01 / Solve",
             "Solve",
             "Something broke, keeps breaking, or needs to be made smaller.",
-            "Go to Solutions path",
+            "Go to next step",
             ["Something just broke", "Systemic problem"],
-            "Next: make the failure smaller"
+            "Later: Solutions Engineering"
         );
         setCard(
             ".bos-choice-opportunity",
             "02 / Launch Idea",
             "Launch Idea",
             "Shape a new idea or improve something that already exists.",
-            "Go to Opportunity path",
+            "Go to next step",
             ["New idea", "Improvement on existing idea"],
-            "Next: define the smallest useful version"
+            "Later: Opportunity Engineering"
         );
         setCard(
             ".bos-choice-experience",
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "04 / Start a Discovery",
             "Start a Discovery",
             "You are not sure what category the problem belongs in yet.",
-            "Go to Discovery path",
+            "Go to next step",
             ["The situation is fuzzy", "The next step is unclear", "The work needs a name"],
             "Next: clarify the first move"
         );
@@ -124,8 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
         setHref(".bos-start-panel .bos-choice-experience", "#experience");
         setHref(".bos-start-panel .bos-choice-not-sure", "#not-sure");
 
-        setText("#paths .bos-section-heading h2", "What kind of work does this become?");
-        setText("#paths .bos-section-heading .bos-section-text", "After the starting point is clear, the work usually turns into Solutions Engineering, Opportunity Engineering, or Discovery. This layer keeps those lenses without repeating the first question.");
+        const pathHeading = page.querySelector("#paths .bos-section-heading");
+        if (pathHeading) {
+            pathHeading.remove();
+        }
 
         page.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
         page.querySelectorAll(".bos-contact-note").forEach((note) => {
