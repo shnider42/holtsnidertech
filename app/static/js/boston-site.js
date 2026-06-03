@@ -2,101 +2,162 @@ document.addEventListener("DOMContentLoaded", () => {
     const page = document.querySelector(".boston");
     if (!page) return;
 
+    const CONTACT_EMAIL = "chris@holtsnidertech.com";
+
     const FLOW_DATA = {
         solve: {
-            eyebrow: "Context layer",
             title: "What kind of problem is this?",
-            intro: "Start by separating urgent breakage from long-running friction. Both can become Solutions Engineering, but the first conversation is different.",
-            actionLabel: "Bring this context to contact",
-            actionTarget: "#contact",
+            intro: "Pick the closest shape. The details can stay rough.",
+            actionLabel: "Email this problem context",
+            subject: "Holtsnider Tech problem context",
             options: [
                 {
+                    id: "just-happened",
                     title: "Something just happened",
-                    body: "A system, tool, provider, workflow, or application is suddenly blocking people or creating time-sensitive pressure.",
-                    examples: ["Data unavailable / outage", "Application broken", "Provider or platform issue", "Change or migration needed"],
-                    questions: ["When did it start?", "Who is blocked?", "What changed recently?", "What have you already tried?"],
-                    tag: "Time-sensitive triage",
+                    short: "New, urgent, or blocking.",
+                    tag: "Time-sensitive",
+                    detailTitle: "Start with the breakage",
+                    detailIntro: "Useful context is what changed, who is blocked, and what has already been tried.",
+                    examples: [
+                        { title: "Data unavailable / outage", body: "People cannot get to something they expected to use." },
+                        { title: "Application broken", body: "A tool, site, app, or workflow suddenly stopped behaving correctly." },
+                        { title: "Provider issue", body: "A vendor, platform, or managed service is creating pressure." },
+                        { title: "Change needed", body: "Something is bad enough that switching, migrating, or redesigning may be on the table." }
+                    ],
+                    questions: ["When did it start?", "Who is blocked?", "What changed recently?", "What have you already tried?", "Other notes"]
                 },
                 {
+                    id: "keeps-happening",
                     title: "This keeps getting in the way",
-                    body: "A recurring issue, annoying workflow, unreliable process, or long-standing gap needs to be made clearer, smaller, or better.",
-                    examples: ["Nagging functionality", "Recurring workflow pain", "Manual/repetitive process", "Chronic reliability issue"],
-                    questions: ["How often does it happen?", "Who does it affect?", "What would better look like?", "Is this a fix, automation, or redesign?"],
-                    tag: "Systemic improvement",
-                },
-            ],
+                    short: "Recurring, annoying, or system-wide.",
+                    tag: "Systemic",
+                    detailTitle: "Start with the pattern",
+                    detailIntro: "Useful context is how often it happens, who it affects, and what better would look like.",
+                    examples: [
+                        { title: "Nagging functionality", body: "Something technically works but repeatedly gets in the way." },
+                        { title: "Workflow pain", body: "A process is manual, brittle, or harder than it should be." },
+                        { title: "Recurring reliability issue", body: "The same category of failure keeps coming back." },
+                        { title: "Long-standing gap", body: "Everyone has learned to work around it, but it should probably be fixed." }
+                    ],
+                    questions: ["How often does it happen?", "Who does it affect?", "What would better look like?", "Is this a fix, automation, or redesign?", "Other notes"]
+                }
+            ]
         },
         opportunity: {
-            eyebrow: "Context layer",
             title: "What kind of idea are we shaping?",
-            intro: "This path is for turning a loose idea, workflow, site, tool, or improvement into a useful first version. This is the Opportunity Engineering lane.",
-            actionLabel: "Bring this idea to contact",
-            actionTarget: "#contact",
+            intro: "Pick the closest starting point. This is the Opportunity Engineering lane.",
+            actionLabel: "Email this idea context",
+            subject: "Holtsnider Tech idea context",
             options: [
                 {
+                    id: "new-build",
                     title: "Build something new",
-                    body: "You have a new idea for an app, workflow, automation, website feature, demo, or internal tool and need help shaping the useful first version.",
-                    examples: ["Loudsource", "Jiporady", "Daily Flyer / Irish Today", "Career Compass", "Grepper"],
-                    questions: ["Who is it for?", "What should it help them do?", "What is the smallest useful version?", "What would make it feel real?"],
-                    tag: "New build",
+                    short: "A new app, site, workflow, prototype, or tool.",
+                    tag: "New idea",
+                    detailTitle: "Shape the useful first version",
+                    detailIntro: "These examples show the kind of creative technical shaping I can bring to a fuzzy idea.",
+                    examples: [
+                        { title: "Loudsource", body: "Interactive vote-to-queue music concept.", href: "/static/demos/loudsource-vote.html" },
+                        { title: "Jiporady", body: "Custom browser game / living-room trivia concept." },
+                        { title: "Daily Flyer / Irish Today", body: "Repeatable daily content engine and themed presentation.", href: "https://daily-flyer.onrender.com/" },
+                        { title: "Your Passage", body: "Personalized daily-page concept grown from the Daily Flyer idea." },
+                        { title: "Career Compass", body: "Career-direction tooling / structured job-search thinking." },
+                        { title: "Grepper", body: "Job-search scraping, parsing, ranking, and demo workflow.", href: "/static/demos/grepper.html" }
+                    ],
+                    questions: ["Who is it for?", "What should it help them do?", "What is the smallest useful version?", "What would make it feel real?", "Other notes"]
                 },
                 {
+                    id: "improve-existing",
                     title: "Improve something existing",
-                    body: "You already have a site, workflow, tool, process, or rough project, and it needs to become clearer, more usable, or more valuable.",
-                    examples: ["Feature cleanup", "Workflow improvement", "Automation idea", "Better presentation", "Tool integration"],
-                    questions: ["What exists now?", "What feels clunky?", "What do users miss or avoid?", "What should the next version prove?"],
-                    tag: "Existing improvement",
-                },
-            ],
+                    short: "A site, workflow, tool, process, or rough draft already exists.",
+                    tag: "Existing idea",
+                    detailTitle: "Make the next version clearer",
+                    detailIntro: "The goal is to identify what is clunky, what matters, and what the next useful version should prove.",
+                    examples: [
+                        { title: "Feature cleanup", body: "Make an existing thing easier to understand or use." },
+                        { title: "Workflow improvement", body: "Reduce manual steps or confusion in a current process." },
+                        { title: "Better presentation", body: "Turn existing work into something easier to evaluate." },
+                        { title: "Automation idea", body: "Add practical tooling around work people already do." }
+                    ],
+                    questions: ["What exists now?", "What feels clunky?", "What do users miss or avoid?", "What should the next version prove?", "Other notes"]
+                }
+            ]
         },
         experience: {
-            eyebrow: "Context layer",
             title: "What background are you looking for?",
-            intro: "This path is for people evaluating professional fit, engineering credibility, or resume-style experience rather than a creative project example.",
-            actionLabel: "Go to experience section",
-            actionTarget: "#experience",
+            intro: "For LinkedIn, resume, role-fit, or professional credibility context.",
+            actionLabel: "Email about professional background",
+            subject: "Holtsnider Tech professional background",
             options: [
                 {
+                    id: "engineering",
                     title: "Engineering experience",
-                    body: "Reliability, troubleshooting, infrastructure, automation, customer-facing support, and technical ownership across enterprise environments.",
-                    examples: ["SRE / reliability", "Incident response", "Networking / infrastructure", "Automation", "Technical support"],
-                    questions: ["What kind of role or work are you evaluating?", "Which technical area matters most?", "Do you need broad background or a specific example?"],
-                    tag: "Professional fit",
+                    short: "Reliability, troubleshooting, automation, and technical ownership.",
+                    tag: "Role fit",
+                    detailTitle: "Professional engineering context",
+                    detailIntro: "This is the more resume-like lane: technical work, responsibility, and environments.",
+                    examples: [
+                        { title: "SRE / reliability", body: "Incident response, production-impacting issues, and operational thinking." },
+                        { title: "Automation", body: "Python, scripting, APIs, repeatable workflows, and practical tooling." },
+                        { title: "Technical support", body: "Customer-facing engineering, escalation, and clear next steps." }
+                    ],
+                    questions: ["What role or work are you evaluating?", "Which technical area matters most?", "Do you need broad background or a specific example?", "What should I emphasize?", "Other notes"]
                 },
                 {
+                    id: "enterprise",
                     title: "Enterprise systems background",
-                    body: "Storage, lab infrastructure, root-cause investigation, release quality, and customer-facing engineering work from a long enterprise context.",
-                    examples: ["PowerFlex", "Unity", "Dell / EMC", "Lab systems", "Release quality"],
-                    questions: ["Is this about storage, infrastructure, or support?", "Do you need public proof or resume context?", "What kind of environment is closest?"],
-                    tag: "Enterprise credibility",
+                    short: "Storage, infrastructure, release quality, and complex environments.",
+                    tag: "Enterprise",
+                    detailTitle: "Enterprise systems context",
+                    detailIntro: "This lane is for storage, infrastructure, lab, and customer-impacting engineering credibility.",
+                    examples: [
+                        { title: "PowerFlex / Unity", body: "Enterprise storage systems and reliability context." },
+                        { title: "Lab infrastructure", body: "Rack systems, networking, Fibre Channel, VMware, and realistic environments." },
+                        { title: "Root-cause work", body: "Cross-layer investigation across systems, logs, network paths, and assumptions." }
+                    ],
+                    questions: ["Is this about storage, infrastructure, or support?", "What environment is closest?", "Do you need public proof or resume context?", "What problem domain matters?", "Other notes"]
                 },
                 {
+                    id: "current-direction",
                     title: "Current technical direction",
-                    body: "Recent work and interests around practical AI tooling, project shaping, automation, web apps, and technical translation.",
-                    examples: ["AI tooling", "Flask apps", "Workflow tools", "Quantum Solutions / Cipher", "Portfolio momentum"],
-                    questions: ["Are you looking for current work?", "Do examples matter, or only professional history?", "What kind of collaboration are you considering?"],
+                    short: "AI tooling, web apps, workflow tools, and project shaping.",
                     tag: "Current work",
-                },
-            ],
+                    detailTitle: "Current work and direction",
+                    detailIntro: "This lane connects professional experience with the newer public work and project-building momentum.",
+                    examples: [
+                        { title: "AI tooling", body: "Practical AI-assisted workflows, review, summarization, and technical acceleration." },
+                        { title: "Web apps", body: "Flask apps, demos, portfolio systems, and workflow prototypes." },
+                        { title: "Quantum Solutions / Cipher", body: "Security/risk tooling, infrastructure analysis, and technical translation." }
+                    ],
+                    questions: ["Are you looking for current work?", "Do examples matter, or only professional history?", "What kind of collaboration are you considering?", "What should I point you to first?", "Other notes"]
+                }
+            ]
         },
         discovery: {
-            eyebrow: "Context layer",
             title: "Discovery path still being shaped",
-            intro: "This path is intentionally light for now. The useful version is probably for people who know something is off but do not know whether it is a problem, opportunity, vendor issue, workflow issue, or technical gap.",
-            actionLabel: "Send the fuzzy version",
-            actionTarget: "#contact",
+            intro: "Use this when the situation is real, but the category is not obvious yet.",
+            actionLabel: "Email the fuzzy version",
+            subject: "Holtsnider Tech discovery context",
             options: [
                 {
+                    id: "messy-version",
                     title: "Start with the messy version",
-                    body: "Describe what is happening, what feels confusing, and what decision you are trying to make. The first job is naming the work.",
-                    examples: ["Unclear next step", "Vendor confusion", "Process friction", "Tooling uncertainty"],
-                    questions: ["What prompted this?", "What feels stuck?", "What decision are you trying to make?"],
-                    tag: "Set aside / placeholder",
-                },
-            ],
-        },
+                    short: "Name the work before solving it.",
+                    tag: "Discovery",
+                    detailTitle: "Describe the unclear situation",
+                    detailIntro: "The first goal is to separate symptoms, constraints, risks, and possible next moves.",
+                    examples: [
+                        { title: "Unclear next step", body: "You know something needs attention, but not what to call it." },
+                        { title: "Vendor confusion", body: "You need help translating claims, options, or tradeoffs." },
+                        { title: "Tooling uncertainty", body: "You are unsure whether this is a tool, process, platform, or people problem." }
+                    ],
+                    questions: ["What prompted this?", "What feels stuck?", "What decision are you trying to make?", "What have you considered so far?", "Other notes"]
+                }
+            ]
+        }
     };
 
+    const flowState = { path: null, context: null, notes: {} };
     let activePath = null;
     let flowPanel = null;
 
@@ -140,9 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyCardAccent = (card, ...drawers) => {
         const accent = window.getComputedStyle(card).getPropertyValue("--card-accent").trim();
         drawers.forEach((drawer) => {
-            if (accent) {
-                drawer.style.setProperty("--card-accent", accent);
-            }
+            if (accent) drawer.style.setProperty("--card-accent", accent);
         });
     };
 
@@ -155,17 +214,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const height = drawer.offsetHeight || 130;
 
         let left = clientX + offset;
-        if (left + width + margin > window.innerWidth) {
-            left = clientX - width - offset;
-        }
+        if (left + width + margin > window.innerWidth) left = clientX - width - offset;
 
         const above = clientY - height - offset;
         const below = clientY + offset;
         let top = above >= margin ? above : below;
-
-        if (top + height + margin > window.innerHeight) {
-            top = above;
-        }
+        if (top + height + margin > window.innerHeight) top = above;
 
         drawer.style.left = `${clamp(left, margin, window.innerWidth - width - margin)}px`;
         drawer.style.top = `${clamp(top, margin, window.innerHeight - height - margin)}px`;
@@ -186,16 +240,23 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("mouseenter", (event) => show(event.clientX, event.clientY));
         card.addEventListener("mousemove", (event) => show(event.clientX, event.clientY));
         card.addEventListener("mouseleave", hide);
-
         card.addEventListener("focusin", () => {
             const rect = card.getBoundingClientRect();
             show(rect.left + rect.width / 2, rect.top);
         });
-
         card.addEventListener("focusout", () => {
             window.setTimeout(() => {
                 if (!card.contains(document.activeElement)) hide();
             }, 0);
+        });
+    };
+
+    const hideMiddleSections = () => {
+        page.querySelector("#paths")?.remove();
+        page.querySelector(".bos-operating-line")?.remove();
+        page.querySelectorAll(".bos-cta-strip, #experience, #work, #case-shapes").forEach((section) => {
+            section.classList.add("bos-runtime-hidden");
+            section.hidden = true;
         });
     };
 
@@ -213,27 +274,34 @@ document.addEventListener("DOMContentLoaded", () => {
         return flowPanel;
     };
 
-    const createList = (className, items) => {
-        const list = document.createElement("ul");
-        list.className = className;
-        items.forEach((item) => {
-            const li = document.createElement("li");
-            li.textContent = item;
-            list.appendChild(li);
+    const buildMailtoHref = () => {
+        const data = FLOW_DATA[flowState.path];
+        const context = data?.options.find((option) => option.id === flowState.context);
+        const subject = encodeURIComponent(data?.subject || "Holtsnider Tech inquiry");
+        const lines = [
+            "Hi Chris,",
+            "",
+            "I came through the Holtsnider Tech site flow with this context:",
+            "",
+            `Starting point: ${data ? data.title : flowState.path || "Not selected"}`,
+            `Selected context: ${context ? context.title : "Not selected"}`,
+            ""
+        ];
+
+        Object.entries(flowState.notes).forEach(([question, answer]) => {
+            if (answer.trim()) lines.push(`${question}: ${answer.trim()}`);
         });
-        return list;
+
+        lines.push("", "Thanks,");
+        return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${encodeURIComponent(lines.join("\n"))}`;
     };
 
-    const collapseFlow = () => {
-        activePath = null;
-        page.querySelectorAll(".bos-choice-card").forEach((card) => {
-            card.classList.remove("is-selected");
-        });
-
-        if (!flowPanel) return;
-        flowPanel.classList.remove("is-active");
-        flowPanel.removeAttribute("data-active-flow");
-        flowPanel.textContent = "";
+    const createButton = (className, text) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = className;
+        button.textContent = text;
+        return button;
     };
 
     const renderFlow = (pathKey, shouldScroll = true) => {
@@ -242,6 +310,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!data || !panel) return;
 
         activePath = pathKey;
+        flowState.path = pathKey;
+        flowState.context = null;
+        flowState.notes = {};
+
         page.querySelectorAll(".bos-choice-card").forEach((card) => {
             card.classList.toggle("is-selected", card.dataset.flowPath === pathKey);
         });
@@ -252,70 +324,111 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const header = document.createElement("div");
         header.className = "bos-guided-flow-head";
-
-        const eyebrow = document.createElement("p");
-        eyebrow.className = "bos-guided-flow-eyebrow";
-        eyebrow.textContent = data.eyebrow;
-
-        const title = document.createElement("h3");
-        title.textContent = data.title;
-
-        const intro = document.createElement("p");
-        intro.className = "bos-guided-flow-intro";
-        intro.textContent = data.intro;
-
-        header.append(eyebrow, title, intro);
+        header.innerHTML = `<p class="bos-guided-flow-eyebrow">Context layer</p><h3>${data.title}</h3><p class="bos-guided-flow-intro">${data.intro}</p>`;
 
         const optionGrid = document.createElement("div");
-        optionGrid.className = "bos-guided-flow-options";
+        optionGrid.className = "bos-guided-flow-options bos-guided-flow-options-compact";
 
         data.options.forEach((option) => {
-            const optionCard = document.createElement("article");
-            optionCard.className = "bos-guided-flow-option";
+            const optionButton = createButton("bos-guided-flow-option bos-guided-flow-option-button", option.title);
+            optionButton.dataset.contextId = option.id;
+            optionButton.innerHTML = `<span class="bos-guided-flow-tag">${option.tag}</span><strong>${option.title}</strong><span>${option.short}</span>`;
+            optionButton.addEventListener("click", () => renderDetail(pathKey, option.id));
+            optionGrid.appendChild(optionButton);
+        });
 
-            const tag = document.createElement("p");
-            tag.className = "bos-guided-flow-tag";
-            tag.textContent = option.tag;
+        panel.append(header, optionGrid);
 
-            const optionTitle = document.createElement("h4");
-            optionTitle.textContent = option.title;
+        if (shouldScroll) {
+            window.requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+        }
+    };
 
-            const body = document.createElement("p");
-            body.textContent = option.body;
+    const renderDetail = (pathKey, contextId) => {
+        const data = FLOW_DATA[pathKey];
+        const option = data?.options.find((item) => item.id === contextId);
+        const panel = ensureFlowPanel();
+        if (!data || !option || !panel) return;
 
-            const examplesLabel = document.createElement("strong");
-            examplesLabel.textContent = "Examples";
+        flowState.path = pathKey;
+        flowState.context = contextId;
+        flowState.notes = {};
 
-            const examples = createList("bos-guided-flow-chips", option.examples);
+        panel.textContent = "";
+        panel.classList.add("is-active");
+        panel.dataset.activeFlow = pathKey;
+        panel.dataset.activeContext = contextId;
 
-            const questionsLabel = document.createElement("strong");
-            questionsLabel.textContent = "Useful context";
+        const header = document.createElement("div");
+        header.className = "bos-guided-flow-head";
+        header.innerHTML = `<p class="bos-guided-flow-eyebrow">${option.tag}</p><h3>${option.detailTitle}</h3><p class="bos-guided-flow-intro">${option.detailIntro}</p>`;
 
-            const questions = createList("bos-guided-flow-questions", option.questions);
+        const back = createButton("bos-flow-back", "Back to context choices");
+        back.addEventListener("click", () => renderFlow(pathKey, false));
+        header.appendChild(back);
 
-            optionCard.append(tag, optionTitle, body, examplesLabel, examples, questionsLabel, questions);
-            optionGrid.appendChild(optionCard);
+        const examples = document.createElement("div");
+        examples.className = "bos-flow-example-grid";
+        option.examples.forEach((example) => {
+            const tagName = example.href ? "a" : "article";
+            const card = document.createElement(tagName);
+            card.className = "bos-flow-example-card";
+            if (example.href) {
+                card.href = example.href;
+                if (example.href.startsWith("http")) {
+                    card.target = "_blank";
+                    card.rel = "noopener noreferrer";
+                }
+            }
+            card.innerHTML = `<strong>${example.title}</strong><span>${example.body}</span>`;
+            examples.appendChild(card);
+        });
+
+        const fields = document.createElement("div");
+        fields.className = "bos-context-fields";
+        option.questions.forEach((question) => {
+            const label = document.createElement("label");
+            label.className = "bos-context-field";
+            const labelText = document.createElement("span");
+            labelText.textContent = question;
+            const textarea = document.createElement("textarea");
+            textarea.rows = question === "Other notes" ? 4 : 2;
+            textarea.placeholder = "Optional";
+            textarea.addEventListener("input", () => {
+                flowState.notes[question] = textarea.value;
+                const mailLink = panel.querySelector(".bos-flow-mailto");
+                if (mailLink) mailLink.href = buildMailtoHref();
+            });
+            label.append(labelText, textarea);
+            fields.appendChild(label);
         });
 
         const action = document.createElement("div");
         action.className = "bos-guided-flow-action";
-
         const actionText = document.createElement("p");
-        actionText.textContent = "The goal is to send enough context for a useful first reply without turning the site into a long form.";
-
+        actionText.textContent = "These fields are optional. They are here to make the eventual email or meeting context more useful.";
         const actionLink = document.createElement("a");
-        actionLink.href = data.actionTarget;
-        actionLink.className = "bos-btn bos-btn-primary";
+        actionLink.className = "bos-btn bos-btn-primary bos-flow-mailto";
+        actionLink.href = buildMailtoHref();
         actionLink.textContent = data.actionLabel;
-
         action.append(actionText, actionLink);
-        panel.append(header, optionGrid, action);
 
-        if (shouldScroll) {
-            window.requestAnimationFrame(() => {
-                panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            });
-        }
+        panel.append(header, examples, fields, action);
+        window.requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+    };
+
+    const collapseFlow = () => {
+        activePath = null;
+        flowState.path = null;
+        flowState.context = null;
+        flowState.notes = {};
+        page.querySelectorAll(".bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
+
+        if (!flowPanel) return;
+        flowPanel.classList.remove("is-active");
+        flowPanel.removeAttribute("data-active-flow");
+        flowPanel.removeAttribute("data-active-context");
+        flowPanel.textContent = "";
     };
 
     const setCard = (selector, pathKey, title, body, action, drawerItems, drawerNext) => {
@@ -346,12 +459,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.addEventListener("click", (event) => {
             event.preventDefault();
-
             if (activePath === pathKey) {
                 collapseFlow();
                 return;
             }
-
             renderFlow(pathKey);
         });
     };
@@ -364,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mark.textContent = "Holtsnider Tech";
         }
 
-        page.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href="#paths"]').forEach((link) => link.remove());
+        page.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href="#paths"], .bos-links a[href="#work"], .bos-links a[href="#experience"]').forEach((link) => link.remove());
 
         setText(".bos-hero .bos-kicker", "Solutions Engineering + Opportunity Engineering");
 
@@ -385,60 +496,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setText(".bos-start-heading h2", "Where should we start?");
-        const startText = page.querySelector(".bos-start-heading .bos-section-text");
-        if (startText) {
-            startText.remove();
-        }
+        page.querySelector(".bos-start-heading .bos-section-text")?.remove();
 
-        setCard(
-            ".bos-choice-solve",
-            "solve",
-            "Solve",
-            "Something broke, keeps breaking, or needs to be made smaller.",
-            "Show problem flow",
-            ["Something just broke", "Systemic problem"],
-            "This becomes Solutions Engineering"
-        );
-        setCard(
-            ".bos-choice-opportunity",
-            "opportunity",
-            "Launch Idea",
-            "Shape a new idea or improve something that already exists.",
-            "Show idea flow",
-            ["New idea", "Improvement on existing idea"],
-            "This becomes Opportunity Engineering"
-        );
-        setCard(
-            ".bos-choice-experience",
-            "experience",
-            "HT Experience",
-            "Jump to background, proof, portfolio, and role-fit context.",
-            "Show experience flow",
-            ["SRE / reliability", "Portfolio and demos", "Enterprise storage", "AI and automation"],
-            "Show professional context"
-        );
-        setCard(
-            ".bos-choice-not-sure",
-            "discovery",
-            "Start a Discovery",
-            "You are not sure what category the problem belongs in yet.",
-            "Show placeholder",
-            ["The situation is fuzzy", "The next step is unclear", "The work needs a name"],
-            "Discovery path still being shaped"
-        );
+        setCard(".bos-choice-solve", "solve", "Solve", "Something broke, keeps breaking, or needs to be made smaller.", "Show problem flow", ["Something just broke", "Systemic problem"], "This becomes Solutions Engineering");
+        setCard(".bos-choice-opportunity", "opportunity", "Launch Idea", "Shape a new idea or improve something that already exists.", "Show idea flow", ["New idea", "Improvement on existing idea"], "This becomes Opportunity Engineering");
+        setCard(".bos-choice-experience", "experience", "HT Experience", "Jump to background, proof, portfolio, and role-fit context.", "Show experience flow", ["SRE / reliability", "Portfolio and demos", "Enterprise storage", "AI and automation"], "Show professional context");
+        setCard(".bos-choice-not-sure", "discovery", "Start a Discovery", "You are not sure what category the problem belongs in yet.", "Show placeholder", ["The situation is fuzzy", "The next step is unclear", "The work needs a name"], "Discovery path still being shaped");
 
         setHref(".bos-start-panel .bos-choice-solve", "#guided-flow");
         setHref(".bos-start-panel .bos-choice-opportunity", "#guided-flow");
         setHref(".bos-start-panel .bos-choice-experience", "#guided-flow");
         setHref(".bos-start-panel .bos-choice-not-sure", "#guided-flow");
 
-        page.querySelector("#paths")?.remove();
-        page.querySelector(".bos-operating-line")?.remove();
-        page.querySelector("#experience .bos-section-text")?.remove();
-        page.querySelector("#work .bos-section-text")?.remove();
-        page.querySelector("#case-shapes .bos-section-text")?.remove();
+        hideMiddleSections();
 
-        page.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
         page.querySelectorAll(".bos-contact-note").forEach((note) => {
             note.textContent = "The useful first step is simple: describe the messy version, the constraint, or the decision you are trying to make.";
         });
@@ -448,7 +519,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const updateHeaderState = () => {
             page.classList.toggle("bos-at-top", (window.scrollY || window.pageYOffset) <= 4);
         };
-
         updateHeaderState();
         window.addEventListener("scroll", updateHeaderState, { passive: true });
         window.addEventListener("resize", updateHeaderState);
@@ -494,18 +564,13 @@ document.addEventListener("DOMContentLoaded", () => {
         page.querySelectorAll('a[href^="#"]').forEach((link) => {
             link.addEventListener("click", (event) => {
                 const selector = link.getAttribute("href");
-                if (!selector || selector === "#") return;
-
-                if (link.classList.contains("bos-choice-card")) {
-                    return;
-                }
+                if (!selector || selector === "#" || link.classList.contains("bos-choice-card")) return;
 
                 const target = page.querySelector(selector);
                 if (!target) return;
 
                 event.preventDefault();
                 target.scrollIntoView({ behavior: "smooth", block: "start" });
-
                 try {
                     window.history.replaceState(null, "", selector);
                 } catch (error) {
