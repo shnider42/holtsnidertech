@@ -87,7 +87,7 @@
     display: none !important;
 }
 
-.boston .bos-choice-drawer {
+.bos-choice-drawer {
     position: fixed;
     top: calc(100% + 10px);
     left: 10px;
@@ -111,16 +111,17 @@
         background-color 120ms ease;
 }
 
-.boston .bos-start-panel .bos-choice-card:hover .bos-choice-drawer,
-.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-drawer,
-.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-drawer {
+.bos-choice-drawer.is-active {
     opacity: 1;
-    pointer-events: none;
     transform: translateY(0);
 }
 
-.boston .bos-choice-drawer strong,
-.boston .bos-choice-drawer span {
+.bos-choice-inline {
+    display: none;
+}
+
+.bos-choice-drawer strong,
+.bos-choice-drawer span {
     display: block;
     color: var(--card-accent, #ff8a3d);
     font-size: 0.58rem;
@@ -130,7 +131,7 @@
     text-transform: uppercase;
 }
 
-.boston .bos-choice-drawer ul {
+.bos-choice-drawer ul {
     display: grid;
     gap: 3px;
     margin: 7px 0 8px;
@@ -138,13 +139,13 @@
     list-style: none;
 }
 
-.boston .bos-choice-drawer li {
+.bos-choice-drawer li {
     color: rgba(244, 241, 234, 0.84);
     font-size: 0.76rem;
     line-height: 1.25;
 }
 
-.boston .bos-choice-drawer li::before {
+.bos-choice-drawer li::before {
     content: "→";
     margin-right: 6px;
     color: var(--card-accent, #ff8a3d);
@@ -152,11 +153,12 @@
 }
 
 @media (max-width: 850px) {
-    .boston .bos-start-panel .bos-choice-card {
-        min-height: auto !important;
+    .bos-choice-floating {
+        display: none;
     }
 
-    .boston .bos-choice-drawer {
+    .bos-choice-inline {
+        display: block;
         position: static;
         margin-top: 10px;
         width: auto;
@@ -165,10 +167,14 @@
         transform: none;
         box-shadow: none;
     }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: auto !important;
+    }
 }
 
 @media (max-width: 520px) {
-    .boston .bos-choice-drawer {
+    .bos-choice-drawer {
         display: none;
     }
 }
