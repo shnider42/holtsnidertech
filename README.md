@@ -44,7 +44,7 @@ The intent is visual uniqueness without making the site confusing: strong Boston
 │   │       └── boston_practical.html  # Active Boston Practical implementation
 │   └── static/
 │       ├── css/               # Site styling and Boston Practical polish layers
-│       ├── js/                # Motion, scroll, and card behavior
+│       ├── js/                # Boston homepage behavior and supporting interactions
 │       ├── demos/             # Static project demos
 │       └── html/              # Static injected fragments / project detail content
 └── tests/
@@ -95,6 +95,7 @@ pytest
 The current tests check that:
 
 - `/` renders the canonical Boston Practical homepage
+- the homepage loads `boston-site.js` instead of the removed legacy `site.js`
 - legacy `/style-lab` URLs redirect home instead of breaking
 - `/healthz` returns the expected service status
 
@@ -119,9 +120,17 @@ The repo should keep moving toward:
 - small route tests before larger cleanup commits
 - visual uniqueness centered on the path-picker / decision-flow concept
 
+Completed cleanup in `feat/ht3` includes:
+
+- retired style-lab routes now redirect to the canonical homepage
+- retired style-lab/scaffold templates were removed
+- the old overloaded `site.js` was removed from the active site and deleted from the repo
+- focused Boston homepage behavior now lives in `app/static/js/boston-site.js`
+- route smoke tests cover the canonical homepage, legacy redirects, script loading, and health check
+
 Good next cleanup candidates:
 
-- flatten `style_variants/boston_practical.html` into `home.html` when it can be done safely as a proper file move
-- move copy that is currently rewritten in `site.js` directly into the Jinja template in small patches
+- flatten `style_variants/boston_practical.html` into `home.html` when it can be done safely as a proper local file move
+- move copy that is currently normalized in `boston-site.js` directly into the Jinja template in small local patches
 - split large CSS polish files only when the split makes the active page easier to reason about
 - keep static demos, but make sure each one is intentionally linked from the homepage or sitemap
