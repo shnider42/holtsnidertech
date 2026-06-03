@@ -1,9 +1,67 @@
 /*
- * Final first-card tuning layer.
+ * Final first-card and first-hero tuning layer.
  * Loaded after the existing Boston card illustration stack.
- * Scope is intentionally narrow: spacing, first-three card composition,
+ * Scope: top title spacing/entrance, card spacing, first-three card composition,
  * and Launch/HT alignment. Do not alter the Discovery scene artwork here.
  */
+
+/* Tighten the first viewport so the big Holtsnider Tech mark owns the space instead of padding owning it. */
+.boston {
+    --bos-floating-head-top: clamp(4px, 0.7vw, 10px) !important;
+    --bos-floating-head-offset: clamp(40px, 5.2svh, 56px) !important;
+    --bos-first-grid-hero: auto !important;
+    --bos-first-hero-pad-top: 0px !important;
+    --bos-first-hero-pad-bottom: clamp(2px, 0.7svh, 8px) !important;
+    --bos-first-title-size: clamp(4.1rem, 11.8vmin, 9.4rem) !important;
+    --bos-first-title-line: 0.76 !important;
+    --bos-first-start-pad-top: clamp(6px, 1.1svh, 14px) !important;
+    --bos-first-start-heading-margin: clamp(8px, 1.2svh, 12px) !important;
+}
+
+.boston .bos-first-screen {
+    grid-template-rows: auto auto minmax(var(--bos-first-start-min-height), auto) !important;
+    padding-top: var(--bos-floating-head-offset) !important;
+}
+
+.boston .bos-hero {
+    align-items: flex-start !important;
+    padding-top: 0 !important;
+    padding-bottom: var(--bos-first-hero-pad-bottom) !important;
+}
+
+.boston .bos-hero-grid {
+    align-items: start !important;
+}
+
+.boston .bos-hero .bos-kicker {
+    margin-bottom: clamp(3px, 0.55svh, 7px) !important;
+}
+
+.boston .bos-hero h1 {
+    max-width: min(980px, 92vw) !important;
+    margin: 0 !important;
+    font-size: var(--bos-first-title-size) !important;
+    line-height: var(--bos-first-title-line) !important;
+    letter-spacing: -0.087em !important;
+    animation: bos-title-slide-left-in 640ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+    will-change: opacity, transform;
+}
+
+@keyframes bos-title-slide-left-in {
+    from {
+        opacity: 0;
+        transform: translateX(-72px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.boston .bos-start-panel {
+    padding-top: var(--bos-first-start-pad-top) !important;
+}
 
 /* Remove the shared grid border that visually connects the tops of the cards. */
 .boston .bos-start-panel .bos-choice-grid {
@@ -67,7 +125,27 @@
         inset 0 0 0 1px rgba(255, 255, 255, 0.045) !important;
 }
 
+@media (min-width: 1081px) and (max-height: 820px) {
+    .boston {
+        --bos-first-title-size: clamp(3.65rem, 10vmin, 7.3rem) !important;
+        --bos-first-title-line: 0.78 !important;
+        --bos-first-start-pad-top: clamp(5px, 0.8svh, 10px) !important;
+    }
+}
+
 @media (max-width: 850px) {
+    .boston {
+        --bos-floating-head-offset: clamp(38px, 7svh, 54px) !important;
+        --bos-first-title-size: clamp(3.4rem, 17vw, 5.9rem) !important;
+        --bos-first-title-line: 0.80 !important;
+        --bos-first-start-pad-top: 12px !important;
+    }
+
+    .boston .bos-hero h1 {
+        animation-duration: 520ms;
+        transform-origin: left center;
+    }
+
     .boston .bos-start-panel .bos-choice-grid {
         gap: 10px !important;
     }
