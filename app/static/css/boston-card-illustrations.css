@@ -1,210 +1,146 @@
 /*
- * Last-loaded first-choice card illustrations.
- * Pure CSS rather than SVG data URLs so the background art is visible and easy to tune.
+ * Last-loaded PNG-backed card art and alignment fixes.
+ * These are transparent PNG data images, pre-rendered once, not SVG.
  */
 
-.boston .bos-start-panel .bos-choice-card {
-    isolation: isolate;
+.boston .bos-start-panel .bos-choice-card,
+.boston .bos-guided-flow-option-button,
+.boston .bos-flow-example-card {
+    text-align: left !important;
+    justify-items: start !important;
 }
 
-.boston .bos-start-panel .bos-choice-card::before,
+.boston .bos-start-panel .bos-choice-card {
+    position: relative;
+    isolation: isolate;
+    justify-content: flex-start !important;
+    align-content: start !important;
+    align-items: flex-start !important;
+    padding-top: clamp(18px, 2.1vw, 28px) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card::before {
+    display: none !important;
+}
+
 .boston .bos-start-panel .bos-choice-card::after {
     content: "";
     position: absolute;
     z-index: 0;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: right 7% center;
+    background-size: min(58%, 260px) auto;
+    opacity: 0.72;
     pointer-events: none;
+    filter: drop-shadow(0 22px 32px rgba(0, 0, 0, 0.24));
 }
 
 .boston .bos-start-panel .bos-choice-card > h3 {
     position: relative;
     z-index: 2;
-}
-
-/* Solve: magnifying glass plus shield */
-.boston .bos-choice-solve::before {
-    width: min(48%, 178px);
-    aspect-ratio: 1;
-    right: 18%;
-    top: 14%;
-    border: clamp(7px, 0.8vw, 11px) solid rgba(244, 241, 234, 0.34);
-    border-radius: 50%;
-    background:
-        radial-gradient(circle at 44% 42%, rgba(255, 138, 61, 0.18), transparent 42%),
-        radial-gradient(circle at 50% 50%, transparent 0 55%, rgba(255, 138, 61, 0.18) 56% 62%, transparent 63%);
-    box-shadow:
-        inset 0 0 34px rgba(255, 138, 61, 0.12),
-        0 0 42px rgba(255, 138, 61, 0.10);
-    opacity: 0.82;
+    align-self: start;
+    justify-self: start;
+    max-width: 9ch;
+    margin: 0 !important;
+    text-align: left !important;
 }
 
 .boston .bos-choice-solve::after {
-    width: min(34%, 132px);
-    aspect-ratio: 0.82;
-    right: 7%;
-    top: 16%;
-    clip-path: polygon(50% 0, 90% 13%, 90% 50%, 50% 100%, 10% 50%, 10% 13%);
-    background:
-        linear-gradient(90deg, transparent 0 42%, rgba(244, 241, 234, 0.52) 42% 58%, transparent 58% 100%),
-        linear-gradient(0deg, transparent 0 43%, rgba(244, 241, 234, 0.52) 43% 57%, transparent 57% 100%),
-        linear-gradient(135deg, rgba(255, 138, 61, 0.42), rgba(45, 143, 139, 0.22));
-    opacity: 0.78;
-    transform: rotate(3deg);
-    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.25);
-}
-
-.boston .bos-choice-solve .bos-choice-drawer + *::before,
-.boston .bos-choice-solve::before {
-    transform: rotate(-2deg);
-}
-
-.boston .bos-choice-solve:hover::before,
-.boston .bos-choice-solve:focus-visible::before,
-.boston .bos-choice-solve:focus-within::before,
-.boston .bos-choice-solve.is-selected::before {
-    opacity: 0.96;
-    border-color: rgba(244, 241, 234, 0.46);
-}
-
-/* Magnifying glass handle */
-.boston .bos-choice-solve h3::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    width: min(18vw, 86px);
-    height: clamp(9px, 0.8vw, 13px);
-    left: calc(100% + 58px);
-    top: 40%;
-    border-radius: 999px;
-    background: rgba(255, 138, 61, 0.42);
-    transform: rotate(43deg);
-    transform-origin: left center;
-    pointer-events: none;
-}
-
-/* Launch Idea: stylized lightbulb */
-.boston .bos-choice-opportunity::before {
-    width: min(47%, 178px);
-    aspect-ratio: 0.82;
-    right: 9%;
-    top: 9%;
-    border-radius: 48% 48% 42% 42%;
-    background:
-        radial-gradient(circle at 50% 38%, rgba(125, 255, 155, 0.35), transparent 28%),
-        radial-gradient(circle at 50% 38%, rgba(244, 241, 234, 0.18), transparent 52%),
-        linear-gradient(180deg, rgba(125, 255, 155, 0.12), rgba(255, 138, 61, 0.08));
-    border: clamp(7px, 0.8vw, 11px) solid rgba(125, 255, 155, 0.34);
-    box-shadow: 0 0 56px rgba(125, 255, 155, 0.13);
-    opacity: 0.86;
+    background-image:
+        radial-gradient(circle at 74% 46%, rgba(255, 138, 61, 0.18), transparent 38%),
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAADVklEQVR42u2dPW7VQBSFPdaji5Quy6CnyA4itoBERxYQiRUgZQHQIbEFlB2koGcZdEh0FKF66MmyPT+ec++ZmXOaFFY84/vlnjs/HmeaJEmSJEmSJEmSJCldf37/+txy/wNDcK6ub+5bgcvaVzPAR//imQKY8izswAMLWMbAXT7Tm6/fvvx4/+5Da7ADG1imoC0BL6/vAWeBHdBwYw/KbIMxwKmwPZ8hIMCWPgzqvhaAWWGHWhBqd9qqHQRgJisPzEH3hlwLsGd2B/Zge0JGALaGfWIf3Z7baX1FaU3LP5ol8MtnLo336UgWec9RW1tVygG+BzsHeCiByzBtsegL2qItrDzboj2z5ur65r5Hq65h5Vtc5pyMYbDEZR9GBZ7qKPMkda25pYFVD32lAcxUe5n7wq6TQoDXz7/fP21de/3q7UfzDG7R8lj7vAc35bqJRTNaomy6cg2WBFgSYEmAJQGWBFgSYAH+L9YNf+ErBNziIoIWPmTRAtyKJcqe03Xas7xWAulhzzU3CVLvVbLzJIt2hotud87JDIaMZnxPrKtBlidk1V4A4LUM8Qh0D59ToM1gbfh3OIpOzSivw2dS5Rq8BRIJgOGM8FCDLEvIe3BfHm+fPIOGfhOyZrvNfcLhEm54eL6zLA8lB9BS5q4l4Jbnk7ZiXlSDY2d2c8615nyEZZm5L4+3T2jIrau5zyit2TMS8tEsRmRwavYWLXSsAUAMerbuuwbTsibHzuqytT+jgSDuYwl5rS9ekNfajcVqRmVeDuyS3/GGzKCUfoWpcVnW5JJ6XKsG59RdaAabjxI3MtmiLltZ9ZF2utgP3srY2pBZrDqnH91s+IeH5zuLurwMLjqLS625O8Ce0ygU5Br37fKVHTRki6lTyZRoGMBekFnq7hCAPSDXyuKjdXcYwB41+Sjk2lY/xGuzSMix7IotYsSuHy0FYRpIyFWvGnvHNa15qAz2sOtcq0VNtYY72YCCfGTqVGtKJMAOkL2nYMOeTbKCHMtiRN0VYOOavAXZYjdq+NOFiO3G0ixErI7p+OiE2W6MWTXamgV4BTLass9QLd/pCkKLXRDx/uebymDw4CsGD70rJcCOkC22HAWYYBolwB1APmfr8qcGWYQDLx14G2h0za5/O2pU2NS33LsAAAAASUVORK5CYII=");
 }
 
 .boston .bos-choice-opportunity::after {
-    width: min(27%, 106px);
-    height: clamp(34px, 5vw, 58px);
-    right: 16%;
-    bottom: 17%;
-    border-radius: 10px;
-    background:
-        repeating-linear-gradient(0deg, rgba(244, 241, 234, 0.32) 0 4px, transparent 4px 10px),
-        linear-gradient(180deg, rgba(255, 138, 61, 0.28), rgba(125, 255, 155, 0.12));
-    opacity: 0.76;
-}
-
-.boston .bos-choice-opportunity h3::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    width: min(33vw, 174px);
-    height: min(33vw, 174px);
-    left: calc(100% + 28px);
-    top: -78%;
-    background:
-        linear-gradient(90deg, transparent 48%, rgba(125, 255, 155, 0.26) 49% 51%, transparent 52%),
-        linear-gradient(45deg, transparent 48%, rgba(125, 255, 155, 0.18) 49% 51%, transparent 52%),
-        linear-gradient(-45deg, transparent 48%, rgba(125, 255, 155, 0.18) 49% 51%, transparent 52%);
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-/* HT Experience: resume/CV sheet */
-.boston .bos-choice-experience::before {
-    width: min(43%, 168px);
-    aspect-ratio: 0.76;
-    right: 10%;
-    top: 11%;
-    border: clamp(6px, 0.65vw, 9px) solid rgba(244, 241, 234, 0.34);
-    border-radius: 10px;
-    background:
-        radial-gradient(circle at 30% 36%, rgba(45, 143, 139, 0.42) 0 12%, transparent 13%),
-        linear-gradient(90deg, rgba(255, 138, 61, 0.32) 0 34%, transparent 34% 100%) 25% 16% / 62% 7% no-repeat,
-        linear-gradient(90deg, rgba(244, 241, 234, 0.32) 0 70%, transparent 70% 100%) 50% 55% / 70% 7% no-repeat,
-        linear-gradient(90deg, rgba(244, 241, 234, 0.24) 0 82%, transparent 82% 100%) 50% 69% / 70% 6% no-repeat,
-        linear-gradient(90deg, rgba(244, 241, 234, 0.18) 0 62%, transparent 62% 100%) 50% 82% / 70% 6% no-repeat,
-        rgba(244, 241, 234, 0.055);
-    opacity: 0.82;
-    transform: rotate(3deg);
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.24);
+    background-image:
+        radial-gradient(circle at 74% 44%, rgba(125, 255, 155, 0.15), transparent 38%),
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAACvUlEQVR42u2du07DMBSG24gNJDbGvknfgI2dDSGxwwYDbGWvhLqxs/UNeBNGNiSYy1SpiprE8e1c8v0LAsnJib/+9nFjH2Yz1KnH3Wb9uNusLT9DA0aEEEJIRHPvD/j78x2cJJ2dX9wB2BHQKQBvPIHNCbfUNY8txXBwJcfWdvQh3Jf5zR2AI8COgVLimiGuLQXXJOAQCDmcVuo+NVxrFnBfp5dMiHLdtzZcU4C7OrlmppsSgwRcM4A1wI2NpeZ8axLwsQ7VsD4NiUvKtWbWwVrhdsXRjncPVQquagdrhmspzga45Z0M4Arr2qnG11hwr0VpeY5Ge6dYeaOjdahurHUa8RoF7GVo1vZcDW7wHTfbZp1LBeD2MGZ9q0w7fslhGgfjYARgBOCpzL/a5mEcjIMRgJFandAFMhp7oiF2VwgOxsGohGrt08LBJFkIwAjAXdL05iWntHxDh4NxsF3tVsvt4c/S7QAsCDcUVmw7AE9oHtb0hqzx7N7Qv6e2w8EZXJAKtxT8XHG7B5xjGDsGYf7weRlzrWPtYpwsvYHB3PngGEhtWG1Q7d+72llzrzrAKed7uiClaujD0Renhu1H6hwc0ykhQ2cXqJgPRsj9tOwtM5FF97k4Zd4NnVOH5mPNyzqVgFOG6j64Q+Bj2o4txlJbc2vOPey82Hk3p+v/bj++QuFKFGMxdz74EHquRCpWQ3DbUCX+yYeLQmi71XI7Fva+zdi2vz/f69O3q0UI3LYoZZgA2UoMFCONzKYtFCOVgEw5YaH71KphSUHwwteUdjMl/ROz+lyQcbAgaMtHWt0ArvFSXnrd7e6LDk1wa94HwIKdbg2yq8NnJYbQfZb7/Pq+sNgnbHx3LgAPSLIcP4ARgKfuYgA7l6ss2sNhMRxcYWnUp6f76y8AO4VsDS6KkMS+KpIshBBCCCGEauofwmP5hb3Xdu0AAAAASUVORK5CYII=");
 }
 
 .boston .bos-choice-experience::after {
-    width: min(19%, 74px);
-    aspect-ratio: 1;
-    right: 9%;
-    top: 11%;
-    clip-path: polygon(0 0, 100% 100%, 0 100%);
-    background: rgba(255, 138, 61, 0.25);
-    opacity: 0.74;
-    transform: rotate(3deg);
-}
-
-/* Start a Discovery: hiker/explorer over terrain */
-.boston .bos-choice-not-sure::before {
-    width: min(58%, 230px);
-    height: min(54%, 128px);
-    right: 1%;
-    bottom: 8%;
-    background:
-        radial-gradient(circle at 53% 20%, rgba(244, 241, 234, 0.52) 0 7%, transparent 8%),
-        linear-gradient(105deg, transparent 0 45%, rgba(255, 138, 61, 0.56) 46% 51%, transparent 52% 100%),
-        linear-gradient(70deg, transparent 0 47%, rgba(244, 241, 234, 0.34) 48% 52%, transparent 53% 100%),
-        linear-gradient(115deg, transparent 0 48%, rgba(45, 143, 139, 0.42) 49% 53%, transparent 54% 100%),
-        linear-gradient(18deg, transparent 0 36%, rgba(244, 241, 234, 0.22) 37% 39%, transparent 40% 100%);
-    opacity: 0.86;
+    background-image:
+        radial-gradient(circle at 74% 44%, rgba(45, 143, 139, 0.18), transparent 38%),
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAACFUlEQVR42u2dP0rEQBSHsyGVCnaWew8Lb2DnASJpBNsFsUqx1SJsK9iIHsDOG1jkHpZ2gtbauDCErM7MjjNv3nxfFfJnN+TLb/Imk5CqAgAAAAAAN2aSd+7j/e1W0v7s353NN9OfF0+vLtseHB5dIlio2CnBPpJTiK5pxMIJp4l2T28vTOjDz+S6qqqFkeRzi82XKVJMgv1ZT4gXB4KVS0awcskIVi4ZwcolI1i5ZAQrl4xg5ZIRrFwyguNJniMYycFpOP5eLHw3jC2ZBCfg6+bkOdZ/MZoUj+UmwbOrl1MSrBSfhwQQDAhGMCAY8kNdP/j4/vF6PG/o2hWCFYodLytRdKNd7ng9W8khBggsn7ZEsIvcKYHmOi6SKbIykDs13zbxNNGC+CuVQ9euXMRKaF6LTrApy7bJNdcrJcX0gxEMCAYEA4K9q2aXGx2uhRmChfaJXZcjOIO+7zaJtjdENKLimSyXdCaUyxv+oZIsUC5N9H9LLnVMWN1oEhW0ogT7VsaMJmUq97dkjtcvZVw4yyp6l25Pwi5Tkiq6yT25Q9fumQfPohjbeuB3QOwrNnXmcot9WlL9NdiQ24c4YbSeLHWmUoP+puaWgNdH48GtSkAwIBgQjGCgHyywOhVIT4KBBEtPCddgQDAgGBAMCEYw0E2SRcwbHT0JBhJceqpIMASDL4BHhi+Ag/4Ea0xy7OQCAABAWr4Bx6vjmZoqxu0AAAAASUVORK5CYII=");
 }
 
 .boston .bos-choice-not-sure::after {
-    width: min(70%, 280px);
-    height: min(45%, 112px);
-    right: -6%;
-    bottom: -4%;
-    background:
-        linear-gradient(135deg, transparent 0 34%, rgba(244, 241, 234, 0.18) 35% 36%, transparent 37% 100%),
-        linear-gradient(45deg, transparent 0 44%, rgba(255, 138, 61, 0.18) 45% 46%, transparent 47% 100%),
-        linear-gradient(135deg, rgba(45, 143, 139, 0.22) 0 32%, transparent 32% 100%),
-        linear-gradient(45deg, transparent 0 42%, rgba(255, 138, 61, 0.22) 42% 64%, transparent 64% 100%);
-    opacity: 0.82;
+    background-image:
+        radial-gradient(circle at 72% 42%, rgba(255, 138, 61, 0.14), transparent 36%),
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAAEDElEQVR42u2dP2ocMRTGZx+kciBdSt/AKdKl8A1CGh/AEAImOUBgTzDgFOlsDCGwB0hjcoMU6X0El+4MduXCKZIFRZFGT9KT9N7m+8Cws97Z0cxP36c/MzszTRAEQRAEQRAEQRAEQRAEQRAEQRAU0wqHIKy725szd/nps+cfAHgHwfqyBhqAI3B9kEv/g4zATbk353NaREDLg/94enhgCSwiOhC/oehdgmohquFgpvYujs4tlhuAM3rUFiEDMAOuC9Z9baFNBmCnLQ0B8117f/LtPRy8Y9Es9Vn0ohW3ua5zt++772ntUQNwpiOXIlsjZABmwl3qQWuGDMDLveZ5mqY1Z32tkNHJSjt1dv5Y62nqeAFwHMhcUzm0QAZgZjvLjWpts10E9/52WmxIVFNRNLiYADfcWbo/+Xad696SYRcAd4xm37keZJPtMcG98Vjeuzjar3GvBsg0+iAffP70svfO+2PeBbiiHbcRkFdaHNRzgsDtWDHgriW2OWoihEbDffV182XUtnvBHelk0gS39Y4zTiTst9z+CMikAa77elRnJAA36d4XT94cC0+m2AWciuXWkEvPFKXglkDuWZlJA9zW7TED7lwC113OAd0zqkkL3BG1e0GL8Xz1cLmpjexekFca4f58e/xOakhR6N51qZtTlaD38KlLROdGr1RUF7a7WUOjWje3djL1cK+G74kc1Fni+64eLjch0Bogr1rDrXFjTVTHDpTn3LnGvRKRvY1of1ZNKq5JK9ya9ZlwRYBKurmFk0krXOmojrS5c2K5CnQIsg/aL5f0RAhph5s7AcL5+UnCwU0hx9wcmheXcDFpd24O5NClrwxHNIfMdXOLqCbtcEu+OwNuF8glwykpyGQBLie6BOIsBrmpm68eLjexiigBmSzBjUV17Le8hZC7udmHHTk/XQWZLDk3tT3BHuiwyJZ2MlmCGypLw4n65pBLh3k5+0wW4Ya23ehEejfInPKX7CNZdK5fhsZXSaydNvL6z3IzJ6d+VZH7qwmyCHea/p6n7qD19iJ4B8A8+hhwIJNFuB2iOeWyay37nIJMFuF2du8/selcoDePqqxcyKyI1gq3h3tH3DaJu00OZKrJ9/8tmj33Dh86cSATojkrms+nBueQW0Imi3AV3jNybgFLAjJZ6jH3hBtx79IEyPC2P3RsyALc0dHc28WSY2SyBHdgxyq0XXVtcSiqyUIsK4rmFORZw76665NmuEaiuVlU15RnC3l1d3tzpvnZA7Xly1m/9GFYj6eH393l1ccfr6Xa0Fo2pP3BErXlaw2XA3ykcBslAUk4VrpiA3Aj90q7ePhls7sGV5OL4WCFbb62thj3qhSEK+1iicpGcGtbSbjY4jMTd7IdbhHNtZcG/wIoVKP4vgLXdwAAAABJRU5ErkJggg==");
 }
 
-.boston .bos-start-panel .bos-choice-card:hover::before,
 .boston .bos-start-panel .bos-choice-card:hover::after,
-.boston .bos-start-panel .bos-choice-card:focus-visible::before,
 .boston .bos-start-panel .bos-choice-card:focus-visible::after,
-.boston .bos-start-panel .bos-choice-card:focus-within::before,
 .boston .bos-start-panel .bos-choice-card:focus-within::after,
-.boston .bos-start-panel .bos-choice-card.is-selected::before,
 .boston .bos-start-panel .bos-choice-card.is-selected::after {
-    opacity: 1;
+    opacity: 0.92;
+    background-size: min(62%, 282px) auto;
+}
+
+.boston .bos-guided-flow-head .bos-guided-flow-eyebrow { order: 1; }
+.boston .bos-guided-flow-head h3 { order: 2; }
+.boston .bos-guided-flow-head .bos-flow-back { order: 3; }
+.boston .bos-guided-flow-head .bos-guided-flow-intro { order: 4; }
+
+.boston .bos-guided-flow-option-button {
+    align-content: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+}
+
+.boston .bos-guided-flow-option-button strong,
+.boston .bos-guided-flow-option-button span {
+    text-align: left !important;
+}
+
+.boston .bos-flow-example-card {
+    align-content: start !important;
+    justify-content: start !important;
+    justify-items: start !important;
+    text-align: left !important;
+}
+
+.boston .bos-flow-example-card em {
+    margin-bottom: 0 !important;
+}
+
+.boston .bos-project-career-compass {
+    position: relative;
+    overflow: hidden;
+}
+
+.boston .bos-project-career-compass::before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: -1 !important;
+    inset: auto -12px -18px auto !important;
+    width: min(58%, 190px) !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAADWElEQVR42u2du3HjMBCGyR26AaUqQYHbcAtyrkSpXYadMrlcbsFtOGAJTNnAObjE8HA4fAAnAvvvA5k9Eg3uh2/xpFlVXqLK5+tjK7He5Oj0wq2qqmq0QjkcT39SvzP03UVbHGrLQGOAB3uf3r6ubrACqDPX/+sGg4JNSblz17ydm1+4zx/fDxLTeK0FbGzgD8dTO/RdVLodD64CYGn9dSMZbM4gj+E+vX1dp3UIP6ODbhxs2ghbGmiSBHfou0uJQK7Ne5fqkHvApwrwNFilwKYaPa0TImRCAzsHd8frt/fYG9NdzN2DA15Jydz1ilngQE7ZhAg3d0peMvmeNWfUlE2IcDnqsdeGAhpkcrj5plQIkAk1KBLtRWyshGAvqrn37iCN74vLYuKGy11KbuZz3Ddxw9W4yY7UHxPSzWduWC2XvZyNmLjsRTd37xMcXP2x2UN3kg/SQQKWZG+JVF3KYpMG386NmXsla/Zywy1tsR98LzDAUm2w28trsQmDYzb6vQ9WOLDSlIpZACNPjZ4/vk2kabJo75q52qw2N4q2kJZNAZ4+oTBKkVcHvFP/6+byxasuUWHug3Q/zxa1MwOd6/RznGBzxEl9il6Ca2V+rA7w4Xh6CVauwZ2DfDieXsL3tZRGIryN+eX7lrlzc+Lbufn97tbfCZ9zwBkAlgj60Hfva3VJaWhmAOdMfXsEczrAirUZvREUA/w/NxMb3PC5PQOWAhY5ZUP3wamBuxf0GKqkflbNICu1QQx9FzXQCvNhLVBNzYO3liS1L1ma2GxYgmhhPbrIUuVPME0eleWOEWW05gIUyDbmd8xZJku8yJAtJs9lmTw2awk2OVgHvEu/gnIAAAVyqf1y09MkN9iLA5aYprmtLnmcyQ12g/VarN1eN9gNdosl2+sGu8FusWR72Q0uCRllWqTa4LnWq91k7n1xFoP9/2QpB2ylP0Z4AA/6pRyaUrOZPthCf4x0Ho3dYG2Q0Q4b1qiByRGcsNmfY8qE+t4n6JdySLEZFS6UwaXSXMr7gyWmZFiDt/plNJtzv2dRNeC1lM0NeqkOqIs36I+PwryUGell1WoAx4LOFei1bCFlubWuBJbYNJ0CIcc1HXAh0LnGBA5YOGwNu15qAO8B3J9h9iKu/AMPAlqPtW+DnAAAAABJRU5ErkJggg==") !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: center !important;
+    opacity: 0.48 !important;
+    transform: rotate(-7deg) !important;
+}
+
+.boston .bos-project-career-compass:hover::before,
+.boston .bos-project-career-compass:focus-visible::before {
+    opacity: 0.68 !important;
 }
 
 @media (max-width: 850px) {
-    .boston .bos-choice-solve h3::after,
-    .boston .bos-choice-opportunity h3::after {
-        display: none;
+    .boston .bos-start-panel .bos-choice-card {
+        align-content: start !important;
     }
 
-    .boston .bos-start-panel .bos-choice-card::before,
     .boston .bos-start-panel .bos-choice-card::after {
-        opacity: 0.38;
-        transform: scale(0.86);
-        transform-origin: right center;
+        background-position: right -18px center;
+        background-size: min(56%, 210px) auto;
+        opacity: 0.42;
     }
 }
