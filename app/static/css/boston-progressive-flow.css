@@ -2,12 +2,18 @@
     display: none !important;
 }
 
+.boston .bos-hero .bos-lede,
+.boston .bos-hero .bos-signal-row,
+.boston .bos-hero .bos-actions {
+    display: none !important;
+}
+
 .boston .bos-guided-flow-options-compact {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
 .boston .bos-guided-flow-option-button {
-    min-height: clamp(124px, 15svh, 170px);
+    min-height: clamp(156px, 18svh, 220px);
     cursor: pointer;
     text-align: left;
     color: inherit;
@@ -23,20 +29,25 @@
     outline: none;
 }
 
+.boston .bos-guided-flow-option-button .bos-guided-flow-tag {
+    font-size: clamp(0.82rem, 0.9vw, 0.98rem);
+    letter-spacing: 0.15em;
+}
+
 .boston .bos-guided-flow-option-button strong {
     margin: 0;
     color: #f4f1ea;
-    font-size: clamp(1.18rem, 1.8vw, 2rem);
+    font-size: clamp(1.6rem, 2.4vw, 3.05rem);
     font-weight: 950;
-    letter-spacing: -0.055em;
-    line-height: 0.96;
+    letter-spacing: -0.06em;
+    line-height: 0.92;
     text-transform: none;
 }
 
 .boston .bos-guided-flow-option-button span:last-child {
-    color: rgba(244, 241, 234, 0.72);
-    font-size: 0.86rem;
-    line-height: 1.35;
+    color: rgba(244, 241, 234, 0.76);
+    font-size: clamp(0.98rem, 1vw, 1.16rem);
+    line-height: 1.36;
 }
 
 .boston .bos-flow-back {
@@ -264,6 +275,44 @@
 .boston .bos-context-field textarea:focus {
     border-color: rgba(255, 138, 61, 0.48);
     outline: none;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    opacity: 0;
+    animation: bos-choice-deal-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.boston .bos-start-panel .bos-choice-solve {
+    animation-delay: 80ms;
+}
+
+.boston .bos-start-panel .bos-choice-opportunity {
+    animation-delay: 180ms;
+}
+
+.boston .bos-start-panel .bos-choice-experience {
+    animation-delay: 280ms;
+}
+
+.boston .bos-start-panel .bos-choice-not-sure {
+    animation-delay: 380ms;
+}
+
+@keyframes bos-choice-deal-in {
+    from {
+        opacity: 0;
+        transform: translate3d(-42px, 52px, 0) rotate(-1.6deg);
+    }
+
+    72% {
+        opacity: 1;
+        transform: translate3d(3px, -2px, 0) rotate(0.25deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
 }
 
 @media (max-width: 850px) {
