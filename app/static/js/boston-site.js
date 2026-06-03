@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mark.textContent = "Holtsnider Tech";
         }
 
-        page.querySelectorAll('.bos-links a[href*="style-lab"]').forEach((link) => link.remove());
+        page.querySelectorAll('.bos-links a[href*="style-lab"], .bos-links a[href="#paths"]').forEach((link) => link.remove());
 
         setText(".bos-hero .bos-kicker", "Solutions Engineering + Opportunity Engineering");
 
@@ -80,29 +80,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setText(".bos-start-heading h2", "Where should we start?");
-        setText(".bos-start-heading .bos-section-text", "Pick the closest starting point. Each card moves into the next layer: context, examples, and the first useful action.");
+        setText(".bos-start-heading .bos-section-text", "Pick the closest starting point. The details can unfold from there.");
 
         setCard(
             ".bos-choice-solve",
-            "01 / Solve",
+            "01 / Find",
             "Solve",
             "Something broke, keeps breaking, or needs to be made smaller.",
-            "Go to next step",
+            "Go to contact",
             ["Something just broke", "Systemic problem"],
-            "Later: Solutions Engineering"
+            "Later in flow: Solutions Engineering"
         );
         setCard(
             ".bos-choice-opportunity",
-            "02 / Launch Idea",
+            "02 / Find",
             "Launch Idea",
             "Shape a new idea or improve something that already exists.",
-            "Go to next step",
+            "Go to contact",
             ["New idea", "Improvement on existing idea"],
-            "Later: Opportunity Engineering"
+            "Later in flow: Opportunity Engineering"
         );
         setCard(
             ".bos-choice-experience",
-            "03 / HT Experience",
+            "03 / Find",
             "HT Experience",
             "Jump to background, proof, portfolio, and role-fit context.",
             "Go to experience",
@@ -111,28 +111,35 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         setCard(
             ".bos-choice-not-sure",
-            "04 / Start a Discovery",
+            "04 / Find",
             "Start a Discovery",
             "You are not sure what category the problem belongs in yet.",
-            "Go to next step",
+            "Go to contact",
             ["The situation is fuzzy", "The next step is unclear", "The work needs a name"],
             "Next: clarify the first move"
         );
 
-        setHref(".bos-start-panel .bos-choice-solve", "#solve");
-        setHref(".bos-start-panel .bos-choice-opportunity", "#opportunity");
+        setHref(".bos-start-panel .bos-choice-solve", "#contact");
+        setHref(".bos-start-panel .bos-choice-opportunity", "#contact");
         setHref(".bos-start-panel .bos-choice-experience", "#experience");
-        setHref(".bos-start-panel .bos-choice-not-sure", "#not-sure");
+        setHref(".bos-start-panel .bos-choice-not-sure", "#contact");
 
-        const pathHeading = page.querySelector("#paths .bos-section-heading");
-        if (pathHeading) {
-            pathHeading.remove();
-        }
+        page.querySelector("#paths")?.remove();
 
         page.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
         page.querySelectorAll(".bos-contact-note").forEach((note) => {
             note.textContent = "The useful first step is simple: describe the messy version, the constraint, or the decision you are trying to make.";
         });
+    };
+
+    const initFloatingHeaderState = () => {
+        const updateHeaderState = () => {
+            page.classList.toggle("bos-at-top", (window.scrollY || window.pageYOffset) <= 4);
+        };
+
+        updateHeaderState();
+        window.addEventListener("scroll", updateHeaderState, { passive: true });
+        window.addEventListener("resize", updateHeaderState);
     };
 
     const initMotionToggle = () => {
@@ -193,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     normalizeCopy();
+    initFloatingHeaderState();
     initMotionToggle();
     initAnchorScroll();
 });
