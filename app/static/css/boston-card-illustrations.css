@@ -99,16 +99,124 @@
     transition: opacity 160ms ease, transform 160ms ease, filter 160ms ease;
 }
 
+/* First three cards: no CSS gradients. Each gets its own physical/card-like composition. */
+.boston .bos-start-panel .bos-choice-solve,
+.boston .bos-start-panel .bos-choice-solve:hover,
+.boston .bos-start-panel .bos-choice-solve:focus-visible,
+.boston .bos-start-panel .bos-choice-solve:focus-within,
+.boston .bos-start-panel .bos-choice-solve.is-selected {
+    background: #091925 !important;
+    border-color: rgba(45, 143, 139, 0.42) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(244, 241, 234, 0.045),
+        inset 12px 0 0 rgba(255, 138, 61, 0.20),
+        0 18px 50px rgba(0, 0, 0, 0.16) !important;
+}
+
+.boston .bos-start-panel .bos-choice-solve::before {
+    inset: 14px 12px 12px 42%;
+    width: auto !important;
+    height: auto !important;
+    border: 1px solid rgba(244, 241, 234, 0.16);
+    border-radius: 18px;
+    background: rgba(8, 16, 24, 0.34) !important;
+    box-shadow:
+        -18px 18px 0 rgba(45, 143, 139, 0.10),
+        -34px 34px 0 rgba(255, 138, 61, 0.07),
+        inset 0 0 0 1px rgba(45, 143, 139, 0.11);
+    opacity: 1;
+    transform: rotate(-2deg);
+}
+
 .boston .bos-start-panel .bos-choice-solve::after {
+    right: clamp(-18px, -1vw, 0px);
+    bottom: clamp(-24px, -2vw, -10px);
+    top: auto;
+    width: clamp(172px, 21vw, 318px);
+    height: clamp(132px, 15vw, 230px);
     background-image: url("/static/img/card-art/solve-magnify-shield.svg") !important;
+    background-position: right bottom;
+    opacity: 0.86;
+    transform: rotate(-5deg);
+}
+
+.boston .bos-start-panel .bos-choice-opportunity,
+.boston .bos-start-panel .bos-choice-opportunity:hover,
+.boston .bos-start-panel .bos-choice-opportunity:focus-visible,
+.boston .bos-start-panel .bos-choice-opportunity:focus-within,
+.boston .bos-start-panel .bos-choice-opportunity.is-selected {
+    background: #171109 !important;
+    border-color: rgba(255, 138, 61, 0.44) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(244, 241, 234, 0.05),
+        inset 0 -10px 0 rgba(125, 255, 155, 0.10),
+        0 18px 50px rgba(0, 0, 0, 0.16) !important;
+}
+
+.boston .bos-start-panel .bos-choice-opportunity::before {
+    inset: 16px 16px auto auto;
+    width: clamp(118px, 11vw, 174px) !important;
+    height: clamp(118px, 11vw, 174px) !important;
+    border: 2px dashed rgba(125, 255, 155, 0.34);
+    border-radius: 999px;
+    background: rgba(255, 138, 61, 0.075) !important;
+    box-shadow:
+        -20px 18px 0 rgba(255, 138, 61, 0.08),
+        -42px -8px 0 rgba(125, 255, 155, 0.055),
+        inset 0 0 0 14px rgba(8, 16, 24, 0.28);
+    opacity: 1;
+    transform: rotate(8deg);
 }
 
 .boston .bos-start-panel .bos-choice-opportunity::after {
+    right: clamp(8px, 2vw, 34px);
+    top: clamp(4px, 2vw, 26px);
+    width: clamp(138px, 15vw, 236px);
+    height: clamp(138px, 15vw, 236px);
     background-image: url("/static/img/card-art/launch-lightbulb.svg") !important;
+    background-position: center top;
+    opacity: 0.88;
+    transform: rotate(5deg);
+}
+
+.boston .bos-start-panel .bos-choice-experience,
+.boston .bos-start-panel .bos-choice-experience:hover,
+.boston .bos-start-panel .bos-choice-experience:focus-visible,
+.boston .bos-start-panel .bos-choice-experience:focus-within,
+.boston .bos-start-panel .bos-choice-experience.is-selected {
+    background: #111722 !important;
+    border-color: rgba(106, 169, 255, 0.40) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(244, 241, 234, 0.05),
+        inset -10px 0 0 rgba(45, 143, 139, 0.16),
+        0 18px 50px rgba(0, 0, 0, 0.16) !important;
+}
+
+.boston .bos-start-panel .bos-choice-experience::before {
+    inset: 18px 18px 12px auto;
+    width: clamp(118px, 13vw, 208px) !important;
+    height: auto !important;
+    border: 1px solid rgba(244, 241, 234, 0.18);
+    border-radius: 14px;
+    background: rgba(244, 241, 234, 0.035) !important;
+    box-shadow:
+        -13px 13px 0 rgba(106, 169, 255, 0.13),
+        -26px 26px 0 rgba(45, 143, 139, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+    opacity: 1;
+    transform: rotate(2deg);
 }
 
 .boston .bos-start-panel .bos-choice-experience::after {
+    right: clamp(14px, 2.4vw, 40px);
+    bottom: clamp(-12px, -1vw, 0px);
+    top: auto;
+    width: clamp(140px, 16vw, 250px);
+    height: clamp(132px, 15vw, 232px);
     background-image: url("/static/img/card-art/experience-cv.svg") !important;
+    background-position: right bottom;
+    opacity: 0.84;
+    transform: rotate(2deg);
 }
 
 /* Discovery is a full-card scene, not a right-side icon. Put it on the card itself so it cannot disappear behind pseudo-element ordering. */
@@ -147,7 +255,27 @@
     opacity: 0.88;
     background-size: contain !important;
     filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.34));
-    transform: translateY(-50%) scale(1.035);
+}
+
+.boston .bos-start-panel .bos-choice-solve:hover::after,
+.boston .bos-start-panel .bos-choice-solve:focus-visible::after,
+.boston .bos-start-panel .bos-choice-solve:focus-within::after,
+.boston .bos-start-panel .bos-choice-solve.is-selected::after {
+    transform: rotate(-5deg) scale(1.035);
+}
+
+.boston .bos-start-panel .bos-choice-opportunity:hover::after,
+.boston .bos-start-panel .bos-choice-opportunity:focus-visible::after,
+.boston .bos-start-panel .bos-choice-opportunity:focus-within::after,
+.boston .bos-start-panel .bos-choice-opportunity.is-selected::after {
+    transform: rotate(5deg) scale(1.035);
+}
+
+.boston .bos-start-panel .bos-choice-experience:hover::after,
+.boston .bos-start-panel .bos-choice-experience:focus-visible::after,
+.boston .bos-start-panel .bos-choice-experience:focus-within::after,
+.boston .bos-start-panel .bos-choice-experience.is-selected::after {
+    transform: rotate(2deg) scale(1.035);
 }
 
 .boston .bos-guided-flow-head .bos-guided-flow-eyebrow { order: 1; }
@@ -218,6 +346,27 @@
         width: min(62%, 210px);
         height: min(78%, 150px);
         opacity: 0.48;
+    }
+
+    .boston .bos-start-panel .bos-choice-solve::after {
+        right: -34px;
+        bottom: -18px;
+        width: min(68%, 230px);
+        height: min(84%, 170px);
+    }
+
+    .boston .bos-start-panel .bos-choice-opportunity::after {
+        right: -18px;
+        top: -8px;
+        width: min(58%, 194px);
+        height: min(88%, 190px);
+    }
+
+    .boston .bos-start-panel .bos-choice-experience::after {
+        right: -20px;
+        bottom: -12px;
+        width: min(60%, 198px);
+        height: min(84%, 176px);
     }
 
     .boston .bos-start-panel .bos-choice-not-sure::after {
