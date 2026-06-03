@@ -129,6 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         page.querySelector("#paths")?.remove();
         page.querySelector(".bos-operating-line")?.remove();
+        page.querySelector("#experience .bos-section-text")?.remove();
+        page.querySelector("#work .bos-section-text")?.remove();
+        page.querySelector("#case-shapes .bos-section-text")?.remove();
 
         page.querySelectorAll(".bos-cta-strip").forEach((section) => section.remove());
         page.querySelectorAll(".bos-contact-note").forEach((note) => {
