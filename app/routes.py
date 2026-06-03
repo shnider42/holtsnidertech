@@ -5,10 +5,7 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def home():
-    return render_template(
-        "style_variants/boston_practical.html",
-        business_name="Holtsnider Tech",
-    )
+    return render_template("home.html", business_name="Holtsnider Tech")
 
 
 @main.route("/style-lab")
