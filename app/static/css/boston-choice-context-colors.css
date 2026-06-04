@@ -1,0 +1,323 @@
+/*
+ * ht3 choice/context color consistency.
+ *
+ * The first-screen choice cards and the generated context layer now share the
+ * same palette recipe: a dark surface, one primary workflow accent, and one
+ * restrained support color. The individual card art remains, but the color
+ * logic is centralized here so the workflow path feels intentional.
+ */
+
+.boston {
+    --ht-choice-solve: #ff8a3d;
+    --ht-choice-launch: #7dff9b;
+    --ht-choice-experience: #6aa9ff;
+    --ht-choice-discovery: #2d8f8b;
+
+    --ht-choice-solve-surface: #091925;
+    --ht-choice-launch-surface: #0b1811;
+    --ht-choice-experience-surface: #111722;
+    --ht-choice-discovery-surface: #0a1919;
+
+    --ht-choice-solve-support: #2d8f8b;
+    --ht-choice-launch-support: #ff8a3d;
+    --ht-choice-experience-support: #2d8f8b;
+    --ht-choice-discovery-support: #7dff9b;
+}
+
+.boston .bos-choice-solve {
+    --card-accent: var(--ht-choice-solve);
+    --context-accent: var(--ht-choice-solve);
+    --choice-surface: var(--ht-choice-solve-surface);
+    --choice-support: var(--ht-choice-solve-support);
+}
+
+.boston .bos-choice-opportunity {
+    --card-accent: var(--ht-choice-launch);
+    --context-accent: var(--ht-choice-launch);
+    --choice-surface: var(--ht-choice-launch-surface);
+    --choice-support: var(--ht-choice-launch-support);
+}
+
+.boston .bos-choice-experience {
+    --card-accent: var(--ht-choice-experience);
+    --context-accent: var(--ht-choice-experience);
+    --choice-surface: var(--ht-choice-experience-surface);
+    --choice-support: var(--ht-choice-experience-support);
+}
+
+.boston .bos-choice-not-sure {
+    --card-accent: var(--ht-choice-discovery);
+    --context-accent: var(--ht-choice-discovery);
+    --choice-surface: var(--ht-choice-discovery-surface);
+    --choice-support: var(--ht-choice-discovery-support);
+}
+
+.boston #solve,
+.boston .bos-guided-flow[data-active-flow="solve"] {
+    --context-accent: var(--ht-choice-solve);
+    --context-support: var(--ht-choice-solve-support);
+    --context-surface: var(--ht-choice-solve-surface);
+    --path-accent: var(--context-accent);
+}
+
+.boston #opportunity,
+.boston .bos-guided-flow[data-active-flow="opportunity"] {
+    --context-accent: var(--ht-choice-launch);
+    --context-support: var(--ht-choice-launch-support);
+    --context-surface: var(--ht-choice-launch-surface);
+    --path-accent: var(--context-accent);
+}
+
+.boston #experience,
+.boston .bos-guided-flow[data-active-flow="experience"] {
+    --context-accent: var(--ht-choice-experience);
+    --context-support: var(--ht-choice-experience-support);
+    --context-surface: var(--ht-choice-experience-surface);
+    --path-accent: var(--context-accent);
+}
+
+.boston #not-sure,
+.boston .bos-guided-flow[data-active-flow="discovery"] {
+    --context-accent: var(--ht-choice-discovery);
+    --context-support: var(--ht-choice-discovery-support);
+    --context-surface: var(--ht-choice-discovery-surface);
+    --path-accent: var(--context-accent);
+}
+
+/*
+ * First-layer cards: normalize the palette structure without removing the
+ * existing illustrations. Solve, Launch, and Experience keep their right-side
+ * SVG art from boston-card-illustrations.css.
+ */
+.boston .bos-start-panel .bos-choice-card {
+    border-color: color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 38%, rgba(255, 255, 255, 0.15)) !important;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.44), rgba(0, 0, 0, 0.14) 52%, rgba(0, 0, 0, 0.24)),
+        radial-gradient(circle at 82% 26%, color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 19%, transparent), transparent 31%),
+        radial-gradient(circle at 18% 96%, color-mix(in srgb, var(--choice-support, var(--ht-choice-discovery)) 12%, transparent), transparent 36%),
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 8%, transparent), transparent 46%),
+        var(--choice-surface, #091925) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(244, 241, 234, 0.045),
+        inset 0 -10px 0 color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 10%, transparent),
+        0 18px 50px rgba(0, 0, 0, 0.16) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover,
+.boston .bos-start-panel .bos-choice-card:focus-visible,
+.boston .bos-start-panel .bos-choice-card:focus-within,
+.boston .bos-choice-card.is-selected {
+    border-color: color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 54%, rgba(255, 255, 255, 0.17)) !important;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.10) 52%, rgba(0, 0, 0, 0.18)),
+        radial-gradient(circle at 82% 26%, color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 25%, transparent), transparent 33%),
+        radial-gradient(circle at 18% 96%, color-mix(in srgb, var(--choice-support, var(--ht-choice-discovery)) 16%, transparent), transparent 38%),
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 12%, transparent), transparent 48%),
+        var(--choice-surface, #091925) !important;
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 18%, transparent),
+        inset 0 -10px 0 color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 14%, transparent),
+        0 18px 50px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Discovery uses a full-card scene, so recompose it with the same palette logic
+ * while preserving the hiker SVG on every state. */
+.boston .bos-start-panel .bos-choice-not-sure,
+.boston .bos-start-panel .bos-choice-not-sure:hover,
+.boston .bos-start-panel .bos-choice-not-sure:focus-visible,
+.boston .bos-start-panel .bos-choice-not-sure:focus-within,
+.boston .bos-start-panel .bos-choice-not-sure.is-selected {
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.44) 40%, rgba(0, 0, 0, 0.14) 74%),
+        radial-gradient(circle at 80% 24%, color-mix(in srgb, var(--ht-choice-discovery) 22%, transparent), transparent 34%),
+        radial-gradient(circle at 20% 92%, color-mix(in srgb, var(--ht-choice-discovery-support) 12%, transparent), transparent 34%),
+        url("/static/img/card-art/discovery-hiker.svg") center / cover no-repeat,
+        var(--ht-choice-discovery-surface) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card > h3 {
+    color: color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 32%, #f4f1ea) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover > h3,
+.boston .bos-start-panel .bos-choice-card:focus-visible > h3,
+.boston .bos-start-panel .bos-choice-card:focus-within > h3,
+.boston .bos-choice-card.is-selected > h3 {
+    color: color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 18%, #ffffff) !important;
+}
+
+/*
+ * This is the actual click-through context layer generated by boston-site.js.
+ * It uses data-active-flow, so the selected first-layer choice can drive every
+ * visible context surface below it.
+ */
+.boston .bos-guided-flow.is-active {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 42%, rgba(255, 255, 255, 0.14)) !important;
+    background:
+        radial-gradient(
+            circle at 12% 0%,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 18%, transparent),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 96% 18%,
+            color-mix(in srgb, var(--context-support, var(--ht-choice-discovery)) 10%, transparent),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 11%, transparent),
+            rgba(8, 16, 24, 0.42) 48%,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 7%, transparent)
+        ),
+        color-mix(in srgb, var(--context-surface, #081018) 82%, rgba(8, 16, 24, 0.50)) !important;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 16%, transparent) !important;
+}
+
+.boston .bos-guided-flow-eyebrow,
+.boston .bos-guided-flow-tag,
+.boston .bos-guided-flow-questions li::before,
+.boston .bos-flow-back:hover,
+.boston .bos-flow-back:focus-visible,
+.boston .bos-context-field span {
+    color: var(--context-accent, var(--ht-choice-solve)) !important;
+}
+
+.boston .bos-guided-flow h3 {
+    color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 18%, #f4f1ea) !important;
+}
+
+.boston .bos-guided-flow-option {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 30%, rgba(255, 255, 255, 0.12)) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 10%, transparent),
+            rgba(255, 255, 255, 0.034) 58%,
+            color-mix(in srgb, var(--context-support, var(--ht-choice-discovery)) 5%, transparent)
+        ) !important;
+}
+
+.boston .bos-guided-flow-option-button:hover,
+.boston .bos-guided-flow-option-button:focus-visible {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 54%, rgba(255, 255, 255, 0.16)) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 16%, transparent),
+            rgba(255, 255, 255, 0.052) 58%,
+            color-mix(in srgb, var(--context-support, var(--ht-choice-discovery)) 8%, transparent)
+        ) !important;
+}
+
+.boston .bos-guided-flow-option-button strong {
+    color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 20%, #f4f1ea) !important;
+}
+
+.boston .bos-flow-example-card,
+.boston .bos-context-field textarea {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 22%, rgba(255, 255, 255, 0.12)) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 7%, transparent),
+            rgba(8, 16, 24, 0.46)
+        ) !important;
+}
+
+.boston .bos-context-field textarea:focus {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 62%, rgba(255, 255, 255, 0.20)) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 18%, transparent);
+    outline: none;
+}
+
+.boston .bos-guided-flow-action {
+    border-top-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 28%, rgba(255, 255, 255, 0.12)) !important;
+}
+
+.boston .bos-guided-flow .bos-flow-mailto {
+    border-color: var(--context-accent, var(--ht-choice-solve)) !important;
+    background: var(--context-accent, var(--ht-choice-solve)) !important;
+    color: #081018 !important;
+}
+
+.boston .bos-guided-flow .bos-flow-mailto:hover,
+.boston .bos-guided-flow .bos-flow-mailto:focus-visible {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 78%, #ffffff) !important;
+    background: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 78%, #ffffff) !important;
+}
+
+.boston .bos-path-grid .bos-card,
+.boston #experience .bos-experience-grid .bos-card,
+.boston #experience .bos-stack-grid .bos-mini {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 34%, rgba(255, 255, 255, 0.15)) !important;
+    border-left: 5px solid var(--context-accent, var(--ht-choice-solve)) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 13%, transparent),
+            rgba(8, 16, 24, 0.58) 54%,
+            color-mix(in srgb, var(--context-support, var(--ht-choice-discovery)) 9%, transparent)
+        ) !important;
+    box-shadow:
+        0 18px 52px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 16%, transparent);
+}
+
+.boston .bos-path-grid .bos-card:hover,
+.boston .bos-path-grid .bos-card:focus-within,
+.boston #experience .bos-experience-grid .bos-card:hover,
+.boston #experience .bos-stack-grid .bos-mini:hover {
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 20%, transparent),
+            rgba(8, 16, 24, 0.62) 55%,
+            color-mix(in srgb, var(--context-support, var(--ht-choice-discovery)) 12%, transparent)
+        ) !important;
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 54%, rgba(255, 255, 255, 0.18)) !important;
+}
+
+.boston #experience .bos-experience-grid,
+.boston #experience .bos-stack-grid {
+    --context-accent: var(--ht-choice-experience);
+    --context-support: var(--ht-choice-experience-support);
+    --context-surface: var(--ht-choice-experience-surface);
+}
+
+.boston #experience .bos-card-label,
+.boston #experience .bos-mini strong,
+.boston .bos-path-grid .bos-details summary {
+    color: var(--context-accent, var(--ht-choice-solve)) !important;
+}
+
+.boston #experience .bos-section-heading {
+    border-left: 5px solid var(--ht-choice-experience);
+    padding-left: clamp(14px, 2vw, 22px);
+}
+
+.boston #experience .bos-section-heading .bos-section-text {
+    border-top: 1px solid color-mix(in srgb, var(--ht-choice-experience) 34%, rgba(255, 255, 255, 0.16));
+    padding-top: 12px;
+}
+
+.boston #paths::after {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--ht-choice-solve) 10%, transparent),
+            color-mix(in srgb, var(--ht-choice-launch) 7%, transparent) 36%,
+            color-mix(in srgb, var(--ht-choice-experience) 8%, transparent) 68%,
+            color-mix(in srgb, var(--ht-choice-discovery) 10%, transparent)
+        ),
+        rgba(8, 16, 24, 0.38) !important;
+}
+
+@media (max-width: 850px) {
+    .boston #experience .bos-section-heading {
+        padding-left: 14px;
+    }
+}
