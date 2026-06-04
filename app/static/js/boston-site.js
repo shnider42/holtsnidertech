@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         solve: {
             title: "What kind of problem is this?",
             intro: "Pick the closest shape. The details can stay rough.",
-            actionLabel: "Email this problem context",
+            actionLabel: "Show copyable problem context",
             subject: "Holtsnider Tech problem context",
             options: [
                 {
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         experience: {
             title: "What background are you looking for?",
             intro: "For LinkedIn, resume, role-fit, or professional credibility context.",
-            actionLabel: "Email about professional background",
+            actionLabel: "Show copyable professional context",
             subject: "Holtsnider Tech professional background",
             options: [
                 {
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         discovery: {
             title: "Discovery path still being shaped",
             intro: "Use this when the situation is real, but the category is not obvious yet.",
-            actionLabel: "Email the fuzzy version",
+            actionLabel: "Show copyable discovery context",
             subject: "Holtsnider Tech discovery context",
             options: [
                 {
@@ -198,12 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         lines.push("", "Thanks,");
         return lines.join("\n");
-    };
-
-    const buildMailtoHref = () => {
-        const { data } = getFlowContext();
-        const subject = encodeURIComponent(data?.subject || "Holtsnider Tech inquiry");
-        return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${encodeURIComponent(buildContextBody())}`;
     };
 
     const buildCopyableContext = () => {
@@ -337,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
         panel.textContent = "";
         panel.classList.add("is-active");
         panel.dataset.activeFlow = pathKey;
-        panel.removeAttribute("data-activeContext");
+        panel.removeAttribute("data-active-context");
 
         const header = document.createElement("div");
         header.className = "bos-guided-flow-head";
@@ -411,11 +405,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const copyField = document.createElement("label");
         copyField.className = "bos-context-field";
         const copyLabel = document.createElement("span");
-        copyLabel.textContent = "Copyable idea context";
+        copyLabel.textContent = "Copyable context";
         const copyText = document.createElement("textarea");
         copyText.rows = 10;
         copyText.spellcheck = false;
-        copyText.placeholder = "Your idea context will appear here.";
+        copyText.placeholder = "Your context will appear here.";
         copyField.append(copyLabel, copyText);
 
         const copySelect = createButton("bos-flow-back", "Select text");
@@ -426,8 +420,6 @@ document.addEventListener("DOMContentLoaded", () => {
         copyPanel.append(copyField, copySelect);
 
         const updateGeneratedText = () => {
-            const mailLink = panel.querySelector(".bos-flow-mailto");
-            if (mailLink?.tagName === "A") mailLink.href = buildMailtoHref();
             if (!copyPanel.hidden) copyText.value = buildCopyableContext();
         };
 
@@ -453,26 +445,16 @@ document.addEventListener("DOMContentLoaded", () => {
         action.className = "bos-guided-flow-action";
         const actionText = document.createElement("p");
         actionText.textContent = "These fields are optional. They are here to make the eventual email or meeting context more useful.";
+        const actionButton = createButton("bos-btn bos-btn-primary bos-flow-mailto", data.actionLabel);
+        actionButton.addEventListener("click", () => {
+            copyText.value = buildCopyableContext();
+            copyPanel.hidden = false;
+            copyText.focus();
+            copyText.select();
+        });
+        action.append(actionText, actionButton);
 
-        if (pathKey === "opportunity") {
-            const actionButton = createButton("bos-btn bos-btn-primary bos-flow-mailto", data.actionLabel);
-            actionButton.addEventListener("click", () => {
-                copyText.value = buildCopyableContext();
-                copyPanel.hidden = false;
-                copyText.focus();
-                copyText.select();
-            });
-            action.append(actionText, actionButton);
-            panel.append(header, examples, fields, action, copyPanel);
-        } else {
-            const actionLink = document.createElement("a");
-            actionLink.className = "bos-btn bos-btn-primary bos-flow-mailto";
-            actionLink.href = buildMailtoHref();
-            actionLink.textContent = data.actionLabel;
-            action.append(actionText, actionLink);
-            panel.append(header, examples, fields, action);
-        }
-
+        panel.append(header, examples, fields, action, copyPanel);
         window.requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     };
 
