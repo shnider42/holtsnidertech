@@ -1,0 +1,139 @@
+/*
+ * ht3 choice/context color consistency.
+ *
+ * The first-screen choice cards already establish the visual language:
+ * Solve = orange, Launch / opportunity = green, HT Experience = blue,
+ * Discovery = teal. This file keeps the deeper context layer using the
+ * same accents instead of falling back to one default surface color.
+ */
+
+.boston {
+    --ht-choice-solve: #ff8a3d;
+    --ht-choice-launch: #7dff9b;
+    --ht-choice-experience: #6aa9ff;
+    --ht-choice-discovery: #2d8f8b;
+}
+
+.boston .bos-choice-solve {
+    --card-accent: var(--ht-choice-solve);
+    --context-accent: var(--ht-choice-solve);
+}
+
+.boston .bos-choice-opportunity {
+    --card-accent: var(--ht-choice-launch);
+    --context-accent: var(--ht-choice-launch);
+}
+
+.boston .bos-choice-experience {
+    --card-accent: var(--ht-choice-experience);
+    --context-accent: var(--ht-choice-experience);
+}
+
+.boston .bos-choice-not-sure {
+    --card-accent: var(--ht-choice-discovery);
+    --context-accent: var(--ht-choice-discovery);
+}
+
+.boston #solve {
+    --context-accent: var(--ht-choice-solve);
+    --path-accent: var(--context-accent);
+}
+
+.boston #opportunity {
+    --context-accent: var(--ht-choice-launch);
+    --path-accent: var(--context-accent);
+}
+
+.boston #experience {
+    --context-accent: var(--ht-choice-experience);
+    --path-accent: var(--context-accent);
+}
+
+.boston #not-sure {
+    --context-accent: var(--ht-choice-discovery);
+    --path-accent: var(--context-accent);
+}
+
+.boston .bos-start-panel .bos-choice-card:hover,
+.boston .bos-start-panel .bos-choice-card:focus-visible,
+.boston .bos-start-panel .bos-choice-card:focus-within {
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 18%, transparent),
+            rgba(255, 255, 255, 0.045) 58%,
+            color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 7%, transparent)
+        ) !important;
+    border-color: color-mix(in srgb, var(--card-accent, var(--ht-choice-solve)) 46%, rgba(255, 255, 255, 0.16)) !important;
+}
+
+.boston .bos-path-grid .bos-card,
+.boston #experience .bos-experience-grid .bos-card,
+.boston #experience .bos-stack-grid .bos-mini {
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 34%, rgba(255, 255, 255, 0.15)) !important;
+    border-left: 5px solid var(--context-accent, var(--ht-choice-solve)) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 13%, transparent),
+            rgba(8, 16, 24, 0.58) 54%,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 9%, transparent)
+        ) !important;
+    box-shadow:
+        0 18px 52px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 16%, transparent);
+}
+
+.boston .bos-path-grid .bos-card:hover,
+.boston .bos-path-grid .bos-card:focus-within,
+.boston #experience .bos-experience-grid .bos-card:hover,
+.boston #experience .bos-stack-grid .bos-mini:hover {
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 20%, transparent),
+            rgba(8, 16, 24, 0.62) 55%,
+            color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 12%, transparent)
+        ) !important;
+    border-color: color-mix(in srgb, var(--context-accent, var(--ht-choice-solve)) 54%, rgba(255, 255, 255, 0.18)) !important;
+}
+
+.boston #experience .bos-experience-grid,
+.boston #experience .bos-stack-grid {
+    --context-accent: var(--ht-choice-experience);
+}
+
+.boston #experience .bos-card-label,
+.boston #experience .bos-mini strong,
+.boston .bos-path-grid .bos-details summary {
+    color: var(--context-accent, var(--ht-choice-solve)) !important;
+}
+
+.boston #experience .bos-section-heading {
+    border-left: 5px solid var(--ht-choice-experience);
+    padding-left: clamp(14px, 2vw, 22px);
+}
+
+.boston #experience .bos-section-heading .bos-section-text {
+    border-top: 1px solid color-mix(in srgb, var(--ht-choice-experience) 34%, rgba(255, 255, 255, 0.16));
+    padding-top: 12px;
+}
+
+.boston #paths::after {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--ht-choice-solve) 10%, transparent),
+            color-mix(in srgb, var(--ht-choice-launch) 7%, transparent) 36%,
+            color-mix(in srgb, var(--ht-choice-experience) 8%, transparent) 68%,
+            color-mix(in srgb, var(--ht-choice-discovery) 10%, transparent)
+        ),
+        rgba(8, 16, 24, 0.38) !important;
+}
+
+@media (max-width: 850px) {
+    .boston #experience .bos-section-heading {
+        padding-left: 14px;
+    }
+}
