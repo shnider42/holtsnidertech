@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         opportunity: {
             title: "What kind of idea are we shaping?",
             intro: "Pick the closest starting point. This is the Opportunity Engineering lane.",
-            actionLabel: "Email this idea context",
+            actionLabel: "Show copyable idea context",
             subject: "Holtsnider Tech idea context",
             options: [
                 {
@@ -174,6 +174,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
     const slugify = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+    const getFlowContext = () => {
+        const data = FLOW_DATA[flowState.path];
+        const context = data?.options.find((option) => option.id === flowState.context);
+        return { data, context };
+    };
+
+    const buildContextBody = () => {
+        const { data, context } = getFlowContext();
+        const lines = [
+            "Hi Chris,",
+            "",
+            "I came through the Holtsnider Tech site flow with this context:",
+            "",
+            `Starting point: ${data ? data.title : flowState.path || "Not selected"}`,
+            `Selected context: ${context ? context.title : "Not selected"}`,
+            ""
+        ];
+
+        Object.entries(flowState.notes).forEach(([question, answer]) => {
+            if (answer.trim()) lines.push(`${question}: ${answer.trim()}`);
+        });
+
+        lines.push("", "Thanks,");
+        return lines.join("\n");
+    };
+
+    const buildMailtoHref = () => {
+        const { data } = getFlowContext();
+        const subject = encodeURIComponent(data?.subject || "Holtsnider Tech inquiry");
+        return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${encodeURIComponent(buildContextBody())}`;
+    };
+
+    const buildCopyableContext = () => {
+        const { data } = getFlowContext();
+        return [`To: ${CONTACT_EMAIL}`, `Subject: ${data?.subject || "Holtsnider Tech inquiry"}`, "", buildContextBody()].join("\n");
+    };
+
+    const createButton = (className, text) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = className;
+        button.textContent = text;
+        return button;
+    };
+
     const buildDrawer = (drawerItems, drawerNext, extraClass, drawerId) => {
         const drawer = document.createElement("div");
         drawer.className = `bos-choice-drawer ${extraClass}`;
@@ -275,36 +320,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return flowPanel;
     };
 
-    const buildMailtoHref = () => {
-        const data = FLOW_DATA[flowState.path];
-        const context = data?.options.find((option) => option.id === flowState.context);
-        const subject = encodeURIComponent(data?.subject || "Holtsnider Tech inquiry");
-        const lines = [
-            "Hi Chris,",
-            "",
-            "I came through the Holtsnider Tech site flow with this context:",
-            "",
-            `Starting point: ${data ? data.title : flowState.path || "Not selected"}`,
-            `Selected context: ${context ? context.title : "Not selected"}`,
-            ""
-        ];
-
-        Object.entries(flowState.notes).forEach(([question, answer]) => {
-            if (answer.trim()) lines.push(`${question}: ${answer.trim()}`);
-        });
-
-        lines.push("", "Thanks,");
-        return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${encodeURIComponent(lines.join("\n"))}`;
-    };
-
-    const createButton = (className, text) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = className;
-        button.textContent = text;
-        return button;
-    };
-
     const renderFlow = (pathKey, shouldScroll = true) => {
         const data = FLOW_DATA[pathKey];
         const panel = ensureFlowPanel();
@@ -322,6 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
         panel.textContent = "";
         panel.classList.add("is-active");
         panel.dataset.activeFlow = pathKey;
+        panel.removeAttribute("data-activeContext");
 
         const header = document.createElement("div");
         header.className = "bos-guided-flow-head";
@@ -388,6 +404,33 @@ document.addEventListener("DOMContentLoaded", () => {
             examples.appendChild(card);
         });
 
+        const copyPanel = document.createElement("div");
+        copyPanel.className = "bos-context-fields bos-context-copy-panel";
+        copyPanel.hidden = true;
+
+        const copyField = document.createElement("label");
+        copyField.className = "bos-context-field";
+        const copyLabel = document.createElement("span");
+        copyLabel.textContent = "Copyable idea context";
+        const copyText = document.createElement("textarea");
+        copyText.rows = 10;
+        copyText.spellcheck = false;
+        copyText.placeholder = "Your idea context will appear here.";
+        copyField.append(copyLabel, copyText);
+
+        const copySelect = createButton("bos-flow-back", "Select text");
+        copySelect.addEventListener("click", () => {
+            copyText.focus();
+            copyText.select();
+        });
+        copyPanel.append(copyField, copySelect);
+
+        const updateGeneratedText = () => {
+            const mailLink = panel.querySelector(".bos-flow-mailto");
+            if (mailLink?.tagName === "A") mailLink.href = buildMailtoHref();
+            if (!copyPanel.hidden) copyText.value = buildCopyableContext();
+        };
+
         const fields = document.createElement("div");
         fields.className = "bos-context-fields";
         option.questions.forEach((question) => {
@@ -400,8 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
             textarea.placeholder = "Optional";
             textarea.addEventListener("input", () => {
                 flowState.notes[question] = textarea.value;
-                const mailLink = panel.querySelector(".bos-flow-mailto");
-                if (mailLink) mailLink.href = buildMailtoHref();
+                updateGeneratedText();
             });
             label.append(labelText, textarea);
             fields.appendChild(label);
@@ -411,13 +453,26 @@ document.addEventListener("DOMContentLoaded", () => {
         action.className = "bos-guided-flow-action";
         const actionText = document.createElement("p");
         actionText.textContent = "These fields are optional. They are here to make the eventual email or meeting context more useful.";
-        const actionLink = document.createElement("a");
-        actionLink.className = "bos-btn bos-btn-primary bos-flow-mailto";
-        actionLink.href = buildMailtoHref();
-        actionLink.textContent = data.actionLabel;
-        action.append(actionText, actionLink);
 
-        panel.append(header, examples, fields, action);
+        if (pathKey === "opportunity") {
+            const actionButton = createButton("bos-btn bos-btn-primary bos-flow-mailto", data.actionLabel);
+            actionButton.addEventListener("click", () => {
+                copyText.value = buildCopyableContext();
+                copyPanel.hidden = false;
+                copyText.focus();
+                copyText.select();
+            });
+            action.append(actionText, actionButton);
+            panel.append(header, examples, fields, action, copyPanel);
+        } else {
+            const actionLink = document.createElement("a");
+            actionLink.className = "bos-btn bos-btn-primary bos-flow-mailto";
+            actionLink.href = buildMailtoHref();
+            actionLink.textContent = data.actionLabel;
+            action.append(actionText, actionLink);
+            panel.append(header, examples, fields, action);
+        }
+
         window.requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     };
 
