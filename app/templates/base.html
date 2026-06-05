@@ -39,10 +39,6 @@
                         lightTheme.disabled = false;
                     }
                 }
-
-                if (window.localStorage.getItem("holtsnider-reduce-motion") === null) {
-                    window.localStorage.setItem("holtsnider-reduce-motion", "true");
-                }
             } catch (error) {
                 document.documentElement.dataset.theme = "dark";
             }
@@ -52,6 +48,7 @@
 <body>
     {% block content %}{% endblock %}
     <script src="{{ url_for('static', filename='js/boston-site.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/boston-nav-cleanup.js') }}"></script>
     <script src="{{ url_for('static', filename='js/boston-experience-scroll.js') }}"></script>
     <script src="{{ url_for('static', filename='js/boston-visible-work-cards.js') }}"></script>
     <script src="{{ url_for('static', filename='js/boston-viewport-fade.js') }}"></script>
