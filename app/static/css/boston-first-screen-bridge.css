@@ -1,0 +1,78 @@
+/*
+ * First-screen bridge tuning.
+ *
+ * Loaded after the card/context color layer. This keeps the opening title,
+ * hero image, and start panel visually connected instead of letting the
+ * viewport grid create a dead band between them.
+ */
+
+.boston .bos-first-screen {
+    grid-template-rows: auto auto auto !important;
+    align-content: start !important;
+    gap: 0 !important;
+}
+
+.boston .bos-hero {
+    overflow: visible !important;
+    padding-bottom: clamp(6px, 1svh, 14px) !important;
+}
+
+.boston .bos-hero::before {
+    inset: -22svh 0 -34svh 0 !important;
+    opacity: 0.18;
+}
+
+.boston .bos-start-panel {
+    align-self: start !important;
+    min-height: auto !important;
+    padding-top: clamp(2px, 0.45svh, 8px) !important;
+}
+
+.boston .bos-start-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: clamp(80px, 14svh, 180px);
+    pointer-events: none;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(45, 143, 139, 0.12),
+            rgba(255, 138, 61, 0.045) 42%,
+            transparent
+        );
+    z-index: 0;
+}
+
+.boston .bos-start-panel > .bos-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.boston .bos-start-heading {
+    margin-bottom: clamp(10px, 1.5svh, 18px) !important;
+}
+
+@media (min-width: 1081px) and (max-height: 820px) {
+    .boston .bos-hero {
+        padding-bottom: clamp(4px, 0.75svh, 10px) !important;
+    }
+
+    .boston .bos-start-panel {
+        padding-top: clamp(1px, 0.25svh, 5px) !important;
+    }
+}
+
+@media (max-width: 850px) {
+    .boston .bos-first-screen {
+        grid-template-rows: auto auto auto !important;
+    }
+
+    .boston .bos-hero {
+        overflow: hidden !important;
+    }
+
+    .boston .bos-start-panel {
+        padding-top: 10px !important;
+    }
+}
