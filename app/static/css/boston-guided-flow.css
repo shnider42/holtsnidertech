@@ -1,0 +1,177 @@
+@import url("/static/css/boston-progressive-flow.css");
+@import url("/static/css/boston-flow-prettify.css");
+@import url("/static/css/boston-card-illustrations.css");
+@import url("/static/css/boston-default-context.css");
+
+.boston .bos-guided-flow {
+    display: none;
+    margin-top: clamp(18px, 2.8svh, 30px);
+    padding: clamp(18px, 2.5vw, 30px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        linear-gradient(135deg, rgba(255, 138, 61, 0.055), transparent 34%),
+        rgba(8, 16, 24, 0.36);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
+}
+
+.boston .bos-guided-flow.is-active {
+    display: block;
+    animation: bos-guided-flow-in 180ms ease both;
+}
+
+@keyframes bos-guided-flow-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.boston .bos-guided-flow-head {
+    display: grid;
+    gap: 8px;
+    max-width: 920px;
+}
+
+.boston .bos-guided-flow-eyebrow,
+.boston .bos-guided-flow-tag {
+    margin: 0;
+    color: #ff8a3d;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.boston .bos-guided-flow h3 {
+    margin: 0;
+    color: #f4f1ea;
+    font-size: clamp(1.55rem, 3vw, 3.3rem);
+    font-weight: 950;
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+}
+
+.boston .bos-guided-flow-intro {
+    max-width: 76ch;
+    margin: 0;
+    color: rgba(244, 241, 234, 0.78);
+    font-size: clamp(0.9rem, 1vw, 1.02rem);
+    line-height: 1.5;
+}
+
+.boston .bos-guided-flow-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+    gap: clamp(12px, 1.6vw, 18px);
+    margin-top: clamp(18px, 2.5vw, 28px);
+}
+
+.boston .bos-guided-flow-option {
+    display: grid;
+    gap: 10px;
+    padding: clamp(16px, 2vw, 22px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.boston .bos-guided-flow-option h4 {
+    margin: 0;
+    color: #f4f1ea;
+    font-size: clamp(1.08rem, 1.45vw, 1.45rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+}
+
+.boston .bos-guided-flow-option p {
+    margin: 0;
+    color: rgba(244, 241, 234, 0.76);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.boston .bos-guided-flow-option strong {
+    display: block;
+    margin-top: 2px;
+    color: #c6d0da;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.boston .bos-guided-flow-chips,
+.boston .bos-guided-flow-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.boston .bos-guided-flow-chips li,
+.boston .bos-guided-flow-questions li {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(8, 16, 24, 0.28);
+    color: rgba(244, 241, 234, 0.78);
+    font-size: 0.72rem;
+    line-height: 1.2;
+    padding: 7px 8px;
+}
+
+.boston .bos-guided-flow-questions {
+    display: grid;
+}
+
+.boston .bos-guided-flow-questions li {
+    position: relative;
+    padding-left: 22px;
+}
+
+.boston .bos-guided-flow-questions li::before {
+    content: "?";
+    position: absolute;
+    left: 8px;
+    color: #ff8a3d;
+    font-weight: 900;
+}
+
+.boston .bos-guided-flow-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: clamp(18px, 2.5vw, 28px);
+    padding-top: clamp(14px, 2vw, 22px);
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.boston .bos-guided-flow-action p {
+    max-width: 68ch;
+    margin: 0;
+    color: rgba(244, 241, 234, 0.72);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.boston .bos-choice-card.is-selected {
+    border-color: color-mix(in srgb, var(--card-accent, #ff8a3d) 48%, rgba(255, 255, 255, 0.18)) !important;
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent, #ff8a3d) 11%, transparent), transparent 42%),
+        rgba(255, 255, 255, 0.045) !important;
+}
+
+@media (max-width: 850px) {
+    .boston .bos-guided-flow-action {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

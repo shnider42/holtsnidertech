@@ -1,0 +1,163 @@
+/* Top ribbon brand mark: keep the white treatment, but remove the heavy outline that rendered poorly at small size. */
+
+.boston .bos-mark {
+    width: auto !important;
+    min-width: max-content !important;
+    min-height: 34px;
+    padding: 0 10px !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.025em !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.82) !important;
+}
+
+/* Let the fixed ribbon blend more while still remaining readable. */
+.boston .bos-head {
+    background: rgba(8, 16, 24, 0.56) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18) !important;
+}
+
+@supports (animation-timeline: scroll()) {
+    .boston .bos-head {
+        animation: bos-head-scroll-fade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 150px;
+    }
+
+    @keyframes bos-head-scroll-fade {
+        from {
+            background-color: rgba(8, 16, 24, 0.56);
+            border-color: rgba(255, 255, 255, 0.10);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+        }
+
+        to {
+            background-color: rgba(8, 16, 24, 0.14);
+            border-color: rgba(255, 255, 255, 0.035);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+    }
+}
+
+/* Shared softer border language for the current Boston cards. */
+.boston .bos-choice-card,
+.boston .bos-card,
+.boston .bos-mini,
+.boston .bos-work-card,
+.boston .bos-case-card,
+.boston .bos-contact-card,
+.boston .bos-proof-card,
+.boston .bos-portfolio-detail {
+    border-color: rgba(198, 208, 218, 0.105) !important;
+}
+
+.boston .bos-choice-card:hover,
+.boston .bos-card:hover,
+.boston .bos-mini:hover,
+.boston .bos-work-card:hover,
+.boston .bos-case-card:hover,
+.boston .bos-contact-card:hover {
+    border-color: rgba(255, 138, 61, 0.24) !important;
+}
+
+/* First-view chooser polish: make "Where should we start?" feel intentional. */
+.boston .bos-start-panel {
+    position: relative;
+    isolation: isolate;
+    background:
+        linear-gradient(90deg, rgba(255, 138, 61, 0.08), transparent 38%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.boston .bos-start-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-top: 1px solid rgba(255, 138, 61, 0.18);
+    pointer-events: none;
+}
+
+.boston .bos-start-heading {
+    align-items: end !important;
+}
+
+.boston .bos-start-heading h2 {
+    max-width: 12ch;
+    letter-spacing: -0.045em !important;
+}
+
+.boston .bos-start-heading .bos-section-text {
+    max-width: 54ch !important;
+    justify-self: end;
+    padding-left: clamp(14px, 2vw, 22px);
+    border-left: 3px solid rgba(255, 138, 61, 0.42);
+    color: rgba(244, 241, 234, 0.74) !important;
+}
+
+.boston .bos-choice-grid {
+    gap: clamp(8px, 1.2vw, 14px) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    position: relative;
+    border-color: rgba(198, 208, 218, 0.12) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.048), rgba(255, 255, 255, 0.016)),
+        rgba(8, 16, 24, 0.36) !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+    transform: translateY(0);
+    transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.boston .bos-start-panel .bos-choice-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--card-accent, #ff8a3d), transparent 72%);
+    opacity: 0.62;
+    pointer-events: none;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover,
+.boston .bos-start-panel .bos-choice-card:focus-visible {
+    border-color: rgba(255, 138, 61, 0.32) !important;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.20);
+    transform: translateY(-2px);
+}
+
+.boston .bos-start-panel .bos-choice-card .bos-card-label {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.16em !important;
+    opacity: 0.88;
+}
+
+.boston .bos-start-panel .bos-choice-card h3 {
+    letter-spacing: -0.018em !important;
+}
+
+@media (max-width: 850px) {
+    .boston .bos-start-heading {
+        align-items: start !important;
+    }
+
+    .boston .bos-start-heading .bos-section-text {
+        justify-self: start;
+        padding-left: 12px;
+        border-left-width: 2px;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
+    }
+}

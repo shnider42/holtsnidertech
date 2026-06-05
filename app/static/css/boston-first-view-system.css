@@ -1,0 +1,200 @@
+/*
+ * Boston ht3 first-view layout system.
+ *
+ * This file intentionally loads after the inline Boston Practical CSS and after
+ * boston-ht3-flow-layout.css. The goal is to make the opening viewport obey a
+ * shared height-aware budget instead of adding one-off aspect-ratio fixes.
+ */
+
+.boston {
+    --bos-first-min-height: 100svh;
+    --bos-first-grid-hero: 0.48fr;
+    --bos-first-start-min-height: clamp(46svh, 50svh, 54svh);
+    --bos-first-gap: 0px;
+    --bos-first-hero-pad-top: clamp(8px, 1.7svh, 22px);
+    --bos-first-hero-pad-bottom: clamp(6px, 1.2svh, 16px);
+    --bos-first-title-size: clamp(3.05rem, 9.2vmin, 7.2rem);
+    --bos-first-title-line: 0.9;
+    --bos-first-lede-width: 760px;
+    --bos-first-lede-margin: clamp(8px, 1.2svh, 12px);
+    --bos-first-lede-size: clamp(0.94rem, 1.55vmin, 1.02rem);
+    --bos-first-lede-line: 1.38;
+    --bos-first-signal-display: flex;
+    --bos-first-signal-gap: 7px 12px;
+    --bos-first-signal-margin: clamp(7px, 1.1svh, 10px);
+    --bos-first-actions-display: flex;
+    --bos-first-actions-margin: clamp(9px, 1.5svh, 14px);
+    --bos-first-start-pad-top: clamp(14px, 2.4svh, 28px);
+    --bos-first-start-pad-bottom: clamp(18px, 3svh, 34px);
+    --bos-first-start-heading-gap: clamp(18px, 3vw, 34px);
+    --bos-first-start-heading-margin: 14px;
+    --bos-first-start-title-size: clamp(1.92rem, 3.7vw, 3.45rem);
+    --bos-first-start-text-size: 0.94rem;
+    --bos-first-choice-card-min: clamp(126px, 17svh, 172px);
+    --bos-first-choice-card-pad: clamp(14px, 2svh, 20px);
+    --bos-first-choice-title-size: clamp(1.06rem, 1.48vw, 1.35rem);
+    --bos-first-choice-text-size: clamp(0.82rem, 0.88vw, 0.92rem);
+}
+
+.boston .bos-first-screen {
+    min-height: var(--bos-first-min-height) !important;
+    grid-template-rows: auto minmax(0, var(--bos-first-grid-hero)) minmax(var(--bos-first-start-min-height), auto) !important;
+    gap: var(--bos-first-gap) !important;
+    padding-top: var(--bos-floating-head-offset) !important;
+}
+
+.boston .bos-hero {
+    display: flex;
+    align-items: center;
+    padding-top: var(--bos-first-hero-pad-top) !important;
+    padding-bottom: var(--bos-first-hero-pad-bottom) !important;
+}
+
+.boston .bos h1,
+.boston h1 {
+    font-size: var(--bos-first-title-size) !important;
+    line-height: var(--bos-first-title-line) !important;
+}
+
+.boston .bos-lede {
+    max-width: var(--bos-first-lede-width) !important;
+    margin-top: var(--bos-first-lede-margin) !important;
+    font-size: var(--bos-first-lede-size) !important;
+    line-height: var(--bos-first-lede-line) !important;
+}
+
+.boston .bos-signal-row {
+    display: var(--bos-first-signal-display) !important;
+    gap: var(--bos-first-signal-gap) !important;
+    margin-top: var(--bos-first-signal-margin) !important;
+}
+
+.boston .bos-actions {
+    display: var(--bos-first-actions-display) !important;
+    margin-top: var(--bos-first-actions-margin) !important;
+}
+
+.boston .bos-start-panel {
+    min-height: var(--bos-first-start-min-height) !important;
+    padding-top: var(--bos-first-start-pad-top) !important;
+    padding-bottom: var(--bos-first-start-pad-bottom) !important;
+}
+
+/*
+ * When the guided flow panel opens, the first-view budget must stop behaving
+ * like a fixed viewport composition. The panel should grow downward from the
+ * choices instead of forcing the hero/start rows to compress into each other.
+ */
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) {
+    min-height: auto !important;
+    grid-template-rows: auto auto auto !important;
+    overflow: visible !important;
+}
+
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) .bos-start-panel {
+    min-height: auto !important;
+}
+
+.boston .bos-first-screen:has(.bos-guided-flow.is-active) .bos-hero {
+    align-items: flex-start;
+}
+
+.boston .bos-start-heading {
+    gap: var(--bos-first-start-heading-gap) !important;
+    margin-bottom: var(--bos-first-start-heading-margin) !important;
+}
+
+.boston .bos-start-heading h2 {
+    font-size: var(--bos-first-start-title-size) !important;
+    line-height: 0.96 !important;
+}
+
+.boston .bos-start-heading .bos-section-text {
+    font-size: var(--bos-first-start-text-size) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    min-height: var(--bos-first-choice-card-min) !important;
+    padding: var(--bos-first-choice-card-pad) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card h3 {
+    font-size: var(--bos-first-choice-title-size) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card p {
+    font-size: var(--bos-first-choice-text-size) !important;
+}
+
+/*
+ * Height-aware desktop compression.
+ * This replaces aspect-ratio-specific thinking: if the viewport is shallow,
+ * reduce the pieces that consume vertical budget no matter whether the screen
+ * is 16:10, 16:9, or another desktop-ish proportion.
+ */
+@media (min-width: 1081px) and (max-height: 980px) {
+    .boston {
+        --bos-floating-head-offset: clamp(50px, 6.2svh, 64px);
+        --bos-first-grid-hero: 0.42fr;
+        --bos-first-start-min-height: clamp(48svh, 52svh, 56svh);
+        --bos-first-hero-pad-top: clamp(5px, 1svh, 12px);
+        --bos-first-hero-pad-bottom: clamp(4px, 0.8svh, 10px);
+        --bos-first-title-size: clamp(3rem, 8.8vmin, 6.3rem);
+        --bos-first-lede-width: 720px;
+        --bos-first-lede-margin: 8px;
+        --bos-first-lede-size: clamp(0.9rem, 1.42vmin, 0.98rem);
+        --bos-first-lede-line: 1.34;
+        --bos-first-signal-gap: 5px 9px;
+        --bos-first-signal-margin: 6px;
+        --bos-first-actions-margin: 9px;
+        --bos-first-start-pad-top: clamp(14px, 2.2svh, 24px);
+        --bos-first-start-pad-bottom: clamp(16px, 2.7svh, 30px);
+        --bos-first-start-heading-gap: clamp(12px, 2vw, 24px);
+        --bos-first-start-heading-margin: 10px;
+        --bos-first-start-title-size: clamp(1.7rem, 2.95vw, 2.95rem);
+        --bos-first-start-text-size: 0.86rem;
+        --bos-first-choice-card-min: clamp(104px, 14svh, 134px);
+        --bos-first-choice-card-pad: clamp(11px, 1.6svh, 16px);
+        --bos-first-choice-title-size: clamp(0.98rem, 1.18vw, 1.22rem);
+        --bos-first-choice-text-size: clamp(0.78rem, 0.82vw, 0.88rem);
+    }
+
+    .boston .bos-head {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::before {
+        margin-bottom: 9px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card p {
+        min-height: 2.35em !important;
+        margin-top: 6px !important;
+        line-height: 1.3 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        min-height: 1.1em !important;
+        padding-top: 8px !important;
+    }
+}
+
+@media (min-width: 1081px) and (max-height: 820px) {
+    .boston {
+        --bos-first-grid-hero: 0.34fr;
+        --bos-first-start-min-height: clamp(50svh, 54svh, 58svh);
+        --bos-first-title-size: clamp(2.7rem, 7.7vmin, 5.2rem);
+        --bos-first-signal-display: none;
+        --bos-first-actions-margin: 8px;
+        --bos-first-start-title-size: clamp(1.52rem, 2.55vw, 2.48rem);
+        --bos-first-choice-card-min: clamp(96px, 13svh, 118px);
+    }
+}
+
+@media (max-width: 850px) {
+    .boston {
+        --bos-first-min-height: auto;
+        --bos-first-start-min-height: auto;
+    }
+}

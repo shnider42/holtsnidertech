@@ -1,0 +1,260 @@
+/*
+ * Launch Idea project-card polish.
+ *
+ * Loaded through the late first-screen bridge file so it can restore project
+ * identity after the generic context color layer has done its work.
+ */
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.45vw, 18px);
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card {
+    min-height: clamp(168px, 20svh, 236px);
+    align-content: end;
+    padding: clamp(16px, 1.75vw, 22px);
+    border-width: 1px;
+    background-blend-mode: normal;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 18px 52px rgba(0, 0, 0, 0.22);
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card::before,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card::after {
+    z-index: -1;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card strong,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-card span {
+    position: relative;
+    z-index: 1;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish {
+    border-color: rgba(244, 241, 234, 0.50) !important;
+    background:
+        linear-gradient(90deg,
+            rgba(22, 155, 98, 0.96) 0 30%,
+            rgba(244, 241, 234, 0.96) 30% 62%,
+            rgba(255, 136, 62, 0.96) 62% 100%),
+        #169b62 !important;
+    color: #07131c !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish::before {
+    background:
+        radial-gradient(circle at 18% 20%, rgba(244, 241, 234, 0.38), transparent 24%),
+        radial-gradient(circle at 82% 18%, rgba(255, 136, 62, 0.34), transparent 26%),
+        linear-gradient(180deg, rgba(7, 19, 28, 0.06), rgba(7, 19, 28, 0.22)) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish::after {
+    inset: auto -12px -18px auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 40%, transparent 0 11px, rgba(7, 19, 28, 0.28) 12px 13px, transparent 14px),
+        conic-gradient(from 45deg, rgba(7, 19, 28, 0.34), transparent 0.25turn, rgba(7, 19, 28, 0.22), transparent 0.75turn);
+    opacity: 0.42;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish strong,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish span {
+    color: #07131c !important;
+    text-shadow: 0 1px 0 rgba(244, 241, 234, 0.26);
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-irish strong {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage {
+    border-color: rgba(38, 96, 119, 0.48) !important;
+    background:
+        radial-gradient(circle at 14% 18%, rgba(255, 244, 210, 0.74), transparent 30%),
+        radial-gradient(circle at 84% 18%, rgba(84, 140, 132, 0.26), transparent 30%),
+        linear-gradient(135deg, #f7f1de, #e9d6aa 46%, #8d6a42 100%) !important;
+    color: #223047 !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage::before {
+    background:
+        linear-gradient(90deg, rgba(34, 48, 71, 0.18), transparent 30%),
+        linear-gradient(135deg, transparent, rgba(38, 96, 119, 0.15), transparent 74%) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage::after {
+    inset: auto 12px 12px auto;
+    width: 92px;
+    height: 92px;
+    border: 1px solid rgba(34, 48, 71, 0.18);
+    border-radius: 999px;
+    background:
+        linear-gradient(45deg, transparent 47%, rgba(34, 48, 71, 0.22) 48% 52%, transparent 53%),
+        linear-gradient(-45deg, transparent 47%, rgba(84, 140, 132, 0.18) 48% 52%, transparent 53%);
+    opacity: 0.72;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage strong,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage span {
+    color: #223047 !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-passage strong {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-loudsource {
+    border-color: rgba(45, 215, 110, 0.44) !important;
+    background:
+        radial-gradient(circle at 18% 20%, rgba(45, 215, 110, 0.28), transparent 30%),
+        radial-gradient(circle at 82% 78%, rgba(255, 79, 139, 0.24), transparent 32%),
+        linear-gradient(135deg, rgba(13, 34, 23, 0.96), rgba(7, 18, 24, 0.98)) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-loudsource::before {
+    background:
+        repeating-linear-gradient(90deg, rgba(45, 215, 110, 0.22) 0 3px, transparent 3px 13px),
+        linear-gradient(180deg, transparent, rgba(255, 79, 139, 0.09)) !important;
+    opacity: 0.36;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-loudsource strong {
+    color: #73ff9b !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-jiporady {
+    border-color: rgba(255, 215, 82, 0.58) !important;
+    background:
+        linear-gradient(90deg, rgba(255, 215, 82, 0.15) 0 1px, transparent 1px 33.33%),
+        linear-gradient(180deg, rgba(255, 215, 82, 0.15) 0 1px, transparent 1px 33.33%),
+        radial-gradient(circle at center, rgba(65, 105, 225, 0.44), transparent 58%),
+        linear-gradient(145deg, #1022a4, #05092f) !important;
+    background-size: auto, 100% 33.33%, auto, auto;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-jiporady::after {
+    background: linear-gradient(90deg, rgba(255, 215, 82, 0.22), transparent 30%, rgba(255, 215, 82, 0.16)) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-jiporady em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-jiporady strong {
+    color: #ffd752 !important;
+    font-family: Georgia, "Times New Roman", serif;
+    text-transform: uppercase;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass {
+    border-color: rgba(247, 213, 150, 0.54) !important;
+    background:
+        radial-gradient(circle at 78% 24%, rgba(247, 213, 150, 0.32), transparent 30%),
+        linear-gradient(135deg, rgba(21, 33, 54, 0.98), rgba(56, 43, 28, 0.96)) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass::before {
+    inset: auto 12px 10px auto;
+    width: 96px;
+    height: 96px;
+    border: 1px solid rgba(247, 213, 150, 0.35);
+    border-radius: 50%;
+    background:
+        linear-gradient(45deg, transparent 47%, rgba(247, 213, 150, 0.35) 48% 52%, transparent 53%),
+        linear-gradient(-45deg, transparent 47%, rgba(106, 169, 255, 0.18) 48% 52%, transparent 53%);
+    opacity: 0.56;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass strong,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass span {
+    color: #f7e3b3 !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-career-compass span {
+    color: rgba(247, 227, 179, 0.82) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-grepper {
+    border-color: rgba(125, 255, 155, 0.42) !important;
+    background:
+        linear-gradient(90deg, rgba(125, 255, 155, 0.14) 0 1px, transparent 1px 12px),
+        linear-gradient(180deg, rgba(125, 255, 155, 0.10) 0 1px, transparent 1px 12px),
+        radial-gradient(circle at 16% 18%, rgba(125, 255, 155, 0.22), transparent 30%),
+        linear-gradient(135deg, #07120c, #0a1e16) !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-grepper::after {
+    inset: auto 12px 12px auto;
+    width: 118px;
+    height: 70px;
+    border: 1px solid rgba(125, 255, 155, 0.24);
+    border-radius: 10px;
+    background:
+        linear-gradient(90deg, rgba(125, 255, 155, 0.85) 0 28%, transparent 28% 36%, rgba(125, 255, 155, 0.55) 36% 62%, transparent 62% 70%, rgba(125, 255, 155, 0.35) 70%),
+        rgba(0, 0, 0, 0.22);
+    opacity: 0.46;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-grepper em,
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-grepper strong {
+    color: #7dff9b !important;
+}
+
+.boston .bos-guided-flow[data-active-flow="opportunity"] .bos-project-grepper span {
+    color: rgba(222, 255, 230, 0.82) !important;
+}
+
+.boston .bos-context-fields {
+    align-items: stretch !important;
+}
+
+.boston .bos-context-field {
+    grid-template-rows: auto 1fr;
+}
+
+.boston .bos-context-field textarea {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.boston .bos-context-field:has(textarea[rows="4"]) {
+    grid-column: 1 / -1;
+}
+
+.boston .bos-context-copy-panel {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: end !important;
+}
+
+.boston .bos-context-copy-panel .bos-context-field {
+    min-width: 0;
+}
+
+.boston .bos-context-copy-panel .bos-flow-back {
+    align-self: end;
+    min-height: 42px;
+    margin-top: 0 !important;
+    white-space: nowrap;
+}
+
+@media (max-width: 1080px) {
+    .boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .boston .bos-guided-flow[data-active-flow="opportunity"] .bos-flow-example-grid,
+    .boston .bos-context-copy-panel {
+        grid-template-columns: 1fr !important;
+    }
+
+    .boston .bos-context-copy-panel .bos-flow-back {
+        justify-self: start;
+    }
+}

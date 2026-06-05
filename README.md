@@ -1,45 +1,72 @@
-# Holtsnider Tech Flask Starter
+# Holtsnider Tech
 
-A modular Flask starter for holtsnidertech.com that runs locally first and is structured so it can deploy cleanly to Render later.
+Holtsnider Tech is a small Flask site for Chris Holtsnider's public technical consulting / portfolio presence.
+
+The current direction is **Boston Practical**. The site is no longer being treated as a style lab. The homepage should guide visitors through a practical decision path so they can quickly choose why they are here and what kind of help they may need.
+
+## Current site direction
+
+The homepage is built around a flowchart-style first impression:
+
+1. **Solve** — something is broken, unclear, inefficient, risky, or stuck.
+2. **Launch an idea / Opportunity Engineering** — there is a project, workflow, automation idea, or prototype worth shaping.
+3. **HT Experience** — the visitor wants background, credibility, visible work, resume context, or role-fit information.
+4. **Start a discovery** — the visitor is not sure whether the issue is tooling, process, infrastructure, website, vendor confusion, or something else.
+
+The intent is visual uniqueness without making the site confusing: strong Boston Practical styling, clear cards, practical copy, and fast paths to relevant proof/contact sections.
+
+## Tech stack
+
+- Python 3.12 on Render
+- Flask
+- Gunicorn
+- Jinja templates
+- Static CSS / JavaScript
 
 ## Project structure
 
 ```text
-holtsnidertech_scaffold/
+.
+├── app.py                     # Local debug entry point
+├── run.py                     # Render/Gunicorn entry point
+├── requirements.txt           # Runtime dependencies
+├── requirements-dev.txt       # Runtime + test dependencies
+├── render.yaml                # Render deployment config
+├── Procfile                   # Alternative process declaration
 ├── app/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── routes/
-│   │   └── main.py
-│   ├── static/
-│   │   └── css/
-│   │       └── site.css
-│   └── templates/
-│       ├── base.html
-│       └── home.html
-├── run.py
-├── requirements.txt
-└── render.yaml
+│   ├── __init__.py            # Flask app factory and security headers
+│   ├── routes.py              # Canonical routes and legacy redirects
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── home.html          # Canonical homepage entry point
+│   │   ├── privacy.html
+│   │   └── style_variants/
+│   │       └── boston_practical.html  # Active Boston Practical implementation
+│   └── static/
+│       ├── css/               # Site styling and Boston Practical polish layers
+│       ├── js/                # Boston homepage behavior and supporting interactions
+│       ├── demos/             # Static project demos
+│       └── html/              # Static injected fragments / project detail content
+└── tests/
+    └── test_routes.py         # Route smoke tests
 ```
 
 ## Local setup
 
-### 1. Create and activate a virtual environment
-
-Windows PowerShell:
+Create and activate a virtual environment:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 2. Install dependencies
+Install runtime dependencies:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-### 3. Run locally
+Run locally:
 
 ```powershell
 python run.py
@@ -51,15 +78,59 @@ Then open:
 http://127.0.0.1:5000
 ```
 
-## Future growth ideas
+## Running tests
 
-- Add a real contact form with Flask-WTF or an email service
-- Break out separate pages for services, about, and case studies
-- Add Jinja partials/macros for reusable components
-- Add environment-specific config classes
-- Add tests with pytest
-- Add a blog or notes section later
+Install development dependencies:
 
-## Render deployment
+```powershell
+pip install -r requirements-dev.txt
+```
 
-This repo includes a basic `render.yaml` for a web service.
+Run the smoke tests:
+
+```powershell
+pytest
+```
+
+The current tests check that:
+
+- `/` renders the canonical Boston Practical homepage
+- the homepage loads `boston-site.js` instead of the removed legacy `site.js`
+- legacy `/style-lab` URLs redirect home instead of breaking
+- `/healthz` returns the expected service status
+
+## Deployment
+
+Render uses `render.yaml`:
+
+```yaml
+buildCommand: pip install -r requirements.txt
+startCommand: gunicorn run:app
+```
+
+`run.py` exposes the Flask app as `app`, which is what Gunicorn imports.
+
+## Cleanup direction
+
+The repo should keep moving toward:
+
+- one canonical homepage direction, not multiple style experiments
+- less runtime copy rewriting in JavaScript
+- reusable template sections where it reduces duplication
+- small route tests before larger cleanup commits
+- visual uniqueness centered on the path-picker / decision-flow concept
+
+Completed cleanup in `feat/ht3` includes:
+
+- retired style-lab routes now redirect to the canonical homepage
+- retired style-lab/scaffold templates were removed
+- the old overloaded `site.js` was removed from the active site and deleted from the repo
+- focused Boston homepage behavior now lives in `app/static/js/boston-site.js`
+- route smoke tests cover the canonical homepage, legacy redirects, script loading, and health check
+
+Good next cleanup candidates:
+
+- flatten `style_variants/boston_practical.html` into `home.html` when it can be done safely as a proper local file move
+- move copy that is currently normalized in `boston-site.js` directly into the Jinja template in small local patches
+- split large CSS polish files only when the split makes the active page easier to reason about
+- keep static demos, but make sure each one is intentionally linked from the homepage or sitemap

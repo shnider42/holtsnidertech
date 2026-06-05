@@ -1,0 +1,526 @@
+/*
+ * ht3 flow/layout polish.
+ * Keeps the first viewport direction, but makes later sections behave like
+ * deliberate content panels without forcing short sections to waste space.
+ */
+
+html {
+    /* Custom JS controls automatic scroll duration; native smooth scrolling fights it. */
+    scroll-behavior: auto;
+}
+
+.boston {
+    --bos-panel-min-height: min(760px, 84svh);
+    --bos-panel-y: clamp(42px, 5.5vw, 76px);
+    --bos-floating-head-top: clamp(8px, 1.4vw, 18px);
+    --bos-floating-head-pad-x: clamp(8px, 1.2vw, 14px);
+    --bos-floating-head-offset: clamp(58px, 7vw, 76px);
+}
+
+.boston .bos-wrap {
+    width: min(calc(100% - clamp(24px, 5vw, 72px)), 1320px) !important;
+}
+
+.boston .bos-first-screen {
+    padding-top: var(--bos-floating-head-offset) !important;
+}
+
+.boston .bos-mark {
+    display: inline-grid;
+    width: 42px;
+    min-height: 34px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(8, 16, 24, 0.34);
+    color: #f4f1ea !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.08em !important;
+}
+
+.boston .bos-head {
+    position: fixed !important;
+    top: var(--bos-floating-head-top) !important;
+    left: 50% !important;
+    z-index: 1000 !important;
+    width: min(calc(100% - clamp(24px, 5vw, 72px)), 1320px) !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 12px var(--bos-floating-head-pad-x) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0;
+    background: rgba(8, 16, 24, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+    transform: translateX(-50%);
+    transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+@supports (animation-timeline: scroll()) {
+    .boston .bos-head {
+        animation: bos-head-scroll-fade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 150px;
+    }
+
+    @keyframes bos-head-scroll-fade {
+        from {
+            background-color: rgba(8, 16, 24, 0.78);
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+        }
+
+        to {
+            background-color: rgba(8, 16, 24, 0.24);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+    }
+}
+
+.boston .bos-hero {
+    border-bottom: 0 !important;
+}
+
+.boston .bos-hero-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.boston .bos-side {
+    display: none !important;
+}
+
+.boston .bos-start-panel {
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.boston .bos-hero .bos-kicker {
+    color: #2d8f8b !important;
+    letter-spacing: 0.12em !important;
+}
+
+.boston .bos-hero h1 {
+    max-width: 760px !important;
+}
+
+.boston .bos-hero h1 span {
+    color: #ff8a3d !important;
+}
+
+.boston .bos-start-heading h2 {
+    text-wrap: balance;
+}
+
+.boston .bos-start-panel .bos-choice-card {
+    overflow: hidden;
+}
+
+.boston .bos-start-panel .bos-choice-card .bos-card-label {
+    color: var(--card-accent, #ff8a3d) !important;
+}
+
+.boston .bos-start-panel .bos-choice-card p {
+    min-height: 2.9em;
+    margin-top: 8px !important;
+}
+
+.boston .bos-start-panel .bos-choice-card .bos-choice-action {
+    min-height: 1.4em;
+    padding-top: 12px !important;
+}
+
+.boston .bos-start-panel .bos-choice-card p,
+.boston .bos-start-panel .bos-choice-card .bos-choice-action {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+        opacity 360ms ease,
+        transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        visibility 0s linear 360ms;
+}
+
+.boston .bos-start-panel .bos-choice-card:hover p,
+.boston .bos-start-panel .bos-choice-card:focus-visible p,
+.boston .bos-start-panel .bos-choice-card:focus-within p,
+.boston .bos-start-panel .bos-choice-card:hover .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-visible .bos-choice-action,
+.boston .bos-start-panel .bos-choice-card:focus-within .bos-choice-action {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+.boston .bos-wrap > .bos-section,
+.boston .bos-contact {
+    min-height: var(--bos-panel-min-height);
+    scroll-margin-top: var(--bos-floating-head-offset);
+    padding-top: var(--bos-panel-y) !important;
+    padding-bottom: var(--bos-panel-y) !important;
+}
+
+.boston .bos-wrap > .bos-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.boston .bos-contact {
+    align-items: center;
+}
+
+.boston .bos-wrap > .bos-section + .bos-section,
+.boston .bos-contact {
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.boston .bos-operating-line {
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.boston #paths {
+    padding-top: var(--bos-panel-y) !important;
+    padding-bottom: var(--bos-panel-y) !important;
+}
+
+.boston #paths .bos-section-heading,
+.boston #experience .bos-section-heading,
+.boston #work .bos-section-heading,
+.boston #case-shapes .bos-section-heading {
+    margin-bottom: clamp(16px, 2.6vw, 28px) !important;
+}
+
+.boston #paths .bos-section-heading h2::after {
+    max-width: 54ch;
+}
+
+.boston #paths::after {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+.boston .bos-path-grid {
+    gap: clamp(12px, 1.7vw, 18px) !important;
+    margin-top: clamp(18px, 2.4vw, 26px) !important;
+}
+
+.boston .bos-path-grid::before {
+    display: none !important;
+}
+
+.boston .bos-path-grid .bos-card {
+    min-height: clamp(285px, 34vh, 350px) !important;
+    overflow: hidden;
+}
+
+.boston .bos-path-grid .bos-card p {
+    min-height: 4.25em;
+    margin-top: 10px !important;
+}
+
+.boston .bos-path-grid .bos-details {
+    min-height: 2.6em;
+    margin-top: auto !important;
+}
+
+.boston .bos-path-grid .bos-card p,
+.boston .bos-path-grid .bos-details {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+        opacity 360ms ease,
+        transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        visibility 0s linear 360ms;
+}
+
+.boston .bos-path-grid .bos-card:hover p,
+.boston .bos-path-grid .bos-card:focus-within p,
+.boston .bos-path-grid .bos-card:hover .bos-details,
+.boston .bos-path-grid .bos-card:focus-within .bos-details {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0s;
+}
+
+.boston .bos-stack-grid,
+.boston .bos-work-grid,
+.boston .bos-case-grid,
+.boston .bos-contact-grid {
+    gap: clamp(12px, 1.6vw, 20px) !important;
+}
+
+.boston .bos-mini,
+.boston .bos-work-card,
+.boston .bos-case-card,
+.boston .bos-contact-card {
+    padding: clamp(16px, 2vw, 22px) !important;
+}
+
+.boston .bos-choice-card,
+.boston .bos-card,
+.boston .bos-mini,
+.boston .bos-work-card,
+.boston .bos-case-card {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+@media (hover: none) {
+    .boston .bos-start-panel .bos-choice-card p,
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action,
+    .boston .bos-path-grid .bos-card p,
+    .boston .bos-path-grid .bos-details {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        display: block;
+    }
+}
+
+@media (min-width: 1081px) {
+    .boston #experience .bos-stack-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .boston #work,
+    .boston #case-shapes {
+        min-height: auto;
+    }
+}
+
+@media (min-width: 1081px) and (min-aspect-ratio: 3 / 2) and (max-aspect-ratio: 17 / 10) and (max-height: 980px) {
+    .boston {
+        --bos-floating-head-offset: clamp(50px, 6.2vh, 64px);
+    }
+
+    .boston .bos-first-screen {
+        min-height: 100svh !important;
+        grid-template-rows: auto minmax(0, 0.78fr) auto !important;
+        gap: 0 !important;
+    }
+
+    .boston .bos-head {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+    }
+
+    .boston .bos-hero {
+        padding-top: clamp(8px, 1.6vh, 18px) !important;
+        padding-bottom: clamp(6px, 1.3vh, 14px) !important;
+    }
+
+    .boston .bos h1,
+    .boston h1 {
+        font-size: clamp(3.2rem, 7.3vw, 6.9rem) !important;
+        line-height: 0.92 !important;
+    }
+
+    .boston .bos-lede {
+        max-width: 720px !important;
+        margin-top: 10px !important;
+        font-size: clamp(0.92rem, 0.98vw, 1rem) !important;
+        line-height: 1.38 !important;
+    }
+
+    .boston .bos-signal-row {
+        gap: 6px 10px !important;
+        margin-top: 8px !important;
+    }
+
+    .boston .bos-actions {
+        margin-top: 12px !important;
+    }
+
+    .boston .bos-start-panel {
+        padding-top: clamp(8px, 1.4vh, 14px) !important;
+        padding-bottom: clamp(10px, 1.8vh, 18px) !important;
+    }
+
+    .boston .bos-start-heading {
+        gap: clamp(12px, 2vw, 24px) !important;
+        margin-bottom: 10px !important;
+    }
+
+    .boston .bos-start-heading h2 {
+        font-size: clamp(1.58rem, 2.7vw, 2.72rem) !important;
+        line-height: 0.96 !important;
+    }
+
+    .boston .bos-start-heading .bos-section-text {
+        max-width: 560px !important;
+        font-size: 0.86rem !important;
+        line-height: 1.34 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: clamp(104px, 14vh, 134px) !important;
+        padding: clamp(11px, 1.6vh, 16px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::before {
+        margin-bottom: 9px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card h3 {
+        margin-bottom: 6px !important;
+        font-size: clamp(0.98rem, 1.18vw, 1.22rem) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card p {
+        min-height: 2.35em;
+        margin-top: 6px !important;
+        font-size: clamp(0.78rem, 0.82vw, 0.88rem) !important;
+        line-height: 1.3 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        min-height: 1.1em;
+        padding-top: 8px !important;
+    }
+}
+
+@media (max-width: 1080px) {
+    .boston .bos-wrap > .bos-section,
+    .boston .bos-contact {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 850px) {
+    .boston {
+        --bos-floating-head-top: 8px;
+        --bos-floating-head-offset: 58px;
+    }
+
+    .boston .bos-wrap {
+        width: min(calc(100% - 22px), 1320px) !important;
+    }
+
+    .boston .bos-first-screen {
+        padding-top: var(--bos-floating-head-offset) !important;
+    }
+
+    .boston .bos-head {
+        width: min(calc(100% - 22px), 1320px) !important;
+        margin: 0 !important;
+        padding: 10px 11px !important;
+    }
+
+    .boston .bos-mark {
+        width: auto;
+        min-height: 32px;
+        padding: 0 10px;
+    }
+
+    .boston .bos-start-panel {
+        border-top-color: rgba(255, 255, 255, 0.12);
+    }
+}
+
+@media (max-width: 620px) {
+    .boston {
+        --bos-floating-head-offset: 56px;
+    }
+
+    .boston .bos-wrap {
+        width: min(calc(100% - 18px), 1320px) !important;
+    }
+
+    .boston .bos-first-screen {
+        min-height: auto !important;
+        padding-top: var(--bos-floating-head-offset) !important;
+    }
+
+    .boston .bos-head {
+        width: min(calc(100% - 18px), 1320px) !important;
+    }
+
+    .boston .bos-hero {
+        padding-top: 18px !important;
+        padding-bottom: 14px !important;
+    }
+
+    .boston .bos h1,
+    .boston h1 {
+        font-size: clamp(2.5rem, 14vw, 4rem) !important;
+    }
+
+    .boston .bos-lede {
+        font-size: 0.92rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .boston .bos-start-panel {
+        padding-top: 14px !important;
+        padding-bottom: 18px !important;
+    }
+
+    .boston .bos-start-heading {
+        min-height: auto !important;
+        align-content: start !important;
+        align-items: start !important;
+        gap: 8px !important;
+        padding: 0 0 12px !important;
+    }
+
+    .boston .bos-start-heading h2 {
+        font-size: clamp(1.8rem, 10vw, 2.45rem) !important;
+    }
+
+    .boston .bos-start-heading .bos-section-text {
+        font-size: 0.86rem !important;
+        line-height: 1.38 !important;
+    }
+
+    .boston .bos-choice-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        padding: 18px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card h3 {
+        font-size: clamp(1.45rem, 8vw, 2rem) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card p {
+        min-height: 0;
+        margin-top: 8px !important;
+        font-size: 0.92rem !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        min-height: 0;
+        margin-top: 12px;
+        padding-top: 10px !important;
+    }
+
+    .boston .bos-wrap > .bos-section,
+    .boston .bos-contact {
+        min-height: auto !important;
+        padding-top: 34px !important;
+        padding-bottom: 34px !important;
+    }
+
+    .boston .bos-path-grid .bos-card {
+        min-height: auto !important;
+    }
+
+    .boston .bos-path-grid .bos-card p,
+    .boston .bos-path-grid .bos-details {
+        min-height: 0;
+    }
+}

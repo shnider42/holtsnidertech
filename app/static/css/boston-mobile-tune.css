@@ -1,0 +1,218 @@
+/*
+ * ht3 mobile tune.
+ *
+ * Loaded after the first-screen bridge so phone-sized screens get a deliberate
+ * one-column rhythm instead of inheriting the larger desktop card composition.
+ */
+
+@media (max-width: 850px) {
+    .boston .bos-links:empty {
+        display: none !important;
+    }
+
+    .boston .bos-head {
+        grid-template-columns: 1fr !important;
+        width: min(calc(100% - 22px), 1320px) !important;
+        padding: 9px 10px !important;
+    }
+
+    .boston .bos-mark {
+        justify-self: start;
+        min-height: 30px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        font-size: clamp(0.84rem, 3.4vw, 0.98rem) !important;
+        letter-spacing: 0.02em !important;
+    }
+
+    .boston .bos-first-screen {
+        padding-top: clamp(46px, 8.8svh, 62px) !important;
+    }
+
+    .boston .bos-hero {
+        padding-top: clamp(8px, 2.5svh, 16px) !important;
+        padding-bottom: clamp(10px, 3svh, 18px) !important;
+    }
+
+    .boston .bos-hero .bos-kicker {
+        margin-bottom: 6px !important;
+        font-size: 0.66rem !important;
+        letter-spacing: 0.11em !important;
+    }
+
+    .boston .bos-hero h1 {
+        max-width: min(100%, 10ch) !important;
+        font-size: clamp(3.05rem, 16vw, 5.25rem) !important;
+        line-height: 0.80 !important;
+        letter-spacing: -0.078em !important;
+    }
+
+    .boston .bos-start-panel {
+        margin-top: 0 !important;
+        padding-top: clamp(12px, 3.2svh, 22px) !important;
+        padding-bottom: clamp(20px, 4.2svh, 30px) !important;
+    }
+
+    .boston .bos-start-heading {
+        margin-bottom: 12px !important;
+    }
+
+    .boston .bos-start-heading h2 {
+        max-width: none !important;
+        font-size: clamp(1.55rem, 8.6vw, 2.35rem) !important;
+        line-height: 0.98 !important;
+        letter-spacing: -0.035em !important;
+    }
+
+    .boston .bos-choice-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        border: 0 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: clamp(96px, 16svh, 126px) !important;
+        padding: 14px 15px !important;
+        border-right: 1px solid color-mix(in srgb, var(--card-accent, #ff8a3d) 38%, rgba(255, 255, 255, 0.15)) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > .bos-card-label {
+        margin-bottom: 6px !important;
+        font-size: 0.58rem !important;
+        letter-spacing: 0.13em !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > h3 {
+        max-width: 9.5ch !important;
+        font-size: clamp(1.65rem, 9vw, 2.55rem) !important;
+        line-height: 0.88 !important;
+        letter-spacing: -0.055em !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::after {
+        right: -42px !important;
+        width: min(56%, 190px) !important;
+        height: min(76%, 150px) !important;
+        opacity: 0.34 !important;
+        filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.28)) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-solve::after {
+        right: -48px !important;
+        bottom: -20px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-opportunity::after {
+        right: -34px !important;
+        top: -18px !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-experience::after {
+        right: -38px !important;
+        bottom: -18px !important;
+    }
+
+    .boston .bos-choice-inline {
+        margin-top: 8px !important;
+        padding: 10px !important;
+    }
+
+    .boston .bos-choice-inline li {
+        font-size: 0.73rem !important;
+    }
+
+    .boston .bos-default-context {
+        margin-top: 12px !important;
+        padding: 15px !important;
+    }
+
+    .boston .bos-default-context h3 {
+        font-size: clamp(1.18rem, 6vw, 1.72rem) !important;
+        letter-spacing: -0.035em !important;
+    }
+
+    .boston .bos-default-context p {
+        font-size: 0.84rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .boston .bos-default-context-grid {
+        display: none !important;
+    }
+
+    .boston .bos-default-context-note {
+        margin-top: 10px !important;
+        padding-top: 10px !important;
+    }
+
+    .boston .bos-guided-flow {
+        margin-top: 12px !important;
+        padding: 15px !important;
+    }
+
+    .boston .bos-guided-flow h3 {
+        font-size: clamp(1.34rem, 7vw, 2.05rem) !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    .boston .bos-guided-flow-intro {
+        font-size: 0.85rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .boston .bos-guided-flow-options,
+    .boston .bos-flow-example-grid,
+    .boston .bos-context-fields {
+        gap: 10px !important;
+        margin-top: 14px !important;
+    }
+
+    .boston .bos-guided-flow-option-button {
+        min-height: auto !important;
+        padding: 14px !important;
+        gap: 7px !important;
+    }
+
+    .boston .bos-guided-flow-option-button .bos-guided-flow-tag {
+        font-size: 0.6rem !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    .boston .bos-guided-flow-option-button strong {
+        font-size: clamp(1.18rem, 6.4vw, 1.78rem) !important;
+        line-height: 0.96 !important;
+        letter-spacing: -0.045em !important;
+    }
+
+    .boston .bos-guided-flow-option-button span:last-child {
+        font-size: 0.83rem !important;
+        line-height: 1.32 !important;
+    }
+
+    .boston .bos-flow-example-card {
+        min-height: 110px !important;
+        padding: 13px !important;
+    }
+
+    .boston .bos-guided-flow-action {
+        gap: 10px !important;
+        margin-top: 14px !important;
+        padding-top: 12px !important;
+    }
+
+    .boston .bos-flow-back,
+    .boston .bos-flow-mailto {
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 430px) {
+    .boston .bos-hero h1 {
+        font-size: clamp(2.86rem, 15.8vw, 4.6rem) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > h3 {
+        font-size: clamp(1.48rem, 8.5vw, 2.18rem) !important;
+    }
+}

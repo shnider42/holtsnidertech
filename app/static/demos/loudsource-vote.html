@@ -10,24 +10,83 @@
   <link rel="stylesheet" href="/static/css/staging-background-boost.css" />
   <link rel="stylesheet" href="/static/css/proof-capabilities.css" />
   <style>
-    .demo-wrap{padding:56px 0 120px}.demo-shell{max-width:980px;margin:0 auto}.vote-panel{padding:32px;border:1px solid rgba(198,208,218,.16);border-radius:28px;background:linear-gradient(135deg,rgba(255,138,61,.18),rgba(45,143,139,.14)),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));box-shadow:0 24px 60px rgba(0,0,0,.28)}.vote-grid{display:grid;gap:14px;margin-top:28px}.vote-card{padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04)}.vote-top{display:flex;justify-content:space-between;gap:16px;align-items:center}.vote-card strong{color:var(--text)}.vote-card button{border:0;border-radius:999px;padding:10px 14px;background:linear-gradient(135deg,var(--orange),#ff9e5c);color:#101010;font-weight:800;cursor:pointer}.bar{height:9px;margin-top:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--green),var(--orange));transition:width .2s ease}.back-link{display:inline-flex;margin-bottom:24px;color:var(--green);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem}.demo-note{color:var(--muted);font-size:.95rem}</style>
+    .demo-wrap{padding:56px 0 120px}.demo-shell{max-width:1080px;margin:0 auto}.back-link{display:inline-flex;margin-bottom:24px;color:var(--green);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.85rem}.vote-panel{padding:clamp(24px,4vw,42px);border:1px solid rgba(45,215,110,.26);border-radius:28px;background:radial-gradient(circle at 14% 10%,rgba(45,215,110,.22),transparent 28%),radial-gradient(circle at 88% 72%,rgba(255,79,139,.18),transparent 32%),linear-gradient(135deg,rgba(7,18,24,.94),rgba(10,24,18,.92));box-shadow:0 24px 70px rgba(0,0,0,.34)}.demo-note{color:var(--muted);font-size:.95rem}.loud-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:22px;margin-top:28px}.now-card,.queue-card,.add-card{border:1px solid rgba(255,255,255,.12);border-radius:22px;background:rgba(255,255,255,.045);padding:18px}.now-card{display:grid;gap:14px}.album-art{aspect-ratio:1;border-radius:20px;background:linear-gradient(135deg,#2dd76e,#ff4f8b 55%,#ff8a3d);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 20px 40px rgba(0,0,0,.24);position:relative;overflow:hidden}.album-art:before{content:"";position:absolute;inset:18%;border:10px solid rgba(8,16,24,.46);border-radius:50%;box-shadow:0 0 0 999px rgba(8,16,24,.08)}.now-meta h2{margin:0;color:var(--text);font-size:clamp(1.45rem,3vw,2.8rem);line-height:.95;letter-spacing:-.055em}.now-meta p{margin:6px 0 0;color:var(--muted)}.meter{height:10px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}.meter span{display:block;height:100%;width:37%;background:linear-gradient(90deg,#2dd76e,#ff4f8b,#ff8a3d);transition:width .2s ease}.controls{display:flex;flex-wrap:wrap;gap:10px}.controls button,.vote-card button,.add-card button{border:0;border-radius:999px;padding:10px 14px;background:linear-gradient(135deg,#2dd76e,#ff8a3d);color:#071018;font-weight:900;cursor:pointer}.controls button.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.14)}.queue-card h3,.add-card h3{margin:0 0 14px;color:var(--text);font-size:1.35rem}.vote-grid{display:grid;gap:12px}.vote-card{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04)}.vote-top{display:flex;justify-content:space-between;gap:14px;align-items:center}.vote-card strong{color:var(--text)}.vote-card small{display:block;margin-top:2px;color:var(--muted)}.bar{height:8px;margin-top:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#2dd76e,#ff4f8b,#ff8a3d);transition:width .2s ease}.add-card{margin-top:18px}.add-row{display:grid;grid-template-columns:1fr auto;gap:10px}.add-row input{min-width:0;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(8,16,24,.52);color:var(--text);padding:10px 14px;font:inherit}.queue-hint{margin-top:14px;color:var(--muted);font-size:.9rem}@media(max-width:860px){.loud-grid{grid-template-columns:1fr}.album-art{max-width:280px}.add-row{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
   <main class="demo-wrap">
     <div class="container demo-shell">
       <a class="back-link" href="/">← Back to Holtsnider Tech</a>
       <section class="vote-panel">
-        <p class="section-label">Interactive Daily Flyer Demo</p>
+        <p class="section-label">Interactive prototype</p>
         <h1 class="section-title">LoudSource Voting Flyer</h1>
-        <p class="section-text">A functional demonstration of how a Daily Flyer page could become participatory: people vote on prompts, songs, themes, fundraiser ideas, events, or community picks.</p>
-        <p class="demo-note">For this portfolio demo, votes are stored only in this browser tab.</p>
-        <div class="vote-grid" id="voteGrid"></div>
+        <p class="section-text">A functional demo for a vote-to-queue page: people can vote tracks upward, add a suggestion, and see how the next-up queue changes.</p>
+        <p class="demo-note">Portfolio demo only. Votes live in this browser tab and reset on refresh.</p>
+        <div class="loud-grid">
+          <article class="now-card">
+            <div class="album-art" aria-hidden="true"></div>
+            <div class="now-meta">
+              <p class="section-label">Now playing</p>
+              <h2 id="nowTitle">Loading track</h2>
+              <p id="nowArtist">LoudSource demo queue</p>
+            </div>
+            <div class="meter" aria-label="Demo progress"><span id="progressBar"></span></div>
+            <div class="controls">
+              <button id="playPause">Pause demo</button>
+              <button class="secondary" id="skipTrack">Skip to winner</button>
+            </div>
+          </article>
+          <div>
+            <article class="queue-card">
+              <h3>Community queue</h3>
+              <div class="vote-grid" id="voteGrid"></div>
+              <p class="queue-hint" id="queueHint">Top voted track becomes next when the current song ends.</p>
+            </article>
+            <article class="add-card">
+              <h3>Add a suggestion</h3>
+              <div class="add-row">
+                <input id="songInput" maxlength="48" placeholder="Song / theme / community pick" />
+                <button id="addSong">Add</button>
+              </div>
+            </article>
+          </div>
+        </div>
       </section>
     </div>
   </main>
   <script>
-    const items=[{name:'Song of the Day',votes:8},{name:'Local History Feature',votes:5},{name:'Community Shoutout',votes:3},{name:'Trivia Challenge',votes:7}];
-    const render=()=>{const max=Math.max(...items.map(i=>i.votes));document.getElementById('voteGrid').innerHTML=items.map((i,idx)=>`<article class="vote-card"><div class="vote-top"><strong>${i.name}</strong><button data-idx="${idx}">Vote</button></div><div class="bar"><span style="width:${Math.round((i.votes/max)*100)}%"></span></div><p class="demo-note">${i.votes} votes</p></article>`).join('');document.querySelectorAll('button[data-idx]').forEach(b=>b.addEventListener('click',()=>{items[Number(b.dataset.idx)].votes++;render()}))};render();
+    const items=[
+      {name:'Song of the Day',artist:'House pick',votes:8},
+      {name:'Local History Feature',artist:'Community table',votes:5},
+      {name:'Community Shoutout',artist:'Open mic',votes:3},
+      {name:'Trivia Challenge',artist:'Living room team',votes:7}
+    ];
+    let now={name:'Opening Track',artist:'LoudSource demo'};
+    let playing=true;
+    let progress=37;
+    const voteGrid=document.getElementById('voteGrid');
+    const nowTitle=document.getElementById('nowTitle');
+    const nowArtist=document.getElementById('nowArtist');
+    const progressBar=document.getElementById('progressBar');
+    const playPause=document.getElementById('playPause');
+    const queueHint=document.getElementById('queueHint');
+    const render=()=>{
+      items.sort((a,b)=>b.votes-a.votes);
+      const max=Math.max(...items.map(i=>i.votes),1);
+      nowTitle.textContent=now.name;
+      nowArtist.textContent=now.artist;
+      progressBar.style.width=`${progress}%`;
+      queueHint.textContent=items.length?`Next up if the song ended now: ${items[0].name}`:'Add a suggestion to rebuild the queue.';
+      voteGrid.innerHTML=items.map((i,idx)=>`<article class="vote-card"><div class="vote-top"><div><strong>${i.name}</strong><small>${i.artist} · ${i.votes} votes</small></div><button data-idx="${idx}">Vote</button></div><div class="bar"><span style="width:${Math.round((i.votes/max)*100)}%"></span></div></article>`).join('');
+      document.querySelectorAll('button[data-idx]').forEach(b=>b.addEventListener('click',()=>{items[Number(b.dataset.idx)].votes++;render()}));
+    };
+    const skip=()=>{if(!items.length)return;now={name:items[0].name,artist:items[0].artist};items[0].votes=Math.max(0,Math.floor(items[0].votes/2));progress=0;render();};
+    playPause.addEventListener('click',()=>{playing=!playing;playPause.textContent=playing?'Pause demo':'Resume demo'});
+    document.getElementById('skipTrack').addEventListener('click',skip);
+    document.getElementById('addSong').addEventListener('click',()=>{const input=document.getElementById('songInput');const name=input.value.trim();if(!name)return;items.push({name,artist:'Audience suggestion',votes:1});input.value='';render()});
+    document.getElementById('songInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('addSong').click()});
+    setInterval(()=>{if(!playing)return;progress+=4;if(progress>=100)skip();else render()},1300);
+    render();
   </script>
 </body>
 </html>
