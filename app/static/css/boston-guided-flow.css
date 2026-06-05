@@ -1,6 +1,7 @@
 @import url("/static/css/boston-progressive-flow.css");
 @import url("/static/css/boston-flow-prettify.css");
 @import url("/static/css/boston-card-illustrations.css");
+@import url("/static/css/boston-default-context.css");
 
 .boston .bos-guided-flow {
     display: none;
