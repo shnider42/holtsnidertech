@@ -1,0 +1,132 @@
+/*
+ * Default context layer.
+ *
+ * This is the resting state below the four first-screen choices. It explains
+ * what the cards do before a visitor commits to a specific path.
+ */
+
+.boston .bos-default-context {
+    margin-top: clamp(14px, 2svh, 24px);
+    padding: clamp(18px, 2.5vw, 30px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background:
+        radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--ht-choice-solve, #ff8a3d) 15%, transparent), transparent 32%),
+        radial-gradient(circle at 40% 0%, color-mix(in srgb, var(--ht-choice-launch, #7dff9b) 10%, transparent), transparent 30%),
+        radial-gradient(circle at 72% 0%, color-mix(in srgb, var(--ht-choice-experience, #6aa9ff) 12%, transparent), transparent 30%),
+        radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--ht-choice-discovery, #2d8f8b) 15%, transparent), transparent 32%),
+        linear-gradient(135deg, rgba(8, 16, 24, 0.66), rgba(8, 16, 24, 0.38));
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(244, 241, 234, 0.055);
+}
+
+.boston .bos-default-context[hidden] {
+    display: none !important;
+}
+
+.boston .bos-default-context-head {
+    display: grid;
+    gap: 8px;
+    max-width: 920px;
+}
+
+.boston .bos-default-context-eyebrow {
+    margin: 0;
+    color: color-mix(in srgb, var(--ht-choice-discovery, #2d8f8b) 72%, #f4f1ea);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.boston .bos-default-context h3 {
+    margin: 0;
+    color: #f4f1ea;
+    font-family: var(--bos-font-display, "Bahnschrift", "Segoe UI", system-ui, sans-serif);
+    font-size: clamp(1.45rem, 2.55vw, 2.9rem);
+    font-weight: 950;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+}
+
+.boston .bos-default-context p {
+    max-width: 78ch;
+    margin: 0;
+    color: rgba(244, 241, 234, 0.78);
+    font-size: clamp(0.88rem, 1vw, 1rem);
+    line-height: 1.5;
+}
+
+.boston .bos-default-context-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(10px, 1.25vw, 16px);
+    margin-top: clamp(16px, 2.2vw, 26px);
+}
+
+.boston .bos-default-context-card {
+    display: grid;
+    gap: 7px;
+    min-height: 118px;
+    padding: clamp(14px, 1.7vw, 20px);
+    border: 1px solid color-mix(in srgb, var(--default-card-accent, #2d8f8b) 28%, rgba(255, 255, 255, 0.13));
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--default-card-accent, #2d8f8b) 10%, transparent), rgba(255, 255, 255, 0.028) 58%),
+        rgba(8, 16, 24, 0.34);
+}
+
+.boston .bos-default-context-card[data-context-key="solve"] {
+    --default-card-accent: var(--ht-choice-solve, #ff8a3d);
+}
+
+.boston .bos-default-context-card[data-context-key="launch"] {
+    --default-card-accent: var(--ht-choice-launch, #7dff9b);
+}
+
+.boston .bos-default-context-card[data-context-key="experience"] {
+    --default-card-accent: var(--ht-choice-experience, #6aa9ff);
+}
+
+.boston .bos-default-context-card[data-context-key="discovery"] {
+    --default-card-accent: var(--ht-choice-discovery, #2d8f8b);
+}
+
+.boston .bos-default-context-card strong {
+    color: color-mix(in srgb, var(--default-card-accent, #2d8f8b) 32%, #f4f1ea);
+    font-family: var(--bos-font-display, "Bahnschrift", "Segoe UI", system-ui, sans-serif);
+    font-size: clamp(1.05rem, 1.35vw, 1.45rem);
+    font-weight: 950;
+    letter-spacing: -0.045em;
+    line-height: 1;
+}
+
+.boston .bos-default-context-card span {
+    color: rgba(244, 241, 234, 0.74);
+    font-size: 0.84rem;
+    line-height: 1.38;
+}
+
+.boston .bos-default-context-note {
+    margin-top: clamp(14px, 1.8vw, 22px) !important;
+    padding-top: clamp(12px, 1.5vw, 18px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(244, 241, 234, 0.72) !important;
+    font-size: 0.84rem !important;
+}
+
+@media (max-width: 1080px) {
+    .boston .bos-default-context-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .boston .bos-default-context-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boston .bos-default-context-card {
+        min-height: auto;
+    }
+}
