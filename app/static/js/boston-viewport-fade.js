@@ -1,3 +1,5 @@
+import "/static/js/boston-default-context.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     const boston = document.querySelector(".boston");
 
