@@ -8,9 +8,9 @@
  */
 
 .boston .bos-first-screen {
-    min-height: auto !important;
-    grid-template-rows: auto auto auto !important;
-    align-content: start !important;
+    min-height: calc(100svh - 10px) !important;
+    grid-template-rows: auto auto minmax(min-content, 1fr) !important;
+    align-content: stretch !important;
     gap: 0 !important;
 }
 
@@ -30,8 +30,8 @@
 }
 
 .boston .bos-start-panel {
-    align-self: start !important;
-    min-height: auto !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
     padding-top: clamp(14px, 2svh, 24px) !important;
     padding-bottom: clamp(22px, 3svh, 36px) !important;
 }
@@ -56,6 +56,29 @@
 
 .boston .bos-default-context {
     margin-top: clamp(14px, 2svh, 24px) !important;
+}
+
+@media (min-width: 851px) {
+    .boston .bos-start-panel {
+        display: flex !important;
+    }
+
+    .boston .bos-start-panel > .bos-wrap {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 100%;
+    }
+
+    .boston .bos-default-context {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+    }
+
+    .boston .bos-default-context-note {
+        margin-top: auto !important;
+    }
 }
 
 @media (min-width: 1081px) and (max-height: 820px) {
