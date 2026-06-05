@@ -2,19 +2,25 @@
  * First-screen bridge tuning.
  *
  * Loaded after the card/context color layer. This keeps the opening title,
- * hero image, and start panel visually connected instead of letting the
- * viewport grid create a dead band between them.
+ * hero image, card row, and default context layer visually connected while
+ * keeping the first interaction fitted to the opening viewport on desktop.
  */
 
 .boston .bos-first-screen {
-    grid-template-rows: auto auto auto !important;
-    align-content: start !important;
+    min-height: calc(100svh - 10px) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    align-content: stretch !important;
     gap: 0 !important;
 }
 
 .boston .bos-hero {
     overflow: visible !important;
-    padding-bottom: clamp(6px, 1svh, 14px) !important;
+    padding-top: clamp(8px, 1.35svh, 18px) !important;
+    padding-bottom: clamp(10px, 1.55svh, 20px) !important;
+}
+
+.boston .bos-hero .bos-kicker {
+    margin-bottom: clamp(5px, 0.8svh, 10px) !important;
 }
 
 .boston .bos-hero::before {
@@ -23,9 +29,10 @@
 }
 
 .boston .bos-start-panel {
-    align-self: start !important;
-    min-height: auto !important;
-    padding-top: clamp(2px, 0.45svh, 8px) !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
+    padding-top: clamp(4px, 0.65svh, 10px) !important;
+    padding-bottom: clamp(12px, 1.8svh, 22px) !important;
 }
 
 .boston .bos-start-panel::before {
@@ -50,26 +57,115 @@
 }
 
 .boston .bos-start-heading {
-    margin-bottom: clamp(10px, 1.5svh, 18px) !important;
+    margin-bottom: clamp(8px, 1.15svh, 14px) !important;
+}
+
+@media (min-width: 851px) {
+    .boston .bos-start-panel > .bos-wrap {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        min-height: 0;
+    }
+
+    .boston .bos-start-panel .bos-choice-grid {
+        gap: clamp(8px, 0.95vw, 14px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: clamp(104px, 13.5svh, 158px) !important;
+        padding: clamp(14px, 1.8vw, 24px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::before {
+        margin-bottom: clamp(9px, 1.15svh, 14px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > .bos-card-label {
+        margin-bottom: clamp(5px, 0.7svh, 9px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > h3 {
+        font-size: clamp(1.58rem, 2.72vw, 3.55rem) !important;
+        line-height: 0.88 !important;
+    }
+
+    .boston .bos-default-context {
+        margin-top: clamp(10px, 1.35svh, 18px) !important;
+        padding: clamp(14px, 1.8vw, 22px) !important;
+    }
+
+    .boston .bos-default-context-head {
+        gap: 6px !important;
+    }
+
+    .boston .bos-default-context h3 {
+        font-size: clamp(1.28rem, 2.05vw, 2.35rem) !important;
+        line-height: 0.98 !important;
+    }
+
+    .boston .bos-default-context p {
+        font-size: clamp(0.82rem, 0.92vw, 0.95rem) !important;
+        line-height: 1.42 !important;
+    }
+
+    .boston .bos-default-context-grid {
+        gap: clamp(8px, 1vw, 13px) !important;
+        margin-top: clamp(10px, 1.4vw, 16px) !important;
+    }
+
+    .boston .bos-default-context-card {
+        min-height: clamp(78px, 9.6svh, 112px) !important;
+        padding: clamp(10px, 1.2vw, 15px) !important;
+    }
+
+    .boston .bos-default-context-card strong {
+        font-size: clamp(0.98rem, 1.12vw, 1.24rem) !important;
+    }
+
+    .boston .bos-default-context-card span {
+        font-size: clamp(0.74rem, 0.78vw, 0.82rem) !important;
+        line-height: 1.32 !important;
+    }
+
+    .boston .bos-default-context-note {
+        margin-top: clamp(9px, 1.2vw, 14px) !important;
+        padding-top: clamp(8px, 1vw, 12px) !important;
+        font-size: 0.78rem !important;
+        line-height: 1.35 !important;
+    }
 }
 
 @media (min-width: 1081px) and (max-height: 820px) {
+    .boston {
+        --bos-first-title-size: clamp(3.45rem, 9.4vmin, 6.95rem) !important;
+    }
+
     .boston .bos-hero {
-        padding-bottom: clamp(4px, 0.75svh, 10px) !important;
+        padding-top: clamp(5px, 0.8svh, 10px) !important;
+        padding-bottom: clamp(6px, 0.9svh, 12px) !important;
     }
 
     .boston .bos-start-panel {
         padding-top: clamp(1px, 0.25svh, 5px) !important;
+        padding-bottom: clamp(8px, 1.1svh, 14px) !important;
+    }
+
+    .boston .bos-default-context-note {
+        display: none;
     }
 }
 
 @media (max-width: 850px) {
     .boston .bos-first-screen {
+        min-height: auto !important;
         grid-template-rows: auto auto auto !important;
+        align-content: start !important;
     }
 
     .boston .bos-hero {
         overflow: hidden !important;
+        padding-top: 10px !important;
+        padding-bottom: 14px !important;
     }
 
     .boston .bos-start-panel {
