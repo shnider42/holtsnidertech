@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f1e8" />
     <title>{% block title %}{{ business_name }}{% endblock %}</title>
     <meta
         name="description"
-        content="{% block meta_description %}Holtsnider Tech provides practical technical consulting, troubleshooting, process improvement, automation, and website/system support for businesses that need clarity and real-world solutions.{% endblock %}"
+        content="{% block meta_description %}Matthew Granchelli is a Greater Boston senior accountant focused on project accounting, construction finance, reporting clarity, and cross-functional collaboration.{% endblock %}"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive-fixes.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/staging-polish.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/staging-background-boost.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop-background-flow.css') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{% block og_title %}Matthew Granchelli | Senior Accountant{% endblock %}" />
+    <meta property="og:description" content="Project accounting, construction finance, reporting clarity, and dependable collaboration." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/matthew.css') }}" />
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     {% block content %}{% endblock %}
-    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/matthew.js') }}"></script>
 </body>
 </html>
