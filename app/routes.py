@@ -1,10 +1,15 @@
-from flask import Blueprint, Response, render_template
+from flask import Blueprint, Response, render_template, url_for
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/")
 def home():
+    return render_template("matthew_granchelli.html")
+
+
+@main.route("/holtsnidertech")
+def holtsnidertech_preview():
     return render_template(
         "home.html",
         business_name="Holtsnider Tech",
@@ -14,30 +19,24 @@ def home():
 
 @main.route("/healthz")
 def healthz():
-    return {"status": "ok", "service": "holtsnidertech"}
+    return {"status": "ok", "service": "matthew-granchelli-profile"}
 
 
 @main.route("/robots.txt")
 def robots_txt():
-    body = "User-agent: *\nAllow: /\nSitemap: https://holtsnidertech.com/sitemap.xml\n"
+    sitemap_url = url_for("main.sitemap_xml", _external=True)
+    body = f"User-agent: *\nAllow: /\nSitemap: {sitemap_url}\n"
     return Response(body, mimetype="text/plain")
 
 
 @main.route("/sitemap.xml")
 def sitemap_xml():
-    body = """<?xml version="1.0" encoding="UTF-8"?>
+    home_url = url_for("main.home", _external=True)
+    body = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://holtsnidertech.com/</loc>
+    <loc>{home_url}</loc>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/static/demos/grepper.html</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://holtsnidertech.com/static/demos/loudsource-vote.html</loc>
-    <priority>0.7</priority>
   </url>
 </urlset>
 """
