@@ -1,0 +1,61 @@
+name: Matthew Portfolio Smoke Test
+
+on:
+  push:
+    branches:
+      - matthew-granchelli-site
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile Python files
+        run: python -m compileall app app.py run.py
+
+      - name: Exercise Flask routes
+        run: |
+          python - <<'PY'
+          from run import app
+
+          client = app.test_client()
+          expected = {
+              "/": "text/html",
+              "/healthz": "application/json",
+              "/robots.txt": "text/plain",
+              "/sitemap.xml": "application/xml",
+          }
+
+          for path, content_type in expected.items():
+              response = client.get(path, base_url="https://example.test")
+              assert response.status_code == 200, (path, response.status_code)
+              assert response.content_type.startswith(content_type), (
+                  path,
+                  response.content_type,
+              )
+
+          html = client.get("/").get_data(as_text=True)
+          for expected_text in (
+              "Matthew Granchelli",
+              "DB Contractors, Inc.",
+              "UNC Chapel Hill",
+              "matthew.css",
+              "matthew.js",
+          ):
+              assert expected_text in html, expected_text
+          PY
