@@ -56,6 +56,9 @@ jobs:
               "UNC Chapel Hill",
               "matthew.css",
               "matthew.js",
+              "https://www.linkedin.com/in/matthew-granchelli-558522237",
           ):
               assert expected_text in html, expected_text
+
+          assert "https://www.linkedin.com/in/matthew-granchelli\"" not in html
           PY
