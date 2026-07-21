@@ -2,6 +2,12 @@
 
 This branch contains a standalone professional profile site for Matthew Granchelli. It reuses the existing Flask deployment structure from HoltsniderTech while replacing the public-facing design and copy.
 
+## Source profile
+
+`https://www.linkedin.com/in/matthew-granchelli-558522237`
+
+The page links directly to this profile in the header, hero, contact section, and HTML identity metadata.
+
 ## Branch
 
 `matthew-granchelli-site`
@@ -39,4 +45,4 @@ Create a new Render Blueprint from this repository and select this branch. This 
 
 ## Content note
 
-The initial copy is based only on publicly available professional information. Before treating the site as Matthew's official portfolio, confirm the preferred biography, contact details, role history, and any additional work examples directly with him.
+The copy is based only on publicly available professional information from the source profile above. Before treating the site as Matthew's official portfolio, confirm the preferred biography, contact details, role history, and any additional work examples directly with him.
