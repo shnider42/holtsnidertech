@@ -1,0 +1,89 @@
+/*
+ * Holtsnider Tech flow-clarity layer.
+ *
+ * This file intentionally loads after the existing Boston Practical styles.
+ * It removes leftover experimental UI and polishes the current visitor flow
+ * without rewriting the visual system underneath it.
+ */
+
+/* The four entry cards already explain the choices; the older injected
+ * "default context" panel repeats the same information and adds another layer
+ * before the visitor has done anything. */
+.boston .bos-default-context {
+    display: none !important;
+}
+
+/* Keep the restored desktop navigation useful but quiet. */
+.boston .bos-links [data-clarity-nav] {
+    opacity: 0.86;
+    text-decoration: none;
+}
+
+.boston .bos-links [data-clarity-nav]:hover,
+.boston .bos-links [data-clarity-nav]:focus-visible {
+    opacity: 1;
+}
+
+/* Optional intake should feel secondary to simply contacting a person. */
+.boston .bos-guided-flow-action .bos-actions {
+    justify-content: flex-start;
+    margin-top: 0 !important;
+}
+
+.boston .bos-guided-flow-action .bos-actions .bos-btn {
+    min-width: 150px;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"] {
+    padding-top: 4px;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"]::before {
+    content: "Optional context — skip anything you do not know yet.";
+    grid-column: 1 / -1;
+    color: rgba(244, 241, 234, 0.62);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+/* Give the direct browse path a little breathing room when it becomes visible. */
+.boston #experience:not([hidden]),
+.boston #work:not([hidden]),
+.boston #case-shapes:not([hidden]) {
+    scroll-margin-top: 92px;
+}
+
+/* The technology strip remains horizontally scrollable, but it should read as
+ * intentionally interactive rather than something that moves on its own. */
+.boston .bos-stack-grid {
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+}
+
+.boston .bos-stack-grid .bos-mini {
+    scroll-snap-align: start;
+}
+
+/* Small cue that project cards leave the site when appropriate. */
+.boston #work a[target="_blank"] .bos-card-action::after,
+.boston .bos-flow-example-card[target="_blank"] strong::after {
+    content: " ↗";
+    font-size: 0.78em;
+    opacity: 0.72;
+}
+
+/* Keep the mobile first screen focused on the four choices. */
+@media (max-width: 850px) {
+    .boston .bos-links [data-clarity-nav] {
+        display: none !important;
+    }
+
+    .boston .bos-guided-flow-action .bos-actions {
+        width: 100%;
+    }
+
+    .boston .bos-guided-flow-action .bos-actions .bos-btn {
+        width: 100%;
+    }
+}
