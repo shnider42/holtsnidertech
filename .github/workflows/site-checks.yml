@@ -32,10 +32,13 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r requirements-dev.txt
 
+      - name: Install Chromium for browser tests
+        run: python -m playwright install --with-deps chromium
+
       - name: Compile Python
         run: python -m compileall -q app
 
-      - name: Run route tests
+      - name: Run site tests
         run: python -m pytest -q
 
       - name: Set up Node.js
