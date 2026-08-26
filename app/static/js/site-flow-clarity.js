@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const page = document.querySelector(".boston");
     if (!page) return;
 
+    const CONTACT_EMAIL = "chris@holtsnidertech.com";
     const browseSections = ["#experience", "#work", "#case-shapes"]
         .map((selector) => page.querySelector(selector))
         .filter(Boolean);
@@ -134,6 +135,68 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
+    const directEmailHref = (pathKey) => {
+        const subjects = {
+            solve: "Holtsnider Tech - problem to solve",
+            opportunity: "Holtsnider Tech - idea or improvement",
+            discovery: "Holtsnider Tech - not sure where to start"
+        };
+        const subject = subjects[pathKey] || "Holtsnider Tech inquiry";
+        const body = "Hi Chris,\n\nI came through the Holtsnider Tech site and wanted to reach out.\n\n";
+        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const enhanceGuidedDetail = () => {
+        const panel = page.querySelector("#guided-flow.is-active[data-active-context]");
+        if (!panel) return;
+
+        const fields = panel.querySelector(".bos-context-fields:not(.bos-context-copy-panel)");
+        const action = panel.querySelector(".bos-guided-flow-action");
+        if (!fields || !action || fields.dataset.clarityEnhanced === "true") return;
+
+        fields.dataset.clarityEnhanced = "true";
+        fields.hidden = true;
+        fields.setAttribute("aria-label", "Optional additional context");
+
+        const actionText = action.querySelector("p");
+        if (actionText) {
+            actionText.textContent = "You can email now with no form. Add a little context only if it would make the first conversation easier.";
+        }
+
+        const noteButton = action.querySelector(".bos-flow-mailto");
+        if (noteButton) {
+            noteButton.textContent = "Prepare a detailed note";
+            noteButton.hidden = true;
+        }
+
+        const controls = document.createElement("div");
+        controls.className = "bos-actions";
+        controls.style.marginTop = "0";
+
+        const emailLink = document.createElement("a");
+        emailLink.className = "bos-btn";
+        emailLink.href = directEmailHref(panel.dataset.activeFlow);
+        emailLink.textContent = "Email Chris";
+
+        const detailToggle = document.createElement("button");
+        detailToggle.type = "button";
+        detailToggle.className = "bos-btn alt";
+        detailToggle.textContent = "Add context (optional)";
+        detailToggle.setAttribute("aria-expanded", "false");
+
+        detailToggle.addEventListener("click", () => {
+            const willOpen = fields.hidden;
+            fields.hidden = !willOpen;
+            if (noteButton) noteButton.hidden = !willOpen;
+            detailToggle.setAttribute("aria-expanded", String(willOpen));
+            detailToggle.textContent = willOpen ? "Hide optional context" : "Add context (optional)";
+        });
+
+        controls.append(emailLink, detailToggle);
+        if (noteButton) controls.append(noteButton);
+        action.appendChild(controls);
+    };
+
     // Keep the visual system, but make the four entry points read like visitor intents.
     setText(".bos-hero .bos-kicker", "Technical problem solving + project building");
 
@@ -227,6 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (intro?.textContent === "Pick the closest starting point. This is the Opportunity Engineering lane.") {
             intro.textContent = "Pick the closest starting point. The idea can still be rough; we can narrow it from there.";
         }
+
+        enhanceGuidedDetail();
     };
 
     const observer = new MutationObserver(normalizeGuidedCopy);
