@@ -105,6 +105,21 @@
     opacity: 0.82;
 }
 
+/* Several older polish layers animate elements from opacity: 0. Reduced-motion
+ * users should not lose the content when those animations are suppressed. */
+@media (prefers-reduced-motion: reduce) {
+    .boston .bos-start-panel .bos-choice-card,
+    .boston .bos-guided-flow-option-button,
+    .boston .bos-flow-example-card,
+    .boston .bos-context-field,
+    .boston .bos-guided-flow-action {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
 /* Keep the mobile first screen focused on the four choices, while retaining the
  * one-sentence explanation of what Holtsnider Tech actually does. */
 @media (max-width: 850px) {
