@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
         .map((selector) => page.querySelector(selector))
         .filter(Boolean);
 
+    const setText = (selector, text) => {
+        const node = page.querySelector(selector);
+        if (node) node.textContent = text;
+    };
+
     const setCardCopy = (selector, title, body, action) => {
         const card = page.querySelector(selector);
         if (!card) return;
@@ -61,7 +66,77 @@ document.addEventListener("DOMContentLoaded", () => {
         panel.textContent = "";
     };
 
+    const normalizeBrowseCopy = () => {
+        setText("#experience .bos-section-heading h2", "Engineering background");
+        setText(
+            "#experience .bos-section-heading .bos-section-text",
+            "The through-line is practical systems work: reliability, infrastructure, automation, troubleshooting, and translating technical detail into decisions people can act on."
+        );
+
+        const experienceCards = page.querySelectorAll("#experience .bos-experience-grid .bos-card");
+        const experienceCopy = [
+            [
+                "Reliability when systems matter",
+                "Incident response, production-impacting failures, storage reliability, replication quality, data integrity, and long-term stability work."
+            ],
+            [
+                "Hands-on infrastructure and labs",
+                "Rack-level systems, switches, VLANs, Fibre Channel, Linux, VMware, and realistic environments built to reproduce difficult problems."
+            ],
+            [
+                "Automation that removes repeat work",
+                "Python, APIs, Terraform, GitHub workflows, CLI tools, and repeatable processes that make technical work easier to operate and review."
+            ],
+            [
+                "Technical depth without the fog",
+                "Turning low-level engineering detail into useful direction for customers, engineers, vendors, stakeholders, and non-specialists."
+            ]
+        ];
+
+        experienceCards.forEach((card, index) => {
+            const copy = experienceCopy[index];
+            if (!copy) return;
+            const heading = card.querySelector("h3");
+            const body = card.querySelector("p");
+            if (heading) heading.textContent = copy[0];
+            if (body) body.textContent = copy[1];
+        });
+
+        const experiencePrimary = page.querySelector("#experience .bos-actions .bos-btn");
+        if (experiencePrimary) experiencePrimary.textContent = "Talk about a role or project";
+
+        setText("#work .bos-section-heading h2", "Projects you can actually open");
+        setText(
+            "#work .bos-section-heading .bos-section-text",
+            "Public examples of how I turn a loose idea into something usable: different audiences, different problems, and enough working product to evaluate the idea for real."
+        );
+
+        page.querySelectorAll("#work .bos-work-card").forEach((card) => {
+            const title = card.querySelector("h3")?.textContent?.trim();
+            const body = card.querySelector("p");
+            if (!body) return;
+
+            if (title === "Irish Today") {
+                body.textContent = "A live daily culture page that turns a repeatable content pipeline into a polished, themed experience.";
+            } else if (title === "Grepper") {
+                body.textContent = "A job-search tool that parses Workday postings, ranks results, and packages the workflow into a usable browser-style demo.";
+            } else if (title === "LoudSource Voting Flyer") {
+                body.textContent = "An interactive voting prototype that turns a static content concept into a participatory experience.";
+            } else if (title === "Your Passage") {
+                body.textContent = "A personalized daily-page concept built from the same reusable content engine, adapted to a very different audience and tone.";
+            }
+        });
+
+        setText("#case-shapes .bos-section-heading h2", "Professional work behind the portfolio");
+        setText(
+            "#case-shapes .bos-section-heading .bos-section-text",
+            "Not every useful project can be linked publicly. These are representative shapes of the enterprise, infrastructure, troubleshooting, and automation work behind the public demos."
+        );
+    };
+
     // Keep the visual system, but make the four entry points read like visitor intents.
+    setText(".bos-hero .bos-kicker", "Technical problem solving + project building");
+
     setCardCopy(
         ".bos-choice-solve",
         "Fix a Problem",
@@ -119,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
             page.querySelectorAll(".bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
             experienceCard.classList.add("is-selected");
             showBrowseSections();
+            normalizeBrowseCopy();
 
             window.requestAnimationFrame(() => {
                 page.querySelector("#experience")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -156,4 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer = new MutationObserver(normalizeGuidedCopy);
     observer.observe(page, { childList: true, subtree: true });
     normalizeGuidedCopy();
+
+    // Later homepage scripts also normalize project cards. Run this once after all
+    // DOMContentLoaded handlers have had a chance to finish so visitor-facing copy wins.
+    window.requestAnimationFrame(normalizeBrowseCopy);
 });
