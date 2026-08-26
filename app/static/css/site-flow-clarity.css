@@ -79,6 +79,7 @@
 }
 
 .boston .bos-context-fields[data-clarity-enhanced="true"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     padding-top: 4px;
 }
 
@@ -90,6 +91,10 @@
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.04em;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"] .bos-context-field:last-child {
+    grid-column: 1 / -1;
 }
 
 /* Give the direct browse path a little breathing room when it becomes visible. */
@@ -171,6 +176,14 @@
      * "Start troubleshooting"-style label is redundant and costs space. */
     .boston .bos-start-panel .bos-choice-card .bos-choice-action {
         display: none !important;
+    }
+
+    .boston .bos-context-fields[data-clarity-enhanced="true"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .boston .bos-context-fields[data-clarity-enhanced="true"] .bos-context-field:last-child {
+        grid-column: auto;
     }
 
     .boston .bos-guided-flow-action .bos-actions {
