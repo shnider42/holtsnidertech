@@ -2,18 +2,38 @@
 
 Holtsnider Tech is a small Flask site for Chris Holtsnider's public technical consulting / portfolio presence.
 
-The current direction is **Boston Practical**. The site is no longer being treated as a style lab. The homepage should guide visitors through a practical decision path so they can quickly choose why they are here and what kind of help they may need.
+The visual direction is **Boston Practical**: a strong, distinctive first screen wrapped around a simple question — *why are you here, and what is the most useful next step?*
 
-## Current site direction
+The site is no longer a style lab. It is a customer-facing decision path, credibility surface, and portfolio.
 
-The homepage is built around a flowchart-style first impression:
+## Current homepage flow
 
-1. **Solve** — something is broken, unclear, inefficient, risky, or stuck.
-2. **Launch an idea / Opportunity Engineering** — there is a project, workflow, automation idea, or prototype worth shaping.
-3. **HT Experience** — the visitor wants background, credibility, visible work, resume context, or role-fit information.
-4. **Start a discovery** — the visitor is not sure whether the issue is tooling, process, infrastructure, website, vendor confusion, or something else.
+The first screen uses four visitor intents:
 
-The intent is visual uniqueness without making the site confusing: strong Boston Practical styling, clear cards, practical copy, and fast paths to relevant proof/contact sections.
+1. **Fix a Problem** — something is broken, unreliable, confusing, recurring, or wasting time.
+2. **Build or Improve** — there is a new idea, workflow, site, tool, process, or existing thing worth improving.
+3. **Experience & Work** — the visitor wants engineering background, public projects, enterprise systems context, or role-fit information.
+4. **Not Sure Yet** — the visitor knows something needs attention but does not yet know the technical category.
+
+The paths intentionally behave differently:
+
+- **Fix a Problem** and **Build or Improve** use a short guided flow to narrow context.
+- **Experience & Work** skips intake and opens the browseable credibility / portfolio path directly.
+- **Not Sure Yet** goes straight into discovery rather than asking the visitor to classify the problem first.
+
+The final contact behavior is deliberately low-friction: visitors can email immediately, or optionally add context that is carried into the generated email draft.
+
+## Public positioning
+
+The plain-English positioning is:
+
+> Technical problem solving + project building.
+
+The homepage reinforces that with:
+
+> I help untangle technical problems, improve systems and workflows, and turn rough ideas into working projects.
+
+This language should stay understandable to a cold visitor. Internal terms such as *Solutions Engineering* or *Opportunity Engineering* can still describe the work, but they should not be required vocabulary for navigating the site.
 
 ## Tech stack
 
@@ -23,32 +43,51 @@ The intent is visual uniqueness without making the site confusing: strong Boston
 - Jinja templates
 - Static CSS / JavaScript
 
+## Branch workflow
+
+The intended release flow is:
+
+```text
+feat/* -> staging -> master -> Render production
+```
+
+- `master` is the production baseline and should be what Render production tracks.
+- `staging` is the integration / pre-production branch.
+- Feature branches should normally start from current `staging`.
+- Changes should not reach `master` until they have been reviewed on `staging`.
+
+`LIVE_CHECKLIST.md` contains the manual journey and deployment checks to run before promotion.
+
 ## Project structure
 
 ```text
 .
-├── app.py                     # Local debug entry point
-├── run.py                     # Render/Gunicorn entry point
-├── requirements.txt           # Runtime dependencies
-├── requirements-dev.txt       # Runtime + test dependencies
-├── render.yaml                # Render deployment config
-├── Procfile                   # Alternative process declaration
+├── app.py                         # Local debug entry point
+├── run.py                         # Render/Gunicorn entry point
+├── requirements.txt               # Runtime dependencies
+├── requirements-dev.txt           # Runtime + test dependencies
+├── render.yaml                    # Render deployment config
+├── Procfile                       # Alternative process declaration
+├── LIVE_CHECKLIST.md              # Manual UX / release verification
 ├── app/
-│   ├── __init__.py            # Flask app factory and security headers
-│   ├── routes.py              # Canonical routes and legacy redirects
+│   ├── __init__.py                # Flask app factory and security headers
+│   ├── routes.py                  # Canonical routes, sitemap, and legacy redirects
 │   ├── templates/
 │   │   ├── base.html
-│   │   ├── home.html          # Canonical homepage entry point
+│   │   ├── home.html              # Canonical homepage + public metadata
 │   │   ├── privacy.html
 │   │   └── style_variants/
-│   │       └── boston_practical.html  # Active Boston Practical implementation
+│   │       └── boston_practical.html  # Active large Boston Practical implementation
 │   └── static/
-│       ├── css/               # Site styling and Boston Practical polish layers
-│       ├── js/                # Boston homepage behavior and supporting interactions
-│       ├── demos/             # Static project demos
-│       └── html/              # Static injected fragments / project detail content
+│       ├── css/
+│       │   └── site-flow-clarity.css  # Final UX/polish layer for the active flow
+│       ├── js/
+│       │   ├── boston-site.js         # Core guided-flow implementation
+│       │   └── site-flow-clarity.js   # Current customer-facing flow normalization
+│       ├── demos/                 # Public static project demos
+│       └── html/                  # Project detail / supporting fragments
 └── tests/
-    └── test_routes.py         # Route smoke tests
+    └── test_routes.py             # Route, asset, metadata, sitemap smoke tests
 ```
 
 ## Local setup
@@ -60,10 +99,16 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install runtime dependencies:
+Install development dependencies:
 
 ```powershell
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
+Run tests:
+
+```powershell
+pytest
 ```
 
 Run locally:
@@ -78,26 +123,19 @@ Then open:
 http://127.0.0.1:5000
 ```
 
-## Running tests
+## Current automated checks
 
-Install development dependencies:
+The route tests cover that:
 
-```powershell
-pip install -r requirements-dev.txt
-```
-
-Run the smoke tests:
-
-```powershell
-pytest
-```
-
-The current tests check that:
-
-- `/` renders the canonical Boston Practical homepage
-- the homepage loads `boston-site.js` instead of the removed legacy `site.js`
+- `/` renders the canonical homepage
+- the current Boston + flow-clarity assets are loaded
+- the removed legacy `site.js` is not loaded
+- public title / sharing metadata exists
 - legacy `/style-lab` URLs redirect home instead of breaking
+- the sitemap includes the intentionally public local demos
 - `/healthz` returns the expected service status
+
+The JavaScript-heavy visitor journeys still require the manual checks in `LIVE_CHECKLIST.md`.
 
 ## Deployment
 
@@ -110,27 +148,23 @@ startCommand: gunicorn run:app
 
 `run.py` exposes the Flask app as `app`, which is what Gunicorn imports.
 
+Production should track `master`.
+
+## Architecture note
+
+The active homepage still has some history in it. `style_variants/boston_practical.html` contains the large underlying layout, while `boston-site.js` performs much of the original runtime flow construction. The current clarity pass is intentionally isolated in `site-flow-clarity.js` and `site-flow-clarity.css` so the customer experience can be improved without destabilizing the known-good visual system.
+
+That is a transition state, not the ideal final architecture.
+
 ## Cleanup direction
 
-The repo should keep moving toward:
+Once the revised customer flow is visually approved, the repo should move toward:
 
-- one canonical homepage direction, not multiple style experiments
-- less runtime copy rewriting in JavaScript
-- reusable template sections where it reduces duplication
-- small route tests before larger cleanup commits
-- visual uniqueness centered on the path-picker / decision-flow concept
+- flattening `style_variants/boston_practical.html` into the canonical homepage structure
+- moving stable customer-facing copy out of runtime JavaScript and into Jinja/HTML
+- merging the proven clarity behavior into the core flow instead of maintaining multiple behavior generations
+- removing obsolete CSS/JS layers only after confirming they are no longer carrying needed visual behavior
+- keeping public demos intentionally linked from the homepage and sitemap
+- preserving small automated route/asset tests plus the manual journey checklist
 
-Completed cleanup in `feat/ht3` includes:
-
-- retired style-lab routes now redirect to the canonical homepage
-- retired style-lab/scaffold templates were removed
-- the old overloaded `site.js` was removed from the active site and deleted from the repo
-- focused Boston homepage behavior now lives in `app/static/js/boston-site.js`
-- route smoke tests cover the canonical homepage, legacy redirects, script loading, and health check
-
-Good next cleanup candidates:
-
-- flatten `style_variants/boston_practical.html` into `home.html` when it can be done safely as a proper local file move
-- move copy that is currently normalized in `boston-site.js` directly into the Jinja template in small local patches
-- split large CSS polish files only when the split makes the active page easier to reason about
-- keep static demos, but make sure each one is intentionally linked from the homepage or sitemap
+The order matters: **prove the customer experience first, then simplify the implementation underneath it.**
