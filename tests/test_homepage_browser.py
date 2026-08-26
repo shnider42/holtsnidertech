@@ -67,10 +67,8 @@ def test_first_screen_uses_clear_visitor_choices(page):
     assert lede.is_visible()
     assert "untangle technical problems" in lede.inner_text()
 
-    titles = [
-        title.inner_text().strip()
-        for title in page.locator(".bos-start-panel .bos-choice-card h3").all()
-    ]
+    cards = page.locator(".bos-start-panel .bos-choice-card")
+    titles = [title.inner_text().strip() for title in cards.locator("h3").all()]
     assert titles == [
         "Fix a Problem",
         "Build or Improve",
@@ -78,7 +76,24 @@ def test_first_screen_uses_clear_visitor_choices(page):
         "Not Sure Yet",
     ]
 
+    descriptions = cards.locator("p")
+    assert descriptions.count() == 4
+    assert all(descriptions.nth(index).is_visible() for index in range(descriptions.count()))
     assert page.locator(".bos-default-context").count() == 0
+
+
+def test_mobile_first_screen_keeps_explanations_visible(page):
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.reload(wait_until="networkidle")
+
+    cards = page.locator(".bos-start-panel .bos-choice-card")
+    descriptions = cards.locator("p")
+    assert descriptions.count() == 4
+    assert all(descriptions.nth(index).is_visible() for index in range(descriptions.count()))
+
+    # Desktop header shortcuts should not compete with the four mobile choices.
+    assert not page.locator('[data-clarity-nav="experience"]').is_visible()
+    assert not page.locator('[data-clarity-nav="contact"]').is_visible()
 
 
 def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
