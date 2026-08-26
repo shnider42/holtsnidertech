@@ -131,6 +131,24 @@ def test_experience_bypasses_questionnaire_and_keeps_contact_choices(page):
     page.wait_for_timeout(100)
     capture(page, "experience-browse.png")
 
+    work = page.locator("#work")
+    work.scroll_into_view_if_needed()
+    page.wait_for_timeout(100)
+
+    project_titles = [
+        title.inner_text().strip()
+        for title in work.locator(".bos-work-card h3").all()
+    ]
+    assert project_titles == [
+        "Irish Today",
+        "Grepper",
+        "LoudSource Voting Flyer",
+        "Your Passage",
+    ]
+    assert work.locator('a[href*="style-lab"]').count() == 0
+    assert "tim-today.onrender.com" in work.get_by_role("link", name="Your Passage", exact=False).get_attribute("href")
+    capture(page, "projects-browse.png")
+
 
 def test_problem_flow_can_email_immediately_or_add_context(page):
     start_card(page, "bos-choice-solve").click()
