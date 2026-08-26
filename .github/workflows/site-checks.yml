@@ -46,6 +46,7 @@ jobs:
       - name: Check active JavaScript syntax
         run: |
           node --check app/static/js/boston-site.js
+          node --check app/static/js/boston-nav-cleanup.js
           node --check app/static/js/site-flow-clarity.js
           node --check app/static/js/boston-experience-scroll.js
           node --check app/static/js/boston-visible-work-cards.js
