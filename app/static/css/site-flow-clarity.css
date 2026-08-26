@@ -13,6 +13,17 @@
     display: none !important;
 }
 
+/* Put one plain-English sentence back under the hero. Older staging polish hid
+ * the lede entirely, which made a cold visitor infer too much from the cards. */
+.boston .bos-hero .bos-lede {
+    display: block !important;
+    max-width: 720px !important;
+    margin-top: 18px !important;
+    color: rgba(244, 241, 234, 0.78) !important;
+    font-size: clamp(0.96rem, 1.15vw, 1.08rem) !important;
+    line-height: 1.52 !important;
+}
+
 /* Keep the restored desktop navigation useful but quiet. */
 .boston .bos-links [data-clarity-nav] {
     opacity: 0.86;
@@ -50,7 +61,8 @@
 /* Give the direct browse path a little breathing room when it becomes visible. */
 .boston #experience:not([hidden]),
 .boston #work:not([hidden]),
-.boston #case-shapes:not([hidden]) {
+.boston #case-shapes:not([hidden]),
+.boston #contact {
     scroll-margin-top: 92px;
 }
 
@@ -73,10 +85,24 @@
     opacity: 0.72;
 }
 
-/* Keep the mobile first screen focused on the four choices. */
+/* The contact section is the end of every path, not another wall of copy. */
+.boston #contact .bos-contact-note {
+    max-width: 64ch;
+    color: rgba(244, 241, 234, 0.66);
+}
+
+/* Keep the mobile first screen focused on the four choices, while retaining the
+ * one-sentence explanation of what Holtsnider Tech actually does. */
 @media (max-width: 850px) {
     .boston .bos-links [data-clarity-nav] {
         display: none !important;
+    }
+
+    .boston .bos-hero .bos-lede {
+        display: block !important;
+        margin-top: 12px !important;
+        font-size: 0.9rem !important;
+        line-height: 1.42 !important;
     }
 
     .boston .bos-guided-flow-action .bos-actions {
