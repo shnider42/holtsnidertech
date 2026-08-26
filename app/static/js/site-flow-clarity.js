@@ -77,6 +77,21 @@ document.addEventListener("DOMContentLoaded", () => {
         panel.textContent = "";
     };
 
+    const resetActiveGuidedFlow = () => {
+        const selected = qs(".bos-start-panel .bos-choice-card.is-selected");
+
+        // Clicking an active guided card lets the original boston-site closure
+        // clear its own internal activePath state. Merely hiding its DOM would
+        // leave that closure stale and make the next same-card click misbehave.
+        if (selected && !selected.classList.contains("bos-choice-experience")) {
+            selected.click();
+        } else {
+            clearGuidedFlow();
+        }
+
+        qsa(".bos-start-panel .bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
+    };
+
     const generalMailto = (subject, intro) => {
         const body = `Hi Chris,\n\n${intro}\n\nHere's the messy version:\n\n`;
         return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -143,8 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        const workSection = qs("#work");
         const workGrid = qs("#work .bos-work-grid");
-        if (workGrid && !qs("[data-clarity-work-actions]", qs("#work"))) {
+        if (workGrid && workSection && !qs("[data-clarity-work-actions]", workSection)) {
             const actions = document.createElement("div");
             actions.className = "bos-actions";
             actions.dataset.clarityWorkActions = "true";
@@ -204,6 +220,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (secondary) {
             secondary.textContent = "Back to starting points";
             secondary.href = "#start";
+            if (secondary.dataset.clarityReset !== "true") {
+                secondary.dataset.clarityReset = "true";
+                secondary.addEventListener("click", resetActiveGuidedFlow, { capture: true });
+            }
         }
 
         setText("#contact .bos-contact-note", "Project, role-fit, troubleshooting, or “I’m not sure yet” are all valid starting points.");
@@ -242,7 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const collapseSelectedGuidedCard = () => {
-        qs(".bos-start-panel .bos-choice-card.is-selected")?.click();
+        const selected = qs(".bos-start-panel .bos-choice-card.is-selected");
+        if (selected && !selected.classList.contains("bos-choice-experience")) selected.click();
     };
 
     const ensureStartOverButton = (panel) => {
@@ -325,8 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const openExperienceBrowse = () => {
-        clearGuidedFlow();
-        qsa(".bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
+        resetActiveGuidedFlow();
         qs(".bos-choice-experience")?.classList.add("is-selected");
         showBrowseSections();
         normalizeBrowseCopy();
@@ -355,6 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
         contactLink.textContent = "Contact";
         contactLink.addEventListener("click", (event) => {
             event.preventDefault();
+            resetActiveGuidedFlow();
             smoothScrollTo("#contact");
         });
 
@@ -387,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 discoveryAdvanceQueued = true;
                 window.requestAnimationFrame(() => {
                     discoveryAdvanceQueued = false;
-                    if (panel.dataset.activeFlow === "discovery" && !panel.dataset.activeContext) options[0].click();
+                    if (panel.dataset.activeFlow === "discovery" && !panel.dataset.activeContext && options[0].isConnected) options[0].click();
                 });
                 return;
             }
