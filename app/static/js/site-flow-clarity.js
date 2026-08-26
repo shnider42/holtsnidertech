@@ -135,15 +135,81 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
-    const directEmailHref = (pathKey) => {
+    const normalizeContactCopy = () => {
+        setText("#contact h2", "Tell me what you're working through.");
+
+        const paragraphs = page.querySelectorAll("#contact > div > p");
+        if (paragraphs[0]) {
+            paragraphs[0].textContent = "You do not need a polished brief. Send the broken thing, the rough idea, the decision you are stuck on, or whatever context you already have.";
+        }
+        if (paragraphs[1]) {
+            paragraphs[1].textContent = "I start by getting the system and constraints straight, then narrow the smallest useful next move — whether that is troubleshooting, automation, a prototype, or simply a clearer decision.";
+        }
+
+        const contactPrimary = page.querySelector("#contact .bos-actions .bos-btn");
+        if (contactPrimary) contactPrimary.textContent = "Email Chris";
+
+        const contactSecondary = page.querySelector("#contact .bos-actions .bos-btn.alt");
+        if (contactSecondary) contactSecondary.textContent = "Back to starting points";
+
+        setText(
+            "#contact .bos-contact-note",
+            "Project, role-fit, troubleshooting, or “I’m not sure yet” are all valid starting points."
+        );
+    };
+
+    const flowLabel = (pathKey) => {
+        const labels = {
+            solve: "Fix a problem",
+            opportunity: "Build or improve something",
+            discovery: "Not sure where to start"
+        };
+        return labels[pathKey] || "General inquiry";
+    };
+
+    const directEmailHref = (pathKey, contextTitle = "", notes = []) => {
         const subjects = {
             solve: "Holtsnider Tech - problem to solve",
             opportunity: "Holtsnider Tech - idea or improvement",
             discovery: "Holtsnider Tech - not sure where to start"
         };
         const subject = subjects[pathKey] || "Holtsnider Tech inquiry";
-        const body = "Hi Chris,\n\nI came through the Holtsnider Tech site and wanted to reach out.\n\n";
-        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const lines = [
+            "Hi Chris,",
+            "",
+            "I came through the Holtsnider Tech site and wanted to reach out.",
+            `Starting point: ${flowLabel(pathKey)}`
+        ];
+
+        if (contextTitle) lines.push(`Closest fit: ${contextTitle}`);
+
+        const usefulNotes = notes.filter((item) => item.value.trim());
+        if (usefulNotes.length) {
+            lines.push("", "A little context:");
+            usefulNotes.forEach((item) => lines.push(`${item.label}: ${item.value.trim()}`));
+        }
+
+        lines.push("", "Here's the messy version:", "");
+        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+    };
+
+    const collapseSelectedGuidedCard = () => {
+        const selected = page.querySelector(".bos-start-panel .bos-choice-card.is-selected");
+        if (selected) selected.click();
+    };
+
+    const ensureStartOverButton = (panel) => {
+        if (!panel?.dataset.activeFlow || panel.dataset.activeContext) return;
+        const header = panel.querySelector(".bos-guided-flow-head");
+        if (!header || header.querySelector("[data-clarity-start-over]")) return;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bos-flow-back";
+        button.dataset.clarityStartOver = "true";
+        button.textContent = "Back to starting points";
+        button.addEventListener("click", collapseSelectedGuidedCard);
+        header.appendChild(button);
     };
 
     const enhanceGuidedDetail = () => {
@@ -151,32 +217,42 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!panel) return;
 
         const fields = panel.querySelector(".bos-context-fields:not(.bos-context-copy-panel)");
+        const copyPanel = panel.querySelector(".bos-context-copy-panel");
         const action = panel.querySelector(".bos-guided-flow-action");
         if (!fields || !action || fields.dataset.clarityEnhanced === "true") return;
 
         fields.dataset.clarityEnhanced = "true";
         fields.classList.add("bos-runtime-hidden");
         fields.setAttribute("aria-label", "Optional additional context");
+        copyPanel?.classList.add("bos-runtime-hidden");
 
         const actionText = action.querySelector("p");
         if (actionText) {
             actionText.textContent = "You can email now with no form. Add a little context only if it would make the first conversation easier.";
         }
 
-        const noteButton = action.querySelector(".bos-flow-mailto");
-        if (noteButton) {
-            noteButton.textContent = "Prepare a detailed note";
-            noteButton.classList.add("bos-runtime-hidden");
-        }
+        const legacyNoteButton = action.querySelector(".bos-flow-mailto");
+        legacyNoteButton?.classList.add("bos-runtime-hidden");
 
+        const contextTitle = panel.querySelector(".bos-guided-flow-head h3")?.textContent?.trim() || "";
         const controls = document.createElement("div");
         controls.className = "bos-actions";
         controls.style.marginTop = "0";
 
         const emailLink = document.createElement("a");
         emailLink.className = "bos-btn";
-        emailLink.href = directEmailHref(panel.dataset.activeFlow);
         emailLink.textContent = "Email Chris";
+
+        const collectNotes = () => Array.from(fields.querySelectorAll(".bos-context-field")).map((field) => ({
+            label: field.querySelector("span")?.textContent?.trim() || "Note",
+            value: field.querySelector("textarea")?.value || ""
+        }));
+
+        const updateEmailHref = () => {
+            emailLink.href = directEmailHref(panel.dataset.activeFlow, contextTitle, collectNotes());
+        };
+        updateEmailHref();
+        fields.querySelectorAll("textarea").forEach((textarea) => textarea.addEventListener("input", updateEmailHref));
 
         const detailToggle = document.createElement("button");
         detailToggle.type = "button";
@@ -187,14 +263,24 @@ document.addEventListener("DOMContentLoaded", () => {
         detailToggle.addEventListener("click", () => {
             const willOpen = fields.classList.contains("bos-runtime-hidden");
             fields.classList.toggle("bos-runtime-hidden", !willOpen);
-            if (noteButton) noteButton.classList.toggle("bos-runtime-hidden", !willOpen);
             detailToggle.setAttribute("aria-expanded", String(willOpen));
             detailToggle.textContent = willOpen ? "Hide optional context" : "Add context (optional)";
+            if (willOpen) fields.querySelector("textarea")?.focus();
         });
 
         controls.append(emailLink, detailToggle);
-        if (noteButton) controls.append(noteButton);
         action.appendChild(controls);
+
+        const back = panel.querySelector(".bos-flow-back");
+        if (panel.dataset.activeFlow === "discovery" && back && back.dataset.clarityDiscoveryBack !== "true") {
+            back.dataset.clarityDiscoveryBack = "true";
+            back.textContent = "Back to starting points";
+            back.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                collapseSelectedGuidedCard();
+            }, { capture: true });
+        }
     };
 
     const openExperienceBrowse = () => {
@@ -204,6 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
         experienceCard?.classList.add("is-selected");
         showBrowseSections();
         normalizeBrowseCopy();
+
+        try {
+            window.history.replaceState(null, "", "#experience");
+        } catch (error) {
+            // Ignore history failures.
+        }
 
         window.requestAnimationFrame(() => {
             page.querySelector("#experience")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -232,14 +324,23 @@ document.addEventListener("DOMContentLoaded", () => {
         contactLink.textContent = "Contact";
         contactLink.addEventListener("click", (event) => {
             event.preventDefault();
+            try {
+                window.history.replaceState(null, "", "#contact");
+            } catch (error) {
+                // Ignore history failures.
+            }
             page.querySelector("#contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
 
         nav.append(experienceLink, contactLink);
     };
 
-    // Keep the visual system, but make the four entry points read like visitor intents.
+    // Keep the visual system, but make the first screen understandable to a cold visitor.
     setText(".bos-hero .bos-kicker", "Technical problem solving + project building");
+    setText(
+        ".bos-hero .bos-lede",
+        "I help untangle technical problems, improve systems and workflows, and turn rough ideas into working projects. Pick the closest starting point below."
+    );
 
     setCardCopy(
         ".bos-choice-solve",
@@ -323,6 +424,21 @@ document.addEventListener("DOMContentLoaded", () => {
             intro.textContent = "Pick the closest starting point. The idea can still be rough; we can narrow it from there.";
         }
 
+        // Discovery currently has one possible context. Do not make the visitor
+        // click a second card merely to reach the only available next step.
+        if (panel.classList.contains("is-active")
+            && panel.dataset.activeFlow === "discovery"
+            && !panel.dataset.activeContext
+            && panel.dataset.clarityAutoAdvanced !== "true") {
+            const options = panel.querySelectorAll(".bos-guided-flow-option-button");
+            if (options.length === 1) {
+                panel.dataset.clarityAutoAdvanced = "true";
+                window.requestAnimationFrame(() => options[0].click());
+                return;
+            }
+        }
+
+        ensureStartOverButton(panel);
         enhanceGuidedDetail();
     };
 
@@ -330,6 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(page, { childList: true, subtree: true });
     normalizeGuidedCopy();
     normalizeBrowseCopy();
+    normalizeContactCopy();
     installHeaderShortcuts();
 
     window.addEventListener("resize", installHeaderShortcuts);
