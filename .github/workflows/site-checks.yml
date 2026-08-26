@@ -54,3 +54,12 @@ jobs:
           node --check app/static/js/boston-experience-scroll.js
           node --check app/static/js/boston-visible-work-cards.js
           node --check app/static/js/boston-viewport-fade.js
+
+      - name: Upload visual review screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-flow-screenshots
+          path: artifacts/*.png
+          if-no-files-found: ignore
+          retention-days: 7
