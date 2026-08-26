@@ -45,14 +45,24 @@
 }
 
 /* Clarity beats hover-reveal here. The card title and one-sentence explanation
- * should be readable before the visitor has to probe the interface. */
+ * should be readable before the visitor has to probe the interface. Keep the
+ * artwork behind the copy rather than letting the pseudo-element wash it out. */
+.boston .bos-start-panel .bos-choice-card::after {
+    opacity: 0.48 !important;
+}
+
 .boston .bos-start-panel .bos-choice-card > p {
+    position: relative;
+    z-index: 2;
     display: -webkit-box !important;
     visibility: visible !important;
-    opacity: 0.84 !important;
+    max-width: 24ch;
+    color: rgba(244, 241, 234, 0.92) !important;
+    opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.82);
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
@@ -164,7 +174,12 @@
         min-height: clamp(142px, 20svh, 180px) !important;
     }
 
+    .boston .bos-start-panel .bos-choice-card::after {
+        opacity: 0.38 !important;
+    }
+
     .boston .bos-start-panel .bos-choice-card > p {
+        max-width: 25ch;
         margin-top: 8px !important;
         padding-right: min(28vw, 112px);
         font-size: 0.78rem !important;
