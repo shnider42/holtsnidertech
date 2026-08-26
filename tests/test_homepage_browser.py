@@ -73,6 +73,8 @@ def page(live_site):
 
 
 def test_first_screen_uses_clear_visitor_choices(page):
+    capture(page, "homepage-desktop.png")
+
     lede = page.locator(".bos-hero .bos-lede")
     assert lede.is_visible()
     assert "untangle technical problems" in lede.inner_text()
@@ -90,12 +92,12 @@ def test_first_screen_uses_clear_visitor_choices(page):
     assert descriptions.count() == 4
     assert all(descriptions.nth(index).is_visible() for index in range(descriptions.count()))
     assert page.locator(".bos-default-context").count() == 0
-    capture(page, "homepage-desktop.png")
 
 
 def test_mobile_first_screen_keeps_explanations_visible(page):
     page.set_viewport_size({"width": 390, "height": 844})
     page.reload(wait_until="networkidle")
+    capture(page, "homepage-mobile.png")
 
     cards = page.locator(".bos-start-panel .bos-choice-card")
     descriptions = cards.locator("p")
@@ -105,10 +107,9 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
     # Desktop header shortcuts should not compete with the four mobile choices.
     assert not page.locator('[data-clarity-nav="experience"]').is_visible()
     assert not page.locator('[data-clarity-nav="contact"]').is_visible()
-    capture(page, "homepage-mobile.png")
 
 
-def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
+def test_experience_bypasses_questionnaire_and_keeps_contact_choices(page):
     start_card(page, "bos-choice-experience").click()
 
     assert page.locator("#experience").is_visible()
@@ -116,6 +117,18 @@ def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
     assert page.locator("#case-shapes").is_visible()
     assert page.locator("#guided-flow.is-active").count() == 0
     assert page.locator("#experience .bos-section-heading h2").inner_text() == "Engineering background"
+
+    actions = page.locator("#experience .bos-actions")
+    role_link = actions.get_by_role("link", name="Talk about a role or project")
+    projects_link = actions.get_by_role("link", name="See public projects")
+    linked_in = actions.get_by_role("link", name="LinkedIn")
+
+    assert role_link.get_attribute("href").startswith("mailto:chris@holtsnidertech.com")
+    assert projects_link.get_attribute("href") == "#work"
+    assert "linkedin.com" in linked_in.get_attribute("href")
+
+    page.locator("#experience").scroll_into_view_if_needed()
+    page.wait_for_timeout(100)
     capture(page, "experience-browse.png")
 
 
@@ -187,3 +200,10 @@ def test_switching_to_experience_clears_guided_state(page):
     start_card(page, "bos-choice-solve").click()
     page.locator('#guided-flow.is-active[data-active-flow="solve"]').wait_for(state="visible")
     assert page.locator("#experience").is_hidden()
+
+
+def test_final_contact_has_mail_copy_and_reset_paths(page):
+    contact = page.locator("#contact")
+    assert contact.get_by_role("link", name="Email Chris").is_visible()
+    assert contact.get_by_role("button", name="Copy chris@holtsnidertech.com").is_visible()
+    assert contact.get_by_role("link", name="Back to starting points").is_visible()
