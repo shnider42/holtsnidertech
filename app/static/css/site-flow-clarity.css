@@ -19,7 +19,7 @@
     display: block !important;
     max-width: 720px !important;
     margin-top: 18px !important;
-    color: rgba(244, 241, 234, 0.78) !important;
+    color: var(--bos-muted, #d8d1c7) !important;
     font-size: clamp(0.96rem, 1.15vw, 1.08rem) !important;
     line-height: 1.52 !important;
 }
@@ -52,7 +52,8 @@
 .boston .bos-context-fields[data-clarity-enhanced="true"]::before {
     content: "Optional context — skip anything you do not know yet.";
     grid-column: 1 / -1;
-    color: rgba(244, 241, 234, 0.62);
+    color: var(--bos-soft, #cfc7bc);
+    opacity: 0.76;
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -88,7 +89,8 @@
 /* The contact section is the end of every path, not another wall of copy. */
 .boston #contact .bos-contact-note {
     max-width: 64ch;
-    color: rgba(244, 241, 234, 0.66);
+    color: var(--bos-soft, #cfc7bc);
+    opacity: 0.82;
 }
 
 /* Keep the mobile first screen focused on the four choices, while retaining the
