@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!fields || !action || fields.dataset.clarityEnhanced === "true") return;
 
         fields.dataset.clarityEnhanced = "true";
-        fields.hidden = true;
+        fields.classList.add("bos-runtime-hidden");
         fields.setAttribute("aria-label", "Optional additional context");
 
         const actionText = action.querySelector("p");
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const noteButton = action.querySelector(".bos-flow-mailto");
         if (noteButton) {
             noteButton.textContent = "Prepare a detailed note";
-            noteButton.hidden = true;
+            noteButton.classList.add("bos-runtime-hidden");
         }
 
         const controls = document.createElement("div");
@@ -185,9 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
         detailToggle.setAttribute("aria-expanded", "false");
 
         detailToggle.addEventListener("click", () => {
-            const willOpen = fields.hidden;
-            fields.hidden = !willOpen;
-            if (noteButton) noteButton.hidden = !willOpen;
+            const willOpen = fields.classList.contains("bos-runtime-hidden");
+            fields.classList.toggle("bos-runtime-hidden", !willOpen);
+            if (noteButton) noteButton.classList.toggle("bos-runtime-hidden", !willOpen);
             detailToggle.setAttribute("aria-expanded", String(willOpen));
             detailToggle.textContent = willOpen ? "Hide optional context" : "Add context (optional)";
         });
@@ -195,6 +195,47 @@ document.addEventListener("DOMContentLoaded", () => {
         controls.append(emailLink, detailToggle);
         if (noteButton) controls.append(noteButton);
         action.appendChild(controls);
+    };
+
+    const openExperienceBrowse = () => {
+        const experienceCard = page.querySelector(".bos-choice-experience");
+        clearGuidedFlow();
+        page.querySelectorAll(".bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
+        experienceCard?.classList.add("is-selected");
+        showBrowseSections();
+        normalizeBrowseCopy();
+
+        window.requestAnimationFrame(() => {
+            page.querySelector("#experience")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    };
+
+    const installHeaderShortcuts = () => {
+        const nav = page.querySelector(".bos-links");
+        if (!nav) return;
+
+        nav.querySelectorAll("[data-clarity-nav]").forEach((item) => item.remove());
+        if (!window.matchMedia("(min-width: 851px)").matches) return;
+
+        const experienceLink = document.createElement("a");
+        experienceLink.href = "#experience";
+        experienceLink.dataset.clarityNav = "experience";
+        experienceLink.textContent = "Experience & Work";
+        experienceLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            openExperienceBrowse();
+        });
+
+        const contactLink = document.createElement("a");
+        contactLink.href = "#contact";
+        contactLink.dataset.clarityNav = "contact";
+        contactLink.textContent = "Contact";
+        contactLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            page.querySelector("#contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        nav.append(experienceLink, contactLink);
     };
 
     // Keep the visual system, but make the four entry points read like visitor intents.
@@ -252,16 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
         experienceCard.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopImmediatePropagation();
-
-            clearGuidedFlow();
-            page.querySelectorAll(".bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
-            experienceCard.classList.add("is-selected");
-            showBrowseSections();
-            normalizeBrowseCopy();
-
-            window.requestAnimationFrame(() => {
-                page.querySelector("#experience")?.scrollIntoView({ behavior: "smooth", block: "start" });
-            });
+            openExperienceBrowse();
         }, { capture: true });
     }
 
@@ -297,8 +329,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer = new MutationObserver(normalizeGuidedCopy);
     observer.observe(page, { childList: true, subtree: true });
     normalizeGuidedCopy();
+    normalizeBrowseCopy();
+    installHeaderShortcuts();
 
-    // Later homepage scripts also normalize project cards. Run this once after all
-    // DOMContentLoaded handlers have had a chance to finish so visitor-facing copy wins.
-    window.requestAnimationFrame(normalizeBrowseCopy);
+    window.addEventListener("resize", installHeaderShortcuts);
 });
