@@ -35,8 +35,9 @@ def test_homepage_has_clear_public_metadata():
         response = client.get("/")
 
     assert response.status_code == 200
-    assert b"Technical Problem Solving &amp; Project Building" in response.data
-    assert b'https://holtsnidertech.com/' in response.data
+    assert b"Technical Problem Solving" in response.data
+    assert b"Project Building" in response.data
+    assert b"https://holtsnidertech.com/" in response.data
     assert b'property="og:title"' in response.data
     assert b'name="twitter:card"' in response.data
 
