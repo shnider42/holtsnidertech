@@ -135,6 +135,27 @@ def test_problem_flow_can_email_immediately_or_add_context(page):
     assert "Starting point: Fix a problem" in decoded_href
 
 
+def test_build_flow_never_sends_your_passage_to_unrelated_domain(page):
+    start_card(page, "bos-choice-opportunity").click()
+    page.locator('#guided-flow.is-active[data-active-flow="opportunity"]').wait_for(state="visible")
+
+    page.get_by_role("button", name="Build something new", exact=False).click()
+    detail = page.locator('#guided-flow.is-active[data-active-flow="opportunity"][data-active-context="new-build"]')
+    detail.wait_for(state="visible")
+
+    passage = detail.locator('a:has-text("Your Passage")')
+    passage.wait_for(state="visible")
+    page.wait_for_function(
+        """() => {
+            const link = document.querySelector('#guided-flow a.bos-project-passage');
+            return link && link.href.includes('tim-today.onrender.com');
+        }"""
+    )
+
+    assert "tim-today.onrender.com" in passage.get_attribute("href")
+    assert detail.locator('a[href*="mypassages.net"]').count() == 0
+
+
 def test_not_sure_path_skips_single_choice_intermediary(page):
     start_card(page, "bos-choice-not-sure").click()
 
