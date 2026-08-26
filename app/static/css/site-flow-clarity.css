@@ -26,11 +26,11 @@
 /* Clarity beats hover-reveal here. The card title and one-sentence explanation
  * should be readable before the visitor has to probe the interface. */
 .boston .bos-start-panel .bos-choice-card > p {
+    display: -webkit-box !important;
     visibility: visible !important;
     opacity: 0.84 !important;
     transform: none !important;
     transition: none !important;
-    display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
