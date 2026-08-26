@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const CONTACT_EMAIL = "chris@holtsnidertech.com";
     let discoveryAdvanceQueued = false;
 
-    const qs = (selector, root = page) => root.querySelector(selector);
-    const qsa = (selector, root = page) => Array.from(root.querySelectorAll(selector));
+    const qs = (selector, root = page) => root?.querySelector(selector) || null;
+    const qsa = (selector, root = page) => root ? Array.from(root.querySelectorAll(selector)) : [];
+    const startPanel = qs(".bos-start-panel");
+    const startCard = (selector) => qs(selector, startPanel || page);
 
     const browseSections = ["#experience", "#work", "#case-shapes"]
         .map((selector) => qs(selector))
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const setCardCopy = (selector, title, body, action) => {
-        const card = qs(selector);
+        const card = startCard(selector);
         if (!card) return;
         setText("h3", title, card);
         setText("p", body, card);
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const setDrawerCopy = (selector, items, nextText) => {
-        const card = qs(selector);
+        const card = startCard(selector);
         const drawerId = card?.querySelector("[data-flow-drawer]")?.dataset.flowDrawer;
         if (!drawerId) return;
 
@@ -78,23 +80,50 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const resetActiveGuidedFlow = () => {
-        const selected = qs(".bos-start-panel .bos-choice-card.is-selected");
+        const selected = qs(".bos-choice-card.is-selected", startPanel);
 
-        // Clicking an active guided card lets the original boston-site closure
-        // clear its own internal activePath state. Merely hiding its DOM would
-        // leave that closure stale and make the next same-card click misbehave.
+        // Let the original guided-flow closure clear its own activePath state.
+        // Hiding only the rendered panel leaves that closure stale.
         if (selected && !selected.classList.contains("bos-choice-experience")) {
             selected.click();
         } else {
             clearGuidedFlow();
         }
 
-        qsa(".bos-start-panel .bos-choice-card").forEach((card) => card.classList.remove("is-selected"));
+        qsa(".bos-choice-card", startPanel).forEach((card) => card.classList.remove("is-selected"));
     };
 
     const generalMailto = (subject, intro) => {
         const body = `Hi Chris,\n\n${intro}\n\nHere's the messy version:\n\n`;
         return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const copyText = async (text) => {
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (error) {
+            // Fall through to the older copy path.
+        }
+
+        const helper = document.createElement("textarea");
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.opacity = "0";
+        document.body.appendChild(helper);
+        helper.select();
+
+        let copied = false;
+        try {
+            copied = document.execCommand("copy");
+        } catch (error) {
+            copied = false;
+        }
+        helper.remove();
+        return copied;
     };
 
     const normalizeBrowseCopy = () => {
@@ -126,17 +155,38 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        const experiencePrimary = qs("#experience .bos-actions .bos-btn");
-        if (experiencePrimary) {
-            experiencePrimary.href = "#work";
-            experiencePrimary.textContent = "See public projects";
-            if (experiencePrimary.dataset.clarityBrowseLink !== "true") {
-                experiencePrimary.dataset.clarityBrowseLink = "true";
-                experiencePrimary.addEventListener("click", (event) => {
+        const experienceActions = qs("#experience .bos-actions");
+        if (experienceActions) {
+            const roleLink = qs(".bos-btn", experienceActions);
+            if (roleLink) {
+                roleLink.href = generalMailto(
+                    "Holtsnider Tech - role or project conversation",
+                    "I was looking through your experience and wanted to talk about a role, project, or technical fit."
+                );
+                roleLink.textContent = "Talk about a role or project";
+                roleLink.removeAttribute("data-clarity-browse-link");
+            }
+
+            let projectsLink = qs("[data-clarity-projects-link]", experienceActions);
+            if (!projectsLink) {
+                projectsLink = document.createElement("a");
+                projectsLink.className = "bos-btn alt";
+                projectsLink.href = "#work";
+                projectsLink.dataset.clarityProjectsLink = "true";
+                projectsLink.textContent = "See public projects";
+                projectsLink.addEventListener("click", (event) => {
                     event.preventDefault();
                     smoothScrollTo("#work");
                 });
+
+                const linkedIn = Array.from(experienceActions.querySelectorAll("a"))
+                    .find((link) => link.href.includes("linkedin.com"));
+                experienceActions.insertBefore(projectsLink, linkedIn || null);
             }
+
+            const linkedIn = Array.from(experienceActions.querySelectorAll("a"))
+                .find((link) => link.href.includes("linkedin.com"));
+            if (linkedIn) linkedIn.textContent = "LinkedIn";
         }
 
         setText("#work .bos-section-heading h2", "Projects you can actually open");
@@ -213,17 +263,35 @@ document.addEventListener("DOMContentLoaded", () => {
         if (paragraphs[0]) paragraphs[0].textContent = "You do not need a polished brief. Send the broken thing, the rough idea, the decision you are stuck on, or whatever context you already have.";
         if (paragraphs[1]) paragraphs[1].textContent = "I start by getting the system and constraints straight, then narrow the smallest useful next move — whether that is troubleshooting, automation, a prototype, or simply a clearer decision.";
 
-        const primary = qs("#contact .bos-actions .bos-btn");
+        const actions = qs("#contact .bos-actions");
+        const primary = qs(".bos-btn", actions);
         if (primary) primary.textContent = "Email Chris";
 
-        const secondary = qs("#contact .bos-actions .bos-btn.alt");
-        if (secondary) {
-            secondary.textContent = "Back to starting points";
-            secondary.href = "#start";
-            if (secondary.dataset.clarityReset !== "true") {
-                secondary.dataset.clarityReset = "true";
-                secondary.addEventListener("click", resetActiveGuidedFlow, { capture: true });
+        const back = qs(".bos-btn.alt", actions);
+        if (back) {
+            back.textContent = "Back to starting points";
+            back.href = "#start";
+            if (back.dataset.clarityReset !== "true") {
+                back.dataset.clarityReset = "true";
+                back.addEventListener("click", resetActiveGuidedFlow, { capture: true });
             }
+        }
+
+        if (actions && !qs("[data-clarity-copy-email]", actions)) {
+            const copyButton = document.createElement("button");
+            copyButton.type = "button";
+            copyButton.className = "bos-btn alt";
+            copyButton.dataset.clarityCopyEmail = "true";
+            copyButton.textContent = "Copy email";
+            copyButton.setAttribute("aria-label", `Copy ${CONTACT_EMAIL}`);
+            copyButton.addEventListener("click", async () => {
+                const copied = await copyText(CONTACT_EMAIL);
+                copyButton.textContent = copied ? "Copied" : CONTACT_EMAIL;
+                window.setTimeout(() => {
+                    copyButton.textContent = "Copy email";
+                }, 1800);
+            });
+            actions.insertBefore(copyButton, back || null);
         }
 
         setText("#contact .bos-contact-note", "Project, role-fit, troubleshooting, or “I’m not sure yet” are all valid starting points.");
@@ -262,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const collapseSelectedGuidedCard = () => {
-        const selected = qs(".bos-start-panel .bos-choice-card.is-selected");
+        const selected = qs(".bos-choice-card.is-selected", startPanel);
         if (selected && !selected.classList.contains("bos-choice-experience")) selected.click();
     };
 
@@ -347,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const openExperienceBrowse = () => {
         resetActiveGuidedFlow();
-        qs(".bos-choice-experience")?.classList.add("is-selected");
+        startCard(".bos-choice-experience")?.classList.add("is-selected");
         showBrowseSections();
         normalizeBrowseCopy();
         window.requestAnimationFrame(() => smoothScrollTo("#experience"));
@@ -435,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setDrawerCopy(".bos-choice-experience", ["Engineering background", "Public projects", "Enterprise systems", "Current technical work"], "Browse without a questionnaire");
     setDrawerCopy(".bos-choice-not-sure", ["The situation is fuzzy", "The next step is unclear", "You do not know what to call it"], "Start with the messy version");
 
-    const experienceCard = qs(".bos-choice-experience");
+    const experienceCard = startCard(".bos-choice-experience");
     if (experienceCard) {
         experienceCard.href = "#experience";
         experienceCard.addEventListener("click", (event) => {
@@ -446,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     [".bos-choice-solve", ".bos-choice-opportunity", ".bos-choice-not-sure"].forEach((selector) => {
-        qs(selector)?.addEventListener("click", hideBrowseSections, { capture: true });
+        startCard(selector)?.addEventListener("click", hideBrowseSections, { capture: true });
     });
 
     const observer = new MutationObserver(normalizeGuidedCopy);
