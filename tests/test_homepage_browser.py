@@ -15,6 +15,10 @@ TEST_PORT = 5010
 BASE_URL = f"http://127.0.0.1:{TEST_PORT}"
 
 
+def start_card(page, class_name):
+    return page.locator(f".bos-start-panel .{class_name}")
+
+
 @pytest.fixture(scope="module")
 def live_site():
     env = os.environ.copy()
@@ -97,7 +101,7 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
 
 
 def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
-    page.locator(".bos-choice-experience").click()
+    start_card(page, "bos-choice-experience").click()
 
     assert page.locator("#experience").is_visible()
     assert page.locator("#work").is_visible()
@@ -107,7 +111,7 @@ def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
 
 
 def test_problem_flow_can_email_immediately_or_add_context(page):
-    page.locator(".bos-choice-solve").click()
+    start_card(page, "bos-choice-solve").click()
     panel = page.locator('#guided-flow.is-active[data-active-flow="solve"]')
     panel.wait_for(state="visible")
 
@@ -132,7 +136,7 @@ def test_problem_flow_can_email_immediately_or_add_context(page):
 
 
 def test_not_sure_path_skips_single_choice_intermediary(page):
-    page.locator(".bos-choice-not-sure").click()
+    start_card(page, "bos-choice-not-sure").click()
 
     detail = page.locator('#guided-flow.is-active[data-active-flow="discovery"][data-active-context="messy-version"]')
     detail.wait_for(state="visible")
@@ -142,13 +146,13 @@ def test_not_sure_path_skips_single_choice_intermediary(page):
 
 
 def test_switching_to_experience_clears_guided_state(page):
-    page.locator(".bos-choice-solve").click()
+    start_card(page, "bos-choice-solve").click()
     page.locator('#guided-flow.is-active[data-active-flow="solve"]').wait_for(state="visible")
 
-    page.locator(".bos-choice-experience").click()
+    start_card(page, "bos-choice-experience").click()
     assert page.locator("#experience").is_visible()
     assert page.locator("#guided-flow.is-active").count() == 0
 
-    page.locator(".bos-choice-solve").click()
+    start_card(page, "bos-choice-solve").click()
     page.locator('#guided-flow.is-active[data-active-flow="solve"]').wait_for(state="visible")
     assert page.locator("#experience").is_hidden()
