@@ -11,12 +11,18 @@ from playwright.sync_api import sync_playwright
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ARTIFACT_DIR = REPO_ROOT / "artifacts"
 TEST_PORT = 5010
 BASE_URL = f"http://127.0.0.1:{TEST_PORT}"
 
 
 def start_card(page, class_name):
     return page.locator(f".bos-start-panel .{class_name}")
+
+
+def capture(page, name):
+    ARTIFACT_DIR.mkdir(exist_ok=True)
+    page.screenshot(path=str(ARTIFACT_DIR / name), full_page=False)
 
 
 @pytest.fixture(scope="module")
@@ -58,7 +64,7 @@ def live_site():
 def page(live_site):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(reduced_motion="reduce")
+        context = browser.new_context(reduced_motion="reduce", viewport={"width": 1440, "height": 1000})
         browser_page = context.new_page()
         browser_page.goto(live_site, wait_until="networkidle")
         yield browser_page
@@ -84,6 +90,7 @@ def test_first_screen_uses_clear_visitor_choices(page):
     assert descriptions.count() == 4
     assert all(descriptions.nth(index).is_visible() for index in range(descriptions.count()))
     assert page.locator(".bos-default-context").count() == 0
+    capture(page, "homepage-desktop.png")
 
 
 def test_mobile_first_screen_keeps_explanations_visible(page):
@@ -98,6 +105,7 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
     # Desktop header shortcuts should not compete with the four mobile choices.
     assert not page.locator('[data-clarity-nav="experience"]').is_visible()
     assert not page.locator('[data-clarity-nav="contact"]').is_visible()
+    capture(page, "homepage-mobile.png")
 
 
 def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
@@ -108,6 +116,7 @@ def test_experience_bypasses_questionnaire_and_opens_browse_sections(page):
     assert page.locator("#case-shapes").is_visible()
     assert page.locator("#guided-flow.is-active").count() == 0
     assert page.locator("#experience .bos-section-heading h2").inner_text() == "Engineering background"
+    capture(page, "experience-browse.png")
 
 
 def test_problem_flow_can_email_immediately_or_add_context(page):
@@ -133,6 +142,7 @@ def test_problem_flow_can_email_immediately_or_add_context(page):
     decoded_href = unquote(email_link.get_attribute("href"))
     assert "Started after a deployment" in decoded_href
     assert "Starting point: Fix a problem" in decoded_href
+    capture(page, "problem-flow.png")
 
 
 def test_build_flow_never_sends_your_passage_to_unrelated_domain(page):
