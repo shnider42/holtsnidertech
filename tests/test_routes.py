@@ -56,6 +56,19 @@ def test_legacy_style_lab_redirects_home():
     assert variant_response.headers["Location"].endswith("/")
 
 
+def test_sitemap_tracks_public_local_demos():
+    app = create_app()
+    app.testing = True
+
+    with app.test_client() as client:
+        response = client.get("/sitemap.xml")
+
+    assert response.status_code == 200
+    assert b"/static/demos/grepper.html" in response.data
+    assert b"/static/demos/loudsource-vote.html" in response.data
+    assert b"/static/demos/jiporady.html" in response.data
+
+
 def test_healthz_reports_ok():
     app = create_app()
     app.testing = True
