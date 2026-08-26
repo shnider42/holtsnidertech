@@ -79,6 +79,14 @@ def test_first_screen_uses_clear_visitor_choices(page):
     assert lede.is_visible()
     assert "untangle technical problems" in lede.inner_text()
 
+    brand = page.locator(".bos-head .bos-mark")
+    assert brand.get_attribute("href") == "/"
+    header_links = [
+        link.inner_text().strip()
+        for link in page.locator(".bos-head .bos-links a").all()
+    ]
+    assert header_links == ["Experience & Work", "Contact"]
+
     cards = page.locator(".bos-start-panel .bos-choice-card")
     titles = [title.inner_text().strip() for title in cards.locator("h3").all()]
     assert titles == [
@@ -107,6 +115,20 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
     # Desktop header shortcuts should not compete with the four mobile choices.
     assert not page.locator('[data-clarity-nav="experience"]').is_visible()
     assert not page.locator('[data-clarity-nav="contact"]').is_visible()
+
+
+def test_warm_light_theme_keeps_core_content_visible(page):
+    page.evaluate("window.localStorage.setItem('holtsnider-theme', 'light')")
+    page.reload(wait_until="networkidle")
+
+    assert page.locator("html").get_attribute("data-theme") == "light"
+    assert page.evaluate("document.getElementById('light-theme-stylesheet').disabled === false")
+    assert page.locator(".bos-hero .bos-lede").is_visible()
+
+    descriptions = page.locator(".bos-start-panel .bos-choice-card p")
+    assert descriptions.count() == 4
+    assert all(descriptions.nth(index).is_visible() for index in range(descriptions.count()))
+    capture(page, "homepage-light.png")
 
 
 def test_experience_bypasses_questionnaire_and_keeps_contact_choices(page):
