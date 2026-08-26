@@ -12,6 +12,27 @@
     display: none !important;
 }
 
+/* The old top-ribbon mark inherited a border and stretched across its grid
+ * column, which made it look like a giant empty input. Keep it as a compact
+ * brand mark and let the two useful navigation shortcuts own the right side. */
+.boston .bos-head .bos-mark {
+    justify-self: start !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* The hover/focus "common starts" preview was useful when the cards hid all
+ * explanatory copy. The cards now explain themselves and the real choices
+ * appear after click, so this extra preview layer only repeats information. */
+.bos-choice-drawer,
+.bos-choice-inline {
+    display: none !important;
+}
+
 /* Put one plain-English sentence back under the hero. Older staging polish hid
  * the lede entirely, which made a cold visitor infer too much from the cards. */
 .boston .bos-hero .bos-lede {
