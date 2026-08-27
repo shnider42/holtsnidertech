@@ -56,7 +56,7 @@
     z-index: 2;
     display: -webkit-box !important;
     visibility: visible !important;
-    max-width: 78%;
+    max-width: 86%;
     color: rgba(244, 241, 234, 0.94) !important;
     opacity: 1 !important;
     font-size: 0.8rem !important;
@@ -66,7 +66,7 @@
     overflow: hidden;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.82);
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
 }
 
 /* Keep the restored desktop navigation useful but quiet. */
@@ -173,7 +173,7 @@
     }
 
     .boston .bos-start-panel .bos-choice-card {
-        min-height: clamp(142px, 20svh, 180px) !important;
+        min-height: clamp(152px, 21svh, 188px) !important;
     }
 
     .boston .bos-start-panel .bos-choice-card::after {
@@ -181,12 +181,12 @@
     }
 
     .boston .bos-start-panel .bos-choice-card > p {
-        max-width: 72%;
+        max-width: 82%;
         margin-top: 8px !important;
         padding-right: 0 !important;
         font-size: 0.76rem !important;
         line-height: 1.32 !important;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 5;
     }
 
     /* On touch screens the sentence is the useful explanation; the extra
