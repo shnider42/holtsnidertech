@@ -82,7 +82,7 @@ def test_first_screen_uses_clear_visitor_choices(page):
     brand = page.locator(".bos-head .bos-mark")
     assert brand.get_attribute("href") == "/"
     header_links = [
-        link.inner_text().strip()
+        link.text_content().strip()
         for link in page.locator(".bos-head .bos-links a").all()
     ]
     assert header_links == ["Experience & Work", "Contact"]
@@ -240,6 +240,26 @@ def test_switching_to_experience_clears_guided_state(page):
     start_card(page, "bos-choice-solve").click()
     page.locator('#guided-flow.is-active[data-active-flow="solve"]').wait_for(state="visible")
     assert page.locator("#experience").is_hidden()
+
+
+def test_professional_case_cards_route_to_live_guided_paths(page):
+    start_card(page, "bos-choice-experience").click()
+    case_cards = page.locator("#case-shapes .bos-case-card")
+    assert case_cards.count() == 4
+    assert case_cards.nth(2).get_attribute("href") == "#guided-flow"
+    assert case_cards.nth(3).get_attribute("href") == "#guided-flow"
+    assert case_cards.nth(2).get_attribute("data-clarity-guided-path") == "solve"
+    assert case_cards.nth(3).get_attribute("data-clarity-guided-path") == "opportunity"
+
+    case_cards.nth(2).click()
+    page.locator('#guided-flow.is-active[data-active-flow="solve"]').wait_for(state="visible")
+    assert page.locator("#case-shapes").is_hidden()
+
+    start_card(page, "bos-choice-experience").click()
+    page.locator("#case-shapes").wait_for(state="visible")
+    page.locator('#case-shapes .bos-case-card[data-clarity-guided-path="opportunity"]').click()
+    page.locator('#guided-flow.is-active[data-active-flow="opportunity"]').wait_for(state="visible")
+    assert page.locator("#case-shapes").is_hidden()
 
 
 def test_final_contact_has_mail_copy_and_reset_paths(page):
