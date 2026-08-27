@@ -195,6 +195,16 @@
         display: none !important;
     }
 
+    /* The legacy 430px template hides every .bos-actions group. Restore only
+     * the customer-facing action groups we intentionally use in this flow. */
+    .boston #experience .bos-actions,
+    .boston #work .bos-actions,
+    .boston #contact .bos-actions,
+    .boston .bos-guided-flow-action .bos-actions {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+
     .boston .bos-context-fields[data-clarity-enhanced="true"] {
         grid-template-columns: 1fr !important;
     }
