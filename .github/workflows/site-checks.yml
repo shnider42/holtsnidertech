@@ -1,0 +1,66 @@
+name: Site checks
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - master
+  push:
+    branches:
+      - staging
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Install Chromium for browser tests
+        run: python -m playwright install --with-deps chromium
+
+      - name: Compile Python
+        run: python -m compileall -q app
+
+      - name: Run site tests
+        run: python -m pytest -q
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Check active JavaScript syntax
+        run: |
+          node --check app/static/js/boston-site.js
+          node --check app/static/js/boston-nav-cleanup.js
+          node --check app/static/js/site-flow-clarity.js
+          node --check app/static/js/site-flow-case-links.js
+          node --check app/static/js/boston-experience-scroll.js
+          node --check app/static/js/boston-visible-work-cards.js
+          node --check app/static/js/boston-viewport-fade.js
+
+      - name: Upload visual review screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-flow-screenshots
+          path: artifacts/*.png
+          if-no-files-found: ignore
+          retention-days: 7
