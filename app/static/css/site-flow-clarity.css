@@ -25,6 +25,17 @@
     box-shadow: none !important;
 }
 
+/* The old scroll treatment dropped the entire header to 22% opacity. Keep the
+ * quiet fade, but leave the brand and the two shortcuts discoverable. */
+.boston:not(.bos-at-top) .bos-head {
+    opacity: 0.68 !important;
+}
+
+.boston:not(.bos-at-top) .bos-head:hover,
+.boston:not(.bos-at-top) .bos-head:focus-within {
+    opacity: 1 !important;
+}
+
 /* The hover/focus "common starts" preview was useful when the cards hid all
  * explanatory copy. The cards now explain themselves and the real choices
  * appear after click, so this extra preview layer only repeats information. */
