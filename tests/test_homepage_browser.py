@@ -117,6 +117,32 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
     assert not page.locator('[data-clarity-nav="contact"]').is_visible()
 
 
+def test_mobile_customer_actions_stay_visible(page):
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.reload(wait_until="networkidle")
+
+    start_card(page, "bos-choice-solve").click()
+    page.get_by_role("button", name="Something just happened", exact=False).click()
+    detail = page.locator('#guided-flow.is-active[data-active-flow="solve"][data-active-context="just-happened"]')
+    detail.wait_for(state="visible")
+    assert detail.get_by_role("link", name="Email Chris").is_visible()
+    assert detail.get_by_role("button", name="Add context (optional)").is_visible()
+
+    start_card(page, "bos-choice-experience").click()
+    page.locator("#experience").wait_for(state="visible")
+    experience_actions = page.locator("#experience .bos-actions")
+    assert experience_actions.get_by_role("link", name="Talk about a role or project").is_visible()
+    assert experience_actions.get_by_role("link", name="See public projects").is_visible()
+    assert experience_actions.get_by_role("link", name="LinkedIn").is_visible()
+
+    contact = page.locator("#contact")
+    contact.scroll_into_view_if_needed()
+    assert contact.get_by_role("link", name="Email Chris").is_visible()
+    assert contact.get_by_role("button", name="Copy chris@holtsnidertech.com").is_visible()
+    assert contact.get_by_role("link", name="Back to starting points").is_visible()
+    capture(page, "mobile-contact-actions.png")
+
+
 def test_warm_light_theme_keeps_core_content_visible(page):
     page.evaluate("window.localStorage.setItem('holtsnider-theme', 'light')")
     page.reload(wait_until="networkidle")
