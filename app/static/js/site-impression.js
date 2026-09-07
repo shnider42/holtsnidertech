@@ -73,14 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
     applyBrowseImpression();
 
     // The older Experience opener deliberately normalizes browse copy each time
-    // it opens. Re-apply this final voice pass immediately afterward.
+    // it opens and stops the click from bubbling. Observe it during capture,
+    // then re-apply this final voice pass immediately afterward.
     page.addEventListener("click", (event) => {
         const experienceEntry = event.target.closest(
             ".bos-start-panel .bos-choice-experience, [data-clarity-nav='experience']"
         );
         if (!experienceEntry) return;
         window.requestAnimationFrame(applyBrowseImpression);
-    });
+    }, { capture: true });
 
     // End every path like a conversation with a person, not a consulting intake form.
     setText("#contact h2", "Send me the messy version.");
