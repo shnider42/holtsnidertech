@@ -37,8 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Something feels off or stuck, but you do not know what to call it yet."
     );
 
-    // Make Experience read like evidence, not a resume section.
-    setText("#experience .bos-section-heading h2", "What I actually work on");
+    // Make Experience read like evidence, not a resume dump.
     setText(
         "#experience .bos-section-heading .bos-section-text",
         "Reliability, infrastructure, automation, troubleshooting, and the part that often matters most: turning technical detail into a decision somebody can actually use."
