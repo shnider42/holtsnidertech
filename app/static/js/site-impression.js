@@ -13,6 +13,39 @@ document.addEventListener("DOMContentLoaded", () => {
         if (card) setText("p", text, card);
     };
 
+    const applyBrowseImpression = () => {
+        // Keep Experience grounded in outcomes while preserving the stable heading.
+        setText(
+            "#experience .bos-section-heading .bos-section-text",
+            "Reliability, infrastructure, automation, troubleshooting, and the part that often matters most: turning technical detail into a decision somebody can actually use."
+        );
+
+        // Give the public portfolio a hierarchy instead of treating every card equally.
+        setText("#work .bos-section-heading h2", "Selected work you can open");
+        setText(
+            "#work .bos-section-heading .bos-section-text",
+            "The first two are the clearest public examples of how I work: take something fuzzy, build enough of it to test for real, then keep improving it. The others show how the same approach adapts to different problems and audiences."
+        );
+
+        const workCards = Array.from(page.querySelectorAll("#work .bos-work-card"));
+        const workLabels = [
+            "Featured · live build",
+            "Featured · working prototype",
+            "Interactive prototype",
+            "Adapted concept"
+        ];
+        workCards.forEach((card, index) => {
+            const label = card.querySelector(".bos-card-label");
+            if (label && workLabels[index]) label.textContent = workLabels[index];
+        });
+
+        setText("#case-shapes .bos-section-heading h2", "The work that does not fit in a public demo");
+        setText(
+            "#case-shapes .bos-section-heading .bos-section-text",
+            "A lot of the heavier engineering work lives in customer systems, labs, incidents, and internal tooling. These are representative examples without pretending I can publish the underlying work."
+        );
+    };
+
     // First 30 seconds: say plainly what Holtsnider Tech is useful for.
     setText(".bos-hero .bos-kicker", "Solve messy technical problems. Build useful things.");
     setText(
@@ -37,36 +70,17 @@ document.addEventListener("DOMContentLoaded", () => {
         "Something feels off or stuck, but you do not know what to call it yet."
     );
 
-    // Make Experience read like evidence, not a resume dump.
-    setText(
-        "#experience .bos-section-heading .bos-section-text",
-        "Reliability, infrastructure, automation, troubleshooting, and the part that often matters most: turning technical detail into a decision somebody can actually use."
-    );
+    applyBrowseImpression();
 
-    // Give the public portfolio a hierarchy instead of treating every card equally.
-    setText("#work .bos-section-heading h2", "Selected work you can open");
-    setText(
-        "#work .bos-section-heading .bos-section-text",
-        "The first two are the clearest public examples of how I work: take something fuzzy, build enough of it to test for real, then keep improving it. The others show how the same approach adapts to different problems and audiences."
-    );
-
-    const workCards = Array.from(page.querySelectorAll("#work .bos-work-card"));
-    const workLabels = [
-        "Featured · live build",
-        "Featured · working prototype",
-        "Interactive prototype",
-        "Adapted concept"
-    ];
-    workCards.forEach((card, index) => {
-        const label = card.querySelector(".bos-card-label");
-        if (label && workLabels[index]) label.textContent = workLabels[index];
+    // The older Experience opener deliberately normalizes browse copy each time
+    // it opens. Re-apply this final voice pass immediately afterward.
+    page.addEventListener("click", (event) => {
+        const experienceEntry = event.target.closest(
+            ".bos-start-panel .bos-choice-experience, [data-clarity-nav='experience']"
+        );
+        if (!experienceEntry) return;
+        window.requestAnimationFrame(applyBrowseImpression);
     });
-
-    setText("#case-shapes .bos-section-heading h2", "The work that does not fit in a public demo");
-    setText(
-        "#case-shapes .bos-section-heading .bos-section-text",
-        "A lot of the heavier engineering work lives in customer systems, labs, incidents, and internal tooling. These are representative examples without pretending I can publish the underlying work."
-    );
 
     // End every path like a conversation with a person, not a consulting intake form.
     setText("#contact h2", "Send me the messy version.");
