@@ -1,6 +1,6 @@
 const SNAPSHOT_URL = "/static/data/grepper-snapshot.json";
 const PAGE_SIZE = 20;
-const WORKDAY_DELAY_MS = 850;
+const WORKDAY_DELAY_MS = 1700;
 const SAMPLE_RESUME = `Senior systems and reliability engineer with experience supporting enterprise infrastructure and production incidents.
 Built realistic lab environments with Linux, VMware, networking, VLANs, Fibre Channel, and storage platforms.
 Automated operational work using Python, APIs, PowerShell, Bash, Terraform, Git, and CI/CD.
@@ -14,9 +14,9 @@ const SKILLS = [
 ];
 
 const TITLE_VARIANTS = [
-  "", " II", " III", " — Platform", " — Systems", " — Infrastructure", " — Cloud", " — Automation", " — Tools",
-  " — Reliability", " — Operations", " — Performance", " — Data Center", " — Developer Productivity", " — Security",
-  " — Storage", " — Compute", " — AI Infrastructure", " — Networking", " — Enterprise"
+  "", " II", " III", ", Platform", ", Systems", ", Infrastructure", ", Cloud", ", Automation", ", Tools",
+  ", Reliability", ", Operations", ", Performance", ", Data Center", ", Developer Productivity", ", Security",
+  ", Storage", ", Compute", ", AI Infrastructure", ", Networking", ", Enterprise"
 ];
 const POSTED_LABELS = ["Posted Today", "Posted 2 Days Ago", "Posted 3 Days Ago", "Posted 5 Days Ago", "Posted 7 Days Ago"];
 const TIME_TYPES = ["Full time", "Full time", "Full time", "Full time", "Internship", "Part time"];
@@ -101,6 +101,9 @@ function matchesFilters(job) {
 
 function renderKeywords() {
   const container = $("keywordChips");
+  const signalCount = $("signalCount");
+  if (signalCount) signalCount.textContent = currentKeywords.length;
+
   if (!currentKeywords.length) {
     container.innerHTML = '<span class="g-help">Load or paste a resume to generate weights.</span>';
     return;
@@ -110,7 +113,7 @@ function renderKeywords() {
   ).join("");
 }
 
-function setWorkdayBusy(isBusy, message = "Loading jobs…") {
+function setWorkdayBusy(isBusy, message = "Loading jobs...") {
   $("workdayPanel").setAttribute("aria-busy", String(isBusy));
   ["query", "location", "timeType", "category", "source", "workdaySearchBtn", "prevPage", "nextPage"].forEach((id) => {
     const control = $(id);
@@ -141,7 +144,7 @@ function renderWorkday() {
   $("nextPage").disabled = currentPage >= totalPages;
 }
 
-function scheduleWorkdayRender(message = "Loading jobs…") {
+function scheduleWorkdayRender(message = "Loading jobs...") {
   if (workdayTimer) window.clearTimeout(workdayTimer);
   setWorkdayBusy(true, message);
   workdayTimer = window.setTimeout(() => {
@@ -155,15 +158,36 @@ function renderGrepper() {
   const started = performance.now();
   const ranked = pool.map((job) => scoreJob(job, currentKeywords, $("query").value)).sort((a,b) => b.score - a.score);
   const elapsed = Math.max(0.1, performance.now() - started);
-  $("grepperSummary").textContent = `${ranked.length.toLocaleString()} matching jobs scored in ${elapsed.toFixed(1)} ms locally. Showing the strongest 12 instead of making you inspect every page.`;
-  $("grepperList").innerHTML = ranked.length ? ranked.slice(0, 12).map((job) => {
+  const shown = ranked.slice(0, 12);
+
+  $("grepperSummary").textContent = `${ranked.length.toLocaleString()} jobs scanned against ${currentKeywords.length} weighted resume signals in ${elapsed.toFixed(1)} ms.`;
+  $("grepperScanned").textContent = ranked.length.toLocaleString();
+  $("grepperShown").textContent = shown.length.toLocaleString();
+  $("grepperSignals").textContent = currentKeywords.length.toLocaleString();
+  $("grepperTime").textContent = `${elapsed.toFixed(1)} ms`;
+
+  $("grepperList").innerHTML = shown.length ? shown.map((job, index) => {
     const matched = job.matched.slice(0, 6);
     return `
-      <div class="g-job">
-        <div class="g-job-title"><strong>${escapeHtml(job.title)}</strong><span class="g-score">${job.score}%</span></div>
-        <div class="g-meta"><span>${escapeHtml(job.source)}</span><span>•</span><span>${escapeHtml(job.location)}</span><span>•</span><span>${escapeHtml(job.category)}</span></div>
-        <div class="g-match">${matched.length ? `Matched: ${matched.map((item) => `<b>${escapeHtml(item.skill)}</b>`).join(", ")}` : "No strong resume-signal match."}</div>
-      </div>`;
+      <article class="g-gr-job${index < 3 ? " is-top" : ""}">
+        <div class="g-gr-rank">${index + 1}</div>
+        <div class="g-gr-main">
+          <div class="g-gr-title-row">
+            <strong>${escapeHtml(job.title)}</strong>
+            <span class="g-gr-score"><b>${job.score}%</b><small>match</small></span>
+          </div>
+          <div class="g-gr-score-bar" aria-hidden="true"><span style="--match-score:${job.score}%"></span></div>
+          <div class="g-gr-meta">
+            <span>${escapeHtml(job.category)}</span>
+            <span>${escapeHtml(job.location)}</span>
+            <span>${escapeHtml(job.source)}</span>
+          </div>
+          <div class="g-gr-why">Why it ranked</div>
+          ${matched.length
+            ? `<div class="g-gr-skills">${matched.map((item) => `<span class="g-gr-skill">${escapeHtml(item.skill)} ${item.weight.toFixed(1)}×</span>`).join("")}</div>`
+            : '<div class="g-gr-no-match">No strong resume-signal match.</div>'}
+        </div>
+      </article>`;
   }).join("") : '<div class="g-empty">No jobs match this search.</div>';
 }
 
@@ -174,13 +198,13 @@ function updateGrepperImmediately() {
 function searchWorkday() {
   currentPage = 1;
   renderGrepper();
-  scheduleWorkdayRender("Searching jobs…");
+  scheduleWorkdayRender("Searching jobs...");
 }
 
 function filterChanged() {
   currentPage = 1;
   renderGrepper();
-  scheduleWorkdayRender("Updating jobs…");
+  scheduleWorkdayRender("Updating jobs...");
 }
 
 function rerank() {
@@ -254,11 +278,11 @@ $("workdaySearchBtn").addEventListener("click", searchWorkday);
 $("prevPage").addEventListener("click", () => {
   if (currentPage <= 1) return;
   currentPage -= 1;
-  scheduleWorkdayRender(`Loading page ${currentPage}…`);
+  scheduleWorkdayRender(`Loading page ${currentPage}...`);
 });
 $("nextPage").addEventListener("click", () => {
   currentPage += 1;
-  scheduleWorkdayRender(`Loading page ${currentPage}…`);
+  scheduleWorkdayRender(`Loading page ${currentPage}...`);
 });
 $("replayCollector").addEventListener("click", replayCollector);
 $("resumeFile").addEventListener("change", async (event) => {
