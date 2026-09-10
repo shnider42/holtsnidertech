@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/static/css/site.css" />
   <link rel="stylesheet" href="/static/css/responsive-fixes.css" />
   <link rel="stylesheet" href="/static/css/grepper-demo.css" />
+  <link rel="stylesheet" href="/static/css/grepper-product.css" />
 </head>
 <body>
   <main class="g-wrap">
@@ -35,10 +36,10 @@
       <div class="g-stat"><strong id="jobCount">2,000</strong><span>jobs in this snapshot</span></div>
       <div class="g-stat"><strong id="pageCount">100</strong><span>pages at 20 jobs/page</span></div>
       <div class="g-stat"><strong id="sourceCount">5</strong><span>Workday-style source tenants</span></div>
-      <div class="g-stat"><strong id="snapshotDate">—</strong><span>demo snapshot date</span></div>
+      <div class="g-stat"><strong id="snapshotDate">...</strong><span>demo snapshot date</span></div>
     </section>
 
-    <section class="g-panel g-controls" aria-labelledby="resumeSetup">
+    <section class="g-panel g-controls g-product-setup" aria-labelledby="resumeSetup">
       <p class="g-side-label">1 / Give Grepper some context</p>
       <h2 id="resumeSetup">Turn a resume into ranking signals</h2>
       <div class="g-resume-grid">
@@ -56,8 +57,14 @@
           <p class="g-help">Resume text stays in your browser. The public demo does not upload it anywhere.</p>
         </div>
         <aside class="g-keywords">
-          <h2>Resume → weighted keywords</h2>
-          <p>Grepper turns repeated skills and higher-value phrases into ranking signals instead of making you remember every search term manually.</p>
+          <div class="g-keyword-head">
+            <div>
+              <span>Ranking profile</span>
+              <h2>Weighted resume signals</h2>
+            </div>
+            <strong id="signalCount">0</strong>
+          </div>
+          <p>Repeated skills and useful phrases become ranking signals, so you do not have to remember every search term yourself.</p>
           <div class="g-chips" id="keywordChips" aria-live="polite"></div>
         </aside>
       </div>
@@ -65,7 +72,7 @@
       <div class="g-collector">
         <button class="g-btn alt" id="replayCollector" type="button">Replay snapshot import</button>
         <div class="g-progress" aria-hidden="true"><span id="collectorProgress"></span></div>
-        <div class="g-collector-status" id="collectorStatus">Cached snapshot ready — collection is not running live.</div>
+        <div class="g-collector-status" id="collectorStatus">Cached snapshot ready. Collection is not running live.</div>
       </div>
       <p class="g-help">The import animation is a walkthrough, not a benchmark. A real collector would fetch permitted source pages, normalize records, then overwrite the cached snapshot used by this page.</p>
     </section>
@@ -75,7 +82,7 @@
         <p class="g-side-label">2 / Same underlying records</p>
         <h2>Browse the portal, or rank the pool.</h2>
       </div>
-      <p>The Workday-style side intentionally keeps the familiar careers-site pattern: search, filters, 20 results at a time, then another page load. Grepper uses the same filters but re-ranks the matching pool immediately.</p>
+      <p>The Workday-style side keeps the familiar careers-site pattern: search, filters, 20 results at a time, then another page load. Grepper uses the same filters but re-ranks the matching pool immediately.</p>
     </div>
 
     <section class="g-compare">
@@ -127,18 +134,34 @@
         </div>
       </article>
 
-      <article class="g-panel g-side" aria-labelledby="grepperTitle">
-        <header class="g-side-head">
-          <div class="g-side-head-row">
-            <div>
-              <p class="g-side-label">Grepper view</p>
-              <h3 id="grepperTitle">Best matches first</h3>
+      <article class="g-panel g-side g-grepper-side" aria-labelledby="grepperTitle">
+        <header class="g-gr-head">
+          <div class="g-gr-brand-row">
+            <div class="g-gr-brand-lockup">
+              <span class="g-gr-mark" aria-hidden="true">G</span>
+              <div>
+                <p>GREPPER</p>
+                <h3 id="grepperTitle">Rank the whole pool</h3>
+              </div>
             </div>
-            <span class="g-badge grepper">whole pool</span>
+            <span class="g-gr-instant"><i></i> Instant</span>
           </div>
-          <p class="g-side-summary" id="grepperSummary">Load a resume and rank the snapshot.</p>
+          <p class="g-gr-summary" id="grepperSummary">Load a resume and rank the snapshot.</p>
+          <div class="g-gr-metrics" aria-label="Grepper ranking summary">
+            <div><strong id="grepperScanned">2,000</strong><span>jobs scanned</span></div>
+            <div><strong id="grepperShown">12</strong><span>best shown</span></div>
+            <div><strong id="grepperSignals">0</strong><span>resume signals</span></div>
+            <div><strong id="grepperTime">0.0 ms</strong><span>rank time</span></div>
+          </div>
         </header>
-        <div class="g-list" id="grepperList"></div>
+        <div class="g-gr-list-head">
+          <div>
+            <strong>Best matches</strong>
+            <span>Ranked against your resume, not posting order</span>
+          </div>
+          <span>Top 12</span>
+        </div>
+        <div class="g-gr-list" id="grepperList"></div>
       </article>
     </section>
 
