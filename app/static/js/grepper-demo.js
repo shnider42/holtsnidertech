@@ -10,7 +10,7 @@ const SKILLS = [
   "incident response","technical communication","test engineering","fibre channel","root cause","kubernetes","observability",
   "troubleshooting","automation","terraform","networking","storage","vmware","python","linux","ci/cd","containers",
   "customer","cloud","security","api","git","lab","hardware","metrics","tracing","aws","azure","tcp/ip","vlans",
-  "javascript","html","css","react","sql","analytics","dashboard","excel","reporting"
+  "javascript","html","css","react","frontend","design systems","sql","analytics","dashboard","excel","reporting"
 ];
 
 const TITLE_VARIANTS = [
@@ -47,6 +47,7 @@ function expandSnapshot(data) {
         result.push({
           id: `G-${String(index).padStart(5, "0")}`,
           source,
+          baseTitle: template.title,
           title: `${template.title}${variant}`,
           location,
           category: template.category,
@@ -75,12 +76,22 @@ function extractKeywords(text) {
 
 function scoreJob(job, keywords, query) {
   const haystack = `${job.title} ${job.category} ${job.summary} ${job.skills.join(" ")}`.toLowerCase();
+  const titleText = job.title.toLowerCase();
   const matched = keywords.filter((item) => haystack.includes(item.skill));
-  const weighted = matched.reduce((sum, item) => sum + item.weight, 0);
+  const matchedWeight = matched.reduce((sum, item) => sum + item.weight, 0);
+  const totalWeight = keywords.reduce((sum, item) => sum + item.weight, 0);
+  const matchRatio = totalWeight ? matchedWeight / totalWeight : 0;
+
   const queryTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
   const queryHits = queryTerms.filter((term) => haystack.includes(term)).length;
-  const score = Math.min(99, Math.round(24 + weighted * 5 + queryHits * 7));
-  return { ...job, score, matched };
+  const titleHits = queryTerms.filter((term) => titleText.includes(term)).length;
+  const queryCoverage = queryTerms.length ? queryHits / queryTerms.length : 0;
+  const titleCoverage = queryTerms.length ? titleHits / queryTerms.length : 0;
+
+  const score = Math.min(98, Math.round(
+    30 + (matchRatio * 64) + (queryCoverage * 3) + (titleCoverage * 3)
+  ));
+  return { ...job, score, matched, matchRatio };
 }
 
 function matchesFilters(job) {
@@ -153,12 +164,38 @@ function scheduleWorkdayRender(message = "Loading jobs...") {
   }, WORKDAY_DELAY_MS);
 }
 
+function chooseDisplayResults(ranked, limit = 12) {
+  const selected = [];
+  const perBaseTitle = new Map();
+
+  for (const job of ranked) {
+    const count = perBaseTitle.get(job.baseTitle) || 0;
+    if (count >= 2) continue;
+    selected.push(job);
+    perBaseTitle.set(job.baseTitle, count + 1);
+    if (selected.length === limit) return selected;
+  }
+
+  if (selected.length < limit) {
+    const selectedIds = new Set(selected.map((job) => job.id));
+    for (const job of ranked) {
+      if (selectedIds.has(job.id)) continue;
+      selected.push(job);
+      if (selected.length === limit) break;
+    }
+  }
+
+  return selected;
+}
+
 function renderGrepper() {
   const pool = jobs.filter(matchesFilters);
   const started = performance.now();
-  const ranked = pool.map((job) => scoreJob(job, currentKeywords, $("query").value)).sort((a,b) => b.score - a.score);
+  const ranked = pool.map((job) => scoreJob(job, currentKeywords, $("query").value)).sort((a,b) =>
+    b.score - a.score || b.matchRatio - a.matchRatio || a.title.localeCompare(b.title)
+  );
   const elapsed = Math.max(0.1, performance.now() - started);
-  const shown = ranked.slice(0, 12);
+  const shown = chooseDisplayResults(ranked, 12);
 
   $("grepperSummary").textContent = `${ranked.length.toLocaleString()} jobs scanned against ${currentKeywords.length} weighted resume signals in ${elapsed.toFixed(1)} ms.`;
   $("grepperScanned").textContent = ranked.length.toLocaleString();
