@@ -122,12 +122,16 @@ function renderGrepper() {
   }).join("") : '<div class="g-empty">No jobs match this search.</div>';
 }
 
-function rerank() {
-  currentKeywords = extractKeywords($("resume").value);
-  renderKeywords();
+function refreshSearch() {
   currentPage = 1;
   renderWorkday();
   renderGrepper();
+}
+
+function rerank() {
+  currentKeywords = extractKeywords($("resume").value);
+  renderKeywords();
+  refreshSearch();
 }
 
 function populateFilters() {
@@ -183,9 +187,9 @@ async function init() {
 
 $("sampleResume").addEventListener("click", () => { $("resume").value = SAMPLE_RESUME; rerank(); });
 $("rankBtn").addEventListener("click", rerank);
-$("query").addEventListener("input", () => { currentPage = 1; renderWorkday(); });
-$("location").addEventListener("change", () => { currentPage = 1; renderWorkday(); });
-$("source").addEventListener("change", () => { currentPage = 1; renderWorkday(); });
+$("query").addEventListener("input", refreshSearch);
+$("location").addEventListener("change", refreshSearch);
+$("source").addEventListener("change", refreshSearch);
 $("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage -= 1; renderWorkday(); } });
 $("nextPage").addEventListener("click", () => { currentPage += 1; renderWorkday(); });
 $("replayCollector").addEventListener("click", replayCollector);
