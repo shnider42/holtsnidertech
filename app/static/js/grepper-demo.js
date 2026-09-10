@@ -1,5 +1,6 @@
 const SNAPSHOT_URL = "/static/data/grepper-snapshot.json";
 const PAGE_SIZE = 20;
+const WORKDAY_DELAY_MS = 850;
 const SAMPLE_RESUME = `Senior systems and reliability engineer with experience supporting enterprise infrastructure and production incidents.
 Built realistic lab environments with Linux, VMware, networking, VLANs, Fibre Channel, and storage platforms.
 Automated operational work using Python, APIs, PowerShell, Bash, Terraform, Git, and CI/CD.
@@ -12,11 +13,20 @@ const SKILLS = [
   "javascript","html","css","react","sql","analytics","dashboard","excel","reporting"
 ];
 
+const TITLE_VARIANTS = [
+  "", " II", " III", " — Platform", " — Systems", " — Infrastructure", " — Cloud", " — Automation", " — Tools",
+  " — Reliability", " — Operations", " — Performance", " — Data Center", " — Developer Productivity", " — Security",
+  " — Storage", " — Compute", " — AI Infrastructure", " — Networking", " — Enterprise"
+];
+const POSTED_LABELS = ["Posted Today", "Posted 2 Days Ago", "Posted 3 Days Ago", "Posted 5 Days Ago", "Posted 7 Days Ago"];
+const TIME_TYPES = ["Full time", "Full time", "Full time", "Full time", "Internship", "Part time"];
+
 let snapshot = null;
 let jobs = [];
 let filteredJobs = [];
 let currentPage = 1;
 let currentKeywords = [];
+let workdayTimer = null;
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
@@ -24,22 +34,25 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 }[char]));
 
 function expandSnapshot(data) {
-  const variants = ["", " II", " — Platform", " — Systems"];
   const result = [];
   let index = 1;
+  const copies = Math.min(data.copies_per_template || TITLE_VARIANTS.length, TITLE_VARIANTS.length);
   data.templates.forEach((template, templateIndex) => {
     data.sources.forEach((source, sourceIndex) => {
-      variants.slice(0, data.copies_per_template || 4).forEach((variant, variantIndex) => {
+      TITLE_VARIANTS.slice(0, copies).forEach((variant, variantIndex) => {
         const location = data.locations[(templateIndex + sourceIndex + variantIndex) % data.locations.length];
         result.push({
-          id: `G-${String(index++).padStart(4, "0")}`,
+          id: `G-${String(index).padStart(5, "0")}`,
           source,
           title: `${template.title}${variant}`,
           location,
           category: template.category,
           skills: template.skills,
-          summary: template.summary
+          summary: template.summary,
+          timeType: TIME_TYPES[(index + templateIndex) % TIME_TYPES.length],
+          posted: POSTED_LABELS[(index + sourceIndex) % POSTED_LABELS.length]
         });
+        index += 1;
       });
     });
   });
@@ -71,10 +84,16 @@ function matchesFilters(job) {
   const query = $("query").value.trim().toLowerCase();
   const location = $("location").value;
   const source = $("source").value;
+  const category = $("category").value;
+  const timeType = $("timeType").value;
   const text = `${job.title} ${job.category} ${job.summary} ${job.skills.join(" ")}`.toLowerCase();
   const queryTerms = query.split(/\s+/).filter(Boolean);
   const queryMatch = !queryTerms.length || queryTerms.every((term) => text.includes(term));
-  return queryMatch && (!location || job.location === location) && (!source || job.source === source);
+  return queryMatch
+    && (!location || job.location === location)
+    && (!source || job.source === source)
+    && (!category || job.category === category)
+    && (!timeType || job.timeType === timeType);
 }
 
 function renderKeywords() {
@@ -88,21 +107,44 @@ function renderKeywords() {
   ).join("");
 }
 
+function setWorkdayBusy(isBusy, message = "Loading jobs…") {
+  $("workdayPanel").setAttribute("aria-busy", String(isBusy));
+  ["query", "location", "timeType", "category", "source", "workdaySearchBtn", "prevPage", "nextPage"].forEach((id) => {
+    const control = $(id);
+    if (control) control.disabled = isBusy;
+  });
+  if (!isBusy) return;
+  $("pageNote").textContent = message;
+  $("workdayList").innerHTML = Array.from({ length: 6 }, () =>
+    '<div class="g-wd-skeleton"><span></span><span></span></div>'
+  ).join("");
+}
+
 function renderWorkday() {
   filteredJobs = jobs.filter(matchesFilters);
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
-  currentPage = Math.min(currentPage, totalPages);
+  currentPage = Math.max(1, Math.min(currentPage, totalPages));
   const start = (currentPage - 1) * PAGE_SIZE;
   const visible = filteredJobs.slice(start, start + PAGE_SIZE);
-  $("workdaySummary").textContent = `${filteredJobs.length} matching jobs. To inspect all of them here, you would move through ${totalPages} page${totalPages === 1 ? "" : "s"}.`;
-  $("pageNote").textContent = `Page ${currentPage} of ${totalPages} · showing ${visible.length} of ${filteredJobs.length}`;
+  $("workdaySummary").textContent = `${filteredJobs.length.toLocaleString()} JOBS FOUND`;
+  $("pageNote").textContent = `Page ${currentPage} of ${totalPages}`;
+  $("workdayList").innerHTML = visible.length ? visible.map((job) => `
+    <div class="g-wd-job">
+      <a tabindex="-1">${escapeHtml(job.title)}</a>
+      <div class="g-wd-posted"><span class="g-wd-clock" aria-hidden="true"></span><span>${escapeHtml(job.posted)}</span></div>
+    </div>`).join("") : '<div class="g-empty">No jobs match this search.</div>';
+  setWorkdayBusy(false);
   $("prevPage").disabled = currentPage <= 1;
   $("nextPage").disabled = currentPage >= totalPages;
-  $("workdayList").innerHTML = visible.length ? visible.map((job) => `
-    <div class="g-job">
-      <div class="g-job-title"><strong>${escapeHtml(job.title)}</strong></div>
-      <div class="g-meta"><span>${escapeHtml(job.source)}</span><span>•</span><span>${escapeHtml(job.location)}</span><span>•</span><span>${escapeHtml(job.category)}</span></div>
-    </div>`).join("") : '<div class="g-empty">No jobs match this search.</div>';
+}
+
+function scheduleWorkdayRender(message = "Loading jobs…") {
+  if (workdayTimer) window.clearTimeout(workdayTimer);
+  setWorkdayBusy(true, message);
+  workdayTimer = window.setTimeout(() => {
+    workdayTimer = null;
+    renderWorkday();
+  }, WORKDAY_DELAY_MS);
 }
 
 function renderGrepper() {
@@ -110,7 +152,7 @@ function renderGrepper() {
   const started = performance.now();
   const ranked = pool.map((job) => scoreJob(job, currentKeywords, $("query").value)).sort((a,b) => b.score - a.score);
   const elapsed = Math.max(0.1, performance.now() - started);
-  $("grepperSummary").textContent = `${ranked.length} matching jobs scored in ${elapsed.toFixed(1)} ms locally. Showing the strongest 12 instead of making you inspect every page.`;
+  $("grepperSummary").textContent = `${ranked.length.toLocaleString()} matching jobs scored in ${elapsed.toFixed(1)} ms locally. Showing the strongest 12 instead of making you inspect every page.`;
   $("grepperList").innerHTML = ranked.length ? ranked.slice(0, 12).map((job) => {
     const matched = job.matched.slice(0, 6);
     return `
@@ -122,27 +164,42 @@ function renderGrepper() {
   }).join("") : '<div class="g-empty">No jobs match this search.</div>';
 }
 
-function refreshSearch() {
-  currentPage = 1;
-  renderWorkday();
+function updateGrepperImmediately() {
   renderGrepper();
+}
+
+function searchWorkday() {
+  currentPage = 1;
+  renderGrepper();
+  scheduleWorkdayRender("Searching jobs…");
+}
+
+function filterChanged() {
+  currentPage = 1;
+  renderGrepper();
+  scheduleWorkdayRender("Updating jobs…");
 }
 
 function rerank() {
   currentKeywords = extractKeywords($("resume").value);
   renderKeywords();
-  refreshSearch();
+  renderGrepper();
+}
+
+function addOptions(select, values) {
+  values.forEach((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
 }
 
 function populateFilters() {
-  snapshot.locations.forEach((location) => {
-    const option = document.createElement("option");
-    option.value = location; option.textContent = location; $("location").appendChild(option);
-  });
-  snapshot.sources.forEach((source) => {
-    const option = document.createElement("option");
-    option.value = source; option.textContent = source; $("source").appendChild(option);
-  });
+  addOptions($("location"), snapshot.locations);
+  addOptions($("source"), snapshot.sources);
+  addOptions($("timeType"), [...new Set(jobs.map((job) => job.timeType))]);
+  addOptions($("category"), [...new Set(jobs.map((job) => job.category))].sort());
 }
 
 function replayCollector() {
@@ -157,13 +214,13 @@ function replayCollector() {
     page += 1;
     const captured = Math.min(jobs.length, page * PAGE_SIZE);
     bar.style.width = `${Math.min(100, (page / totalPages) * 100)}%`;
-    status.textContent = `Walkthrough: normalized page ${page} of ${totalPages} · ${captured} records`;
+    status.textContent = `Walkthrough: normalized page ${page} of ${totalPages} · ${captured.toLocaleString()} records`;
     if (page >= totalPages) {
       window.clearInterval(timer);
-      status.textContent = `Walkthrough complete · ${jobs.length} records ready for ranking`;
+      status.textContent = `Walkthrough complete · ${jobs.length.toLocaleString()} records ready for ranking`;
       button.disabled = false;
     }
-  }, 90);
+  }, 35);
 }
 
 async function init() {
@@ -173,7 +230,7 @@ async function init() {
   jobs = expandSnapshot(snapshot);
 
   $("jobCount").textContent = jobs.length.toLocaleString();
-  $("pageCount").textContent = Math.ceil(jobs.length / PAGE_SIZE);
+  $("pageCount").textContent = Math.ceil(jobs.length / PAGE_SIZE).toLocaleString();
   $("sourceCount").textContent = snapshot.sources.length;
   $("snapshotDate").textContent = snapshot.generated_at;
   populateFilters();
@@ -187,11 +244,19 @@ async function init() {
 
 $("sampleResume").addEventListener("click", () => { $("resume").value = SAMPLE_RESUME; rerank(); });
 $("rankBtn").addEventListener("click", rerank);
-$("query").addEventListener("input", refreshSearch);
-$("location").addEventListener("change", refreshSearch);
-$("source").addEventListener("change", refreshSearch);
-$("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage -= 1; renderWorkday(); } });
-$("nextPage").addEventListener("click", () => { currentPage += 1; renderWorkday(); });
+$("query").addEventListener("input", updateGrepperImmediately);
+$("query").addEventListener("keydown", (event) => { if (event.key === "Enter") searchWorkday(); });
+$("workdaySearchBtn").addEventListener("click", searchWorkday);
+["location", "timeType", "category", "source"].forEach((id) => $(id).addEventListener("change", filterChanged));
+$("prevPage").addEventListener("click", () => {
+  if (currentPage <= 1) return;
+  currentPage -= 1;
+  scheduleWorkdayRender(`Loading page ${currentPage}…`);
+});
+$("nextPage").addEventListener("click", () => {
+  currentPage += 1;
+  scheduleWorkdayRender(`Loading page ${currentPage}…`);
+});
 $("replayCollector").addEventListener("click", replayCollector);
 $("resumeFile").addEventListener("change", async (event) => {
   const file = event.target.files?.[0];
