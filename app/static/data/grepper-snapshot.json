@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-09-10",
+  "kind": "representative_demo_snapshot",
+  "page_size": 20,
+  "copies_per_template": 4,
+  "source_note": "Representative cached records for the public demo. The browser does not make live requests to Workday.",
+  "sources": [
+    "Workday tenant A — Infrastructure",
+    "Workday tenant B — Cloud",
+    "Workday tenant C — Storage",
+    "Workday tenant D — Developer Tools",
+    "Workday tenant E — Enterprise Software"
+  ],
+  "locations": [
+    "Boston, MA",
+    "Remote — US",
+    "New York, NY",
+    "Austin, TX",
+    "Raleigh, NC",
+    "San Jose, CA",
+    "Seattle, WA",
+    "Chicago, IL"
+  ],
+  "templates": [
+    {"title":"Senior Site Reliability Engineer","category":"Infrastructure","skills":["linux","python","kubernetes","observability","incident response","automation"],"summary":"Operate distributed services, improve reliability, automate repetitive operations, and lead incident response."},
+    {"title":"Systems Reliability Engineer","category":"Infrastructure","skills":["linux","storage","vmware","troubleshooting","incident response","networking"],"summary":"Investigate complex system failures across operating systems, storage, virtualization, and network paths."},
+    {"title":"Platform Engineer","category":"Cloud Platform","skills":["python","kubernetes","terraform","ci/cd","linux","automation"],"summary":"Build and operate internal platforms, deployment workflows, infrastructure automation, and developer tooling."},
+    {"title":"DevOps Engineer","category":"Cloud Platform","skills":["python","terraform","ci/cd","containers","linux","automation"],"summary":"Improve build and release workflows, infrastructure automation, container platforms, and operational tooling."},
+    {"title":"Cloud Infrastructure Engineer","category":"Cloud Platform","skills":["aws","azure","terraform","networking","linux","kubernetes"],"summary":"Design cloud infrastructure, network connectivity, platform services, and infrastructure-as-code workflows."},
+    {"title":"Storage Systems Engineer","category":"Storage","skills":["storage","linux","vmware","fibre channel","networking","troubleshooting"],"summary":"Support enterprise storage systems, replication, host connectivity, performance, and data-path troubleshooting."},
+    {"title":"Senior Quality Engineer — Systems","category":"Quality Engineering","skills":["python","linux","automation","storage","vmware","test engineering"],"summary":"Build system-level validation, automate regression coverage, and reproduce failures in realistic lab environments."},
+    {"title":"Systems Test Engineer","category":"Quality Engineering","skills":["test engineering","linux","networking","automation","python","lab"],"summary":"Create realistic test environments, execute system validation, and isolate failures across hardware and software."},
+    {"title":"Solutions Engineer","category":"Customer Engineering","skills":["customer","technical communication","networking","cloud","troubleshooting","demo"],"summary":"Translate customer requirements into technical solutions, demos, architecture choices, and implementation plans."},
+    {"title":"Sales Engineer — Infrastructure","category":"Customer Engineering","skills":["customer","technical communication","observability","cloud","demo","discovery"],"summary":"Run technical discovery, demonstrate infrastructure products, and connect customer pain to practical architecture."},
+    {"title":"Support Escalation Engineer","category":"Customer Engineering","skills":["troubleshooting","incident response","linux","networking","customer","root cause"],"summary":"Own difficult escalations, gather evidence, isolate root cause, and coordinate fixes across engineering teams."},
+    {"title":"Observability Engineer","category":"Developer Tools","skills":["observability","linux","python","kubernetes","metrics","tracing"],"summary":"Improve metrics, tracing, logging, dashboards, and production troubleshooting for distributed applications."},
+    {"title":"Automation Engineer","category":"Developer Tools","skills":["python","api","automation","git","ci/cd","terraform"],"summary":"Turn manual operational processes into reliable scripts, APIs, workflows, and repeatable tooling."},
+    {"title":"Developer Productivity Engineer","category":"Developer Tools","skills":["python","git","ci/cd","api","automation","containers"],"summary":"Build tools that reduce friction for engineers across source control, builds, testing, and deployment."},
+    {"title":"Network Systems Engineer","category":"Networking","skills":["networking","tcp/ip","vlans","linux","troubleshooting","fibre channel"],"summary":"Design and troubleshoot switching, segmentation, connectivity, packet flows, and data-center network services."},
+    {"title":"Infrastructure Lab Engineer","category":"Infrastructure","skills":["lab","networking","vmware","storage","linux","hardware"],"summary":"Build replica lab environments with servers, switching, virtualization, storage, and production-like workloads."},
+    {"title":"Technical Program Engineer","category":"Operations","skills":["technical communication","customer","planning","risk","automation","systems"],"summary":"Coordinate technical work across engineering groups, clarify dependencies, and turn complex system risk into action."},
+    {"title":"Security Automation Engineer","category":"Security","skills":["python","api","automation","security","cloud","git"],"summary":"Automate security workflows, integrate APIs, improve evidence collection, and reduce repetitive governance work."},
+    {"title":"Frontend Software Engineer","category":"Software","skills":["javascript","html","css","react","frontend","design systems"],"summary":"Build polished web interfaces and reusable frontend components for customer-facing applications."},
+    {"title":"Data Analyst","category":"Analytics","skills":["sql","analytics","dashboard","excel","reporting","data"],"summary":"Analyze business data, build reports and dashboards, and communicate trends to stakeholders."}
+  ]
+}
