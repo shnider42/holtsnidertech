@@ -2,7 +2,7 @@
   "generated_at": "2026-09-10",
   "kind": "representative_demo_snapshot",
   "page_size": 20,
-  "copies_per_template": 4,
+  "copies_per_template": 20,
   "source_note": "Representative cached records for the public demo. The browser does not make live requests to Workday.",
   "sources": [
     "Workday tenant A — Infrastructure",
