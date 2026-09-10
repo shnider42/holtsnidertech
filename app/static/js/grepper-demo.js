@@ -37,9 +37,12 @@ function expandSnapshot(data) {
   const result = [];
   let index = 1;
   const copies = Math.min(data.copies_per_template || TITLE_VARIANTS.length, TITLE_VARIANTS.length);
-  data.templates.forEach((template, templateIndex) => {
+
+  // Interleave base roles so a 20-result page resembles a mixed careers feed
+  // instead of grouping many synthetic variants of one title together.
+  TITLE_VARIANTS.slice(0, copies).forEach((variant, variantIndex) => {
     data.sources.forEach((source, sourceIndex) => {
-      TITLE_VARIANTS.slice(0, copies).forEach((variant, variantIndex) => {
+      data.templates.forEach((template, templateIndex) => {
         const location = data.locations[(templateIndex + sourceIndex + variantIndex) % data.locations.length];
         result.push({
           id: `G-${String(index).padStart(5, "0")}`,
