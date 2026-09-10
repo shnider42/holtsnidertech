@@ -32,30 +32,15 @@
     </section>
 
     <section class="g-statbar" aria-label="Snapshot summary">
-      <div class="g-stat"><strong id="jobCount">400</strong><span>jobs in this snapshot</span></div>
-      <div class="g-stat"><strong id="pageCount">20</strong><span>pages at 20 jobs/page</span></div>
+      <div class="g-stat"><strong id="jobCount">2,000</strong><span>jobs in this snapshot</span></div>
+      <div class="g-stat"><strong id="pageCount">100</strong><span>pages at 20 jobs/page</span></div>
       <div class="g-stat"><strong id="sourceCount">5</strong><span>Workday-style source tenants</span></div>
       <div class="g-stat"><strong id="snapshotDate">—</strong><span>demo snapshot date</span></div>
     </section>
 
-    <section class="g-panel g-controls" aria-labelledby="searchSetup">
-      <p class="g-side-label">1 / Define the same search</p>
-      <h2 id="searchSetup">Search once, compare both views</h2>
-      <div class="g-controls-grid">
-        <div class="g-field">
-          <label for="query">What kind of role?</label>
-          <input class="g-input" id="query" value="engineer" autocomplete="off" />
-        </div>
-        <div class="g-field">
-          <label for="location">Location</label>
-          <select class="g-select" id="location"><option value="">All locations</option></select>
-        </div>
-        <div class="g-field">
-          <label for="source">Workday tenant</label>
-          <select class="g-select" id="source"><option value="">All tenants</option></select>
-        </div>
-      </div>
-
+    <section class="g-panel g-controls" aria-labelledby="resumeSetup">
+      <p class="g-side-label">1 / Give Grepper some context</p>
+      <h2 id="resumeSetup">Turn a resume into ranking signals</h2>
       <div class="g-resume-grid">
         <div>
           <div class="g-field">
@@ -88,29 +73,58 @@
     <div class="g-compare-head">
       <div>
         <p class="g-side-label">2 / Same underlying records</p>
-        <h2>Browse 20 at a time, or rank everything.</h2>
+        <h2>Browse the portal, or rank the pool.</h2>
       </div>
-      <p>The left side intentionally stays limited to a conventional page-by-page view. The right side scores the same matching pool against the resume signals above and surfaces the strongest candidates first.</p>
+      <p>The Workday-style side intentionally keeps the familiar careers-site pattern: search, filters, 20 results at a time, then another page load. Grepper uses the same filters but re-ranks the matching pool immediately.</p>
     </div>
 
     <section class="g-compare">
-      <article class="g-panel g-side" aria-labelledby="workdayTitle">
-        <header class="g-side-head">
-          <div class="g-side-head-row">
-            <div>
-              <p class="g-side-label">Workday-style view</p>
-              <h3 id="workdayTitle">Page through the search</h3>
-            </div>
-            <span class="g-badge workday">20 / page</span>
+      <article class="g-side g-workday-side" aria-labelledby="workdayTitle">
+        <div class="g-workday" id="workdayPanel" aria-busy="false">
+          <header class="g-wd-topbar">
+            <strong>CAREERS</strong>
+            <nav aria-label="Career site"><span>Home</span><span>Search for jobs</span></nav>
+          </header>
+
+          <div class="g-wd-hero">
+            <p>CAREERS</p>
+            <h3 id="workdayTitle">Find work worth doing.</h3>
+            <span>Search open roles across a large corporate careers site.</span>
           </div>
-          <p class="g-side-summary" id="workdaySummary">—</p>
-        </header>
-        <div class="g-list" id="workdayList"></div>
-        <footer class="g-pages">
-          <button id="prevPage" type="button">← Previous</button>
-          <div class="g-page-note" id="pageNote">Page 1</div>
-          <button id="nextPage" type="button">Next →</button>
-        </footer>
+
+          <div class="g-wd-search-area">
+            <div class="g-wd-search-row">
+              <label class="g-wd-search-box" for="query">
+                <span aria-hidden="true">⌕</span>
+                <input id="query" value="" placeholder="Search for jobs or keywords" autocomplete="off" />
+              </label>
+              <button id="workdaySearchBtn" type="button">Search</button>
+            </div>
+            <div class="g-wd-filters">
+              <label><span>Location</span><select id="location"><option value="">All locations</option></select></label>
+              <label><span>Time Type</span><select id="timeType"><option value="">All types</option></select></label>
+              <label><span>Job Category</span><select id="category"><option value="">All categories</option></select></label>
+              <label><span>More</span><select id="source"><option value="">All sites</option></select></label>
+            </div>
+          </div>
+
+          <div class="g-wd-content">
+            <div class="g-wd-results">
+              <div class="g-wd-count" id="workdaySummary">2,000 JOBS FOUND</div>
+              <div class="g-wd-list" id="workdayList"></div>
+              <footer class="g-wd-pages">
+                <button id="prevPage" type="button">Previous</button>
+                <div class="g-page-note" id="pageNote">Page 1 of 100</div>
+                <button id="nextPage" type="button">Next</button>
+              </footer>
+            </div>
+            <aside class="g-wd-promo" aria-label="Careers information">
+              <span>BUILD WHAT'S NEXT</span>
+              <strong>Work with people solving difficult problems.</strong>
+              <p>Explore teams, learn about the company, and find opportunities across engineering, operations, and business groups.</p>
+            </aside>
+          </div>
+        </div>
       </article>
 
       <article class="g-panel g-side" aria-labelledby="grepperTitle">
