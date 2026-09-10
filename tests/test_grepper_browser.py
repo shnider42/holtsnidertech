@@ -50,39 +50,72 @@ def live_site():
             process.kill()
 
 
-def test_grepper_compares_workday_paging_with_resume_ranking(live_site):
+def test_grepper_compares_workday_latency_with_resume_ranking(live_site):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, reduced_motion="reduce")
         page = context.new_page()
         page.goto(f"{live_site}/static/demos/grepper.html", wait_until="networkidle")
-        page.wait_for_function("document.getElementById('jobCount').textContent === '400'")
+        page.wait_for_function("document.getElementById('jobCount').textContent === '2,000'")
 
-        assert page.locator("#jobCount").inner_text() == "400"
-        assert page.locator("#pageCount").inner_text() == "20"
+        assert page.locator("#jobCount").inner_text() == "2,000"
+        assert page.locator("#pageCount").inner_text() == "100"
         assert page.locator("#sourceCount").inner_text() == "5"
         assert page.locator("#snapshotDate").inner_text() == "2026-09-10"
         assert page.locator("#keywordChips .g-chip").count() > 5
 
-        # The conventional side exposes one 20-record page; Grepper surfaces a ranked shortlist.
-        assert page.locator("#workdayList .g-job").count() == 20
+        # The conventional portal side exposes only one 20-record page.
+        assert page.locator("#workdayList .g-wd-job").count() == 20
         assert page.locator("#grepperList .g-job").count() == 12
-        assert "Page 1" in page.locator("#pageNote").inner_text()
+        assert page.locator("#workdaySummary").inner_text() == "2,000 JOBS FOUND"
+        assert page.locator("#pageNote").inner_text() == "Page 1 of 100"
+
+        # Workday-side result cards deliberately omit job IDs and locations.
+        workday_text = page.locator("#workdayList").inner_text()
+        assert "Boston, MA" not in workday_text
+        assert "G-000" not in workday_text
 
         ARTIFACT_DIR.mkdir(exist_ok=True)
-        page.screenshot(path=str(ARTIFACT_DIR / "grepper-setup.png"), full_page=False)
+        page.locator("#workdayPanel").scroll_into_view_if_needed()
+        page.wait_for_timeout(80)
+        page.screenshot(path=str(ARTIFACT_DIR / "grepper-workday.png"), full_page=False)
 
+        # Paging should visibly wait instead of swapping instantly.
         page.locator("#nextPage").click()
-        assert "Page 2" in page.locator("#pageNote").inner_text()
+        assert page.locator("#workdayPanel").get_attribute("aria-busy") == "true"
+        assert "Loading page 2" in page.locator("#pageNote").inner_text()
+        assert page.locator("#workdayList .g-wd-skeleton").count() > 0
+        page.wait_for_function("document.getElementById('workdayPanel').getAttribute('aria-busy') === 'false'")
+        assert page.locator("#pageNote").inner_text() == "Page 2 of 100"
 
-        # Search filters must drive both sides of the comparison from the same pool.
+        # Typing changes Grepper immediately; Workday waits for Search.
+        old_workday_count = page.locator("#workdaySummary").inner_text()
+        page.locator("#query").fill("frontend")
+        assert "100 matching jobs" in page.locator("#grepperSummary").inner_text()
+        assert page.locator("#workdaySummary").inner_text() == old_workday_count
+
+        page.locator("#workdaySearchBtn").click()
+        assert page.locator("#workdayPanel").get_attribute("aria-busy") == "true"
+        assert page.locator("#workdaySummary").inner_text() == old_workday_count
+        page.wait_for_function("document.getElementById('workdayPanel').getAttribute('aria-busy') === 'false'")
+        assert page.locator("#workdaySummary").inner_text() == "100 JOBS FOUND"
+        assert page.locator("#pageNote").inner_text() == "Page 1 of 5"
+
+        # Filters drive both sides from the same pool, but Workday still redraws later.
+        page.locator("#query").fill("")
+        page.locator("#workdaySearchBtn").click()
+        page.wait_for_function("document.getElementById('workdayPanel').getAttribute('aria-busy') === 'false'")
         page.locator("#source").select_option(label="Workday tenant A — Infrastructure")
-        workday_count = int(re.match(r"(\d+)", page.locator("#workdaySummary").inner_text()).group(1))
-        grepper_count = int(re.match(r"(\d+)", page.locator("#grepperSummary").inner_text()).group(1))
+        grepper_count = int(re.match(r"([\d,]+)", page.locator("#grepperSummary").inner_text()).group(1).replace(",", ""))
+        assert grepper_count == 400
+        assert page.locator("#workdayPanel").get_attribute("aria-busy") == "true"
+        page.wait_for_function("document.getElementById('workdayPanel').getAttribute('aria-busy') === 'false'")
+        workday_count = int(re.match(r"([\d,]+)", page.locator("#workdaySummary").inner_text()).group(1).replace(",", ""))
         assert workday_count == grepper_count
 
-        # Resume weighting should materially change the ranking, not just decorate the UI.
+        # Resume weighting should materially change ranking, not just decorate the UI.
         page.locator("#source").select_option("")
+        page.wait_for_function("document.getElementById('workdayPanel').getAttribute('aria-busy') === 'false'")
         page.locator("#resume").fill(
             "Frontend engineer. JavaScript JavaScript React React CSS HTML frontend design systems."
         )
