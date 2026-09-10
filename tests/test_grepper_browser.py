@@ -76,16 +76,16 @@ def test_grepper_compares_workday_latency_with_resume_ranking(live_site):
         assert page.locator("#snapshotDate").inner_text() == "2026-09-10"
         assert page.locator("#keywordChips .g-chip").count() > 5
 
-        # The conventional portal exposes one 20-record page. Grepper surfaces a ranked shortlist.
+        # The conventional portal exposes one 20-record page. Grepper shows its top 20 ranked matches.
         assert page.locator("#workdayList .g-wd-job").count() == 20
-        assert page.locator("#grepperList .g-gr-job").count() == 12
+        assert page.locator("#grepperList .g-gr-job").count() == 20
         assert page.locator("#workdaySummary").inner_text() == "2,000 JOBS FOUND"
         assert page.locator("#pageNote").inner_text() == "Page 1 of 100"
         assert page.locator("#grepperScanned").inner_text() == "2,000"
-        assert page.locator("#grepperShown").inner_text() == "12"
+        assert page.locator("#grepperShown").inner_text() == "20"
         assert int(page.locator("#grepperSignals").inner_text()) > 5
         assert page.locator("#grepperList .g-gr-rank").first.inner_text() == "1"
-        assert page.locator("#grepperList .g-gr-score-bar").count() == 12
+        assert page.locator("#grepperList .g-gr-score-bar").count() == 20
 
         # Workday result cards deliberately omit job IDs and locations.
         workday_text = page.locator("#workdayList").inner_text()
