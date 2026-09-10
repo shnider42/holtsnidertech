@@ -1,5 +1,6 @@
 const SNAPSHOT_URL = "/static/data/grepper-snapshot.json";
 const PAGE_SIZE = 20;
+const DISPLAY_LIMIT = 20;
 const WORKDAY_DELAY_MS = 1700;
 const SAMPLE_RESUME = `Senior systems and reliability engineer with experience supporting enterprise infrastructure and production incidents.
 Built realistic lab environments with Linux, VMware, networking, VLANs, Fibre Channel, and storage platforms.
@@ -164,7 +165,7 @@ function scheduleWorkdayRender(message = "Loading jobs...") {
   }, WORKDAY_DELAY_MS);
 }
 
-function chooseDisplayResults(ranked, limit = 12) {
+function chooseDisplayResults(ranked, limit = DISPLAY_LIMIT) {
   const selected = [];
   const perBaseTitle = new Map();
 
@@ -195,7 +196,7 @@ function renderGrepper() {
     b.score - a.score || b.matchRatio - a.matchRatio || a.title.localeCompare(b.title)
   );
   const elapsed = Math.max(0.1, performance.now() - started);
-  const shown = chooseDisplayResults(ranked, 12);
+  const shown = chooseDisplayResults(ranked, DISPLAY_LIMIT);
 
   $("grepperSummary").textContent = `${ranked.length.toLocaleString()} jobs scanned against ${currentKeywords.length} weighted resume signals in ${elapsed.toFixed(1)} ms.`;
   $("grepperScanned").textContent = ranked.length.toLocaleString();
@@ -219,10 +220,10 @@ function renderGrepper() {
             <span>${escapeHtml(job.location)}</span>
             <span>${escapeHtml(job.source)}</span>
           </div>
-          <div class="g-gr-why">Why it ranked</div>
+          <div class="g-gr-why">Matched signals</div>
           ${matched.length
             ? `<div class="g-gr-skills">${matched.map((item) => `<span class="g-gr-skill">${escapeHtml(item.skill)} ${item.weight.toFixed(1)}×</span>`).join("")}</div>`
-            : '<div class="g-gr-no-match">No strong resume-signal match.</div>'}
+            : '<div class="g-gr-no-match">No resume signal hit.</div>'}
         </div>
       </article>`;
   }).join("") : '<div class="g-empty">No jobs match this search.</div>';
