@@ -1,0 +1,234 @@
+/*
+ * Holtsnider Tech flow-clarity layer.
+ *
+ * This file intentionally loads after the existing Boston Practical styles.
+ * It removes leftover experimental UI and polishes the current visitor flow
+ * without rewriting the visual system underneath it.
+ */
+
+/* The older injected "default context" panel duplicated the four entry cards.
+ * The injection has been removed from JS; this remains defensive cleanup. */
+.boston .bos-default-context {
+    display: none !important;
+}
+
+/* The old top-ribbon mark inherited a border and stretched across its grid
+ * column, which made it look like a giant empty input. Keep it as a compact
+ * brand mark and let the two useful navigation shortcuts own the right side. */
+.boston .bos-head .bos-mark {
+    justify-self: start !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* The old scroll treatment dropped the entire header to 22% opacity. Keep the
+ * quiet fade, but leave the brand and the two shortcuts discoverable. */
+.boston:not(.bos-at-top) .bos-head {
+    opacity: 0.68 !important;
+}
+
+.boston:not(.bos-at-top) .bos-head:hover,
+.boston:not(.bos-at-top) .bos-head:focus-within {
+    opacity: 1 !important;
+}
+
+/* The hover/focus "common starts" preview was useful when the cards hid all
+ * explanatory copy. The cards now explain themselves and the real choices
+ * appear after click, so this extra preview layer only repeats information. */
+.bos-choice-drawer,
+.bos-choice-inline {
+    display: none !important;
+}
+
+/* Put one plain-English sentence back under the hero. Older staging polish hid
+ * the lede entirely, which made a cold visitor infer too much from the cards. */
+.boston .bos-hero .bos-lede {
+    display: block !important;
+    max-width: 720px !important;
+    margin-top: 18px !important;
+    color: var(--bos-muted, #d8d1c7) !important;
+    font-size: clamp(0.96rem, 1.15vw, 1.08rem) !important;
+    line-height: 1.52 !important;
+}
+
+/* Clarity beats hover-reveal here. The card title and one-sentence explanation
+ * should be readable before the visitor has to probe the interface. Keep the
+ * artwork behind the copy rather than letting the pseudo-element wash it out. */
+.boston .bos-start-panel .bos-choice-card::after {
+    opacity: 0.48 !important;
+}
+
+.boston .bos-start-panel .bos-choice-card > p {
+    position: relative;
+    z-index: 2;
+    display: -webkit-box !important;
+    visibility: visible !important;
+    max-width: 86%;
+    color: rgba(244, 241, 234, 0.94) !important;
+    opacity: 1 !important;
+    font-size: 0.8rem !important;
+    line-height: 1.34 !important;
+    transform: none !important;
+    transition: none !important;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.82);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+/* Keep the restored desktop navigation useful but quiet. */
+.boston .bos-links [data-clarity-nav] {
+    opacity: 0.86;
+    text-decoration: none;
+}
+
+.boston .bos-links [data-clarity-nav]:hover,
+.boston .bos-links [data-clarity-nav]:focus-visible {
+    opacity: 1;
+}
+
+/* Optional intake should feel secondary to simply contacting a person. */
+.boston .bos-guided-flow-action .bos-actions {
+    justify-content: flex-start;
+    margin-top: 0 !important;
+}
+
+.boston .bos-guided-flow-action .bos-actions .bos-btn {
+    min-width: 150px;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding-top: 4px;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"]::before {
+    content: "Optional context — skip anything you do not know yet.";
+    grid-column: 1 / -1;
+    color: var(--bos-soft, #cfc7bc);
+    opacity: 0.76;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.boston .bos-context-fields[data-clarity-enhanced="true"] .bos-context-field:last-child {
+    grid-column: 1 / -1;
+}
+
+/* Give the direct browse path a little breathing room when it becomes visible. */
+.boston #experience:not([hidden]),
+.boston #work:not([hidden]),
+.boston #case-shapes:not([hidden]),
+.boston #contact {
+    scroll-margin-top: 92px;
+}
+
+/* The technology strip remains horizontally scrollable, but it should read as
+ * intentionally interactive rather than something that moves on its own. */
+.boston .bos-stack-grid {
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+}
+
+.boston .bos-stack-grid .bos-mini {
+    scroll-snap-align: start;
+}
+
+/* Small cue that project cards leave the site when appropriate. */
+.boston #work a[target="_blank"] .bos-card-action::after,
+.boston .bos-flow-example-card[target="_blank"] strong::after {
+    content: " ↗";
+    font-size: 0.78em;
+    opacity: 0.72;
+}
+
+/* The contact section is the end of every path, not another wall of copy. */
+.boston #contact .bos-contact-note {
+    max-width: 64ch;
+    color: var(--bos-soft, #cfc7bc);
+    opacity: 0.82;
+}
+
+/* Several older polish layers animate elements from opacity: 0. Reduced-motion
+ * users should not lose the content when those animations are suppressed. */
+@media (prefers-reduced-motion: reduce) {
+    .boston .bos-start-panel .bos-choice-card,
+    .boston .bos-guided-flow-option-button,
+    .boston .bos-flow-example-card,
+    .boston .bos-context-field,
+    .boston .bos-guided-flow-action {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Keep the mobile first screen focused on the four choices, while retaining the
+ * one-sentence explanation of what Holtsnider Tech actually does. */
+@media (max-width: 850px) {
+    .boston .bos-links [data-clarity-nav] {
+        display: none !important;
+    }
+
+    .boston .bos-hero .bos-lede {
+        display: block !important;
+        margin-top: 12px !important;
+        font-size: 0.9rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card {
+        min-height: clamp(152px, 21svh, 188px) !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card::after {
+        opacity: 0.34 !important;
+    }
+
+    .boston .bos-start-panel .bos-choice-card > p {
+        max-width: 82%;
+        margin-top: 8px !important;
+        padding-right: 0 !important;
+        font-size: 0.76rem !important;
+        line-height: 1.32 !important;
+        -webkit-line-clamp: 5;
+    }
+
+    /* On touch screens the sentence is the useful explanation; the extra
+     * "Start troubleshooting"-style label is redundant and costs space. */
+    .boston .bos-start-panel .bos-choice-card .bos-choice-action {
+        display: none !important;
+    }
+
+    /* The legacy 430px template hides every .bos-actions group. Restore only
+     * the customer-facing action groups we intentionally use in this flow. */
+    .boston #experience .bos-actions,
+    .boston #work .bos-actions,
+    .boston #contact .bos-actions,
+    .boston .bos-guided-flow-action .bos-actions {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+
+    .boston .bos-context-fields[data-clarity-enhanced="true"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .boston .bos-context-fields[data-clarity-enhanced="true"] .bos-context-field:last-child {
+        grid-column: auto;
+    }
+
+    .boston .bos-guided-flow-action .bos-actions {
+        width: 100%;
+    }
+
+    .boston .bos-guided-flow-action .bos-actions .bos-btn {
+        width: 100%;
+    }
+}

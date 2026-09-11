@@ -56,6 +56,10 @@ def sitemap_xml():
     <loc>https://holtsnidertech.com/static/demos/loudsource-vote.html</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://holtsnidertech.com/static/demos/jiporady.html</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>
 """
     return Response(body, mimetype="application/xml")

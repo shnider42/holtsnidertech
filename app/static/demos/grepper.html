@@ -3,38 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grepper Demo | Holtsnider Tech</title>
+  <meta name="description" content="Interactive Grepper demo: compare paging through a Workday-style job list with ranking the same cached job snapshot against weighted resume keywords." />
+  <title>Grepper | Workday Search Comparison</title>
   <link rel="stylesheet" href="/static/css/site.css" />
   <link rel="stylesheet" href="/static/css/responsive-fixes.css" />
-  <link rel="stylesheet" href="/static/css/staging-polish.css" />
-  <link rel="stylesheet" href="/static/css/staging-background-boost.css" />
-  <link rel="stylesheet" href="/static/css/proof-capabilities.css" />
-  <style>
-    .demo-wrap{padding:56px 0 120px}.demo-shell{max-width:980px;margin:0 auto}.demo-panel{padding:32px;border:1px solid rgba(198,208,218,.16);border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),linear-gradient(135deg,rgba(45,143,139,.14),rgba(255,138,61,.05));box-shadow:0 24px 60px rgba(0,0,0,.28)}.demo-input{display:grid;gap:10px;margin:24px 0}.demo-input input{width:100%;padding:16px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(6,12,19,.72);color:var(--text);font:inherit}.demo-results{display:grid;gap:14px;margin-top:24px}.demo-job{padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035)}.demo-job strong{display:block;color:var(--text);font-size:1.05rem}.demo-score{color:var(--green);font-weight:700}.demo-note{color:var(--muted);font-size:.95rem}.back-link{display:inline-flex;margin-bottom:24px;color:var(--green);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem}</style>
+  <link rel="stylesheet" href="/static/css/grepper-demo.css" />
+  <link rel="stylesheet" href="/static/css/grepper-product.css" />
 </head>
 <body>
-  <main class="demo-wrap">
-    <div class="container demo-shell">
-      <a class="back-link" href="/">← Back to Holtsnider Tech</a>
-      <section class="demo-panel">
-        <p class="section-label">Portfolio Demo</p>
-        <h1 class="section-title">Grepper</h1>
-        <p class="section-text">This page demonstrates the Grepper workflow: paste a Workday careers URL, choose a location, and review ranked job results. The portfolio version shows the user experience while the underlying project focuses on parsing, normalizing, ranking, and explaining job matches.</p>
-        <div class="demo-input">
-          <label for="url">Workday careers URL</label>
-          <input id="url" value="https://cisco.wd5.myworkdayjobs.com/en-US/Cisco_Careers" />
-          <label for="location">Location search</label>
-          <input id="location" value="Boston" />
-          <button class="button button-primary" id="rankBtn" type="button">Rank sample jobs</button>
+  <main class="g-wrap">
+    <header class="g-top">
+      <a class="g-brand" href="/">Holtsnider Tech / Grepper</a>
+      <a class="g-back" href="/">← Back to Holtsnider Tech</a>
+    </header>
+
+    <section class="g-hero">
+      <div>
+        <p class="g-eyebrow">Workday search comparison</p>
+        <h1>Same jobs.<br />Less digging.</h1>
+        <p class="g-lede">
+          Grepper takes a large job pool, turns a resume into weighted search signals, and ranks the whole set at once.
+          This public demo puts that workflow next to the page-by-page experience it is meant to replace.
+        </p>
+      </div>
+      <aside class="g-truth">
+        <strong>This is a cached public demo, not a live Workday connection.</strong>
+        <p>That is intentional. Live collection belongs in a controlled importer, not in a visitor's browser. The demo uses the same snapshot on both sides so the comparison stays honest.</p>
+      </aside>
+    </section>
+
+    <section class="g-statbar" aria-label="Snapshot summary">
+      <div class="g-stat"><strong id="jobCount">2,000</strong><span>jobs in this company snapshot</span></div>
+      <div class="g-stat"><strong id="pageCount">100</strong><span>pages at 20 jobs/page</span></div>
+      <div class="g-stat"><strong id="sourceCount">5</strong><span>business groups in this site</span></div>
+      <div class="g-stat"><strong id="snapshotDate">...</strong><span>demo snapshot date</span></div>
+    </section>
+
+    <section class="g-panel g-controls g-product-setup" aria-labelledby="resumeSetup">
+      <p class="g-side-label">1 / Give Grepper some context</p>
+      <h2 id="resumeSetup">Turn a resume into ranking signals</h2>
+      <div class="g-resume-grid">
+        <div>
+          <div class="g-field">
+            <label for="resume">Resume text</label>
+            <textarea class="g-resume" id="resume"></textarea>
+          </div>
+          <div class="g-toolbar">
+            <button class="g-btn alt" id="sampleResume" type="button">Load sample resume</button>
+            <label class="g-btn alt g-file-label" for="resumeFile">Import .txt / .md</label>
+            <input class="g-file" id="resumeFile" type="file" accept=".txt,.md,text/plain,text/markdown" />
+            <button class="g-btn" id="rankBtn" type="button">Rank the snapshot</button>
+          </div>
+          <p class="g-help">Resume text stays in your browser. The public demo does not upload it anywhere.</p>
         </div>
-        <p class="demo-note">Portfolio demonstration using representative results.</p>
-        <div class="demo-results" id="results"></div>
-      </section>
+        <aside class="g-keywords">
+          <div class="g-keyword-head">
+            <div>
+              <span>Ranking profile</span>
+              <h2>Weighted resume signals</h2>
+            </div>
+            <strong id="signalCount">0</strong>
+          </div>
+          <p>Repeated skills and useful phrases become ranking signals, so you do not have to remember every search term yourself.</p>
+          <div class="g-chips" id="keywordChips" aria-live="polite"></div>
+        </aside>
+      </div>
+
+      <div class="g-collector">
+        <button class="g-btn alt" id="replayCollector" type="button">Replay snapshot import</button>
+        <div class="g-progress" aria-hidden="true"><span id="collectorProgress"></span></div>
+        <div class="g-collector-status" id="collectorStatus">Cached snapshot ready. Collection is not running live.</div>
+      </div>
+      <p class="g-help">The import animation is a walkthrough, not a benchmark. A real collector would fetch permitted source pages, normalize records, then overwrite the cached snapshot used by this page.</p>
+    </section>
+
+    <div class="g-compare-head">
+      <div>
+        <p class="g-side-label">2 / Same underlying records</p>
+        <h2>Browse the portal, or rank the pool.</h2>
+      </div>
+      <p>The Workday-style side keeps the familiar careers-site pattern: search, filters, 20 results at a time, then another page load. Grepper uses the same filters but re-ranks the matching pool immediately.</p>
     </div>
+
+    <section class="g-compare">
+      <article class="g-side g-workday-side" aria-labelledby="workdayTitle">
+        <div class="g-workday" id="workdayPanel" aria-busy="false">
+          <header class="g-wd-topbar">
+            <strong>CAREERS</strong>
+            <nav aria-label="Career site"><span>Home</span><span>Search for jobs</span></nav>
+          </header>
+
+          <div class="g-wd-hero">
+            <p>CAREERS</p>
+            <h3 id="workdayTitle">Find work worth doing.</h3>
+            <span>Search open roles across a large corporate careers site.</span>
+          </div>
+
+          <div class="g-wd-search-area">
+            <div class="g-wd-search-row">
+              <label class="g-wd-search-box" for="query">
+                <span aria-hidden="true">⌕</span>
+                <input id="query" value="" placeholder="Search for jobs or keywords" autocomplete="off" />
+              </label>
+              <button id="workdaySearchBtn" type="button">Search</button>
+            </div>
+            <div class="g-wd-filters">
+              <label><span>Location</span><select id="location"><option value="">All locations</option></select></label>
+              <label><span>Time Type</span><select id="timeType"><option value="">All types</option></select></label>
+              <label><span>Job Category</span><select id="category"><option value="">All categories</option></select></label>
+              <label><span>More</span><select id="source"><option value="">All business groups</option></select></label>
+            </div>
+          </div>
+
+          <div class="g-wd-content">
+            <div class="g-wd-results">
+              <div class="g-wd-count" id="workdaySummary">2,000 JOBS FOUND</div>
+              <div class="g-wd-list" id="workdayList"></div>
+              <footer class="g-wd-pages">
+                <button id="prevPage" type="button">Previous</button>
+                <div class="g-page-note" id="pageNote">Page 1 of 100</div>
+                <button id="nextPage" type="button">Next</button>
+              </footer>
+            </div>
+            <aside class="g-wd-promo" aria-label="Careers information">
+              <span>BUILD WHAT'S NEXT</span>
+              <strong>Work with people solving difficult problems.</strong>
+              <p>Explore teams, learn about the company, and find opportunities across engineering, operations, and business groups.</p>
+            </aside>
+          </div>
+        </div>
+      </article>
+
+      <article class="g-panel g-side g-grepper-side" aria-labelledby="grepperTitle">
+        <header class="g-gr-head">
+          <div class="g-gr-brand-row">
+            <div class="g-gr-brand-lockup">
+              <span class="g-gr-mark" aria-hidden="true">grep</span>
+              <div>
+                <p>GREPPER / MATCH ENGINE</p>
+                <h3 id="grepperTitle">Rank the whole pool</h3>
+              </div>
+            </div>
+            <span class="g-gr-instant"><i></i> Instant rank</span>
+          </div>
+          <p class="g-gr-summary" id="grepperSummary">Load a resume and rank the snapshot.</p>
+          <div class="g-gr-metrics" aria-label="Grepper ranking summary">
+            <div><strong id="grepperScanned">2,000</strong><span>jobs scanned</span></div>
+            <div><strong id="grepperShown">20</strong><span>best shown</span></div>
+            <div><strong id="grepperSignals">0</strong><span>resume signals</span></div>
+            <div><strong id="grepperTime">0.0 ms</strong><span>rank time</span></div>
+          </div>
+        </header>
+        <div class="g-gr-list-head">
+          <div>
+            <strong>Ranked output</strong>
+            <span>Resume relevance first. Posting order ignored.</span>
+          </div>
+          <span>Top 20</span>
+        </div>
+        <div class="g-gr-list" id="grepperList"></div>
+      </article>
+    </section>
+
+    <section class="g-callout">
+      <h2>The eventual live-demo model is straightforward.</h2>
+      <p>
+        Keep collection server-side on a schedule, write the normalized jobs to one cached snapshot, and let this public page read only that file.
+        In other words: the browser never scrapes Workday. A scheduled importer replaces <code>grepper-snapshot.json</code>, and the comparison UI stays exactly the same.
+      </p>
+    </section>
+
+    <p class="g-disclaimer">
+      Grepper is a Holtsnider Tech prototype and is not affiliated with or endorsed by Workday. Workday is referenced here only to explain the workflow Grepper is designed to improve.
+      This demo snapshot contains representative generated records rather than current third-party job listings.
+    </p>
   </main>
-  <script>
-    const jobs=[['Senior Quality Engineer - Infrastructure','Linux, Python, Kubernetes, customer impact',94],['Systems Test Engineer - Storage Platform','enterprise storage, lab validation, automation',91],['DevOps / SRE Tools Engineer','observability, CI, containers, troubleshooting',86],['Frontend Designer','visual polish, HTML, CSS',51]];
-    document.getElementById('rankBtn').addEventListener('click',()=>{document.getElementById('results').innerHTML=jobs.map(j=>`<article class="demo-job"><strong>${j[0]}</strong><span>${j[1]}</span><p class="demo-score">Match score: ${j[2]}</p></article>`).join('')});
-  </script>
+
+  <script src="/static/js/grepper-demo.js"></script>
 </body>
 </html>

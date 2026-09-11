@@ -2,3 +2,20 @@
    The active Boston Practical implementation still lives in style_variants/boston_practical.html
    until the large template is flattened safely. #}
 {% extends "style_variants/boston_practical.html" %}
+
+{% block title %}Holtsnider Tech | Technical Problem Solving & Project Building{% endblock %}
+
+{% block meta_description %}Holtsnider Tech helps untangle technical problems, improve systems and workflows, and turn rough ideas into working projects through practical engineering, automation, and troubleshooting.{% endblock %}
+
+{% block extra_head %}
+{{ super() }}
+<link rel="canonical" href="https://holtsnidertech.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Holtsnider Tech" />
+<meta property="og:title" content="Holtsnider Tech | Technical Problem Solving & Project Building" />
+<meta property="og:description" content="Practical engineering help for technical problems, systems and workflow improvements, and ideas that need to become working projects." />
+<meta property="og:url" content="https://holtsnidertech.com/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Holtsnider Tech | Technical Problem Solving & Project Building" />
+<meta name="twitter:description" content="Practical engineering help for technical problems, systems and workflow improvements, and ideas that need to become working projects." />
+{% endblock %}
