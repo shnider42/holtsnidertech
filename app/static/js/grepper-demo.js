@@ -1,7 +1,7 @@
 const SNAPSHOT_URL = "/static/data/grepper-snapshot.json";
 const PAGE_SIZE = 20;
 const DISPLAY_LIMIT = 20;
-const WORKDAY_DELAY_MS = 1700;
+const WORKDAY_DELAY_MS = 2000;
 const SAMPLE_RESUME = `Senior systems and reliability engineer with experience supporting enterprise infrastructure and production incidents.
 Built realistic lab environments with Linux, VMware, networking, VLANs, Fibre Channel, and storage platforms.
 Automated operational work using Python, APIs, PowerShell, Bash, Terraform, Git, and CI/CD.
