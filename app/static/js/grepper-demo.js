@@ -14,11 +14,6 @@ const SKILLS = [
   "javascript","html","css","react","frontend","design systems","sql","analytics","dashboard","excel","reporting"
 ];
 
-const TITLE_VARIANTS = [
-  "", " II", " III", ", Platform", ", Systems", ", Infrastructure", ", Cloud", ", Automation", ", Tools",
-  ", Reliability", ", Operations", ", Performance", ", Data Center", ", Developer Productivity", ", Security",
-  ", Storage", ", Compute", ", AI Infrastructure", ", Networking", ", Enterprise"
-];
 const POSTED_LABELS = ["Posted Today", "Posted 2 Days Ago", "Posted 3 Days Ago", "Posted 5 Days Ago", "Posted 7 Days Ago"];
 const TIME_TYPES = ["Full time", "Full time", "Full time", "Full time", "Internship", "Part time"];
 
@@ -37,30 +32,29 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 function expandSnapshot(data) {
   const result = [];
   let index = 1;
-  const copies = Math.min(data.copies_per_template || TITLE_VARIANTS.length, TITLE_VARIANTS.length);
+  const copies = data.copies_per_template || 40;
 
-  // Interleave base roles so a 20-result page resembles a mixed careers feed
-  // instead of grouping many synthetic variants of one title together.
-  TITLE_VARIANTS.slice(0, copies).forEach((variant, variantIndex) => {
-    data.sources.forEach((source, sourceIndex) => {
-      data.templates.forEach((template, templateIndex) => {
-        const location = data.locations[(templateIndex + sourceIndex + variantIndex) % data.locations.length];
-        result.push({
-          id: `G-${String(index).padStart(5, "0")}`,
-          source,
-          baseTitle: template.title,
-          title: `${template.title}${variant}`,
-          location,
-          category: template.category,
-          skills: template.skills,
-          summary: template.summary,
-          timeType: TIME_TYPES[(index + templateIndex) % TIME_TYPES.length],
-          posted: POSTED_LABELS[(index + sourceIndex) % POSTED_LABELS.length]
-        });
-        index += 1;
+  // Workday opens as a normal company careers feed. Interleave role families so
+  // the first page contains a believable mix instead of resume-relevant jobs.
+  for (let copyIndex = 0; copyIndex < copies; copyIndex += 1) {
+    data.templates.forEach((template, templateIndex) => {
+      const location = data.locations[(templateIndex + copyIndex) % data.locations.length];
+      result.push({
+        id: `G-${String(index).padStart(5, "0")}`,
+        sequence: index,
+        source: template.source,
+        baseTitle: template.title,
+        title: template.title,
+        location,
+        category: template.category,
+        skills: template.skills,
+        summary: template.summary,
+        timeType: TIME_TYPES[(index + templateIndex) % TIME_TYPES.length],
+        posted: POSTED_LABELS[(index + templateIndex + copyIndex) % POSTED_LABELS.length]
       });
+      index += 1;
     });
-  });
+  }
   return result;
 }
 
@@ -95,20 +89,43 @@ function scoreJob(job, keywords, query) {
   return { ...job, score, matched, matchRatio };
 }
 
-function matchesFilters(job) {
-  const query = $("query").value.trim().toLowerCase();
+function matchesStructuredFilters(job) {
   const location = $("location").value;
   const source = $("source").value;
   const category = $("category").value;
   const timeType = $("timeType").value;
-  const text = `${job.title} ${job.category} ${job.summary} ${job.skills.join(" ")}`.toLowerCase();
-  const queryTerms = query.split(/\s+/).filter(Boolean);
-  const queryMatch = !queryTerms.length || queryTerms.every((term) => text.includes(term));
-  return queryMatch
-    && (!location || job.location === location)
+  return (!location || job.location === location)
     && (!source || job.source === source)
     && (!category || job.category === category)
     && (!timeType || job.timeType === timeType);
+}
+
+// Grepper keeps the broader query behavior it already had. It can use title,
+// category, description, and normalized skill data before applying resume weights.
+function matchesFilters(job) {
+  const query = $("query").value.trim().toLowerCase();
+  const text = `${job.title} ${job.category} ${job.summary} ${job.skills.join(" ")}`.toLowerCase();
+  const queryTerms = query.split(/\s+/).filter(Boolean);
+  const queryMatch = !queryTerms.length || queryTerms.every((term) => text.includes(term));
+  return queryMatch && matchesStructuredFilters(job);
+}
+
+// Workday intentionally behaves like a basic careers-site keyword search.
+// Titles dominate. Description text can pull a result in, but only as a weak fallback.
+function workdaySearchScore(job) {
+  const query = $("query").value.trim().toLowerCase();
+  if (!query) return 1;
+
+  const title = job.title.toLowerCase();
+  const summary = job.summary.toLowerCase();
+  const terms = query.split(/\s+/).filter(Boolean);
+
+  if (title.includes(query)) return 400;
+  if (terms.length > 1 && terms.every((term) => title.includes(term))) return 320;
+  if (summary.includes(query)) return 80;
+  if (terms.length > 1 && terms.every((term) => summary.includes(term))) return 55;
+  if (terms.length === 1 && summary.includes(terms[0])) return 40;
+  return 0;
 }
 
 function renderKeywords() {
@@ -139,7 +156,13 @@ function setWorkdayBusy(isBusy, message = "Loading jobs...") {
 }
 
 function renderWorkday() {
-  filteredJobs = jobs.filter(matchesFilters);
+  filteredJobs = jobs
+    .filter(matchesStructuredFilters)
+    .map((job) => ({ job, searchScore: workdaySearchScore(job) }))
+    .filter((entry) => entry.searchScore > 0)
+    .sort((a, b) => b.searchScore - a.searchScore || a.job.sequence - b.job.sequence)
+    .map((entry) => entry.job);
+
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
   currentPage = Math.max(1, Math.min(currentPage, totalPages));
   const start = (currentPage - 1) * PAGE_SIZE;
