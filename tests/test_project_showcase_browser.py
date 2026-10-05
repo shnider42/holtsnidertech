@@ -22,6 +22,30 @@ def open_examples(page, context="new-build"):
     return grid
 
 
+def clipped_text(card):
+    # scrollWidth includes the intentionally clipped Irish Today ::after artwork.
+    # Measure actual text lines instead, including vertical clipping, while the
+    # separate grid assertion still guards against page-level horizontal overflow.
+    return card.evaluate("""card => {
+    const box = card.getBoundingClientRect();
+    const left = box.left + card.clientLeft;
+    const top = box.top + card.clientTop;
+    const right = left + card.clientWidth;
+    const bottom = top + card.clientHeight;
+    const issues = [];
+    for (const node of card.querySelectorAll('.bos-example-category, .bos-example-title, .bos-example-description, .bos-example-action')) {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        for (const rect of range.getClientRects()) {
+            if (rect.width && rect.height && (rect.left < left - 1 || rect.right > right + 1 || rect.top < top - 1 || rect.bottom > bottom + 1)) {
+                issues.push({field: node.className, text: node.textContent, textBox: rect.toJSON(), cardBox: box.toJSON()});
+            }
+        }
+    }
+    return issues;
+}""")
+
+
 @pytest.mark.parametrize("context", ["new-build", "improve-existing"])
 def test_both_build_paths_share_the_complete_catalogue(page, context):
     grid = open_examples(page, context)
@@ -82,9 +106,13 @@ def test_showcase_reflows_without_clipped_text(page, width, height, theme):
     page.evaluate("theme => localStorage.setItem('holtsnider-theme', theme)", theme)
     page.reload(wait_until="networkidle")
     grid = open_examples(page)
+    grid.scroll_into_view_if_needed()
+    # Capture before layout assertions so failures still have visual evidence.
+    capture(page, f"dfe-showcase-{width}-{theme}.png")
     assert grid.evaluate("node => node.scrollWidth <= node.clientWidth + 1")
     for card in grid.locator(".bos-flow-example-card").all():
-        assert card.evaluate("node => node.scrollWidth <= node.clientWidth + 1")
+        clipping = clipped_text(card)
+        assert not clipping, clipping
         expect(card.locator(".bos-example-title")).to_be_visible()
         expect(card.locator(".bos-example-description")).to_be_visible()
     columns = grid.evaluate("node => getComputedStyle(node).gridTemplateColumns.split(' ').length")
@@ -92,5 +120,18 @@ def test_showcase_reflows_without_clipped_text(page, width, height, theme):
         assert columns == 4
     elif width <= 390:
         assert columns == 1
-    grid.scroll_into_view_if_needed()
-    capture(page, f"dfe-showcase-{width}-{theme}.png")
+
+
+def test_text_measurement_catches_real_clipping(page):
+    grid = open_examples(page)
+    card = grid.locator('[data-project="irish"]')
+    assert not clipped_text(card)
+    # Negative control: the measurement must reject real clipped copy rather
+    # than merely ignoring every overflow after excluding decorative artwork.
+    page.add_style_tag(content="""
+        #guided-flow [data-project="irish"] .bos-example-description {
+            white-space: nowrap !important;
+            overflow-wrap: normal !important;
+        }
+    """)
+    assert clipped_text(card)
