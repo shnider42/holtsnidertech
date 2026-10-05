@@ -1,0 +1,97 @@
+name: DFE public links
+
+on:
+  pull_request:
+    branches: [staging, master]
+    paths:
+      - app/static/js/boston-visible-work-cards.js
+      - .github/workflows/showcase-links.yml
+
+permissions:
+  contents: read
+
+jobs:
+  public-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check public showcase destinations (GET only)
+        run: |
+          python3 - <<'PY'
+          import concurrent.futures
+          import datetime
+          import html
+          import json
+          import re
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          # Hosts are confirmed Render services. URLs come from the actual cards,
+          # not a separately maintained URL list. No credentials or app mutations.
+          targets = {
+              "garage": ("jbmw.onrender.com", ["garage", "journey"]),
+              "dsl": ("sl-jake.onrender.com", ["dsl", "tactical command"]),
+              "bug-tracker": ("hllv-bug-track.onrender.com", ["infierno", "liberado"]),
+              "soph-slump": ("soph-slump.onrender.com", ["slump"]),
+              "galaxy-granite": ("galgran.onrender.com", ["galaxy", "granite"]),
+          }
+          source = Path("app/static/js/boston-visible-work-cards.js").read_text()
+          catalogue = source.split("const projectExamples = [", 1)[1].split("];", 1)[0]
+          entries = [dict(re.findall(r'\b(theme|href):\s*"([^"]+)"', block))
+                     for block in re.findall(r'\{(.*?)\}', catalogue, re.S)]
+          urls = {entry["theme"]: entry["href"] for entry in entries
+                  if "theme" in entry and "href" in entry}
+
+          class SameHostRedirects(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  old, new = urllib.parse.urlsplit(req.full_url), urllib.parse.urlsplit(newurl)
+                  if new.scheme != "https" or new.netloc != old.netloc:
+                      raise ValueError("Refusing an off-host or non-HTTPS redirect")
+                  return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+          def check(item):
+              key, (host, markers) = item
+              result = {"project": key, "url": urls.get(key), "ok": False}
+              try:
+                  url = urls[key]
+                  parsed = urllib.parse.urlsplit(url)
+                  if parsed.scheme != "https" or parsed.netloc != host:
+                      raise ValueError("Catalogue URL does not match the approved public host")
+                  opener = urllib.request.build_opener(SameHostRedirects())
+                  req = urllib.request.Request(url, headers={"User-Agent": "HoltsniderTech-showcase-link-check/1.0"})
+                  with opener.open(req, timeout=25) as response:
+                      result.update(status=response.status, final_url=response.url,
+                                    content_type=response.headers.get_content_type())
+                      body = response.read(3 * 1024 * 1024).decode("utf-8", errors="replace")
+                  title = re.search(r'<title[^>]*>(.*?)</title>', body, re.I | re.S)
+                  result["title"] = html.unescape(title.group(1)).strip() if title else None
+                  text = " ".join(html.unescape(re.sub(r'<[^>]+>', ' ', body)).lower().split())
+                  result["missing_markers"] = [marker for marker in markers if marker not in text]
+                  result["ok"] = (result["status"] == 200 and result["content_type"] == "text/html"
+                                  and not result["missing_markers"])
+              except Exception as exc:
+                  result["error"] = str(exc)
+              print(json.dumps(result), flush=True)
+              return result
+
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+              results = list(pool.map(check, targets.items()))
+          report = {"checked_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                    "scope": "Public HTML reachability and identity only; no interaction or game-state changes",
+                    "results": results}
+          Path("artifacts").mkdir(exist_ok=True)
+          Path("artifacts/showcase-public-links.json").write_text(json.dumps(report, indent=2) + "\n")
+          raise SystemExit(0 if all(result["ok"] for result in results) else 1)
+          PY
+      - name: Upload public link check report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: showcase-public-links
+          path: artifacts/showcase-public-links.json
+          if-no-files-found: warn
+          retention-days: 7

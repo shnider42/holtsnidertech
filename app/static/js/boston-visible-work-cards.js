@@ -42,11 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             title: "Garage Journey", theme: "garage", family: "DFE", category: "Guides & workshops",
             body: "Vehicle-specific workshops, repair references, and a growing guitar workbench.",
+            href: "https://jbmw.onrender.com/?theme=garage_journey", action: "Open workshop",
             details: "Start with a vehicle or instrument, then explore its workshop, diagrams, manuals, and useful reference sources. The car-to-guitar expansion explores how the same guide structure can serve a different kind of owner.",
         },
         {
             title: "DSL", theme: "dsl", family: "DFE", category: "WWII tactics",
             body: "Turn-based battles with shared matches, co-op play, and fog of war.",
+            href: "https://sl-jake.onrender.com/", action: "Open game lobby",
             details: "Double Secret Probation Squad Leader turns the engine toward an interactive hex-map game: move units, manage actions, and coordinate with another player. Maps, AI opponents, and rules are still evolving.",
         },
         {
@@ -57,11 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             title: "Soph(more) Slump(?)", theme: "soph-slump", family: "DFE", category: "Sports comparisons",
             body: "Explore first- and second-year performance in football, baseball, and bowling.",
+            href: "https://soph-slump.onrender.com/?theme=qb_year_two", action: "Explore the data",
             details: "Compare players, switch presets, and choose how much statistical detail to show. This is a historical-data explorer, not a live sports feed or a claim that every player follows the same second-year pattern.",
         },
         {
             title: "Galaxy Granite", theme: "galaxy-granite", family: "DFE", category: "Business publishing",
-            body: "A simpler countertop-business journal: useful articles, project notes, and a clear next step.",
+            body: "A countertop-business journal prototype: useful articles, project notes, and a clear next step.",
+            href: "https://galgran.onrender.com/?theme=galaxy_granite_daily", action: "Open journal prototype",
             details: "A business-site prototype with rotating homeowner topics, previous/next reading, and a clear quote-to-installation process. It explores a focused journal rather than reproducing an entire company website.",
         },
         {
@@ -147,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         intro.dataset.projectShowcaseIntro = "true";
         intro.append(
             element("strong", "", "Different ideas. One reusable foundation."),
-            element("span", "", "The Daily Flyer Engine (DFE) powers the marked projects below. Other tools and demos round out the collection. Open a link, or expand a build overview."),
+            element("span", "", "The Daily Flyer Engine (DFE) powers the marked projects below. Other tools and demos round out the collection. Choose an example to explore the project."),
         );
         grid.before(intro);
         grid.replaceChildren(...projectExamples.map(buildProjectCard));

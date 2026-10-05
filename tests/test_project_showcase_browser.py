@@ -1,4 +1,7 @@
 """Regression coverage for the shared Build/Improve project catalogue."""
+from pathlib import Path
+from urllib.parse import urlsplit
+
 import pytest
 from playwright.sync_api import expect
 
@@ -11,6 +14,13 @@ TITLES = [
     "Bug Tracker", "Soph(more) Slump(?)", "Galaxy Granite", "Jiporady",
     "Career Compass", "Grepper",
 ]
+PUBLIC_BUILDS = {
+    "garage": "https://jbmw.onrender.com/?theme=garage_journey",
+    "dsl": "https://sl-jake.onrender.com/",
+    "bug-tracker": "https://hllv-bug-track.onrender.com/",
+    "soph-slump": "https://soph-slump.onrender.com/?theme=qb_year_two",
+    "galaxy-granite": "https://galgran.onrender.com/?theme=galaxy_granite_daily",
+}
 
 
 def open_examples(page, context="new-build"):
@@ -52,39 +62,72 @@ def test_both_build_paths_share_the_complete_catalogue(page, context):
     assert grid.locator(".bos-example-title").all_text_contents() == TITLES
     expect(grid.locator('[data-project-family="DFE"]')).to_have_count(8)
     expect(page.locator("[data-project-showcase-intro]")).to_have_count(1)
+    expect(grid.locator("details")).to_have_count(0)
+    assert "public launch link is not connected" not in grid.inner_text()
     assert page.locator('#guided-flow a[href*="github.com"]').count() == 0
     assert page.locator('#guided-flow a[href*="mypassages.net"]').count() == 0
     assert grid.locator('.bos-project-passage').get_attribute("href") == "https://tim-today.onrender.com/"
     assert grid.locator('.bos-project-grepper').get_attribute("href") == "/static/demos/grepper.html"
-    assert grid.locator('.bos-project-bug-tracker').get_attribute("href") == "https://hllv-bug-track.onrender.com/"
+    for theme, href in PUBLIC_BUILDS.items():
+        expect(grid.locator(f'a[data-project="{theme}"]')).to_have_attribute("href", href)
     for link in grid.locator('a[href^="https://"]').all():
         assert link.get_attribute("target") == "_blank"
         assert {"noopener", "noreferrer"}.issubset(set(link.get_attribute("rel").split()))
 
 
-def test_overviews_use_native_keyboard_behavior_without_fake_links(page):
+@pytest.mark.parametrize("theme", list(PUBLIC_BUILDS))
+def test_public_builds_open_in_new_tabs_from_the_keyboard(page, theme):
     grid = open_examples(page)
-    expect(grid.locator("details")).to_have_count(4)
-    for theme in ["garage", "dsl", "soph-slump", "galaxy-granite"]:
-        overview = grid.locator(f'[data-project="{theme}"]')
-        assert overview.get_attribute("href") is None
-        summary = overview.locator("summary")
-        summary.focus()
+    href = PUBLIC_BUILDS[theme]
+    host = urlsplit(href).netloc
+    # Keep site regression tests offline and deterministic. A separate GitHub
+    # workflow checks the actual public HTTP pages without starting/joining games.
+    page.context.route(f"https://{host}/**", lambda route: route.fulfill(
+        status=200, content_type="text/html", body="<title>Link target fixture</title>"))
+    card = grid.locator(f'a[data-project="{theme}"]')
+    original_url = page.url
+    card.focus()
+    with page.context.expect_page() as opened:
         page.keyboard.press("Enter")
-        expect(overview).to_have_attribute("open", "")
-        expect(overview.locator(".bos-example-notes")).to_be_visible()
-        summary.press("Enter")
-        assert overview.get_attribute("open") is None
+    target = opened.value
+    target.wait_for_url(href)
+    expect(target).to_have_title("Link target fixture")
+    assert target.evaluate("window.opener === null")
+    assert page.url == original_url
+    target.close()
 
 
-def test_unrelated_mutations_preserve_overviews_and_contact_fields(page):
+def test_unpublished_build_fallback_still_supports_native_keyboard_overviews(page):
+    # Simulate a future unpublished entry in a browser-local response only.
+    # All five currently published builds retain real links in the source.
+    source = (Path(__file__).resolve().parents[1] / "app/static/js/boston-visible-work-cards.js").read_text()
+    link = 'href: "https://jbmw.onrender.com/?theme=garage_journey", action: "Open workshop",'
+    assert source.count(link) == 1
+    source = source.replace(link, "")
+    page.route("**/static/js/boston-visible-work-cards.js", lambda route: route.fulfill(
+        status=200, content_type="application/javascript", body=source))
+    page.reload(wait_until="networkidle")
     grid = open_examples(page)
-    garage = grid.locator('[data-project="garage"]')
-    garage.locator("summary").click()
+    overview = grid.locator('details[data-project="garage"]')
+    expect(grid.locator("details")).to_have_count(1)
+    assert overview.get_attribute("href") is None
+    summary = overview.locator("summary")
+    summary.focus()
+    summary.press("Enter")
+    expect(overview).to_have_attribute("open", "")
+    expect(overview.locator(".bos-example-notes")).to_be_visible()
+    summary.press("Enter")
+    assert overview.get_attribute("open") is None
+
+
+def test_unrelated_mutations_preserve_link_focus_and_contact_fields(page):
+    grid = open_examples(page)
+    garage = grid.locator('a[data-project="garage"]')
     panel = page.locator("#guided-flow")
     panel.get_by_role("button", name="Add context (optional)").click()
     fields = panel.locator(".bos-context-fields:not(.bos-context-copy-panel) textarea")
     fields.first.fill("Preserve this project brief")
+    garage.focus()
     page.evaluate("""() => {
         window.__firstExample = document.querySelector('[data-project-showcase] > :first-child');
         const node = document.createElement('span');
@@ -94,7 +137,7 @@ def test_unrelated_mutations_preserve_overviews_and_contact_fields(page):
     }""")
     page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
     assert page.evaluate("window.__firstExample === document.querySelector('[data-project-showcase] > :first-child')")
-    expect(garage).to_have_attribute("open", "")
+    expect(garage).to_be_focused()
     expect(fields.first).to_have_value("Preserve this project brief")
     expect(grid.locator(".bos-flow-example-card")).to_have_count(len(TITLES))
     expect(page.locator("[data-project-showcase-intro]")).to_have_count(1)
