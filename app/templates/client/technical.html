@@ -1,0 +1,12 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<section class="cf-page-intro"><p class="cf-eyebrow">Engineering background</p><h1>Technical depth.<br><span>Practical decisions.</span></h1><p class="cf-lede">My background is in reliability, infrastructure, automation, and troubleshooting across the boundaries between systems.</p><p>Here is the engineering view. No intake flow required.</p></section>
+<div class="cf-technical-sections">
+<section><h2>Reliability & incident response</h2><p>Enterprise storage reliability, production-impacting failures, replication quality, data integrity, and long-term stability. The work starts with understanding the failure and its impact—not choosing a tool in advance.</p><p class="cf-small">Focus: incident investigation, reproduction, validation, and operational follow-through.</p></section>
+<section><h2>Infrastructure & realistic test labs</h2><p>Rack-level systems, networking, VLANs, Fibre Channel, Linux, and VMware. Build environments that reproduce the relevant customer conditions so that a proposed change can be tested against the actual problem.</p><p class="cf-small">Focus: dependencies, configuration, realistic workloads, and pre-rollout testing.</p></section>
+<section><h2>Automation & custom software</h2><p>Python, APIs, command-line tools, Terraform, and GitHub workflows. Turn repeat work into something that can be run, reviewed, and maintained, with attention to how it fails as well as how it works.</p><p class="cf-small">Focus: repeatable processes, useful interfaces, and clear ownership.</p></section>
+<section><h2>How I approach the work</h2><p>Understand the system and its constraints. Reproduce or narrow the problem. Make the smallest useful change. Validate it, explain the tradeoffs, and leave enough context for the next person.</p><p>Customer systems and internal engineering work cannot always be published. The public builds below are inspectable examples, not substitutes for enterprise case studies or claims of measured client results.</p></section>
+</div>
+<section class="cf-section"><div class="cf-section-heading"><h2>Inside a few public builds</h2><a href="/projects">All projects →</a></div><div class="cf-project-grid">{% for project in projects %}{% include 'client/project-card.html' %}{% endfor %}</div></section>
+<p class="cf-closing">Have a stack, failure mode, or project brief in mind? <a href="/#contact">Talk about technical fit →</a></p>
+{% endblock %}

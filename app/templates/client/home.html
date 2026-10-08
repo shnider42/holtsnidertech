@@ -1,0 +1,51 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<section class="cf-hero" aria-labelledby="home-title">
+  <p class="cf-eyebrow">Practical technology help</p>
+  <h1 id="home-title">Fix what isn't working.<br><span>Build what's missing.</span></h1>
+  <p class="cf-lede">I'm Chris. I help businesses and teams troubleshoot technology, improve the tools they use, and turn ideas into working software.</p>
+  <p class="cf-welcome">Bring the problem in your own words—or bring the technical details.</p>
+  <div class="cf-actions"><a class="cf-button" href="#contact">Talk about a problem or project</a><a class="cf-text-link" href="#work">See my work <span aria-hidden="true">↓</span></a></div>
+</section>
+<section class="cf-help" aria-labelledby="help-title">
+  <h2 id="help-title">You don't have to know the solution.</h2>
+  <div class="cf-situations">
+    <p><strong>Something isn't working.</strong>A website, software, or connected system is unreliable. Start with what's going wrong.</p>
+    <p><strong>Work takes too many steps.</strong>You're copying information, repeating tasks, or working around tools that don't fit.</p>
+    <p><strong>You have an idea.</strong>You need a useful first version—or someone to help figure out what that should be.</p>
+  </div>
+</section>
+<section id="work" class="cf-section" aria-labelledby="work-title">
+  <div class="cf-section-heading"><div><p class="cf-eyebrow">A few examples</p><h2 id="work-title">Different problems. Useful builds.</h2></div><a href="/projects">See all {{ total_projects }} projects <span aria-hidden="true">→</span></a></div>
+  <p class="cf-section-intro">Explore a build, or open its technical explanation. These examples show the approach, not a promise that your project needs the same solution.</p>
+  <div class="cf-project-grid">{% for project in projects %}{% include 'client/project-card.html' %}{% endfor %}</div>
+  <p class="cf-background-link">Looking for engineering experience? <a href="/technical">Go straight to my technical background →</a></p>
+</section>
+<section class="cf-process cf-section" aria-labelledby="process-title">
+  <p class="cf-eyebrow">Working together</p><h2 id="process-title">Start with a conversation, not a diagnosis.</h2>
+  <ol><li><strong>Tell me what's happening.</strong><span>What isn't working, what takes too long, or what you want to build.</span></li><li><strong>We clarify the useful next step.</strong><span>I'll ask about the situation and constraints, and we'll work out whether I'm the right fit.</span></li><li><strong>Agree on the work.</strong><span>Scope, cost, and expectations come before committing to a project.</span></li></ol>
+</section>
+<section id="contact" class="cf-contact cf-section" aria-labelledby="contact-title">
+  <div><p class="cf-eyebrow">Talk to Chris</p><h2 id="contact-title">Tell me what you're working through.</h2><p>No technical brief needed. A few sentences are enough to start.</p><p class="cf-address" id="contact-address" tabindex="-1">chris@holtsnidertech.com</p>
+  <div class="cf-actions"><a class="cf-button" id="email-chris" href="mailto:chris@holtsnidertech.com?subject=Holtsnider%20Tech%20inquiry">Email Chris</a><button class="cf-quiet" type="button" data-copy="contact-address" hidden>Copy email address</button></div>
+  <p class="cf-small">Opens your email app. Nothing is sent by this website.</p><p class="cf-small" data-copy-status role="status" aria-live="polite"></p></div>
+  <div class="cf-contact-options">
+    <details id="draft-help"><summary>Prefer to jot down a little context?</summary><div class="cf-draft">
+      <label for="project-notes">What's happening, or what would you like to change?</label>
+      <textarea id="project-notes" rows="4" maxlength="5000" placeholder="For example: We're copying orders into a spreadsheet every morning..."></textarea>
+      <p class="cf-small">Optional. This website does not save or submit your notes. Email Chris opens your email app.</p>
+      <label for="email-draft">Email draft <span class="cf-small">— you can always select and copy this text</span></label>
+      <textarea id="email-draft" rows="6" readonly>Hi Chris,
+
+I'd like to talk about a problem or project.
+
+Here's what's happening:
+</textarea>
+      <button class="cf-quiet" type="button" data-copy="email-draft" hidden>Copy draft</button><p class="cf-small" id="draft-notice" role="status"></p>
+      <noscript><p>Copy the draft into your email and add your notes there. The email address works without JavaScript.</p></noscript>
+    </div></details>
+    <a class="cf-guided-link" href="/guided">Help me describe what I need →</a>
+    <p class="cf-small">An optional guided route. You can email me without using it.</p>
+  </div>
+</section>
+{% endblock %}

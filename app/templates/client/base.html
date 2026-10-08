@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }} | Holtsnider Tech</title>
+  <meta name="description" content="Practical help with technical problems, websites, business tools, and custom software. Bring the problem in your own words or bring the technical details.">
+  <link rel="canonical" href="https://holtsnidertech.com{{ request.path }}">
+  <meta property="og:title" content="{{ page_title }} | Holtsnider Tech">
+  <meta property="og:description" content="Fix what isn't working. Build what's missing. Practical technology help from Chris Holtsnider.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://holtsnidertech.com{{ request.path }}">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <script>try { if(localStorage.getItem('holtsnider-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (_) {}</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/client-first.css') }}">
+  <script src="{{ url_for('static', filename='js/client-first.js') }}" defer></script>
+</head>
+<body class="cf">
+<a class="cf-skip" href="#main">Skip to content</a>
+<header class="cf-header cf-width">
+  <a class="cf-brand" href="/" aria-label="Holtsnider Tech home"><img src="{{ url_for('static', filename='favicon.svg') }}" width="34" height="34" alt="">Holtsnider <span>Tech</span></a>
+  <nav aria-label="Main navigation">
+    <a href="/projects"{% if request.path == '/projects' %} aria-current="page"{% endif %}>My work</a>
+    <a href="/technical"{% if request.path == '/technical' %} aria-current="page"{% endif %}>Technical background</a>
+    <a href="/#contact">Contact Chris</a>
+  </nav>
+</header>
+<main id="main" class="cf-width" tabindex="-1">{% block content %}{% endblock %}</main>
+<footer class="cf-footer cf-width">
+  <span>Holtsnider Tech · Chris Holtsnider</span>
+  <div><a href="/guided">Guided help</a><a href="/privacy">Privacy</a><button type="button" data-theme-toggle hidden>Use light colors</button></div>
+</footer>
+</body>
+</html>

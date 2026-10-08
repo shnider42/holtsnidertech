@@ -6,25 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     stack.setAttribute("tabindex", "0");
-    stack.setAttribute("aria-label", "Systems stack experience. Scroll horizontally, drag sideways on desktop, or use Shift plus mouse wheel.");
+    stack.setAttribute("aria-label", "Systems stack experience. Scroll horizontally, drag sideways on desktop, or use the left and right arrow keys.");
 
     let isDragging = false;
-    let isInteracting = false;
     let startX = 0;
     let startScrollLeft = 0;
     let hasMoved = false;
-    let idleTimer = null;
-    let autoDriftFrame = null;
-    let lastDriftTime = null;
-    let driftDirection = 1;
-
-    const setInteracting = () => {
-        isInteracting = true;
-        window.clearTimeout(idleTimer);
-        idleTimer = window.setTimeout(() => {
-            isInteracting = false;
-        }, 2200);
-    };
 
     const startDrag = (event) => {
         if (event.button !== 0) {
@@ -32,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         isDragging = true;
-        setInteracting();
         startX = event.clientX;
         startScrollLeft = stack.scrollLeft;
         hasMoved = false;
@@ -51,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         stack.scrollLeft = startScrollLeft - distance;
-        setInteracting();
         event.preventDefault();
     };
 
@@ -63,51 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
         isDragging = false;
         stack.classList.remove("is-dragging");
         document.body.style.cursor = "";
-        setInteracting();
-    };
-
-    const canAutoDrift = () => {
-        return stack.scrollWidth > stack.clientWidth + 4
-            && !isDragging
-            && !isInteracting
-            && !document.body.classList.contains("bos-reduce-motion")
-            && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    };
-
-    const drift = (time) => {
-        if (lastDriftTime === null) {
-            lastDriftTime = time;
-        }
-
-        const elapsed = Math.min(time - lastDriftTime, 60);
-        lastDriftTime = time;
-
-        if (canAutoDrift()) {
-            const maxScroll = stack.scrollWidth - stack.clientWidth;
-            const next = stack.scrollLeft + (driftDirection * elapsed * 0.012);
-
-            if (next >= maxScroll - 1) {
-                driftDirection = -1;
-                stack.scrollLeft = maxScroll;
-            } else if (next <= 1) {
-                driftDirection = 1;
-                stack.scrollLeft = 0;
-            } else {
-                stack.scrollLeft = next;
-            }
-        }
-
-        autoDriftFrame = window.requestAnimationFrame(drift);
     };
 
     stack.addEventListener("mousedown", startDrag);
     window.addEventListener("mousemove", moveDrag);
     window.addEventListener("mouseup", stopDrag);
     window.addEventListener("blur", stopDrag);
-
-    stack.addEventListener("mouseenter", setInteracting);
-    stack.addEventListener("focusin", setInteracting);
-    stack.addEventListener("touchstart", setInteracting, { passive: true });
 
     stack.addEventListener("click", (event) => {
         if (!hasMoved) {
@@ -120,8 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     stack.addEventListener("wheel", (event) => {
-        setInteracting();
-
         if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
             return;
         }
@@ -132,25 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     stack.addEventListener("keydown", (event) => {
         const cardWidth = stack.querySelector(".bos-mini")?.getBoundingClientRect().width || 280;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const behavior = reducedMotion ? "auto" : "smooth";
 
         if (event.key === "ArrowRight") {
             event.preventDefault();
-            setInteracting();
-            stack.scrollBy({ left: cardWidth, behavior: "smooth" });
+            stack.scrollBy({ left: cardWidth, behavior });
         }
 
         if (event.key === "ArrowLeft") {
             event.preventDefault();
-            setInteracting();
-            stack.scrollBy({ left: -cardWidth, behavior: "smooth" });
-        }
-    });
-
-    autoDriftFrame = window.requestAnimationFrame(drift);
-
-    window.addEventListener("beforeunload", () => {
-        if (autoDriftFrame) {
-            window.cancelAnimationFrame(autoDriftFrame);
+            stack.scrollBy({ left: -cardWidth, behavior });
         }
     });
 });
