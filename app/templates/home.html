@@ -13,7 +13,12 @@
 <meta property="og:url" content="https://holtsnidertech.com/guided" />
 <meta name="twitter:card" content="summary" />
 <script id="project-catalogue" type="application/json">{{ showcase_projects | tojson }}</script>
-<style>.guide-return{display:flex;flex-wrap:wrap;gap:10px 24px;padding:12px 20px;background:#10191c;color:#f0f1ec;font:15px/1.5 system-ui}.guide-return a{color:inherit;padding:10px 0;text-underline-offset:4px}.guide-return a:focus-visible{outline:3px solid #ffa35b;outline-offset:3px}</style>
+<style>.guide-return{display:flex;flex-wrap:wrap;gap:10px 24px;padding:12px 20px;background:#10191c;color:#f0f1ec;font:15px/1.5 system-ui}.guide-return a{color:inherit;padding:10px 0;text-underline-offset:4px}.guide-return a:focus-visible{outline:3px solid #ffa35b;outline-offset:3px}
+/* The optional page has a return bar above it. Keep its original header in
+   normal flow so it cannot cover the new navigation at any screen width. */
+.guide-return + .boston .bos-head { position:relative !important; top:auto !important; left:auto !important; transform:none !important; margin-inline:auto !important; z-index:1 !important; animation:none !important; opacity:1 !important; }
+.guide-return + .boston .bos-first-screen { padding-top:0 !important; }
+</style>
 {% endblock %}
 {% block content %}
 <nav class="guide-return" aria-label="Website navigation"><a href="/">← Back to the simple homepage</a><a href="/projects">All projects</a><a href="/technical">Technical background</a><a href="/#contact">Contact Chris directly</a></nav>

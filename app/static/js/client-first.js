@@ -55,9 +55,15 @@
         });
     });
     // Preserve previously shared homepage anchors without making navigation a wizard.
-    if (location.pathname === '/' && ['#experience','#case-shapes'].includes(location.hash)) {
-        location.replace('/technical');
-    } else if (location.pathname === '/' && ['#start','#guided-flow'].includes(location.hash)) {
-        location.replace('/guided' + location.hash);
-    }
+    const routeLegacyHash = () => {
+        if (location.pathname !== '/') return;
+        if (['#experience','#case-shapes'].includes(location.hash)) {
+            location.replace('/technical');
+        } else if (['#start','#guided-flow'].includes(location.hash)) {
+            location.replace('/guided' + location.hash);
+        }
+    };
+    // Hash-only navigation does not reload the document or rerun this script.
+    window.addEventListener('hashchange', routeLegacyHash);
+    routeLegacyHash();
 })();
