@@ -4,10 +4,7 @@ from urllib.parse import urlsplit
 
 import pytest
 from playwright.sync_api import expect
-
-# Reuse the real-site fixtures without collecting a second copy of its tests.
 from test_homepage_browser import capture, live_site, page, start_card  # noqa: F401
-
 
 TITLES = [
     "Irish Today", "Your Passage", "Loudsource", "Garage Journey", "DSL",
@@ -33,9 +30,7 @@ def open_examples(page, context="new-build"):
 
 
 def clipped_text(card):
-    # scrollWidth includes the intentionally clipped Irish Today ::after artwork.
-    # Measure actual text lines instead, including vertical clipping, while the
-    # separate grid assertion still guards against page-level horizontal overflow.
+    # Measure text, not deliberately clipped decorative pseudo-elements.
     return card.evaluate("""card => {
     const box = card.getBoundingClientRect();
     const left = box.left + card.clientLeft;
@@ -80,8 +75,6 @@ def test_public_builds_open_in_new_tabs_from_the_keyboard(page, theme):
     grid = open_examples(page)
     href = PUBLIC_BUILDS[theme]
     host = urlsplit(href).netloc
-    # Keep site regression tests offline and deterministic. A separate GitHub
-    # workflow checks the actual public HTTP pages without starting/joining games.
     page.context.route(f"https://{host}/**", lambda route: route.fulfill(
         status=200, content_type="text/html", body="<title>Link target fixture</title>"))
     card = grid.locator(f'a[data-project="{theme}"]')
@@ -98,12 +91,11 @@ def test_public_builds_open_in_new_tabs_from_the_keyboard(page, theme):
 
 
 def test_unpublished_build_fallback_still_supports_native_keyboard_overviews(page):
-    # Simulate a future unpublished entry in a browser-local response only.
-    # All five currently published builds retain real links in the source.
+    # Simulate only in this browser; the shipped catalogue retains all live URLs.
     source = (Path(__file__).resolve().parents[1] / "app/static/js/boston-visible-work-cards.js").read_text()
-    link = 'href: "https://jbmw.onrender.com/?theme=garage_journey", action: "Open workshop",'
-    assert source.count(link) == 1
-    source = source.replace(link, "")
+    line = 'const projectExamples = JSON.parse(catalogue.textContent);'
+    assert source.count(line) == 1
+    source = source.replace(line, line + '\n    Object.assign(projectExamples.find(p => p.theme === "garage"), {href: null, action: null});')
     page.route("**/static/js/boston-visible-work-cards.js", lambda route: route.fulfill(
         status=200, content_type="application/javascript", body=source))
     page.reload(wait_until="networkidle")
@@ -150,7 +142,6 @@ def test_showcase_reflows_without_clipped_text(page, width, height, theme):
     page.reload(wait_until="networkidle")
     grid = open_examples(page)
     grid.scroll_into_view_if_needed()
-    # Capture before layout assertions so failures still have visual evidence.
     capture(page, f"dfe-showcase-{width}-{theme}.png")
     assert grid.evaluate("node => node.scrollWidth <= node.clientWidth + 1")
     for card in grid.locator(".bos-flow-example-card").all():
@@ -169,8 +160,6 @@ def test_text_measurement_catches_real_clipping(page):
     grid = open_examples(page)
     card = grid.locator('[data-project="irish"]')
     assert not clipped_text(card)
-    # Negative control: the measurement must reject real clipped copy rather
-    # than merely ignoring every overflow after excluding decorative artwork.
     page.add_style_tag(content="""
         #guided-flow [data-project="irish"] .bos-example-description {
             white-space: nowrap !important;

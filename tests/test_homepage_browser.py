@@ -66,7 +66,8 @@ def page(live_site):
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(reduced_motion="reduce", viewport={"width": 1440, "height": 1000})
         browser_page = context.new_page()
-        browser_page.goto(live_site, wait_until="networkidle")
+        # Preserve the original regression suite at its new optional entry URL.
+        browser_page.goto(live_site + "/guided", wait_until="networkidle")
         yield browser_page
         context.close()
         browser.close()

@@ -1,0 +1,16 @@
+<article class="cf-project cf-project-{{ project.theme }}" data-project="{{ project.theme }}">
+  <p class="cf-category">{{ project.category }}</p>
+  <h3>{{ project.title }}</h3>
+  {% if project.outcome %}<p class="cf-outcome">{{ project.outcome }}</p>{% endif %}
+  <p>{{ project.plain_body or project.body }}</p>
+  {% if project.href %}
+  <a class="cf-project-link" href="{{ '/'+project.href if project.href.startswith('#') else project.href }}"{% if project.href.startswith('https://') %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.action }}{% if project.href.startswith('https://') %}<span aria-hidden="true"> ↗</span><span class="cf-sr"> (opens in a new tab)</span>{% endif %}</a>
+  {% endif %}
+  {% if project.technical %}
+  <details class="cf-project-detail"><summary>How it was built</summary>
+    {% for paragraph in project.technical %}<p>{{ paragraph }}</p>{% endfor %}
+  </details>
+  {% elif not project.href %}
+  <details><summary>About this build</summary><p>{{ project.details }}</p></details>
+  {% endif %}
+</article>

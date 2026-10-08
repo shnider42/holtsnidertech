@@ -1,0 +1,7 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<section class="cf-page-intro"><p class="cf-eyebrow">The full collection</p><h1>My work.</h1><p class="cf-lede">Websites, useful tools, data explorers, and games. Open whichever is relevant to you.</p><p>You don't need to explore all of these before <a href="/#contact">getting in touch</a>.</p></section>
+<div class="cf-project-grid cf-gallery">{% for project in projects %}{% include 'client/project-card.html' %}{% endfor %}</div>
+<details class="cf-engine"><summary>What connects the Daily Flyer projects?</summary><p>The Daily Flyer Engine (DFE) is the reusable starting point behind several of these builds, adapted for different audiences and interactions. Not every project is a DFE application, and they do not all share identical code or features.</p><p>The DFE examples here are {% for project in projects if project.family == 'DFE' %}{{ project.title }}{{ ', ' if not loop.last else '.' }}{% endfor %}</p></details>
+<p class="cf-closing">Have something different in mind? <a href="/#contact">Tell me about it →</a></p>
+{% endblock %}

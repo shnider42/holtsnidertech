@@ -20,70 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // One catalogue for both Build/Improve paths. Branch provenance and link
-    // verification notes live in docs/DFE_SHOWCASE.md, not in the visitor UI.
-    // An absent href deliberately renders an expandable overview, not a dead link.
-    const projectExamples = [
-        {
-            title: "Irish Today", theme: "irish", family: "DFE", category: "Daily culture",
-            body: "Irish history, language, and culture in a repeatable daily page.",
-            href: "https://daily-flyer.onrender.com/", action: "Open site",
-        },
-        {
-            title: "Your Passage", theme: "passage", family: "DFE", category: "Personal publishing",
-            body: "A quieter, personalized daily reading experience from the same engine.",
-            href: "https://tim-today.onrender.com/", action: "Open site",
-        },
-        {
-            title: "Loudsource", theme: "loudsource", family: "DFE", category: "Music & participation",
-            body: "Vote tracks up the queue and turn a music page into a shared experience.",
-            href: "/static/demos/loudsource-vote.html", action: "Try voting demo",
-        },
-        {
-            title: "Garage Journey", theme: "garage", family: "DFE", category: "Guides & workshops",
-            body: "Vehicle-specific workshops, repair references, and a growing guitar workbench.",
-            href: "https://jbmw.onrender.com/?theme=garage_journey", action: "Open workshop",
-            details: "Start with a vehicle or instrument, then explore its workshop, diagrams, manuals, and useful reference sources. The car-to-guitar expansion explores how the same guide structure can serve a different kind of owner.",
-        },
-        {
-            title: "DSL", theme: "dsl", family: "DFE", category: "WWII tactics",
-            body: "Turn-based battles with shared matches, co-op play, and fog of war.",
-            href: "https://sl-jake.onrender.com/", action: "Open game lobby",
-            details: "Double Secret Probation Squad Leader turns the engine toward an interactive hex-map game: move units, manage actions, and coordinate with another player. Maps, AI opponents, and rules are still evolving.",
-        },
-        {
-            title: "Bug Tracker", theme: "bug-tracker", family: "DFE", category: "Evidence & sources",
-            body: "Hell Let Loose Vietnam issues, with official updates separated from player reports.",
-            href: "https://hllv-bug-track.onrender.com/", action: "Open bug tracker",
-        },
-        {
-            title: "Soph(more) Slump(?)", theme: "soph-slump", family: "DFE", category: "Sports comparisons",
-            body: "Explore first- and second-year performance in football, baseball, and bowling.",
-            href: "https://soph-slump.onrender.com/?theme=qb_year_two", action: "Explore the data",
-            details: "Compare players, switch presets, and choose how much statistical detail to show. This is a historical-data explorer, not a live sports feed or a claim that every player follows the same second-year pattern.",
-        },
-        {
-            title: "Galaxy Granite", theme: "galaxy-granite", family: "DFE", category: "Business publishing",
-            body: "A countertop-business journal prototype: useful articles, project notes, and a clear next step.",
-            href: "https://galgran.onrender.com/?theme=galaxy_granite_daily", action: "Open journal prototype",
-            details: "A business-site prototype with rotating homeowner topics, previous/next reading, and a clear quote-to-installation process. It explores a focused journal rather than reproducing an entire company website.",
-        },
-        {
-            title: "Jiporady", theme: "jiporady", category: "Browser game",
-            body: "A living-room trivia board built for playing together.",
-            href: "/static/demos/jiporady.html", action: "Try trivia demo",
-        },
-        {
-            title: "Career Compass", theme: "career-compass", category: "Career tooling",
-            body: "Structured job-search thinking and clearer career direction.",
-            href: "#contact", action: "Discuss the idea",
-        },
-        {
-            title: "Grepper", theme: "grepper", category: "Job-search workflow",
-            body: "Compare job-posting search with profile-based parsing and ranking.",
-            href: "/static/demos/grepper.html", action: "Try Grepper demo",
-        },
-    ];
+    // The server embeds the same local JSON used by /, /projects and /technical.
+    // No network request, copied URL list, or async race with the guided flow.
+    const catalogue = document.getElementById("project-catalogue");
+    if (!catalogue) return;
+    const projectExamples = JSON.parse(catalogue.textContent);
 
     const element = (tag, className, text) => {
         const node = document.createElement(tag);
@@ -130,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const panel = page.querySelector('.bos-guided-flow.is-active[data-active-flow="opportunity"]');
         if (!panel) return;
 
-        // Retain the existing link repair even for other opportunity contexts.
         panel.querySelectorAll("a.bos-flow-example-card").forEach((card) => {
             if (card.querySelector("strong")?.textContent.trim() === "Your Passage") {
                 card.href = "https://tim-today.onrender.com/";
@@ -143,22 +83,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const grid = panel.querySelector(".bos-flow-example-grid");
         if (!grid || grid.dataset.projectShowcase === "dfe-v1") return;
 
-        // Mark before writing: later observer callbacks must not rebuild cards,
-        // close an overview, lose keyboard focus, or touch the contact fields.
+        // Mark before writing: unrelated mutations must not reset inputs or focus.
         grid.dataset.projectShowcase = "dfe-v1";
         grid.dataset.syncedProjectCards = "true";
         const intro = element("p", "bos-project-showcase-intro");
         intro.dataset.projectShowcaseIntro = "true";
         intro.append(
             element("strong", "", "Different ideas. One reusable foundation."),
-            element("span", "", "The Daily Flyer Engine (DFE) powers the marked projects below. Other tools and demos round out the collection. Choose an example to explore the project."),
+            element("span", "", "The Daily Flyer Engine (DFE) powers the marked projects below. Other tools and demos round out the collection. Open a project to explore it."),
         );
         grid.before(intro);
         grid.replaceChildren(...projectExamples.map(buildProjectCard));
     };
 
-    // The guided panel is created/replaced by the existing flow controller.
-    // Observe only this page, not document.body; do not observe our attributes.
     const observer = new MutationObserver(syncProgressiveProjectCards);
     observer.observe(page, { childList: true, subtree: true });
     syncProgressiveProjectCards();

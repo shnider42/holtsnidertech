@@ -1,22 +1,21 @@
-{# Canonical homepage template entry point.
-   The active Boston Practical implementation still lives in style_variants/boston_practical.html
-   until the large template is flattened safely. #}
+{# The original Boston guided experience, now served at /guided. #}
 {% extends "style_variants/boston_practical.html" %}
-
-{% block title %}Holtsnider Tech | Technical Problem Solving & Project Building{% endblock %}
-
-{% block meta_description %}Holtsnider Tech helps untangle technical problems, improve systems and workflows, and turn rough ideas into working projects through practical engineering, automation, and troubleshooting.{% endblock %}
-
+{% block title %}Guided Help | Holtsnider Tech{% endblock %}
+{% block meta_description %}Optional guided help for describing a technical problem, improvement, or new project. You can also contact Chris directly.{% endblock %}
 {% block extra_head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dfe-project-showcase.css') }}" />
-<link rel="canonical" href="https://holtsnidertech.com/" />
+<link rel="canonical" href="https://holtsnidertech.com/guided" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Holtsnider Tech" />
-<meta property="og:title" content="Holtsnider Tech | Technical Problem Solving & Project Building" />
-<meta property="og:description" content="Practical engineering help for technical problems, systems and workflow improvements, and ideas that need to become working projects." />
-<meta property="og:url" content="https://holtsnidertech.com/" />
+<meta property="og:title" content="Guided Help | Holtsnider Tech" />
+<meta property="og:description" content="Optional help describing your problem or project." />
+<meta property="og:url" content="https://holtsnidertech.com/guided" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Holtsnider Tech | Technical Problem Solving & Project Building" />
-<meta name="twitter:description" content="Practical engineering help for technical problems, systems and workflow improvements, and ideas that need to become working projects." />
+<script id="project-catalogue" type="application/json">{{ showcase_projects | tojson }}</script>
+<style>.guide-return{display:flex;flex-wrap:wrap;gap:10px 24px;padding:12px 20px;background:#10191c;color:#f0f1ec;font:15px/1.5 system-ui}.guide-return a{color:inherit;padding:10px 0;text-underline-offset:4px}.guide-return a:focus-visible{outline:3px solid #ffa35b;outline-offset:3px}</style>
+{% endblock %}
+{% block content %}
+<nav class="guide-return" aria-label="Website navigation"><a href="/">← Back to the simple homepage</a><a href="/projects">All projects</a><a href="/technical">Technical background</a><a href="/#contact">Contact Chris directly</a></nav>
+{{ super() }}
 {% endblock %}
