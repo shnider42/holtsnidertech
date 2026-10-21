@@ -88,6 +88,12 @@ Open and verify:
 - Contact language explicitly says a polished brief is not required.
 - Email links open with useful subjects / starter context.
 - The final section works for project, role-fit, troubleshooting, and unclear inquiries.
+- Guided contact shows the recipient and editable subject/message before launching an email app.
+- Copy message copies the complete edited body; Select message supports manual copying.
+- If clipboard access fails, the message is selected and the status explains manual copying.
+- Opening an email app leaves the draft and optional answers intact, including when no app opens.
+- Changing optional answers does not silently overwrite a manually edited message or subject.
+- Before production promotion, check the real email handoff on macOS/Safari and iPhone; browser automation cannot confirm the installed mail client's behavior.
 
 ## Visual and accessibility checks
 

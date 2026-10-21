@@ -21,7 +21,7 @@ The paths intentionally behave differently:
 - **Experience & Work** skips intake and opens the browseable credibility / portfolio path directly.
 - **Not Sure Yet** goes straight into discovery rather than asking the visitor to classify the problem first.
 
-The final contact behavior is deliberately low-friction: visitors can email immediately, optionally add context that is carried into the generated email draft, or copy the public email address if their browser does not handle `mailto:` well.
+The guided contact area shows an editable subject and message, with the recipient visible. Visitors can open their email app, copy the complete message body, or select it manually if clipboard access fails. Optional answers update an untouched draft; manually edited text is preserved until the visitor explicitly chooses to replace it. Opening an email app never clears the draft or claims the message was sent. The final contact section also retains a separate copy-address action.
 
 ## Public positioning
 

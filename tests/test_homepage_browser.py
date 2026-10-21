@@ -1,13 +1,14 @@
 import os
+import re
 import subprocess
 import sys
 import time
 import urllib.request
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import parse_qs, unquote, urlparse
 
 import pytest
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -125,7 +126,7 @@ def test_mobile_customer_actions_stay_visible(page):
     page.get_by_role("button", name="Something just happened", exact=False).click()
     detail = page.locator('#guided-flow.is-active[data-active-flow="solve"][data-active-context="just-happened"]')
     detail.wait_for(state="visible")
-    assert detail.get_by_role("link", name="Email Chris").is_visible()
+    assert detail.get_by_role("link", name="Open email app").is_visible()
     assert detail.get_by_role("button", name="Add context (optional)").is_visible()
 
     start_card(page, "bos-choice-experience").click()
@@ -207,7 +208,7 @@ def test_problem_flow_can_email_immediately_or_add_context(page):
     detail = page.locator('#guided-flow.is-active[data-active-flow="solve"][data-active-context="just-happened"]')
     detail.wait_for(state="visible")
 
-    email_link = detail.get_by_role("link", name="Email Chris")
+    email_link = detail.get_by_role("link", name="Open email app")
     assert email_link.is_visible()
     assert email_link.get_attribute("href").startswith("mailto:chris@holtsnidertech.com")
 
@@ -222,6 +223,95 @@ def test_problem_flow_can_email_immediately_or_add_context(page):
     assert "Started after a deployment" in decoded_href
     assert "Starting point: Fix a problem" in decoded_href
     capture(page, "problem-flow.png")
+
+
+@pytest.mark.parametrize("width", [390, 1440])
+@pytest.mark.parametrize("path,option", [
+    ("bos-choice-solve", "Something just happened"),
+    ("bos-choice-opportunity", "Build something new"),
+    ("bos-choice-not-sure", None),
+])
+def test_contact_draft_preserves_edits_and_failed_email_launch(page, width, path, option):
+    page.set_viewport_size({"width": width, "height": 844})
+    start_card(page, path).click()
+    if option:
+        page.get_by_role("button", name=option, exact=False).click()
+    detail = page.locator("#guided-flow[data-active-context]")
+    message = detail.get_by_label("Your message", exact=True)
+    subject = detail.get_by_label("Subject", exact=True)
+    expect(message).to_be_visible()
+    expect(subject).to_be_visible()
+    assert "To: chris@holtsnidertech.com" in detail.inner_text()
+
+    detail.get_by_role("button", name="Add context (optional)").click()
+    answer = detail.locator('.bos-context-fields[data-clarity-enhanced="true"] textarea').first
+    answer.fill("Original answer: café & API + 50%\nSecond line")
+    expect(message).to_have_value(re.compile("Original answer: café & API \\+ 50%"))
+    edited = message.input_value() + "\nMy own words: please keep these."
+    message.fill(edited)
+    subject.fill("Custom subject: café & API + 50%")
+    answer.fill("Updated answer")
+    expect(message).to_have_value(edited)
+    expect(detail.locator(".bos-draft-notice")).to_be_visible()
+
+    email = detail.get_by_role("link", name="Open email app", exact=True)
+    payload = parse_qs(urlparse(email.get_attribute("href")).query)
+    assert payload["body"] == [edited]
+    assert payload["subject"] == [subject.input_value()]
+    # Simulate an unavailable handler without invoking an email client or sending.
+    email.evaluate("node => node.addEventListener('click', event => event.preventDefault())")
+    email.click()
+    expect(message).to_have_value(edited)
+    expect(answer).to_have_value("Updated answer")
+    expect(detail.get_by_role("status")).to_contain_text("Your draft is still here")
+
+    detail.get_by_role("button", name="Select message", exact=True).click()
+    assert message.evaluate("node => [node.selectionStart, node.selectionEnd]") == [0, len(edited)]
+    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+    if path == "bos-choice-solve":
+        detail.locator(".bos-message-draft").scroll_into_view_if_needed()
+        capture(page, f"contact-draft-{width}.png")
+
+    detail.get_by_role("button", name="Replace message from answers").click()
+    assert "Updated answer" in message.input_value()
+    assert "My own words" not in message.input_value()
+    expect(subject).to_have_value("Custom subject: café & API + 50%")
+    expect(detail.locator(".bos-draft-notice")).to_be_hidden()
+
+
+@pytest.mark.parametrize("copy_mode", ["clipboard", "legacy", "unavailable"])
+def test_copy_message_handles_clipboard_success_and_failure(page, copy_mode):
+    start_card(page, "bos-choice-solve").click()
+    page.get_by_role("button", name="Something just happened", exact=False).click()
+    detail = page.locator("#guided-flow[data-active-context]")
+    message = detail.get_by_label("Your message", exact=True)
+    text = "A complete message.\nUnicode: café; special characters: & + % #"
+    message.fill(text)
+    page.evaluate("""mode => {
+        window.__copiedMessage = null;
+        Object.defineProperty(navigator, 'clipboard', {configurable: true, value: {
+            writeText: async text => {
+                if (mode !== 'clipboard') throw new DOMException('Denied', 'NotAllowedError');
+                window.__copiedMessage = text;
+            }
+        }});
+        document.execCommand = command => {
+            if (mode === 'legacy' && command === 'copy') {
+                window.__copiedMessage = document.activeElement.value;
+                return true;
+            }
+            return false;
+        };
+    }""", copy_mode)
+    detail.get_by_role("button", name="Copy message", exact=True).click()
+    if copy_mode == "unavailable":
+        expect(detail.get_by_role("status")).to_contain_text("Automatic copy is unavailable")
+        expect(message).to_be_focused()
+        assert message.evaluate("node => [node.selectionStart, node.selectionEnd]") == [0, len(text)]
+    else:
+        expect(detail.get_by_role("status")).to_contain_text("Message copied")
+        assert page.evaluate("window.__copiedMessage") == text
+    expect(message).to_have_value(text)
 
 
 def test_build_flow_never_sends_your_passage_to_unrelated_domain(page):

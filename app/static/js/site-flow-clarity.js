@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
         discovery: "Not sure where to start"
     }[pathKey] || "General inquiry");
 
-    const directEmailHref = (pathKey, contextTitle = "", notes = []) => {
+    const directEmailDraft = (pathKey, contextTitle = "", notes = []) => {
         const subject = ({
             solve: "Holtsnider Tech - problem to solve",
             opportunity: "Holtsnider Tech - idea or improvement",
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         lines.push("", "Here's the messy version:", "");
-        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+        return { subject, body: lines.join("\n") };
     };
 
     const collapseSelectedGuidedCard = () => {
@@ -357,13 +357,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!fields || !action || fields.dataset.clarityEnhanced === "true") return;
 
         fields.dataset.clarityEnhanced = "true";
+        action.classList.add("bos-guided-contact");
         fields.classList.add("bos-runtime-hidden");
         fields.setAttribute("aria-label", "Optional additional context");
         qs(".bos-context-copy-panel", panel)?.remove();
         qs(".bos-flow-mailto", action)?.remove();
 
         const actionText = qs("p", action);
-        if (actionText) actionText.textContent = "You can email now with no form. Add a little context only if it would make the first conversation easier.";
+        if (actionText) actionText.textContent = "Edit this message or add optional context. Open your email app, or copy the message into whichever email service you use.";
 
         const contextTitle = qs(".bos-guided-flow-head h3", panel)?.textContent?.trim() || "";
         const controls = document.createElement("div");
@@ -372,18 +373,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const emailLink = document.createElement("a");
         emailLink.className = "bos-btn";
-        emailLink.textContent = "Email Chris";
+        emailLink.textContent = "Open email app";
+
+        const draft = document.createElement("div");
+        draft.className = "bos-message-draft";
+        const recipient = document.createElement("p");
+        recipient.className = "bos-draft-recipient";
+        recipient.textContent = `To: ${CONTACT_EMAIL}`;
+
+        const subjectLabel = document.createElement("label");
+        subjectLabel.className = "bos-context-field";
+        const subjectCaption = document.createElement("span");
+        subjectCaption.textContent = "Subject";
+        const subjectInput = document.createElement("input");
+        subjectInput.type = "text";
+        subjectInput.className = "bos-draft-subject";
+        subjectLabel.append(subjectCaption, subjectInput);
+
+        const messageLabel = document.createElement("label");
+        messageLabel.className = "bos-context-field";
+        const messageCaption = document.createElement("span");
+        messageCaption.textContent = "Your message";
+        const messageInput = document.createElement("textarea");
+        messageInput.className = "bos-draft-body";
+        messageInput.rows = 8;
+        messageLabel.append(messageCaption, messageInput);
+
+        const contextNotice = document.createElement("p");
+        contextNotice.className = "bos-draft-notice";
+        contextNotice.hidden = true;
+        contextNotice.textContent = "Your message has edits, so new answers have not replaced it. You can copy answers in yourself, or replace the message with a fresh draft.";
+        const refreshButton = document.createElement("button");
+        refreshButton.type = "button";
+        refreshButton.className = "bos-flow-back";
+        refreshButton.textContent = "Replace message from answers";
+        refreshButton.hidden = true;
+
+        const status = document.createElement("p");
+        status.className = "bos-draft-status";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        status.textContent = "Opening your email app does not send anything. Your draft stays on this page.";
+        draft.append(recipient, subjectLabel, messageLabel, contextNotice, refreshButton);
 
         const collectNotes = () => qsa(".bos-context-field", fields).map((field) => ({
             label: qs("span", field)?.textContent?.trim() || "Note",
             value: qs("textarea", field)?.value || ""
         }));
 
+        let generated = directEmailDraft(panel.dataset.activeFlow, contextTitle, collectNotes());
+        subjectInput.value = generated.subject;
+        messageInput.value = generated.body;
+
         const updateEmailHref = () => {
-            emailLink.href = directEmailHref(panel.dataset.activeFlow, contextTitle, collectNotes());
+            // A subject is a single email header; keep pasted line breaks out of it.
+            const subject = subjectInput.value.replace(/[\r\n]+/g, " ");
+            emailLink.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messageInput.value)}`;
         };
         updateEmailHref();
-        qsa("textarea", fields).forEach((textarea) => textarea.addEventListener("input", updateEmailHref));
+        subjectInput.addEventListener("input", updateEmailHref);
+        messageInput.addEventListener("input", updateEmailHref);
+
+        qsa("textarea", fields).forEach((textarea) => textarea.addEventListener("input", () => {
+            const next = directEmailDraft(panel.dataset.activeFlow, contextTitle, collectNotes());
+            const hasEdits = messageInput.value !== generated.body;
+            if (!hasEdits) messageInput.value = next.body;
+            contextNotice.hidden = !hasEdits;
+            refreshButton.hidden = !hasEdits;
+            generated = next;
+            updateEmailHref();
+        }));
+        refreshButton.addEventListener("click", () => {
+            messageInput.value = generated.body;
+            contextNotice.hidden = true;
+            refreshButton.hidden = true;
+            updateEmailHref();
+            messageInput.focus();
+        });
+
+        const selectMessage = () => {
+            messageInput.focus();
+            messageInput.select();
+            messageInput.setSelectionRange(0, messageInput.value.length);
+        };
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "bos-btn alt";
+        copyButton.textContent = "Copy message";
+        copyButton.addEventListener("click", async () => {
+            if (await copyText(messageInput.value)) {
+                status.textContent = "Message copied. Paste it into your email service; the address and subject are above.";
+                copyButton.focus();
+            } else {
+                selectMessage();
+                status.textContent = "Automatic copy is unavailable. Your message is selected; use your device's Copy command.";
+            }
+        });
+        const selectButton = document.createElement("button");
+        selectButton.type = "button";
+        selectButton.className = "bos-btn alt";
+        selectButton.textContent = "Select message";
+        selectButton.addEventListener("click", () => {
+            selectMessage();
+            status.textContent = "Message selected. Use your device's Copy command, then paste it into your email service.";
+        });
+        emailLink.addEventListener("click", () => {
+            status.textContent = "If your email app does not open, use Copy message or Select message. Your draft is still here.";
+        });
 
         const detailToggle = document.createElement("button");
         detailToggle.type = "button";
@@ -398,8 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (willOpen) qs("textarea", fields)?.focus();
         });
 
-        controls.append(emailLink, detailToggle);
-        action.appendChild(controls);
+        controls.append(emailLink, copyButton, selectButton, detailToggle);
+        action.append(draft, controls, status);
 
         const back = qs(".bos-flow-back", panel);
         if (panel.dataset.activeFlow === "discovery" && back && back.dataset.clarityDiscoveryBack !== "true") {

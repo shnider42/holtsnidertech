@@ -101,6 +101,81 @@
     min-width: 150px;
 }
 
+/* The editable draft is also the fallback when clipboard or mail handlers fail. */
+.boston .bos-guided-flow-action.bos-guided-contact {
+    display: block;
+}
+
+.boston .bos-guided-contact .bos-actions {
+    margin-bottom: 0 !important;
+}
+
+.boston .bos-message-draft {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    max-width: 860px;
+    min-width: 0;
+    margin: 18px 0;
+    text-align: left;
+}
+
+.boston .bos-message-draft .bos-context-field {
+    min-width: 0;
+    opacity: 1;
+    transform: none;
+}
+
+.boston .bos-message-draft input,
+.boston .bos-message-draft textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 12px;
+    background: var(--bos-bg, #101820);
+    color: var(--bos-text, #f4f1e8);
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.boston .bos-message-draft textarea {
+    min-height: 12rem;
+    resize: vertical;
+}
+
+.boston .bos-message-draft input:focus-visible,
+.boston .bos-message-draft textarea:focus-visible {
+    outline: 2px solid var(--bos-accent, #ff8738);
+    outline-offset: 3px;
+}
+
+.boston .bos-message-draft [hidden] {
+    display: none !important;
+}
+
+.boston .bos-message-draft .bos-flow-back {
+    justify-self: start;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.boston .bos-draft-recipient,
+.boston .bos-draft-notice,
+.boston .bos-guided-contact .bos-draft-status {
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.boston .bos-guided-contact .bos-draft-status {
+    min-height: 1.5em;
+    margin: 12px 0 0;
+    max-width: 75ch;
+}
+
 .boston .bos-context-fields[data-clarity-enhanced="true"] {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     padding-top: 4px;
