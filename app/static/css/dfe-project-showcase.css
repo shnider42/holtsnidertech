@@ -1,0 +1,169 @@
+/* Only the two Build/Improve example grids; no homepage, contact, or demo restyling. */
+.boston #guided-flow .bos-flow-example-grid[data-project-showcase] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr));
+    gap: 12px;
+    align-items: start;
+}
+.boston #guided-flow .bos-project-showcase-intro {
+    display: grid;
+    gap: 6px;
+    margin: 18px 0 12px;
+    max-width: 76ch;
+    color: inherit;
+}
+.boston #guided-flow .bos-project-showcase-intro strong { font-size: 1.08rem; }
+.boston #guided-flow .bos-project-showcase-intro span { font-size: .92rem; line-height: 1.5; }
+.boston #guided-flow [data-project-showcase] .bos-flow-example-card {
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    min-height: 0 !important;
+    height: auto;
+    padding: 14px !important;
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .08), 0 5px 16px rgb(0 0 0 / .14);
+    transition: border-color .16s ease, box-shadow .16s ease;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-summary {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    cursor: pointer;
+    color: inherit;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-summary::-webkit-details-marker { display: none; }
+.boston #guided-flow [data-project-showcase] .bos-example-category {
+    display: block;
+    margin: 0 0 9px;
+    padding: 0;
+    font-size: .70rem;
+    font-style: normal;
+    font-weight: 650;
+    letter-spacing: .035em;
+    line-height: 1.45;
+    text-transform: uppercase;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-title {
+    display: block;
+    margin: 0 0 7px;
+    font-size: 1.13rem;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-description {
+    display: block;
+    margin: 0;
+    font-size: .88rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-action {
+    display: block;
+    margin-top: 12px;
+    font-size: .78rem;
+    font-weight: 750;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-summary .bos-example-action::after { content: " +"; }
+.boston #guided-flow [data-project-showcase] details[open] .bos-example-action::after { content: " −"; }
+.boston #guided-flow [data-project-showcase] .bos-example-notes,
+.boston #guided-flow [data-project-showcase] .bos-example-link-note {
+    position: relative;
+    z-index: 1;
+    margin: 12px 0 0;
+    font-size: .85rem;
+    line-height: 1.5;
+    color: inherit !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-notes {
+    padding-top: 12px;
+    border-top: 1px solid currentColor;
+}
+.boston #guided-flow [data-project-showcase] .bos-example-link-note { font-size: .76rem; }
+.boston #guided-flow [data-project-showcase] a:focus-visible,
+.boston #guided-flow [data-project-showcase] summary:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: -4px;
+    border-radius: 8px;
+}
+/* Keep the existing projects' identities; add five distinct, readable surfaces. */
+.boston #guided-flow [data-project-showcase] .bos-project-garage {
+    --showcase-ink: #edf5ff;
+    border-color: #7ba8d3 !important;
+    background: linear-gradient(135deg, #1a3549, #0a1826) !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-dsl {
+    --showcase-ink: #f6f1d8;
+    border-color: #a6b783 !important;
+    background: linear-gradient(145deg, #344839, #15251e) !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-bug-tracker {
+    --showcase-ink: #f6eddf;
+    border-color: #d7a171 !important;
+    background: linear-gradient(145deg, #463126, #211c21) !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-soph-slump {
+    --showcase-ink: #e4f8f4;
+    border-color: #73beb1 !important;
+    background: linear-gradient(145deg, #123d43, #10242f) !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-galaxy-granite {
+    --showcase-ink: #faf3e5;
+    border-color: #bda88b !important;
+    background: linear-gradient(140deg, #4a4543, #24232b 58%, #343037) !important;
+}
+.boston #guided-flow [data-project-showcase] :is(.bos-project-garage, .bos-project-dsl, .bos-project-bug-tracker, .bos-project-soph-slump, .bos-project-galaxy-granite),
+.boston #guided-flow [data-project-showcase] :is(.bos-project-garage, .bos-project-dsl, .bos-project-bug-tracker, .bos-project-soph-slump, .bos-project-galaxy-granite) :is(em, strong, span, summary) {
+    color: var(--showcase-ink) !important;
+    text-shadow: none !important;
+}
+.boston #guided-flow [data-project-showcase] :is(.bos-project-garage, .bos-project-dsl, .bos-project-bug-tracker, .bos-project-soph-slump, .bos-project-galaxy-granite)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .16;
+    border: 0;
+    border-radius: inherit;
+    width: auto;
+    height: auto;
+    transform: none;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-garage::before {
+    background: repeating-linear-gradient(0deg, transparent 0 19px, #9ac9f5 19px 20px), repeating-linear-gradient(90deg, transparent 0 19px, #9ac9f5 19px 20px) !important;
+    mask-image: linear-gradient(125deg, transparent 35%, #000);
+}
+.boston #guided-flow [data-project-showcase] .bos-project-dsl::before {
+    background: repeating-linear-gradient(60deg, transparent 0 27px, #ccd7a8 27px 28px), repeating-linear-gradient(-60deg, transparent 0 27px, #ccd7a8 27px 28px), repeating-linear-gradient(0deg, transparent 0 47px, #ccd7a8 47px 48px) !important;
+    mask-image: linear-gradient(115deg, transparent 25%, #000);
+}
+.boston #guided-flow [data-project-showcase] .bos-project-bug-tracker::before {
+    background: radial-gradient(circle at 87% 21%, #d7a171 0 4px, transparent 5px), radial-gradient(circle at 87% 38%, #d7a171 0 4px, transparent 5px), repeating-linear-gradient(0deg, transparent 0 29px, #efcba2 29px 30px) !important;
+    mask-image: linear-gradient(120deg, transparent 40%, #000);
+}
+.boston #guided-flow [data-project-showcase] .bos-project-soph-slump::before {
+    background: linear-gradient(155deg, transparent 40%, #96e5d7 41% 42%, transparent 43%), linear-gradient(25deg, transparent 60%, #96e5d7 61% 62%, transparent 63%), repeating-linear-gradient(0deg, transparent 0 25px, #96e5d7 25px 26px) !important;
+}
+.boston #guided-flow [data-project-showcase] .bos-project-galaxy-granite::before {
+    opacity: .24;
+    background: repeating-linear-gradient(143deg, transparent 0 37px, #dfc39a 38px, transparent 40px 83px), linear-gradient(33deg, transparent 38%, #dfc39a 39%, transparent 41%) !important;
+}
+.boston #guided-flow [data-project-showcase] :is(.bos-project-garage, .bos-project-dsl, .bos-project-bug-tracker, .bos-project-soph-slump, .bos-project-galaxy-granite)::after { content: none !important; }
+@media (min-width: 1200px) {
+    .boston #guided-flow .bos-flow-example-grid[data-project-showcase] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+    .boston #guided-flow .bos-flow-example-grid[data-project-showcase] { grid-template-columns: 1fr; gap: 10px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .boston #guided-flow [data-project-showcase] .bos-flow-example-card { transition: none; }
+}

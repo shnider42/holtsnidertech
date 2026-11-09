@@ -660,10 +660,10 @@
         <div class="bos-wrap">
             <header class="bos-head">
                 <a class="bos-mark" href="{{ url_for('main.style_lab') }}">Holtsnider Tech</a>
-                <nav class="bos-links" aria-label="Boston Practical preview navigation">
+                <nav class="bos-links" aria-label="Main navigation">
                     <a href="#start">Start</a>
                     <a href="#experience">Experience</a>
-                    <a href="#work">Work</a>
+                    <a class="bos-projects-nav" href="/projects">Projects</a>
                     <a href="#contact">Contact</a>
                     <a href="{{ url_for('main.style_lab') }}">Compare</a>
                 </nav>
@@ -732,6 +732,10 @@
                         <p>You do not know whether this is tooling, process, website, vendor, infrastructure, or something else.</p>
                         <span class="bos-choice-action">Go to discovery path</span>
                     </a>
+                </div>
+                <div class="bos-project-bridge">
+                    <p>Prefer to see what I've built?</p>
+                    <a href="/projects">Explore the projects <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </section>
@@ -873,38 +877,31 @@
 
         <section class="bos-section" id="work">
             <div class="bos-section-heading">
-                <h2>Visible work</h2>
+                <h2>Selected projects</h2>
                 <p class="bos-section-text">
-                    Public projects and demos show current building momentum. Each card has its own visual accent so the portfolio does not feel like one undifferentiated block.
+                    Different audiences, different problems. These examples show how I turn an idea into something people can explore and use.
                 </p>
             </div>
 
-            <div class="bos-work-grid">
-                <a class="bos-choice-card bos-work-card bos-project-irish" href="https://daily-flyer.onrender.com/" target="_blank" rel="noopener noreferrer">
-                    <span class="bos-card-label">Daily Flyer</span>
-                    <h3>Irish Today</h3>
-                    <p>A compact, themed daily-page implementation built around repeatable structure, presentation, and content automation.</p>
-                    <span class="bos-card-action">View site</span>
+            <div class="bos-work-grid bos-selected-work-grid">
+                {% for project in featured_projects|default([]) %}
+                <a class="bos-work-card bos-selected-project" data-project="{{ project.id }}" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+                    <img class="bos-project-art" src="{{ project.art_url }}" alt="" width="720" height="420" loading="lazy" decoding="async" />
+                    <div class="bos-selected-project-copy">
+                        <span class="bos-card-label">{{ project.focus or project.type }}</span>
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description }}</p>
+                        {% if project.context %}<span class="bos-project-context">{{ project.context }}</span>{% endif %}
+                        <span class="bos-card-action">Open project</span>
+                    </div>
                 </a>
-                <a class="bos-choice-card bos-work-card bos-project-grepper" href="/static/demos/grepper.html">
-                    <span class="bos-card-label">Tool prototype</span>
-                    <h3>Grepper</h3>
-                    <p>A Workday job search, scraping, and ranking workflow with URL parsing, tenant configuration, exports, and a browser-style demo.</p>
-                    <span class="bos-card-action">View demo</span>
-                </a>
-                <a class="bos-choice-card bos-work-card bos-project-loudsource" href="/static/demos/loudsource-vote.html">
-                    <span class="bos-card-label">Interactive demo</span>
-                    <h3>LoudSource Voting Flyer</h3>
-                    <p>A voting prototype showing how a themed content page can become interactive instead of only informational.</p>
-                    <span class="bos-card-action">Try demo</span>
-                </a>
-                <a class="bos-choice-card bos-work-card bos-project-site" href="{{ url_for('main.style_lab') }}">
-                    <span class="bos-card-label">This site</span>
-                    <h3>HoltsniderTech.com</h3>
-                    <p>A live brand workbench for testing voice, proof structure, contact paths, and a clearer consulting story.</p>
-                    <span class="bos-card-action">Compare styles</span>
-                </a>
+                {% endfor %}
             </div>
+            <div class="bos-project-directory-actions">
+                <a class="bos-project-directory-link" href="/projects">Browse all {{ project_count|default(0) }} projects <span aria-hidden="true">→</span></a>
+                <p class="bos-project-supporting-demo">Also explore <a href="{{ url_for('static', filename='demos/grepper.html') }}">Grepper, a job-search workflow demo</a>.</p>
+            </div>
+            <script id="featured-projects-data" type="application/json">{{ {'projects': featured_projects|default([]), 'count': project_count|default(0)}|tojson }}</script>
         </section>
 
         <section class="bos-section" id="case-shapes">

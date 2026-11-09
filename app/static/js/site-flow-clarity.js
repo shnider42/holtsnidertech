@@ -1,0 +1,631 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const page = document.querySelector(".boston");
+    if (!page) return;
+
+    const CONTACT_EMAIL = "chris@holtsnidertech.com";
+    let discoveryAdvanceQueued = false;
+
+    const qs = (selector, root = page) => root?.querySelector(selector) || null;
+    const qsa = (selector, root = page) => root ? Array.from(root.querySelectorAll(selector)) : [];
+    const startPanel = qs(".bos-start-panel");
+    const startCard = (selector) => qs(selector, startPanel || page);
+
+    const browseTargets = ["#experience", "#work", "#case-shapes"];
+    const browseSections = browseTargets
+        .map((selector) => qs(selector))
+        .filter(Boolean);
+
+    const setText = (selector, text, root = page) => {
+        const node = qs(selector, root);
+        if (node) node.textContent = text;
+    };
+
+    const setCardCopy = (selector, title, body, action) => {
+        const card = startCard(selector);
+        if (!card) return;
+        setText("h3", title, card);
+        setText("p", body, card);
+        setText(".bos-choice-action", action, card);
+    };
+
+    const setDrawerCopy = (selector, items, nextText) => {
+        const card = startCard(selector);
+        const drawerId = card?.querySelector("[data-flow-drawer]")?.dataset.flowDrawer;
+        if (!drawerId) return;
+
+        document.querySelectorAll(`[data-flow-drawer="${drawerId}"]`).forEach((drawer) => {
+            drawer.querySelectorAll("li").forEach((item, index) => {
+                if (items[index]) item.textContent = items[index];
+            });
+            const next = drawer.querySelector("ul + span");
+            if (next) next.textContent = nextText;
+        });
+    };
+
+    const smoothScrollTo = (selector, updateHash = true) => {
+        const target = qs(selector);
+        if (!target) return;
+
+        if (updateHash && window.location.hash !== selector) {
+            try {
+                window.history.replaceState(null, "", selector);
+            } catch (error) {
+                // Ignore history failures.
+            }
+        }
+
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const hideBrowseSections = () => {
+        browseSections.forEach((section) => {
+            section.hidden = true;
+            section.classList.add("bos-runtime-hidden");
+        });
+    };
+
+    const showBrowseSections = () => {
+        browseSections.forEach((section) => {
+            section.hidden = false;
+            section.classList.remove("bos-runtime-hidden");
+        });
+    };
+
+    const clearGuidedFlow = () => {
+        const panel = qs("#guided-flow");
+        if (!panel) return;
+        panel.classList.remove("is-active");
+        panel.removeAttribute("data-active-flow");
+        panel.removeAttribute("data-active-context");
+        panel.textContent = "";
+    };
+
+    const resetActiveGuidedFlow = () => {
+        const selected = qs(".bos-choice-card.is-selected", startPanel);
+
+        // Let the original guided-flow closure clear its own activePath state.
+        // Hiding only the rendered panel leaves that closure stale.
+        if (selected && !selected.classList.contains("bos-choice-experience")) {
+            selected.click();
+        } else {
+            clearGuidedFlow();
+        }
+
+        qsa(".bos-choice-card", startPanel).forEach((card) => card.classList.remove("is-selected"));
+    };
+
+    const generalMailto = (subject, intro) => {
+        const body = `Hi Chris,\n\n${intro}\n\nHere's the messy version:\n\n`;
+        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const copyText = async (text) => {
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (error) {
+            // Fall through to the older copy path.
+        }
+
+        const helper = document.createElement("textarea");
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.opacity = "0";
+        document.body.appendChild(helper);
+        helper.select();
+
+        let copied = false;
+        try {
+            copied = document.execCommand("copy");
+        } catch (error) {
+            copied = false;
+        }
+        helper.remove();
+        return copied;
+    };
+
+    const normalizeBrowseCopy = () => {
+        setText("#experience .bos-section-heading h2", "Engineering background");
+        setText(
+            "#experience .bos-section-heading .bos-section-text",
+            "The through-line is practical systems work: reliability, infrastructure, automation, troubleshooting, and translating technical detail into decisions people can act on."
+        );
+
+        const experienceCopy = [
+            ["Reliability when systems matter", "Incident response, production-impacting failures, storage reliability, replication quality, data integrity, and long-term stability work."],
+            ["Hands-on infrastructure and labs", "Rack-level systems, switches, VLANs, Fibre Channel, Linux, VMware, and realistic environments built to reproduce difficult problems."],
+            ["Automation that removes repeat work", "Python, APIs, Terraform, GitHub workflows, CLI tools, and repeatable processes that make technical work easier to operate and review."],
+            ["Technical depth without the fog", "Turning low-level engineering detail into useful direction for customers, engineers, vendors, stakeholders, and non-specialists."]
+        ];
+
+        qsa("#experience .bos-experience-grid .bos-card").forEach((card, index) => {
+            const copy = experienceCopy[index];
+            if (!copy) return;
+            setText("h3", copy[0], card);
+            setText("p", copy[1], card);
+        });
+
+        qsa("#experience .bos-stack-grid .bos-mini").forEach((card) => {
+            const label = card.querySelector("strong");
+            if (label?.textContent.trim() === "People") {
+                label.textContent = "Communication";
+                setText("p", "Customers, engineers, vendors, executives, documentation, technical writing, and cross-functional communication.", card);
+            }
+        });
+
+        const experienceActions = qs("#experience .bos-actions");
+        if (experienceActions) {
+            const roleLink = qs(".bos-btn", experienceActions);
+            if (roleLink) {
+                roleLink.href = generalMailto(
+                    "Holtsnider Tech - role or project conversation",
+                    "I was looking through your experience and wanted to talk about a role, project, or technical fit."
+                );
+                roleLink.textContent = "Talk about a role or project";
+                roleLink.removeAttribute("data-clarity-browse-link");
+            }
+
+            let projectsLink = qs("[data-clarity-projects-link]", experienceActions);
+            if (!projectsLink) {
+                projectsLink = document.createElement("a");
+                projectsLink.className = "bos-btn alt";
+                projectsLink.href = "#work";
+                projectsLink.dataset.clarityProjectsLink = "true";
+                projectsLink.textContent = "See public projects";
+                projectsLink.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    smoothScrollTo("#work");
+                });
+
+                const linkedIn = Array.from(experienceActions.querySelectorAll("a"))
+                    .find((link) => link.href.includes("linkedin.com"));
+                experienceActions.insertBefore(projectsLink, linkedIn || null);
+            }
+
+            const linkedIn = Array.from(experienceActions.querySelectorAll("a"))
+                .find((link) => link.href.includes("linkedin.com"));
+            if (linkedIn) linkedIn.textContent = "LinkedIn";
+        }
+
+        setText("#work .bos-section-heading h2", "Selected projects");
+        setText(
+            "#work .bos-section-heading .bos-section-text",
+            "Different audiences, different problems. These examples show how I turn an idea into something people can explore and use."
+        );
+
+        // Project descriptions come from the shared catalogue rendered by Flask.
+
+        const workSection = qs("#work");
+        const workGrid = qs("#work .bos-work-grid");
+        if (workGrid && workSection && !qs("[data-clarity-work-actions]", workSection)) {
+            const actions = document.createElement("div");
+            actions.className = "bos-actions";
+            actions.dataset.clarityWorkActions = "true";
+
+            const contact = document.createElement("a");
+            contact.className = "bos-btn";
+            contact.href = generalMailto("Holtsnider Tech - project conversation", "I was looking through your public work and wanted to talk about a project.");
+            contact.textContent = "Talk about a project";
+
+            const professional = document.createElement("a");
+            professional.className = "bos-btn alt";
+            professional.href = "#case-shapes";
+            professional.textContent = "See professional work";
+            professional.addEventListener("click", (event) => {
+                event.preventDefault();
+                smoothScrollTo("#case-shapes");
+            });
+
+            actions.append(contact, professional);
+            const projectLinks = qs(".bos-project-directory-actions", workSection);
+            (projectLinks || workGrid).insertAdjacentElement("afterend", actions);
+        }
+
+        setText("#case-shapes .bos-section-heading h2", "Professional work behind the portfolio");
+        setText(
+            "#case-shapes .bos-section-heading .bos-section-text",
+            "Not every useful project can be linked publicly. These are representative shapes of the enterprise, infrastructure, troubleshooting, and automation work behind the public demos."
+        );
+
+        const caseCopy = [
+            ["Systems reliability", "Stabilize systems under pressure", "Enterprise storage reliability, incident response, replication quality, data integrity, and long-term stability in complex environments.", "Talk about systems work"],
+            ["Lab engineering", "Build labs that reproduce reality", "Rack-level replica environments, networking, Fibre Channel, VLANs, realistic workloads, and pre-rollout testing that surfaces problems before customers do.", "Talk about lab strategy"],
+            ["Root cause", "Find the failure across layers", "Packet captures, file-level analysis, operating systems, drivers, firmware, network paths, and the boundary between hardware and software.", "Start with the problem"],
+            ["Operational tooling", "Turn manual work into repeatable systems", "Python tooling, CMDB and security API workflows, Terraform, GitHub provisioning, governance, and repeatable operational review.", "Talk about automation"]
+        ];
+
+        qsa("#case-shapes .bos-case-card").forEach((card, index) => {
+            const copy = caseCopy[index];
+            if (!copy) return;
+            setText(".bos-card-label", copy[0], card);
+            setText("h3", copy[1], card);
+            setText("p", copy[2], card);
+            setText(".bos-card-action", copy[3], card);
+        });
+    };
+
+    const normalizeContactCopy = () => {
+        setText("#contact h2", "Tell me what you're working through.");
+
+        const paragraphs = qsa("#contact > div > p");
+        if (paragraphs[0]) paragraphs[0].textContent = "You do not need a polished brief. Send the broken thing, the rough idea, the decision you are stuck on, or whatever context you already have.";
+        if (paragraphs[1]) paragraphs[1].textContent = "I start by getting the system and constraints straight, then narrow the smallest useful next move — whether that is troubleshooting, automation, a prototype, or simply a clearer decision.";
+
+        const actions = qs("#contact .bos-actions");
+        const primary = qs(".bos-btn", actions);
+        if (primary) primary.textContent = "Email Chris";
+
+        const back = qs(".bos-btn.alt", actions);
+        if (back) {
+            back.textContent = "Back to starting points";
+            back.href = "#start";
+            if (back.dataset.clarityReset !== "true") {
+                back.dataset.clarityReset = "true";
+                back.addEventListener("click", resetActiveGuidedFlow, { capture: true });
+            }
+        }
+
+        if (actions && !qs("[data-clarity-copy-email]", actions)) {
+            const copyButton = document.createElement("button");
+            copyButton.type = "button";
+            copyButton.className = "bos-btn alt";
+            copyButton.dataset.clarityCopyEmail = "true";
+            copyButton.textContent = "Copy email";
+            copyButton.setAttribute("aria-label", `Copy ${CONTACT_EMAIL}`);
+            copyButton.addEventListener("click", async () => {
+                const copied = await copyText(CONTACT_EMAIL);
+                copyButton.textContent = copied ? "Copied" : CONTACT_EMAIL;
+                window.setTimeout(() => {
+                    copyButton.textContent = "Copy email";
+                }, 1800);
+            });
+            actions.insertBefore(copyButton, back || null);
+        }
+
+        setText("#contact .bos-contact-note", "Project, role-fit, troubleshooting, or “I’m not sure yet” are all valid starting points.");
+    };
+
+    const flowLabel = (pathKey) => ({
+        solve: "Fix a problem",
+        opportunity: "Build or improve something",
+        discovery: "Not sure where to start"
+    }[pathKey] || "General inquiry");
+
+    const directEmailDraft = (pathKey, contextTitle = "", notes = []) => {
+        const subject = ({
+            solve: "Holtsnider Tech - problem to solve",
+            opportunity: "Holtsnider Tech - idea or improvement",
+            discovery: "Holtsnider Tech - not sure where to start"
+        }[pathKey] || "Holtsnider Tech inquiry");
+
+        const lines = [
+            "Hi Chris,",
+            "",
+            "I came through the Holtsnider Tech site and wanted to reach out.",
+            `Starting point: ${flowLabel(pathKey)}`
+        ];
+
+        if (contextTitle) lines.push(`Closest fit: ${contextTitle}`);
+
+        const usefulNotes = notes.filter((item) => item.value.trim());
+        if (usefulNotes.length) {
+            lines.push("", "A little context:");
+            usefulNotes.forEach((item) => lines.push(`${item.label}: ${item.value.trim()}`));
+        }
+
+        lines.push("", "Here's the messy version:", "");
+        return { subject, body: lines.join("\n") };
+    };
+
+    const collapseSelectedGuidedCard = () => {
+        const selected = qs(".bos-choice-card.is-selected", startPanel);
+        if (selected && !selected.classList.contains("bos-choice-experience")) selected.click();
+    };
+
+    const ensureStartOverButton = (panel) => {
+        if (!panel?.dataset.activeFlow || panel.dataset.activeContext) return;
+        const header = qs(".bos-guided-flow-head", panel);
+        if (!header || qs("[data-clarity-start-over]", header)) return;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bos-flow-back";
+        button.dataset.clarityStartOver = "true";
+        button.textContent = "Back to starting points";
+        button.addEventListener("click", collapseSelectedGuidedCard);
+        header.appendChild(button);
+    };
+
+    const enhanceGuidedDetail = () => {
+        const panel = qs("#guided-flow.is-active[data-active-context]");
+        if (!panel) return;
+
+        const fields = qs(".bos-context-fields:not(.bos-context-copy-panel)", panel);
+        const action = qs(".bos-guided-flow-action", panel);
+        if (!fields || !action || fields.dataset.clarityEnhanced === "true") return;
+
+        fields.dataset.clarityEnhanced = "true";
+        action.classList.add("bos-guided-contact");
+        fields.classList.add("bos-runtime-hidden");
+        fields.setAttribute("aria-label", "Optional additional context");
+        qs(".bos-context-copy-panel", panel)?.remove();
+        qs(".bos-flow-mailto", action)?.remove();
+
+        const actionText = qs("p", action);
+        if (actionText) actionText.textContent = "Edit this message or add optional context. Open your email app, or copy the message into whichever email service you use.";
+
+        const contextTitle = qs(".bos-guided-flow-head h3", panel)?.textContent?.trim() || "";
+        const controls = document.createElement("div");
+        controls.className = "bos-actions";
+        controls.style.marginTop = "0";
+
+        const emailLink = document.createElement("a");
+        emailLink.className = "bos-btn";
+        emailLink.textContent = "Open email app";
+
+        const draft = document.createElement("div");
+        draft.className = "bos-message-draft";
+        const recipient = document.createElement("p");
+        recipient.className = "bos-draft-recipient";
+        recipient.textContent = `To: ${CONTACT_EMAIL}`;
+
+        const subjectLabel = document.createElement("label");
+        subjectLabel.className = "bos-context-field";
+        const subjectCaption = document.createElement("span");
+        subjectCaption.textContent = "Subject";
+        const subjectInput = document.createElement("input");
+        subjectInput.type = "text";
+        subjectInput.className = "bos-draft-subject";
+        subjectLabel.append(subjectCaption, subjectInput);
+
+        const messageLabel = document.createElement("label");
+        messageLabel.className = "bos-context-field";
+        const messageCaption = document.createElement("span");
+        messageCaption.textContent = "Your message";
+        const messageInput = document.createElement("textarea");
+        messageInput.className = "bos-draft-body";
+        messageInput.rows = 8;
+        messageLabel.append(messageCaption, messageInput);
+
+        const contextNotice = document.createElement("p");
+        contextNotice.className = "bos-draft-notice";
+        contextNotice.hidden = true;
+        contextNotice.textContent = "Your message has edits, so new answers have not replaced it. You can copy answers in yourself, or replace the message with a fresh draft.";
+        const refreshButton = document.createElement("button");
+        refreshButton.type = "button";
+        refreshButton.className = "bos-flow-back";
+        refreshButton.textContent = "Replace message from answers";
+        refreshButton.hidden = true;
+
+        const status = document.createElement("p");
+        status.className = "bos-draft-status";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        status.textContent = "Opening your email app does not send anything. Your draft stays on this page.";
+        draft.append(recipient, subjectLabel, messageLabel, contextNotice, refreshButton);
+
+        const collectNotes = () => qsa(".bos-context-field", fields).map((field) => ({
+            label: qs("span", field)?.textContent?.trim() || "Note",
+            value: qs("textarea", field)?.value || ""
+        }));
+
+        let generated = directEmailDraft(panel.dataset.activeFlow, contextTitle, collectNotes());
+        subjectInput.value = generated.subject;
+        messageInput.value = generated.body;
+
+        const updateEmailHref = () => {
+            // A subject is a single email header; keep pasted line breaks out of it.
+            const subject = subjectInput.value.replace(/[\r\n]+/g, " ");
+            emailLink.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messageInput.value)}`;
+        };
+        updateEmailHref();
+        subjectInput.addEventListener("input", updateEmailHref);
+        messageInput.addEventListener("input", updateEmailHref);
+
+        qsa("textarea", fields).forEach((textarea) => textarea.addEventListener("input", () => {
+            const next = directEmailDraft(panel.dataset.activeFlow, contextTitle, collectNotes());
+            const hasEdits = messageInput.value !== generated.body;
+            if (!hasEdits) messageInput.value = next.body;
+            contextNotice.hidden = !hasEdits;
+            refreshButton.hidden = !hasEdits;
+            generated = next;
+            updateEmailHref();
+        }));
+        refreshButton.addEventListener("click", () => {
+            messageInput.value = generated.body;
+            contextNotice.hidden = true;
+            refreshButton.hidden = true;
+            updateEmailHref();
+            messageInput.focus();
+        });
+
+        const selectMessage = () => {
+            messageInput.focus();
+            messageInput.select();
+            messageInput.setSelectionRange(0, messageInput.value.length);
+        };
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "bos-btn alt";
+        copyButton.textContent = "Copy message";
+        copyButton.addEventListener("click", async () => {
+            if (await copyText(messageInput.value)) {
+                status.textContent = "Message copied. Paste it into your email service; the address and subject are above.";
+                copyButton.focus();
+            } else {
+                selectMessage();
+                status.textContent = "Automatic copy is unavailable. Your message is selected; use your device's Copy command.";
+            }
+        });
+        const selectButton = document.createElement("button");
+        selectButton.type = "button";
+        selectButton.className = "bos-btn alt";
+        selectButton.textContent = "Select message";
+        selectButton.addEventListener("click", () => {
+            selectMessage();
+            status.textContent = "Message selected. Use your device's Copy command, then paste it into your email service.";
+        });
+        emailLink.addEventListener("click", () => {
+            status.textContent = "If your email app does not open, use Copy message or Select message. Your draft is still here.";
+        });
+
+        const detailToggle = document.createElement("button");
+        detailToggle.type = "button";
+        detailToggle.className = "bos-btn alt";
+        detailToggle.textContent = "Add context (optional)";
+        detailToggle.setAttribute("aria-expanded", "false");
+        detailToggle.addEventListener("click", () => {
+            const willOpen = fields.classList.contains("bos-runtime-hidden");
+            fields.classList.toggle("bos-runtime-hidden", !willOpen);
+            detailToggle.setAttribute("aria-expanded", String(willOpen));
+            detailToggle.textContent = willOpen ? "Hide optional context" : "Add context (optional)";
+            if (willOpen) qs("textarea", fields)?.focus();
+        });
+
+        controls.append(emailLink, copyButton, selectButton, detailToggle);
+        action.append(draft, controls, status);
+
+        const back = qs(".bos-flow-back", panel);
+        if (panel.dataset.activeFlow === "discovery" && back && back.dataset.clarityDiscoveryBack !== "true") {
+            back.dataset.clarityDiscoveryBack = "true";
+            back.textContent = "Back to starting points";
+            back.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                collapseSelectedGuidedCard();
+            }, { capture: true });
+        }
+    };
+
+    const openExperienceBrowse = (target = "#experience", updateHash = true) => {
+        resetActiveGuidedFlow();
+        startCard(".bos-choice-experience")?.classList.add("is-selected");
+        showBrowseSections();
+        normalizeBrowseCopy();
+        window.requestAnimationFrame(() => smoothScrollTo(target, updateHash));
+    };
+
+    const restoreBrowseFromHash = () => {
+        const target = window.location.hash;
+        if (!browseTargets.includes(target)) return;
+        // A link from Projects must reveal its destination before scrolling.
+        // Do not replace the incoming hash or reinitialize an open browse path.
+        if (browseSections.some((section) => section.hidden)) {
+            openExperienceBrowse(target, false);
+        } else {
+            smoothScrollTo(target, false);
+        }
+    };
+
+    const installHeaderShortcuts = () => {
+        const nav = qs(".bos-links");
+        if (!nav) return;
+
+        nav.querySelectorAll("[data-clarity-nav]").forEach((item) => item.remove());
+        if (!window.matchMedia("(min-width: 851px)").matches) return;
+
+        const experienceLink = document.createElement("a");
+        experienceLink.href = "#experience";
+        experienceLink.dataset.clarityNav = "experience";
+        experienceLink.textContent = "Experience";
+        experienceLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            openExperienceBrowse();
+        });
+
+        const contactLink = document.createElement("a");
+        contactLink.href = "#contact";
+        contactLink.dataset.clarityNav = "contact";
+        contactLink.textContent = "Contact";
+        contactLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            resetActiveGuidedFlow();
+            smoothScrollTo("#contact");
+        });
+
+        const projectsLink = nav.querySelector(".bos-projects-nav");
+        nav.insertBefore(experienceLink, projectsLink || null);
+        nav.append(contactLink);
+    };
+
+    const normalizeGuidedCopy = () => {
+        const panel = qs("#guided-flow");
+        if (!panel) return;
+
+        const eyebrow = qs(".bos-guided-flow-eyebrow", panel);
+        if (eyebrow?.textContent === "Context layer") eyebrow.textContent = "Choose the closest fit";
+
+        const heading = qs(".bos-guided-flow-head h3", panel);
+        const intro = qs(".bos-guided-flow-intro", panel);
+        if (heading?.textContent === "Discovery path still being shaped") {
+            heading.textContent = "What feels unclear?";
+            if (intro) intro.textContent = "You do not need the right category yet. Start with what changed, what feels stuck, or what decision you are trying to make.";
+        }
+        if (intro?.textContent === "Pick the closest starting point. This is the Opportunity Engineering lane.") {
+            intro.textContent = "Pick the closest starting point. The idea can still be rough; we can narrow it from there.";
+        }
+
+        if (panel.classList.contains("is-active")
+            && panel.dataset.activeFlow === "discovery"
+            && !panel.dataset.activeContext
+            && !discoveryAdvanceQueued) {
+            const options = qsa(".bos-guided-flow-option-button", panel);
+            if (options.length === 1) {
+                discoveryAdvanceQueued = true;
+                window.requestAnimationFrame(() => {
+                    discoveryAdvanceQueued = false;
+                    if (panel.dataset.activeFlow === "discovery" && !panel.dataset.activeContext && options[0].isConnected) options[0].click();
+                });
+                return;
+            }
+        }
+
+        ensureStartOverButton(panel);
+        enhanceGuidedDetail();
+    };
+
+    // First-screen copy: plain language first, branded terminology second.
+    setText(".bos-hero .bos-kicker", "Technical problem solving + project building");
+    setText(
+        ".bos-hero .bos-lede",
+        "I help untangle technical problems, improve systems and workflows, and turn rough ideas into working projects. Pick the closest starting point below."
+    );
+
+    setCardCopy(".bos-choice-solve", "Fix a Problem", "Something is broken, unreliable, confusing, or wasting time.", "Start troubleshooting");
+    setCardCopy(".bos-choice-opportunity", "Build or Improve", "You have an idea, workflow, site, tool, or process you want to make better.", "Explore the idea");
+    setCardCopy(".bos-choice-experience", "Experience & Work", "See the engineering background, public projects, and systems work behind Holtsnider Tech.", "Browse experience");
+    setCardCopy(".bos-choice-not-sure", "Not Sure Yet", "You know something needs attention, but you are not sure what kind of problem it is yet.", "Start with what you know");
+
+    setDrawerCopy(".bos-choice-solve", ["Something just broke", "A problem keeps coming back"], "Start with the problem");
+    setDrawerCopy(".bos-choice-opportunity", ["Build something new", "Improve something that exists"], "Start with the idea");
+    setDrawerCopy(".bos-choice-experience", ["Engineering background", "Public projects", "Enterprise systems", "Current technical work"], "Browse without a questionnaire");
+    setDrawerCopy(".bos-choice-not-sure", ["The situation is fuzzy", "The next step is unclear", "You do not know what to call it"], "Start with the messy version");
+
+    const experienceCard = startCard(".bos-choice-experience");
+    if (experienceCard) {
+        experienceCard.href = "#experience";
+        experienceCard.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            openExperienceBrowse();
+        }, { capture: true });
+    }
+
+    [".bos-choice-solve", ".bos-choice-opportunity", ".bos-choice-not-sure"].forEach((selector) => {
+        startCard(selector)?.addEventListener("click", hideBrowseSections, { capture: true });
+    });
+
+    const observer = new MutationObserver(normalizeGuidedCopy);
+    observer.observe(page, { childList: true, subtree: true });
+
+    normalizeBrowseCopy();
+    normalizeContactCopy();
+    normalizeGuidedCopy();
+    installHeaderShortcuts();
+    window.addEventListener("resize", installHeaderShortcuts);
+    window.addEventListener("hashchange", restoreBrowseFromHash);
+    restoreBrowseFromHash();
+});
