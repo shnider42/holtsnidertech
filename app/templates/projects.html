@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Projects | Holtsnider Tech{% endblock %}
+{% block meta_description %}Explore Chris Holtsnider's working projects: useful tools, games, cultural journals, and ways to make complicated information easier to understand.{% endblock %}
+{% block extra_head %}
+<link rel="canonical" href="https://holtsnidertech.com/projects" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Projects | Holtsnider Tech" />
+<meta property="og:description" content="Working ideas, from practical tools to interactive worlds. Explore the Daily Flyer collection." />
+<meta property="og:url" content="https://holtsnidertech.com/projects" />
+{% endblock %}
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}" />
+{% endblock %}
+{% block content %}
+<div class="projects-page">
+  <a class="pr-skip" href="#collection">Skip to the projects</a>
+  <div class="pr-rule" aria-hidden="true"></div>
+  <header class="pr-header pr-wrap">
+    <a class="pr-brand" href="{{ url_for('main.home') }}" aria-label="Holtsnider Tech home">HOLTSNIDER <span>TECH</span></a>
+    <nav aria-label="Main navigation">
+      <a href="{{ url_for('main.home') }}#experience">Experience & work</a>
+      <a href="{{ url_for('main.projects') }}" aria-current="page">Projects</a>
+      <a href="{{ url_for('main.home') }}#contact">Contact</a>
+    </nav>
+    <button class="pr-theme" type="button" data-theme-toggle hidden>Light mode</button>
+  </header>
+  <main class="pr-wrap">
+    <section class="pr-intro" aria-labelledby="projects-heading">
+      <div>
+        <p class="pr-eyebrow">THE WORK / OUT IN THE WORLD</p>
+        <h1 id="projects-heading">Ideas you can <em>open.</em></h1>
+        <p class="pr-lede">Useful tools, playable worlds, and clearer ways into complicated subjects. This is where I put ideas to work and keep improving them.</p>
+        <a class="pr-text-link" href="#collection">Browse all <span data-project-total>{{ project_count }}</span> projects <span aria-hidden="true">↓</span></a>
+      </div>
+      <aside class="pr-intro-note">
+        <span class="pr-note-index">A COMMON THREAD</span>
+        <p>Start with a problem.<br />Build something you can try.<br /><strong>Listen. Adjust. Repeat.</strong></p>
+        <a href="{{ url_for('main.home') }}#experience">The engineering background <span aria-hidden="true">↗</span></a>
+      </aside>
+    </section>
+
+    <section class="pr-selected" aria-labelledby="selected-heading">
+      <div class="pr-section-heading"><h2 id="selected-heading">A few places to start</h2><span>Different problems. Different approaches.</span></div>
+      <div class="pr-featured-grid">
+        {% for project in featured_projects %}
+        <a class="pr-featured" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+          <img src="{{ project.art_url }}" alt="" width="640" height="300" />
+          <span class="pr-featured-focus">{{ project.focus }}</span>
+          <h3>{{ project.title }} <span aria-hidden="true">↗</span></h3>
+          <p>{{ project.context }}</p>
+          <span class="pr-sr-only">Opens in a new tab</span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="collection" class="pr-collection" aria-labelledby="collection-heading">
+      <div class="pr-section-heading pr-collection-heading"><h2 id="collection-heading">The full collection</h2><span>Explore by interest. Open anything.</span></div>
+      <div class="pr-controls">
+        <nav class="pr-types" aria-label="Project categories">
+          <a href="{{ url_for('main.projects') }}#collection" data-type="all" {% if active_type == 'all' %}aria-current="true"{% endif %}>All projects <span>{{ project_count }}</span></a>
+          {% for key, label in project_types.items() %}
+          <a href="{{ url_for('main.projects', type=key) }}#collection" data-type="{{ key }}" {% if active_type == key %}aria-current="true"{% endif %}>{{ label }} <span>{{ catalog|selectattr('type', 'equalto', key)|list|length }}</span></a>
+          {% endfor %}
+        </nav>
+        <form class="pr-search-form" action="{{ url_for('main.projects') }}#collection" method="get" role="search">
+          <input type="hidden" name="type" value="{{ active_type }}" />
+          <div class="pr-search-field"><label for="project-search" class="pr-sr-only">Search projects</label><span aria-hidden="true">⌕</span><input id="project-search" type="search" name="q" placeholder="Search a project, topic, or idea…" value="{{ query }}" maxlength="200" autocomplete="off" /><button type="submit">Search</button></div>
+          <div class="pr-kind-field" {% if active_type != 'games' %}hidden{% endif %}><label for="project-kind">Kind</label><select id="project-kind" name="kind"><option value="">All games</option>{% for game_kind in game_kinds %}<option value="{{ game_kind }}" {% if kind == game_kind %}selected{% endif %}>{{ game_kind }}</option>{% endfor %}</select></div>
+          <div class="pr-sort-field"><label for="project-sort">Sort</label><select id="project-sort" name="sort"><option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option><option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest first</option><option value="name" {% if sort == 'name' %}selected{% endif %}>Name A–Z</option><option value="type" {% if sort == 'type' %}selected{% endif %}>Project type</option></select></div>
+        </form>
+        <div class="pr-tools" data-js-tools hidden>
+          <p id="project-results" role="status" aria-live="polite" aria-atomic="true">{{ visible_projects|length }} of {{ project_count }} projects</p>
+          <div class="pr-tools-actions">
+            <button type="button" id="saved-filter" aria-pressed="false">Saved <span data-saved-count>0</span></button>
+            <button type="button" id="copy-projects">Copy links</button>
+            <div class="pr-view-controls" aria-label="Project layout"><button type="button" data-view="covers" aria-pressed="true">Covers</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pr-grid" id="project-grid" data-view="covers">
+        {% for project in visible_projects %}
+        <article class="pr-project" data-project="{{ project.id }}">
+          <div class="pr-cover">
+            <a class="pr-cover-link" href="{{ project.url }}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><img src="{{ project.art_url }}" alt="" width="640" height="300" loading="lazy" /></a>
+          </div>
+          <div class="pr-project-body">
+            <div class="pr-project-meta"><span>{{ project_types[project.type] }}</span><span class="pr-project-date">{% if project.datePrecision != 'unknown' %}{{ project.createdAt[:7] if project.datePrecision == 'month' else project.createdAt }}{% else %}Ongoing project{% endif %}</span></div>
+            <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.title }} <span aria-hidden="true">↗</span><span class="pr-sr-only"> (opens in a new tab)</span></a></h3>
+            <p class="pr-description">{{ project.description }}</p>
+            <div class="pr-project-bottom"><span class="pr-subtype">{{ project.subtype }}</span><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">Open project <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="pr-empty" id="project-empty" {% if visible_projects %}hidden{% endif %}><h3>No projects match just yet.</h3><p>Try a broader word or explore the full collection.</p><a href="{{ url_for('main.projects') }}#collection" id="reset-projects">Show all projects</a></div>
+      <noscript><p class="pr-noscript">Search and category links work without JavaScript. Enable it to save favorites, switch layouts, or copy a group of links.</p></noscript>
+    </section>
+
+    <section class="pr-about" aria-labelledby="dfe-heading">
+      <div><p class="pr-eyebrow">HOW THE COLLECTION CONNECTS</p><h2 id="dfe-heading">One framework.<br />Room for different ideas.</h2></div>
+      <div><p>The Daily Flyer Engine began with Irish Today. It grew into a foundation for exploring different audiences, interfaces, and kinds of interaction. Each project has its own identity and continues to evolve.</p><p>These are projects you can try. My <a href="{{ url_for('main.home') }}#experience">professional experience</a> provides the wider context: systems reliability, troubleshooting, automation, and helping people make sense of technical problems.</p><div class="pr-about-links"><a href="https://dfe-directory.onrender.com/" target="_blank" rel="noopener noreferrer">Standalone DFE directory ↗</a><a href="{{ url_for('static', filename='demos/grepper.html') }}">Try the Grepper demo ↗</a></div></div>
+    </section>
+    <section class="pr-contact"><div><p class="pr-eyebrow">HAVE SOMETHING IN MIND?</p><h2>Bring the rough idea.</h2><p>A tool, a workflow, a technical problem. We can start wherever you are.</p></div><a href="{{ url_for('main.home') }}#contact">Talk about your project <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer class="pr-footer pr-wrap"><span>© 2026 Holtsnider Tech</span><div><a href="{{ url_for('main.home') }}">Back to Holtsnider Tech</a><a href="{{ url_for('main.privacy') }}">Privacy</a></div></footer>
+  <dialog class="pr-copy-dialog" id="copy-dialog" aria-labelledby="copy-heading"><form method="dialog"><button class="pr-dialog-close" aria-label="Close copy dialog">Close ×</button></form><h2 id="copy-heading">Copy these links</h2><p>Select the text below, then copy it using your device.</p><label for="copy-content" class="pr-sr-only">Project links to copy</label><textarea id="copy-content" readonly rows="7"></textarea><button type="button" id="select-copy-content">Select text</button></dialog>
+  <p class="pr-toast" id="project-toast" role="status" aria-live="polite"></p>
+</div>
+<script id="projects-data" type="application/json">{{ catalog|tojson }}</script>
+{% endblock %}
+{% block page_scripts %}<script type="module" src="{{ url_for('static', filename='js/projects.js') }}"></script>{% endblock %}

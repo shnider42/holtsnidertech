@@ -5,6 +5,8 @@ on:
     branches: [staging, master]
     paths:
       - app/static/js/boston-visible-work-cards.js
+      - app/static/data/dfe-projects.json
+      - app/project_catalog.py
       - .github/workflows/showcase-links.yml
 
 permissions:
@@ -33,18 +35,13 @@ jobs:
           # Hosts are confirmed Render services. URLs come from the actual cards,
           # not a separately maintained URL list. No credentials or app mutations.
           targets = {
-              "garage": ("jbmw.onrender.com", ["garage", "journey"]),
-              "dsl": ("sl-jake.onrender.com", ["dsl", "tactical command"]),
-              "bug-tracker": ("hllv-bug-track.onrender.com", ["infierno", "liberado"]),
-              "soph-slump": ("soph-slump.onrender.com", ["slump"]),
-              "galaxy-granite": ("galgran.onrender.com", ["galaxy", "granite"]),
+              "irish-today": ("daily-flyer.onrender.com", ["irish", "today"]),
+              "infierno": ("hllv-bug-track.onrender.com", ["infierno", "liberado"]),
+              "gridiron": ("dfe-pocket-gridiron.onrender.com", ["gridiron"]),
+              "further-in": ("dfe-further-in.onrender.com", ["further in"]),
           }
-          source = Path("app/static/js/boston-visible-work-cards.js").read_text()
-          catalogue = source.split("const projectExamples = [", 1)[1].split("];", 1)[0]
-          entries = [dict(re.findall(r'\b(theme|href):\s*"([^"]+)"', block))
-                     for block in re.findall(r'\{(.*?)\}', catalogue, re.S)]
-          urls = {entry["theme"]: entry["href"] for entry in entries
-                  if "theme" in entry and "href" in entry}
+          entries = json.loads(Path("app/static/data/dfe-projects.json").read_text())
+          urls = {entry["id"]: entry.get("url") or entry.get("sourceUrl") for entry in entries}
 
           class SameHostRedirects(urllib.request.HTTPRedirectHandler):
               def redirect_request(self, req, fp, code, msg, headers, newurl):

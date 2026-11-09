@@ -1,0 +1,9 @@
+{
+  "name": "holtsnidertech",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python -m flask --app run:app run --host 0.0.0.0 --port ${PORT:-3000}",
+    "check:projects": "node --check app/static/js/projects.js"
+  }
+}

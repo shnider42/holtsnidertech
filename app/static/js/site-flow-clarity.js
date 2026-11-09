@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const startPanel = qs(".bos-start-panel");
     const startCard = (selector) => qs(selector, startPanel || page);
 
-    const browseSections = ["#experience", "#work", "#case-shapes"]
+    const browseTargets = ["#experience", "#work", "#case-shapes"];
+    const browseSections = browseTargets
         .map((selector) => qs(selector))
         .filter(Boolean);
 
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const target = qs(selector);
         if (!target) return;
 
-        if (updateHash) {
+        if (updateHash && window.location.hash !== selector) {
             try {
                 window.history.replaceState(null, "", selector);
             } catch (error) {
@@ -189,24 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (linkedIn) linkedIn.textContent = "LinkedIn";
         }
 
-        setText("#work .bos-section-heading h2", "Projects you can actually open");
+        setText("#work .bos-section-heading h2", "Selected projects");
         setText(
             "#work .bos-section-heading .bos-section-text",
-            "Public examples of how I turn a loose idea into something usable: different audiences, different problems, and enough working product to evaluate the idea for real."
+            "Different audiences, different problems. These examples show how I turn an idea into something people can explore and use."
         );
 
-        qsa("#work .bos-work-card").forEach((card) => {
-            const title = card.querySelector("h3")?.textContent?.trim();
-            if (title === "Irish Today") {
-                setText("p", "A live daily culture page that turns a repeatable content pipeline into a polished, themed experience.", card);
-            } else if (title === "Grepper") {
-                setText("p", "A job-search tool that parses Workday postings, ranks results, and packages the workflow into a usable browser-style demo.", card);
-            } else if (title === "LoudSource Voting Flyer") {
-                setText("p", "An interactive voting prototype that turns a static content concept into a participatory experience.", card);
-            } else if (title === "Your Passage") {
-                setText("p", "A personalized daily-page concept built from the same reusable content engine, adapted to a very different audience and tone.", card);
-            }
-        });
+        // Project descriptions come from the shared catalogue rendered by Flask.
 
         const workSection = qs("#work");
         const workGrid = qs("#work .bos-work-grid");
@@ -230,7 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             actions.append(contact, professional);
-            workGrid.insertAdjacentElement("afterend", actions);
+            const projectLinks = qs(".bos-project-directory-actions", workSection);
+            (projectLinks || workGrid).insertAdjacentElement("afterend", actions);
         }
 
         setText("#case-shapes .bos-section-heading h2", "Professional work behind the portfolio");
@@ -509,12 +500,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    const openExperienceBrowse = () => {
+    const openExperienceBrowse = (target = "#experience", updateHash = true) => {
         resetActiveGuidedFlow();
         startCard(".bos-choice-experience")?.classList.add("is-selected");
         showBrowseSections();
         normalizeBrowseCopy();
-        window.requestAnimationFrame(() => smoothScrollTo("#experience"));
+        window.requestAnimationFrame(() => smoothScrollTo(target, updateHash));
+    };
+
+    const restoreBrowseFromHash = () => {
+        const target = window.location.hash;
+        if (!browseTargets.includes(target)) return;
+        // A link from Projects must reveal its destination before scrolling.
+        // Do not replace the incoming hash or reinitialize an open browse path.
+        if (browseSections.some((section) => section.hidden)) {
+            openExperienceBrowse(target, false);
+        } else {
+            smoothScrollTo(target, false);
+        }
     };
 
     const installHeaderShortcuts = () => {
@@ -527,7 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const experienceLink = document.createElement("a");
         experienceLink.href = "#experience";
         experienceLink.dataset.clarityNav = "experience";
-        experienceLink.textContent = "Experience & Work";
+        experienceLink.textContent = "Experience";
         experienceLink.addEventListener("click", (event) => {
             event.preventDefault();
             openExperienceBrowse();
@@ -543,7 +546,9 @@ document.addEventListener("DOMContentLoaded", () => {
             smoothScrollTo("#contact");
         });
 
-        nav.append(experienceLink, contactLink);
+        const projectsLink = nav.querySelector(".bos-projects-nav");
+        nav.insertBefore(experienceLink, projectsLink || null);
+        nav.append(contactLink);
     };
 
     const normalizeGuidedCopy = () => {
@@ -621,4 +626,6 @@ document.addEventListener("DOMContentLoaded", () => {
     normalizeGuidedCopy();
     installHeaderShortcuts();
     window.addEventListener("resize", installHeaderShortcuts);
+    window.addEventListener("hashchange", restoreBrowseFromHash);
+    restoreBrowseFromHash();
 });

@@ -1,41 +1,30 @@
-"""Regression coverage for the shared Build/Improve project catalogue."""
-from pathlib import Path
+"""Regression coverage for selected projects within both Build/Improve paths."""
+import re
 from urllib.parse import urlsplit
 
 import pytest
 from playwright.sync_api import expect
 
 # Reuse the real-site fixtures without collecting a second copy of its tests.
-from test_homepage_browser import capture, live_site, page, start_card  # noqa: F401
-
-
-TITLES = [
-    "Irish Today", "Your Passage", "Loudsource", "Garage Journey", "DSL",
-    "Bug Tracker", "Soph(more) Slump(?)", "Galaxy Granite", "Jiporady",
-    "Career Compass", "Grepper",
-]
-PUBLIC_BUILDS = {
-    "garage": "https://jbmw.onrender.com/?theme=garage_journey",
-    "dsl": "https://sl-jake.onrender.com/",
-    "bug-tracker": "https://hllv-bug-track.onrender.com/",
-    "soph-slump": "https://soph-slump.onrender.com/?theme=qb_year_two",
-    "galaxy-granite": "https://galgran.onrender.com/?theme=galaxy_granite_daily",
-}
+from test_homepage_browser import (  # noqa: F401
+    FEATURED_PROJECT_IDS, canonical_projects, capture, featured_projects,
+    live_site, page, start_card,
+)
 
 
 def open_examples(page, context="new-build"):
     start_card(page, "bos-choice-opportunity").click()
     label = "Build something new" if context == "new-build" else "Improve something existing"
     page.get_by_role("button", name=label, exact=False).click()
-    grid = page.locator('#guided-flow [data-project-showcase="dfe-v1"]')
-    expect(grid.locator(".bos-flow-example-card")).to_have_count(len(TITLES))
+    grid = page.locator("#guided-flow .bos-flow-example-grid")
+    expect(grid.locator(".bos-flow-example-card")).to_have_count(len(FEATURED_PROJECT_IDS))
+    expect(grid.locator('[data-project="further-in"]')).to_have_count(1)
     return grid
 
 
 def clipped_text(card):
-    # scrollWidth includes the intentionally clipped Irish Today ::after artwork.
-    # Measure actual text lines instead, including vertical clipping, while the
-    # separate grid assertion still guards against page-level horizontal overflow.
+    # Measure actual text lines, including vertical clipping, independently of
+    # the artwork. The grid assertion also checks horizontal page overflow.
     return card.evaluate("""card => {
     const box = card.getBoundingClientRect();
     const left = box.left + card.clientLeft;
@@ -57,34 +46,34 @@ def clipped_text(card):
 
 
 @pytest.mark.parametrize("context", ["new-build", "improve-existing"])
-def test_both_build_paths_share_the_complete_catalogue(page, context):
+def test_both_build_paths_share_canonical_selected_projects(page, context):
     grid = open_examples(page, context)
-    assert grid.locator(".bos-example-title").all_text_contents() == TITLES
-    expect(grid.locator('[data-project-family="DFE"]')).to_have_count(8)
-    expect(page.locator("[data-project-showcase-intro]")).to_have_count(1)
-    expect(grid.locator("details")).to_have_count(0)
-    assert "public launch link is not connected" not in grid.inner_text()
-    assert page.locator('#guided-flow a[href*="github.com"]').count() == 0
-    assert page.locator('#guided-flow a[href*="mypassages.net"]').count() == 0
-    assert grid.locator('.bos-project-passage').get_attribute("href") == "https://tim-today.onrender.com/"
-    assert grid.locator('.bos-project-grepper').get_attribute("href") == "/static/demos/grepper.html"
-    for theme, href in PUBLIC_BUILDS.items():
-        expect(grid.locator(f'a[data-project="{theme}"]')).to_have_attribute("href", href)
+    selected = featured_projects(page)
+    assert grid.locator(".bos-example-title").all_text_contents() == [project["title"] for project in selected]
+    assert grid.locator(".bos-flow-example-card").evaluate_all("cards => cards.map(card => card.dataset.project)") == FEATURED_PROJECT_IDS
+    for project in selected:
+        card = grid.locator(f'a[data-project="{project["id"]}"]')
+        expect(card).to_have_attribute("href", project["url"])
+        expect(card.locator(".bos-example-description")).to_have_text(project["description"])
+        expect(card.locator("img")).to_have_attribute("src", project["art_url"])
+    panel = page.locator("#guided-flow")
+    expect(panel.get_by_role("link", name=re.compile(r"Browse all \d+ projects"))).to_have_attribute("href", "/projects")
+    expect(panel.get_by_role("link", name="Grepper, a job-search workflow demo")).to_have_attribute("href", "/static/demos/grepper.html")
     for link in grid.locator('a[href^="https://"]').all():
         assert link.get_attribute("target") == "_blank"
         assert {"noopener", "noreferrer"}.issubset(set(link.get_attribute("rel").split()))
 
 
-@pytest.mark.parametrize("theme", list(PUBLIC_BUILDS))
-def test_public_builds_open_in_new_tabs_from_the_keyboard(page, theme):
+@pytest.mark.parametrize("project_id", FEATURED_PROJECT_IDS)
+def test_selected_projects_open_in_new_tabs_from_the_keyboard(page, project_id):
     grid = open_examples(page)
-    href = PUBLIC_BUILDS[theme]
+    href = next(project["url"] for project in featured_projects(page) if project["id"] == project_id)
     host = urlsplit(href).netloc
     # Keep site regression tests offline and deterministic. A separate GitHub
     # workflow checks the actual public HTTP pages without starting/joining games.
     page.context.route(f"https://{host}/**", lambda route: route.fulfill(
         status=200, content_type="text/html", body="<title>Link target fixture</title>"))
-    card = grid.locator(f'a[data-project="{theme}"]')
+    card = grid.locator(f'a[data-project="{project_id}"]')
     original_url = page.url
     card.focus()
     with page.context.expect_page() as opened:
@@ -97,50 +86,38 @@ def test_public_builds_open_in_new_tabs_from_the_keyboard(page, theme):
     target.close()
 
 
-def test_unpublished_build_fallback_still_supports_native_keyboard_overviews(page):
-    # Simulate a future unpublished entry in a browser-local response only.
-    # All five currently published builds retain real links in the source.
-    source = (Path(__file__).resolve().parents[1] / "app/static/js/boston-visible-work-cards.js").read_text()
-    link = 'href: "https://jbmw.onrender.com/?theme=garage_journey", action: "Open workshop",'
-    assert source.count(link) == 1
-    source = source.replace(link, "")
-    page.route("**/static/js/boston-visible-work-cards.js", lambda route: route.fulfill(
-        status=200, content_type="application/javascript", body=source))
-    page.reload(wait_until="networkidle")
-    grid = open_examples(page)
-    overview = grid.locator('details[data-project="garage"]')
-    expect(grid.locator("details")).to_have_count(1)
-    assert overview.get_attribute("href") is None
-    summary = overview.locator("summary")
-    summary.focus()
-    summary.press("Enter")
-    expect(overview).to_have_attribute("open", "")
-    expect(overview.locator(".bos-example-notes")).to_be_visible()
-    summary.press("Enter")
-    assert overview.get_attribute("open") is None
+def test_browse_all_opens_the_native_directory_from_a_build_path(page):
+    projects = canonical_projects(page)
+    open_examples(page)
+    browse = page.locator("#guided-flow").get_by_role("link", name=re.compile(r"Browse all \d+ projects"))
+    expect(browse).to_contain_text(f"Browse all {len(projects)} projects")
+    browse.click()
+    expect(page).to_have_url(re.compile(r"/projects$"))
+    expect(page.locator("#project-grid .pr-project")).to_have_count(len(projects))
+    expect(page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Projects", exact=True)).to_have_attribute("aria-current", "page")
 
 
 def test_unrelated_mutations_preserve_link_focus_and_contact_fields(page):
     grid = open_examples(page)
-    garage = grid.locator('a[data-project="garage"]')
+    project = grid.locator('a[data-project="irish-today"]')
     panel = page.locator("#guided-flow")
     panel.get_by_role("button", name="Add context (optional)").click()
     fields = panel.locator(".bos-context-fields:not(.bos-context-copy-panel) textarea")
     fields.first.fill("Preserve this project brief")
-    garage.focus()
+    project.focus()
     page.evaluate("""() => {
-        window.__firstExample = document.querySelector('[data-project-showcase] > :first-child');
+        window.__firstExample = document.querySelector('#guided-flow .bos-flow-example-grid > :first-child');
         const node = document.createElement('span');
         node.dataset.showcaseTest = 'true';
         document.querySelector('.boston').append(node);
         node.remove();
     }""")
     page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
-    assert page.evaluate("window.__firstExample === document.querySelector('[data-project-showcase] > :first-child')")
-    expect(garage).to_be_focused()
+    assert page.evaluate("window.__firstExample === document.querySelector('#guided-flow .bos-flow-example-grid > :first-child')")
+    expect(project).to_be_focused()
     expect(fields.first).to_have_value("Preserve this project brief")
-    expect(grid.locator(".bos-flow-example-card")).to_have_count(len(TITLES))
-    expect(page.locator("[data-project-showcase-intro]")).to_have_count(1)
+    expect(grid.locator(".bos-flow-example-card")).to_have_count(len(FEATURED_PROJECT_IDS))
+    expect(panel.get_by_role("link", name=re.compile(r"Browse all \d+ projects"))).to_have_count(1)
 
 
 @pytest.mark.parametrize("width,height,theme", [(1440, 1000, "dark"), (768, 1024, "dark"), (390, 844, "dark"), (320, 720, "light"), (1440, 1000, "light")])
@@ -167,12 +144,12 @@ def test_showcase_reflows_without_clipped_text(page, width, height, theme):
 
 def test_text_measurement_catches_real_clipping(page):
     grid = open_examples(page)
-    card = grid.locator('[data-project="irish"]')
+    card = grid.locator('[data-project="irish-today"]')
     assert not clipped_text(card)
     # Negative control: the measurement must reject real clipped copy rather
     # than merely ignoring every overflow after excluding decorative artwork.
     page.add_style_tag(content="""
-        #guided-flow [data-project="irish"] .bos-example-description {
+        #guided-flow [data-project="irish-today"] .bos-example-description {
             white-space: nowrap !important;
             overflow-wrap: normal !important;
         }

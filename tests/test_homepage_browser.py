@@ -5,7 +5,7 @@ import sys
 import time
 import urllib.request
 from pathlib import Path
-from urllib.parse import parse_qs, unquote, urlparse
+from urllib.parse import parse_qs, unquote, urljoin, urlparse
 
 import pytest
 from playwright.sync_api import expect, sync_playwright
@@ -15,6 +15,18 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_DIR = REPO_ROOT / "artifacts"
 TEST_PORT = 5010
 BASE_URL = f"http://127.0.0.1:{TEST_PORT}"
+FEATURED_PROJECT_IDS = ["irish-today", "infierno", "gridiron", "further-in"]
+
+
+def canonical_projects(page):
+    response = page.request.get(urljoin(page.url, "/api/projects"))
+    assert response.ok
+    return response.json()["projects"]
+
+
+def featured_projects(page):
+    by_id = {project["id"]: project for project in canonical_projects(page)}
+    return [by_id[project_id] for project_id in FEATURED_PROJECT_IDS]
 
 
 def start_card(page, class_name):
@@ -86,7 +98,11 @@ def test_first_screen_uses_clear_visitor_choices(page):
         link.text_content().strip()
         for link in page.locator(".bos-head .bos-links a").all()
     ]
-    assert header_links == ["Experience & Work", "Contact"]
+    assert header_links == ["Experience", "Projects", "Contact"]
+    expect(page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Projects", exact=True)).to_have_attribute("href", "/projects")
+    bridge = page.locator(".bos-project-bridge")
+    expect(bridge.get_by_role("link", name="Explore the projects")).to_be_visible()
+    expect(bridge.get_by_role("link", name="Explore the projects")).to_have_attribute("href", "/projects")
 
     cards = page.locator(".bos-start-panel .bos-choice-card")
     titles = [title.inner_text().strip() for title in cards.locator("h3").all()]
@@ -116,6 +132,14 @@ def test_mobile_first_screen_keeps_explanations_visible(page):
     # Desktop header shortcuts should not compete with the four mobile choices.
     assert not page.locator('[data-clarity-nav="experience"]').is_visible()
     assert not page.locator('[data-clarity-nav="contact"]').is_visible()
+    nav_projects = page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Projects", exact=True)
+    expect(nav_projects).to_be_visible()
+    expect(nav_projects).to_have_attribute("href", "/projects")
+    expect(page.locator(".bos-project-bridge").get_by_role("link", name="Explore the projects")).to_be_visible()
+    brand_box = page.locator(".bos-head .bos-mark").bounding_box()
+    nav_box = nav_projects.bounding_box()
+    assert brand_box["x"] + brand_box["width"] <= nav_box["x"]
+    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
 
 
 def test_mobile_customer_actions_stay_visible(page):
@@ -188,14 +212,17 @@ def test_experience_bypasses_questionnaire_and_keeps_contact_choices(page):
         title.inner_text().strip()
         for title in work.locator(".bos-work-card h3").all()
     ]
-    assert project_titles == [
-        "Irish Today",
-        "Grepper",
-        "LoudSource Voting Flyer",
-        "Your Passage",
-    ]
+    selected = featured_projects(page)
+    assert project_titles == [project["title"] for project in selected]
+    assert work.locator(".bos-work-card").evaluate_all("cards => cards.map(card => card.dataset.project)") == FEATURED_PROJECT_IDS
+    for project in selected:
+        card = work.locator(f'a[data-project="{project["id"]}"]')
+        expect(card).to_have_attribute("href", project["url"])
+        expect(card.locator("p")).to_have_text(project["description"])
+        expect(card.locator("img")).to_have_attribute("src", project["art_url"])
     assert work.locator('a[href*="style-lab"]').count() == 0
-    assert "tim-today.onrender.com" in work.get_by_role("link", name="Your Passage", exact=False).get_attribute("href")
+    expect(work.get_by_role("link", name=re.compile(r"Browse all \d+ projects"))).to_have_attribute("href", "/projects")
+    expect(work.get_by_role("link", name="Grepper, a job-search workflow demo")).to_have_attribute("href", "/static/demos/grepper.html")
     capture(page, "projects-browse.png")
 
 
@@ -314,25 +341,47 @@ def test_copy_message_handles_clipboard_success_and_failure(page, copy_mode):
     expect(message).to_have_value(text)
 
 
-def test_build_flow_never_sends_your_passage_to_unrelated_domain(page):
-    start_card(page, "bos-choice-opportunity").click()
-    page.locator('#guided-flow.is-active[data-active-flow="opportunity"]').wait_for(state="visible")
+def test_directory_navigation_returns_to_visible_professional_experience(page):
+    page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Projects", exact=True).click()
+    expect(page).to_have_url(re.compile(r"/projects$"))
+    page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Experience & work", exact=True).click()
+    expect(page).to_have_url(re.compile(r"/#experience$"))
+    expect(page.locator("#experience")).to_be_visible()
+    expect(page.locator("#work")).to_be_visible()
+    expect(page.locator("#experience").get_by_role("link", name="Talk about a role or project")).to_be_visible()
 
-    page.get_by_role("button", name="Build something new", exact=False).click()
-    detail = page.locator('#guided-flow.is-active[data-active-flow="opportunity"][data-active-context="new-build"]')
-    detail.wait_for(state="visible")
 
-    passage = detail.locator('a:has-text("Your Passage")')
-    passage.wait_for(state="visible")
-    page.wait_for_function(
-        """() => {
-            const link = document.querySelector('#guided-flow a.bos-project-passage');
-            return link && link.href.includes('tim-today.onrender.com');
-        }"""
-    )
+@pytest.mark.parametrize("fragment", ["#experience", "#work", "#case-shapes"])
+def test_direct_browse_links_reveal_the_requested_section(page, fragment):
+    page.goto(urljoin(page.url, "/" + fragment), wait_until="networkidle")
+    page.reload(wait_until="networkidle")  # Also exercise fragment entry on a fresh document.
+    expect(page.locator(fragment)).to_be_visible()
+    expect(page.locator(fragment)).to_be_in_viewport()
+    assert urlparse(page.url).fragment == fragment[1:]
+    expect(page.locator("#guided-flow.is-active")).to_have_count(0)
 
-    assert "tim-today.onrender.com" in passage.get_attribute("href")
-    assert detail.locator('a[href*="mypassages.net"]').count() == 0
+
+def test_browse_hash_change_clears_guided_state_and_can_return_to_a_flow(page):
+    start_card(page, "bos-choice-solve").click()
+    expect(page.locator('#guided-flow.is-active[data-active-flow="solve"]')).to_be_visible()
+    page.evaluate("window.location.hash = '#work'")
+    expect(page.locator("#work")).to_be_visible()
+    expect(page.locator("#guided-flow.is-active")).to_have_count(0)
+    assert urlparse(page.url).fragment == "work"
+
+    start_card(page, "bos-choice-solve").click()
+    expect(page.locator('#guided-flow.is-active[data-active-flow="solve"]')).to_be_visible()
+    expect(page.locator("#work")).to_be_hidden()
+
+
+def test_directory_uses_canonical_passage_destination(page):
+    passage = next(project for project in canonical_projects(page) if project["id"] == "mypassages")
+    page.goto(urljoin(page.url, "/projects?q=Your+Passage#collection"), wait_until="networkidle")
+    card = page.locator('#project-grid [data-project="mypassages"]')
+    expect(card).to_be_visible()
+    for link in card.locator("a").all():
+        expect(link).to_have_attribute("href", passage["url"])
+    assert page.locator('#project-grid a[href*="mypassages.net"]').count() == 0
 
 
 def test_not_sure_path_skips_single_choice_intermediary(page):

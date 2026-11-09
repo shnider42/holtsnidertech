@@ -20,24 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
             "Reliability, infrastructure, automation, troubleshooting, and the part that often matters most: turning technical detail into a decision somebody can actually use."
         );
 
-        // Give the public portfolio a hierarchy instead of treating every card equally.
-        setText("#work .bos-section-heading h2", "Selected work you can open");
-        setText(
-            "#work .bos-section-heading .bos-section-text",
-            "The first two are the clearest public examples of how I work: take something fuzzy, build enough of it to test for real, then keep improving it. The others show how the same approach adapts to different problems and audiences."
-        );
-
-        const workCards = Array.from(page.querySelectorAll("#work .bos-work-card"));
-        const workLabels = [
-            "Featured · live build",
-            "Featured · working prototype",
-            "Interactive prototype",
-            "Adapted concept"
-        ];
-        workCards.forEach((card, index) => {
-            const label = card.querySelector(".bos-card-label");
-            if (label && workLabels[index]) label.textContent = workLabels[index];
-        });
+        // Selected projects now carry their own capability labels and context
+        // from the shared catalog. Preserve that editorial information.
+        if (!page.querySelector(".bos-selected-work-grid")) {
+            setText("#work .bos-section-heading h2", "Selected work you can open");
+        }
 
         setText("#case-shapes .bos-section-heading h2", "The work that does not fit in a public demo");
         setText(
