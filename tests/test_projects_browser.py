@@ -2,6 +2,7 @@
 
 import json
 import re
+from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 import pytest
@@ -161,6 +162,12 @@ def test_project_links_and_layout_remain_usable_in_both_views(projects_page):
         assert link.get_attribute("target") == "_blank"
         assert {"noopener", "noreferrer"}.issubset(set(link.get_attribute("rel").split()))
     assert_no_card_overflow(page)
+    artifacts = Path(__file__).resolve().parents[1] / "artifacts"
+    artifacts.mkdir(exist_ok=True)
+    size = "mobile" if page.viewport_size["width"] < 500 else "desktop"
+    page.screenshot(path=str(artifacts / f"projects-{size}.png"), full_page=False)
+    page.locator("#collection").scroll_into_view_if_needed()
+    page.screenshot(path=str(artifacts / f"projects-collection-{size}.png"), full_page=False)
     page.get_by_role("button", name="List", exact=True).click()
     assert_no_card_overflow(page)
 

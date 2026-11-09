@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             element("em", "bos-example-category", project.focus || project.type),
             element("strong", "bos-example-title", project.title),
             element("span", "bos-example-description", project.description),
-            element("span", "bos-example-action", "Open project ↗"),
+            element("span", "bos-example-action", "Open project"),
         );
         card.appendChild(copy);
         return card;

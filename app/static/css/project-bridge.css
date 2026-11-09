@@ -1,4 +1,17 @@
 /* A small doorway to the full portfolio within the existing Boston layout. */
+.boston #guided-flow [data-project-showcase="selected-v2"] .bos-example-title::after {
+    content: none;
+}
+.boston #work .bos-selected-project[target="_blank"] .bos-card-action::after,
+.boston .bos-featured-flow-card .bos-example-action::after {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-left: 8px;
+    border-top: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+}
 .boston .bos-projects-nav {
     display: inline-flex;
     align-items: center;

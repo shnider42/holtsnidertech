@@ -29,7 +29,13 @@ if (page && seed) {
     return element;
   };
   const external = (className, href, label) => {
-    const link = node('a', className, label);
+    const withArrow = typeof label === 'string' && label.endsWith(' ↗');
+    const link = node('a', className, withArrow ? label.slice(0, -2) : label);
+    if (withArrow) {
+      const arrow = node('span', 'pr-arrow');
+      arrow.setAttribute('aria-hidden', 'true');
+      link.append(' ', arrow);
+    }
     link.href = href;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
@@ -133,7 +139,7 @@ if (page && seed) {
     meta.append(node('span', '', TYPE_LABELS[project.type]), date);
     const title = node('h3');
     const titleLink = external('', href, project.title + ' ');
-    const arrow = node('span', '', '↗');
+    const arrow = node('span', 'pr-arrow');
     arrow.setAttribute('aria-hidden', 'true');
     titleLink.append(arrow, node('span', 'pr-sr-only', ' (opens in a new tab)'));
     title.append(titleLink);

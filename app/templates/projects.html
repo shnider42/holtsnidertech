@@ -35,7 +35,7 @@
       <aside class="pr-intro-note">
         <span class="pr-note-index">A COMMON THREAD</span>
         <p>Start with a problem.<br />Build something you can try.<br /><strong>Listen. Adjust. Repeat.</strong></p>
-        <a href="{{ url_for('main.home') }}#experience">The engineering background <span aria-hidden="true">↗</span></a>
+        <a href="{{ url_for('main.home') }}#experience">The engineering background <span class="pr-arrow" aria-hidden="true"></span></a>
       </aside>
     </section>
 
@@ -46,7 +46,7 @@
         <a class="pr-featured" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
           <img src="{{ project.art_url }}" alt="" width="640" height="300" />
           <span class="pr-featured-focus">{{ project.focus }}</span>
-          <h3>{{ project.title }} <span aria-hidden="true">↗</span></h3>
+          <h3>{{ project.title }} <span class="pr-arrow" aria-hidden="true"></span></h3>
           <p>{{ project.context }}</p>
           <span class="pr-sr-only">Opens in a new tab</span>
         </a>
@@ -87,9 +87,9 @@
           </div>
           <div class="pr-project-body">
             <div class="pr-project-meta"><span>{{ project_types[project.type] }}</span><span class="pr-project-date">{% if project.datePrecision != 'unknown' %}{{ project.createdAt[:7] if project.datePrecision == 'month' else project.createdAt }}{% else %}Ongoing project{% endif %}</span></div>
-            <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.title }} <span aria-hidden="true">↗</span><span class="pr-sr-only"> (opens in a new tab)</span></a></h3>
+            <h3><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.title }} <span class="pr-arrow" aria-hidden="true"></span><span class="pr-sr-only"> (opens in a new tab)</span></a></h3>
             <p class="pr-description">{{ project.description }}</p>
-            <div class="pr-project-bottom"><span class="pr-subtype">{{ project.subtype }}</span><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">Open project <span aria-hidden="true">↗</span></a></div>
+            <div class="pr-project-bottom"><span class="pr-subtype">{{ project.subtype }}</span><a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">Open project <span class="pr-arrow" aria-hidden="true"></span></a></div>
           </div>
         </article>
         {% endfor %}
@@ -100,9 +100,9 @@
 
     <section class="pr-about" aria-labelledby="dfe-heading">
       <div><p class="pr-eyebrow">HOW THE COLLECTION CONNECTS</p><h2 id="dfe-heading">One framework.<br />Room for different ideas.</h2></div>
-      <div><p>The Daily Flyer Engine began with Irish Today. It grew into a foundation for exploring different audiences, interfaces, and kinds of interaction. Each project has its own identity and continues to evolve.</p><p>These are projects you can try. My <a href="{{ url_for('main.home') }}#experience">professional experience</a> provides the wider context: systems reliability, troubleshooting, automation, and helping people make sense of technical problems.</p><div class="pr-about-links"><a href="https://dfe-directory.onrender.com/" target="_blank" rel="noopener noreferrer">Standalone DFE directory ↗</a><a href="{{ url_for('static', filename='demos/grepper.html') }}">Try the Grepper demo ↗</a></div></div>
+      <div><p>The Daily Flyer Engine began with Irish Today. It grew into a foundation for exploring different audiences, interfaces, and kinds of interaction. Each project has its own identity and continues to evolve.</p><p>These are projects you can try. My <a href="{{ url_for('main.home') }}#experience">professional experience</a> provides the wider context: systems reliability, troubleshooting, automation, and helping people make sense of technical problems.</p><div class="pr-about-links"><a href="https://dfe-directory.onrender.com/" target="_blank" rel="noopener noreferrer">Standalone DFE directory <span class="pr-arrow" aria-hidden="true"></span></a><a href="{{ url_for('static', filename='demos/grepper.html') }}">Try the Grepper demo <span class="pr-arrow" aria-hidden="true"></span></a></div></div>
     </section>
-    <section class="pr-contact"><div><p class="pr-eyebrow">HAVE SOMETHING IN MIND?</p><h2>Bring the rough idea.</h2><p>A tool, a workflow, a technical problem. We can start wherever you are.</p></div><a href="{{ url_for('main.home') }}#contact">Talk about your project <span aria-hidden="true">↗</span></a></section>
+    <section class="pr-contact"><div><p class="pr-eyebrow">HAVE SOMETHING IN MIND?</p><h2>Bring the rough idea.</h2><p>A tool, a workflow, a technical problem. We can start wherever you are.</p></div><a href="{{ url_for('main.home') }}#contact">Talk about your project <span class="pr-arrow" aria-hidden="true"></span></a></section>
   </main>
   <footer class="pr-footer pr-wrap"><span>© 2026 Holtsnider Tech</span><div><a href="{{ url_for('main.home') }}">Back to Holtsnider Tech</a><a href="{{ url_for('main.privacy') }}">Privacy</a></div></footer>
   <dialog class="pr-copy-dialog" id="copy-dialog" aria-labelledby="copy-heading"><form method="dialog"><button class="pr-dialog-close" aria-label="Close copy dialog">Close ×</button></form><h2 id="copy-heading">Copy these links</h2><p>Select the text below, then copy it using your device.</p><label for="copy-content" class="pr-sr-only">Project links to copy</label><textarea id="copy-content" readonly rows="7"></textarea><button type="button" id="select-copy-content">Select text</button></dialog>
