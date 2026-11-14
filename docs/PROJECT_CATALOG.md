@@ -5,9 +5,10 @@ HoltsniderTech reads the catalog published at
 `apps/directory/projects.json` on the `feat/dfe-directory` branch of
 `shnider42/daily_flyer`.
 
-`app/static/data/dfe-projects.json` is the startup fallback, copied from directory
-commit `311ba3ed6de44ed70fa3a2d35ba54729f13e5a26`. It is a recovery snapshot, not a
-second catalog to maintain. Normal changes belong in the directory's source.
+`app/static/data/dfe-projects.json` is the startup fallback, normalized from directory
+commit `8fd9c59526dc83bb2e595faef1bad533175ff94a` using this application's supported
+catalog fields. Its 37 projects form a recovery snapshot, not a second catalog to
+maintain. Normal changes belong in the directory's source.
 
 ## Application API
 
@@ -61,10 +62,13 @@ the starting points, selected work, and both Build/Improve paths. Existing
 contact drafts and the professional experience flow are retained.
 
 The original illustrated SVG covers and the pure browser catalog helpers were
-adapted from `apps/directory/artwork.js` and `apps/directory/catalog.js` at the
-same source commit as the snapshot. These are presentation assets; they are
-not screenshots. A new or renamed cover uses the local Dayboard illustration
-until its artwork is added, without affecting its project link or metadata.
+adapted from `apps/directory/artwork.js` and `apps/directory/catalog.js` at directory
+commit `311ba3ed6de44ed70fa3a2d35ba54729f13e5a26`. Baseball, Sunday Broadcast,
+Shenanigans Golf, Corner Pocket, and Low Water covers use the refreshed snapshot's
+artwork, fitted into 640-by-300 SVG frames without cropping or stretching. These
+are presentation assets, not screenshots. A new or renamed cover uses the local
+Dayboard illustration until its artwork is added, without affecting its project
+link or metadata.
 
 The native directory starts with all project types and newest-first sorting;
 the standalone DFE directory keeps its own games-first default. Saved projects
