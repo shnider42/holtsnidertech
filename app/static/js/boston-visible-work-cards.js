@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const art = element("img", "bos-project-art");
             art.src = project.art_url;
             art.alt = "";
-            art.width = 720;
-            art.height = 420;
+            art.width = 640;
+            art.height = 300;
             art.loading = "lazy";
             art.decoding = "async";
             card.appendChild(art);

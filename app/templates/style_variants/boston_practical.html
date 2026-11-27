@@ -886,7 +886,7 @@
             <div class="bos-work-grid bos-selected-work-grid">
                 {% for project in featured_projects|default([]) %}
                 <a class="bos-work-card bos-selected-project" data-project="{{ project.id }}" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
-                    <img class="bos-project-art" src="{{ project.art_url }}" alt="" width="720" height="420" loading="lazy" decoding="async" />
+                    <img class="bos-project-art" src="{{ project.art_url }}" alt="" width="640" height="300" loading="lazy" decoding="async" />
                     <div class="bos-selected-project-copy">
                         <span class="bos-card-label">{{ project.focus or project.type }}</span>
                         <h3>{{ project.title }}</h3>
